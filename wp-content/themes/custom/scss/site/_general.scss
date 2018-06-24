@@ -1,0 +1,104 @@
+
+
+body{
+	background-color: $body-background-color;
+	padding-top: $nav-height;	
+
+	@media screen and (max-width: $sm) {
+		padding-top: $nav-height-mobile;
+	}
+}
+
+
+
+/* make bootstrap gutters smaller on small screens */
+.row{
+	@media screen and (max-width: $sm) {
+		margin-left: -10px;
+		margin-right: -10px;
+	}
+}
+.col-xs, .col-xs-1, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9, .col-xs-10, .col-xs-11, .col-xs-12, .col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12, .col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12, .col-xl, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12 {
+	@media screen and (max-width: $sm) {
+		padding-left: 10px;
+		padding-right: 10px;
+	}
+}
+
+
+/* customize bootstrap container fluid parameters */
+.container-fluid{
+
+	max-width: $container-fluid-max-width;
+
+	padding-left: $container-fluid-padding;
+	padding-right: $container-fluid-padding;
+
+	@media screen and (max-width: $md) {
+		padding-left: $container-fluid-padding-md;
+		padding-right: $container-fluid-padding-md;
+	}
+
+	@media screen and (max-width: $sm) {
+		padding-left: $container-fluid-padding-mobile;
+		padding-right: $container-fluid-padding-mobile;
+	}	
+}
+
+
+/* sitewide button styles */
+
+$text-button: (
+	xs: (10px, 14px),
+	sm: (11px, 16px),
+	md: (12px, 12px),
+	lg: (12px, 12px),
+	xl: (12px, 12px)
+	);
+
+.button{
+	display: block;
+
+	a{
+		@include text-size($text-button);	
+		background: $brand;
+		padding: 10px 10px;
+		font-family: $font-main;
+		color: $dark;
+		@extend .uppercase;	
+		border-radius: 2px;
+		display: inline-block;
+		text-align: center;
+		border: 2px solid $brand;
+		@include transition(background .125s);
+
+		&:hover{
+			background: white;
+		}
+
+		@media screen and (max-width: $sm) {
+			padding: 3px 8px;
+		}
+	}
+}
+
+
+
+/* LOADER */
+
+.loader-icon {
+	width: 50px;
+	height: 50px;
+	animation: spin 3s linear infinite;
+	margin: 60px auto;
+	display: none;
+
+	&.active{
+		display: block;
+	}
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}

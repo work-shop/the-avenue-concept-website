@@ -1,0 +1,58 @@
+.custom_redirect_editor_content{
+    display: none;
+    width: 100%;
+}
+
+.custom_redirect_editor_content.show{
+    display:block;
+}
+
+.link-target{
+    display: none;
+}
+
+.wp-list-table .wpms-input-text-wrap{
+    width: 100%;
+    float: left;
+}
+
+table.metaseo_images .wpms-input-text-wrap input{
+    max-width:80% !important;
+    float: left;
+}
+
+.wlink-btn{
+    float: left;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.wpms_form_add_customlink{
+    width: 50%;
+    float: left;
+}
+
+.custom_redirect_editor_content .wpms-input-text-wrap th{
+    width: 100px;
+}
+
+.custom_redirect_editor_content .wpms-input-text-wrap td{
+    padding: 15px 0;
+}
+
+.wpms-update-link-button{
+    margin-right: 40px !important;
+}
+
+.wpms_form_add_customlink .custom_redirect_status{
+    float: left;
+    margin-left: 15%;
+}
+
+.wp-list-table .wpms-inline-editor-content{
+    width: 100%;
+}
+
+.wpms_outgoing{
+    color: #555;
+}

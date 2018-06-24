@@ -1,0 +1,89 @@
+
+/* Margins and Padding */
+
+
+//margins
+
+.m0{
+	margin: 0;
+}
+
+@for $i from 0 through 9 {
+  .m#{$i} { 
+  	margin-bottom: 1em * $i;
+  	margin-top: 1em * $i;
+  }
+}
+
+@for $i from 0 through 9 {
+  .mb#{$i} { 
+  	margin-bottom: 1em * $i;
+  }
+}
+
+@for $i from 0 through 9 {
+  .mt#{$i} { 
+  	margin-top: 1em * $i;
+  }
+}
+
+@for $i from 0 through 9 {
+  .ml#{$i} { 
+  	margin-left: 1em * $i;
+  }
+}
+
+@for $i from 0 through 9 {
+  .mr#{$i} { 
+  	margin-right: 1em * $i;
+  }
+}
+
+
+//padding
+
+@for $i from 0 through 9 {
+  .p#{$i} { 
+  	padding: 1em * $i;
+  }
+}
+
+@for $i from 0 through 9 {
+  .pb#{$i} { 
+  	padding-bottom: 1em * $i;
+  }
+}
+
+@for $i from 0 through 9 {
+  .pt#{$i} { 
+  	padding-top: 1em * $i;
+  }
+}
+
+@for $i from 0 through 9 {
+  .pl#{$i} { 
+  	padding-left: 1em * $i;
+  }
+}
+
+@for $i from 0 through 9 {
+  .pr#{$i} { 
+  	padding-right: 1em * $i;
+  }
+}
+
+.padded-less{
+	padding-top: 2%;
+	padding-bottom: 3%;
+}
+
+.padded{
+	padding-top: 6%;
+	padding-bottom: 5%;
+}
+
+.padded-more{
+	padding-top: 10%;
+	padding-bottom: 11%;
+}
+

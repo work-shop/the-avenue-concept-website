@@ -1,0 +1,52 @@
+/*!
+ * Materialize v0.98.2 (http://materializecss.com)
+ * Copyright 2014-2015 Materialize
+ * MIT License (https://raw.githubusercontent.com/Dogfalo/materialize/master/LICENSE)
+ */
+.wpms_collapsible {
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-left: 1px solid #ddd;
+    margin: .5rem 0 1rem 0;
+    list-style: none !important;
+    padding: 0 !important;
+}
+
+.wpms_collapsible > li{
+    background-color: #2196F3 !important;
+    color: #fff !important;
+}
+
+
+.wpms_collapsible .collapsible-header {
+    display: block;
+    cursor: pointer;
+    min-height: 3rem;
+    line-height: 3rem;
+    padding: 0 1rem;
+    border-bottom: 1px solid #ddd
+}
+
+.wpms_collapsible .collapsible-header i {
+    width: 2rem;
+    font-size: 1.6rem;
+    line-height: 3rem;
+    display: block;
+    float: left;
+    text-align: center;
+    margin-right: 1rem
+}
+
+.wpms_collapsible .collapsible-body {
+    display: none;
+    border-bottom: 1px solid #ddd;
+    box-sizing: border-box;
+    padding: 2rem;
+    background-color: #fff;
+    color: #000;
+}
+
+#wpms_sitemap a{
+    text-decoration: none;
+    box-shadow: none !important;
+}

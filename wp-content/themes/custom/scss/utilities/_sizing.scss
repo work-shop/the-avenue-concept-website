@@ -1,0 +1,35 @@
+
+/* Sizing heights and widths with viewport units*/
+
+@for $i from 1 through 20 {
+	.vh#{$i*5}{ 
+		height: 5vh * $i;
+	}
+}
+
+@for $i from 1 through 20 {
+	.vw#{$i*5}{
+		width: 5% * $i; 
+	}
+}
+
+@for $i from 1 through 20 {
+	.vhmin#{$i*5}{ 
+		min-height: 5vh * $i;
+	}
+}
+
+@for $i from 1 through 20 {
+	.vhmax#{$i*5}{ 
+		max-height: 5vh * $i;
+	}
+}
+
+.vhfull{
+	height: calc(100vh - #{$nav-height});
+
+	@media screen and (max-width: $sm) {
+		height: calc(100vh - #{$nav-height-mobile});
+	}
+
+}

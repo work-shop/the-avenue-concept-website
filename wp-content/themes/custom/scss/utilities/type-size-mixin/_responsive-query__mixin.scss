@@ -1,0 +1,74 @@
+@import "map__helper";
+@import "responsive-breakpoints__list";
+
+/* --------------------------------------------------------
+`min-width` mixin
+Input:
+  @include respond-above(large) {
+    color: red;
+  };
+Output:
+  @media screen and (min-width: 1024px) {
+    color: red;
+  };
+-------------------------------------------------------- */
+@mixin respond-above($breakpoint, $breakpoints: $breakpoints) {
+  $min-width: map-get($breakpoints, $breakpoint) + 1;
+  $queries: "screen and (min-width: #{$min-width})";
+
+  @media #{$queries} {
+    @content;
+  }
+}
+
+
+/* --------------------------------------------------------
+`max-width` mixin
+Input:
+  @include respond-below(large) {
+    color: blue;
+  };
+Output:
+  @media screen and (max-width: 768px) {
+    color: blue;
+  };
+-------------------------------------------------------- */
+@mixin respond-below($breakpoint, $breakpoints: $breakpoints) {
+  $max-width: map-get($breakpoints, $breakpoint);
+  $queries: "screen and (max-width: #{$max-width})";
+
+  @media #{$queries} {
+    @content;
+  }
+}
+
+
+/* --------------------------------------------------------
+`min-width` and `max-width` mixin
+Input:
+  @include respond-at(large) {
+    color: yellow;
+  };
+Output:
+  @media screen and (min-width: 1024px) and (max-width: 1440px) {
+    color: yellow;
+  };
+-------------------------------------------------------- */
+@mixin respond-at($breakpoint, $breakpoints: $breakpoints) {
+  $min-width: map-get($breakpoints, $breakpoint);
+  $max-width: map-get($breakpoints, map-next-key($breakpoints, $breakpoint));
+  $queries: "screen";
+
+  @if $min-width > 0 {
+    $min-width: $min-width + 1;
+    $queries: $queries + " and (min-width: #{$min-width})";
+  }
+
+  @if $max-width {
+    $queries: $queries + " and (max-width: #{$max-width})";
+  }
+
+  @media #{$queries} {
+    @content;
+  }
+}

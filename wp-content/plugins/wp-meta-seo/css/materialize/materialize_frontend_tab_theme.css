@@ -1,0 +1,120 @@
+
+.wpmsrow {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.wpmsrow:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.wpmsrow .col {
+    float: left;
+    box-sizing: border-box;
+    min-height: 1px;
+}
+
+.wpmstabs {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 48px;
+    width: 100%;
+    background-color: #2196F3;
+    margin: 0 auto;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.wpmstabs.wpmstabs-transparent {
+    background-color: transparent;
+}
+
+.wpmstabs.wpmstabs-transparent .wpmstab a,
+.wpmstabs.wpmstabs-transparent .wpmstab.disabled a,
+.wpmstabs.wpmstabs-transparent .wpmstab.disabled a:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.wpmstabs.wpmstabs-transparent .wpmstab a:hover,
+.wpmstabs.wpmstabs-transparent .wpmstab a.active {
+    color: #fff;
+}
+
+.wpmstabs.wpmstabs-transparent .indicator {
+    background-color: #fff;
+}
+
+.wpmstabs.wpmstabs-fixed-width {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.wpmstabs.wpmstabs-fixed-width .wpmstab {
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
+.wpmstabs .wpmstab {
+    display: inline-block;
+    text-align: center;
+    line-height: 48px;
+    height: 48px;
+    padding: 0;
+    margin: 0 10px;
+}
+
+.wpmstabs .wpmstab a {
+    color: #fff;
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    overflow: hidden;
+    transition: color .28s ease;
+    text-decoration: none;
+}
+
+.wpmstabs .wpmstab a:hover, .wpmstabs .wpmstab a.active {
+    background-color: transparent;
+    color: #fff;
+    outline: none;
+}
+
+.wpmstabs .wpmstab.disabled a,
+.wpmstabs .wpmstab.disabled a:hover {
+    color: #b2ebf2;
+    cursor: default;
+}
+
+.wpmstabs .indicator {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background-color: #D54E21;
+    will-change: left, right;
+}
+
+.collapsible-body {
+    box-sizing: border-box;
+    padding: 2rem;
+}
+
+#menu_source_menus,#menu_source_pages,#menu_source_posts,#menu_custom_url{
+    margin-left: 40px;
+}
+
+#wpms_sitemap a{
+    text-decoration: none;
+    box-shadow: none !important;
+}
+
+.wpms_li_cate .cat_name{
+    font-weight:bold;
+    font-size: 14px;
+}

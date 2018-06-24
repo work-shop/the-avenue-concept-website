@@ -1,0 +1,403 @@
+@import "https://fonts.googleapis.com/css?family=Raleway";
+.wpmsrow {
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20px;
+}
+
+.wpmsrow:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.wpmsrow .col {
+    float: left;
+    box-sizing: border-box;
+    min-height: 1px;
+}
+
+.wpmstabs {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 48px;
+    width: 100%;
+    background-color: #2196F3;
+    margin: 0 auto;
+    white-space: nowrap;
+}
+
+.wpmstabs.wpmstabs-transparent {
+    background-color: transparent;
+}
+
+.wpmstabs.wpmstabs-transparent .wpmstab a,
+.wpmstabs.wpmstabs-transparent .wpmstab.disabled a,
+.wpmstabs.wpmstabs-transparent .wpmstab.disabled a:hover {
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.wpmstabs.wpmstabs-transparent .wpmstab a:hover,
+.wpmstabs.wpmstabs-transparent .wpmstab a.active {
+    color: #fff;
+}
+
+.wpmstabs.wpmstabs-transparent .indicator {
+    background-color: #fff;
+}
+
+.wpmstabs.wpmstabs-fixed-width {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+}
+
+.wpmstabs.wpmstabs-fixed-width .wpmstab {
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+
+.wpmstabs .wpmstab {
+    display: inline-block;
+    text-align: center;
+    line-height: 48px;
+    height: 48px;
+    padding: 0;
+    margin: 0;
+    text-transform: uppercase;
+    min-width: 170px;
+}
+
+.wpmstabs .wpmstab a {
+    color: #fff;
+    display: block;
+    width: 100%;
+    height: 100%;
+    font-size: 14px;
+    overflow: hidden;
+    transition: color .28s ease;
+    text-decoration: none;
+}
+
+.wpmstabs .wpmstab a:hover, .wpmstabs .wpmstab a.active {
+    background-color: transparent;
+    color: #fff;
+    outline: none;
+}
+
+.wpmstabs .wpmstab.disabled a,
+.wpmstabs .wpmstab.disabled a:hover {
+    color: #b2ebf2;
+    cursor: default;
+}
+
+.wpmstabs .indicator {
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background-color: #D54E21;
+    will-change: left, right;
+}
+
+.collapsible-body {
+    box-sizing: border-box;
+    padding: 2rem;
+}
+
+/*button switch*/
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 52px;
+    height: 26px;
+}
+
+.switch-optimization{
+    float: left;
+    margin-right: 5px;
+}
+
+.switch input {display:none;}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 18px;
+    width: 18px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196F3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px 	#00CC00;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+/* radio */
+.radio {
+    display: inline-block;
+    padding-right: 20px;
+    font-size: 15px;
+    line-height: 40px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.radio:hover .inner {
+    -webkit-transform: scale(0.5);
+    -ms-transform: scale(0.5);
+    transform: scale(0.5);
+    opacity: .5;
+}
+
+.radio input {
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+}
+
+.radio input:checked + .outer .inner {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+}
+
+.radio input:checked + .outer { border: 3px solid #2196F3; }
+
+.radio input:focus + .outer .inner {
+    -webkit-transform: scale(1);
+    -ms-transform: scale(1);
+    transform: scale(1);
+    opacity: 1;
+    background-color: #2196F3;
+}
+
+.radio .outer {
+    width: 16px;
+    height: 16px;
+    display: block;
+    float: left;
+    margin: 10px 0 10px 10px;
+    border: 3px solid #ccc;
+    border-radius: 50%;
+    background-color: #fff;
+}
+
+.radio .inner {
+    -webkit-transition: all 0.25s ease-in-out;
+    transition: all 0.25s ease-in-out;
+    width: 12px;
+    height: 12px;
+    -webkit-transform: scale(0);
+    -ms-transform: scale(0);
+    transform: scale(0);
+    display: block;
+    margin: 2px;
+    border-radius: 50%;
+    background-color: #2196F3;
+    opacity: 0;
+}
+
+/* checkbox */
+.pure-checkbox input[type="checkbox"]{
+    border: 0;
+    clip: rect(0 0 0 0);
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    padding: 0;
+    position: absolute;
+    width: 1px;
+}
+.pure-checkbox input[type="checkbox"]:focus + label:before,
+.pure-checkbox input[type="checkbox"]:hover + label:before{
+    border-color: #2196F3;
+    background-color: #f2f2f2;
+}
+.pure-checkbox input[type="checkbox"]:active + label:before{
+    transition-duration: 0s;
+}
+.pure-checkbox input[type="checkbox"] + label{
+    position: relative;
+    padding-left: 2em;
+    vertical-align: middle;
+    user-select: none;
+    cursor: pointer;
+}
+.pure-checkbox input[type="checkbox"] + label:before{
+    box-sizing: content-box;
+    content: '';
+    color: #2196F3;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    margin-top: -9px;
+    border: 2px solid #2196F3;
+    text-align: center;
+    transition: all 0.4s ease;
+}
+.pure-checkbox input[type="checkbox"] + label:after{
+    box-sizing: content-box;
+    content: '';
+    background-color: #2196F3;
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    width: 10px;
+    height: 10px;
+    margin-top: -5px;
+    transform: scale(0);
+    transform-origin: 50%;
+    transition: transform 200ms ease-out;
+}
+.pure-checkbox input[type="checkbox"]:disabled + label:before{
+    border-color: #cccccc;
+}
+.pure-checkbox input[type="checkbox"]:disabled:focus + label:before,
+.pure-checkbox input[type="checkbox"]:disabled:hover + label:before{
+    background-color: inherit;
+}
+.pure-checkbox input[type="checkbox"]:disabled:checked + label:before{
+    background-color: #cccccc;
+}
+.pure-checkbox input[type="checkbox"] + label:after{
+    background-color: transparent;
+    top: 50%;
+    left: 4px;
+    width: 8px;
+    height: 3px;
+    margin-top: -4px;
+    border-style: solid;
+    border-color: #ffffff;
+    border-width: 0 0 3px 3px;
+    border-image: none;
+    transform: rotate(-45deg) scale(0);
+}
+.pure-checkbox input[type="checkbox"]:checked + label:after{
+    content: '';
+    transform: rotate(-45deg) scale(1);
+    transition: transform 200ms ease-out;
+}
+
+.pure-checkbox input[type="checkbox"]:checked + label:before{
+    animation: borderscale 200ms ease-in;
+    background: #2196F3;
+}
+.pure-checkbox input[type="checkbox"]:checked + label:after{
+    transform: rotate(-45deg) scale(1);
+}
+
+/* material design */
+.wpmsbtn {
+    text-decoration: none;
+    color: #fff !important;
+    background-color: #2196F3;
+    text-align: center;
+    letter-spacing: 1px;
+    -webkit-transition: 0.2s ease-out;
+    -moz-transition: 0.2s ease-out;
+    -o-transition: 0.2s ease-out;
+    -ms-transition: 0.2s ease-out;
+    transition: 0.2s ease-out;
+    cursor: pointer;
+    border: none;
+    border-radius: 2px;
+    display: inline-block;
+    height: 36px;
+    line-height: 36px;
+    outline: 0;
+    padding: 0 2rem;
+    text-transform: uppercase;
+    vertical-align: middle;
+    -webkit-tap-highlight-color: transparent; }
+
+.wpmsbtn:hover{
+    box-shadow: 1px 1px 12px #ccc;
+    transition : all ease 0.2s;
+}
+
+.wpmsbtn_small{
+    height: 30px;
+    line-height: 28px;
+    vertical-align: middle;
+}
+
+.wpmsbtn_secondary{
+    background-color: #fafafa;
+    color: #444 !important;
+    border: #ccc 1px solid;
+    text-transform: none;
+    padding: 0 7px;
+}
+
+.wpms_input_material{
+    height: 30px;
+    vertical-align: middle;
+}
+
+.wpms-nav-tab-wrapper{
+    display: block !important;
+    margin: 10px 0 10px 0;
+}
+
+.wpms-nav-tab-wrapper .wpmstab{
+    position: relative;
+}
+
+.wpms_uppercase{
+    text-transform: uppercase;
+}
+
+.wpmsga_code_tracking{
+    width: 400px;
+    height: 200px;
+}
+
+.wpms_wrap_hr{
+    width: 100%;
+    margin: 15px 0;
+    float: left;
+}
+
+.wpms_wrap_hr .wpms_hr{
+    width: 60%;
+    float: left;
+}

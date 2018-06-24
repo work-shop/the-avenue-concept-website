@@ -1,0 +1,120 @@
+
+/* Slick slider useful styles for components like dots and arrows */
+
+
+.slick-slider{
+	position: relative;
+}
+
+.slick-slide{
+	&:focus{
+		outline: none;
+		border: none;
+	}
+
+	&:hover{
+		cursor: grab;
+	}
+}
+
+.slick-arrow{
+	position: absolute;
+	top: 50%;
+	margin-top: -50px;
+	left: -40px;
+	z-index: 2;
+	font-size: 0;
+	height: 100px;
+	width: 50px;
+	background: none;
+	border: none;
+	outline: none;
+	padding: 0;
+
+
+	@media screen and (max-width: $md) {
+		left: 0px;
+		height: 80px;
+		width: 30px;
+		top: 50%;
+		margin-top: -40px;
+	}	
+
+	&:hover{
+		cursor: pointer;
+	}
+
+	&:after{
+		content: '‘';
+		font-family: modern_pictograms_proregular;
+		display: block;
+		width: 50px;
+		height: 100px;
+		line-height: 100px;
+		font-size: 50px;
+		color: $medium-dark;
+		text-align: center;
+
+		@media screen and (max-width: $md) {
+			width: 30px;
+			height: 80px;
+			line-height: 80px;
+			font-size: 33px;
+		}			
+	}
+
+	&.slick-next{
+		left: auto;
+		right: -40px;
+
+		@media screen and (max-width: $md) {
+			right: 0;
+		}			
+
+		&:after{
+			content: '—';			
+		}
+
+	}
+
+}
+
+.slick-dots{
+	position: absolute;
+	left: 50%;
+	@include transform(translate(-50%,0));
+	bottom: -30px;
+	
+	li{
+		display: inline-block;
+		margin-right: 10px;
+
+		&.slick-active button{
+			background: $medium-dark;
+			border-width: 0px;
+			width: 9px;
+			height: 9px;
+		}
+	}
+
+	button{
+		background: none;
+		border: none;
+		outline: none;	
+		font-size: 0;
+
+		display: block;
+		width: 9px;
+		height: 9px;
+		padding: 4px;
+
+		background: $light;
+		border: 1px solid $medium-dark;
+		border-radius: 10px;	
+
+		&:hover{
+			cursor: pointer;
+		}	
+
+	}
+}

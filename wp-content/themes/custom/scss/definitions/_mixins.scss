@@ -1,0 +1,7 @@
+@mixin transition( $property-and-duration ) {
+    transition:$property-and-duration ;
+}
+
+@mixin transform( $properties ) {
+    transform: $properties;
+}

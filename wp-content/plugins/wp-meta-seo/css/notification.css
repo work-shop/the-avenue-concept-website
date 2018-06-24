@@ -1,0 +1,111 @@
+/* dashboard */
+.toplevel_page_metaseo_dashboard .wpms_dashboard_notification{
+    width: 75%;
+    margin: 0 auto;
+    padding: 0 10px;
+}
+
+.toplevel_page_metaseo_dashboard .wpms_dashboard_notification h1 {
+    padding: 10px 0 10px 20px
+}
+
+.toplevel_page_metaseo_dashboard .wpms_dashboard_notification .dashboard_noti_title {
+    font-weight: 100;
+    width: 100%;
+    font-size: 22px;
+    color: #fff;
+    margin: 10px 0 15px 0;
+}
+
+.toplevel_page_metaseo_dashboard .wpms_dashboard_notification .msg{
+    font-size: 14px !important;
+    margin: 10px 0 30px 0;
+    float: left;
+}
+
+.toplevel_page_metaseo_dashboard .wpms_dashboard_widgets_content{
+    width: 100%;
+    float: left;
+}
+
+.toplevel_page_metaseo_dashboard .wpms_dashboard_notification .dashboard-title {
+    color: #fff !important;
+    width: 100%;
+}
+
+.toplevel_page_metaseo_dashboard .wpms_dashboard_notification .wpmsclose_notification {
+    font-size: 16px !important;
+    font-weight: 100;
+    cursor: pointer;
+}
+
+.toplevel_page_metaseo_dashboard .wpms_dashboard_notification .dashboard-card {
+    background: #00AFF5;
+}
+
+.toplevel_page_metaseo_dashboard .wpms_dashboard_notification .panel {
+    min-height: 195px !important;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+/* Sitemap */
+.wpms_notification{
+    width: 99%;
+    float: left;
+    margin: 10px auto 0;
+}
+
+.wpms_notification h1 {
+    padding: 10px 0 10px 20px
+}
+
+.wpms_notification .dashboard_noti_title {
+    font-weight: 100;
+    width: 100%;
+    font-size: 22px;
+    color: #fff;
+    margin: 10px 0 15px 0;
+    float: left;
+}
+
+.wpms_notification .msg{
+    font-size: 14px !important;
+    width: 100%;
+}
+
+.wpms_notification .wpms_dashboard_widgets_content{
+    width: 100%;
+    float: left;
+    margin: 10px;
+}
+
+.wpms_notification .dashboard-title {
+    color: #fff !important;
+}
+
+.wpms_notification .wpmsclose_notification {
+    font-size: 16px !important;
+    font-weight: 100;
+    cursor: pointer;
+}
+
+.wpms_notification .dashboard-card {
+    background: #00AFF5;
+}
+
+.wpms_notification .panel {
+    min-height: 140px !important;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.more-info{
+    float: left;
+    color: #fff !important;
+    font-size: 16px !important;
+    margin-right: 20px;
+    text-decoration: none;
+}
+
+.more-info:hover{
+    color: #fff;
+}

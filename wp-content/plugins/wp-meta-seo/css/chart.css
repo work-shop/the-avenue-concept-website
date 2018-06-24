@@ -1,0 +1,56 @@
+/*-------------------------------------------------------
+    CSS FOR DASHBOARD
+*/
+.dashboard{
+    float: left;
+    width: 99%;
+}
+
+.dashboard .left{width: 70%; float: left;height: 100%;background: none repeat scroll 0 0 #fff; min-height: 150px}
+.dashboard .right{width: 30%; float: right;background: #fff;min-height: 150px}
+
+.dashboard h1 {
+    padding: 10px 0 10px 20px
+}
+
+.dashboard-left {
+    margin: 10px 0 10px 0;
+    width: 100%;
+    float: left;
+    
+/*    min-height:580px;    */
+/*    background: #eff3f7;*/
+    padding-bottom: 10px;   
+}
+
+.dashboard-right {
+    padding-bottom: 10px;
+    margin-top: 10px;
+    position: relative;        
+}
+#wpmetaseo-update-version {
+   
+    
+/*    position: absolute;*/
+}
+#alexa-ranking{
+	float:left;
+	margin-left:10px;
+    margin-top: 10px;
+}
+#wpmetaseo-update-version {
+        bottom: 0;
+        width: 100% ;
+	padding:20px;
+}
+#wpmetaseo-update-version h4 {
+	margin:0;
+}
+#wpmetaseo-update-version ul {
+    margin-top: 10px;	
+    margin-bottom:0;
+}
+
+#wpmetaseo-update-version ul li a {
+	text-decoration: none !important;
+}

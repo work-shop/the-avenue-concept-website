@@ -1,0 +1,53 @@
+/* --------------------------------------------------------
+The variable lists for each font size.
+
+`$regular` is the default size, so don't delete that list.
+If making a new list, define at least the `base` size and leading, like in the `$small` list.
+
+The keys in each list correspond to the list of breakpoints defined in `_responsive-breakpoints.scss`.
+If a key is supplied that is not in the $breakpoints list, the mixin will throw an error.
+-------------------------------------------------------- */
+
+$text-small: (
+  base: (12px, 18px),
+) !default;
+
+$text-regular: (
+  base: (16px, 24px),
+  small: (16px, 24px),
+  medium: (16px, 24px),
+  large: (16px, 24px),
+  huge: (22px, 30px)
+) !default;
+
+$text-medium: (
+  base: (24px, 30px),
+  small: (24px, 30px),
+  medium: (28px, 36px),
+  large: (28px, 36px),
+  huge: (36px, 42px)
+) !default;
+
+$text-large: (
+  base: (28px, 36px),
+  small: (28px, 36px),
+  medium: (36px, 42px),
+  large: (36px, 42px),
+  huge: (40px, 48px)
+) !default;
+
+$text-huge: (
+  base: (48px, 42px),
+  small: (48px, 54px),
+  medium: (48px, 54px),
+  large: (48px, 60px),
+  huge: (52px, 60px)
+) !default;
+
+$text-massive: (
+  base: (42px, 54px),
+  small: (60px, 72px),
+  medium: (76px, 84px),
+  large: (82px, 90px),
+  huge: (82px, 90px)
+) !default;

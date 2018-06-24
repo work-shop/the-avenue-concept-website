@@ -1,0 +1,178 @@
+@font-face {
+	font-family: 'modern_pictograms_proregular';
+	src: url('../fonts/modernpictogramspro_234.eot');
+	src: url('../fonts/modernpictogramspro_234.eot?#iefix') format('embedded-opentype'),
+		url('../fonts/modernpictogramspro_234.woff') format('woff'),
+		url('../fonts/modernpictogramspro_234.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+
+
+
+body{
+	font-family: $font-main;
+	font-weight: normal;
+	@include text-size($text-h4);
+	color: $dark;
+}
+
+*{
+	font-family: $font-main;
+}
+
+.serif{
+	font-family: $font-serif;
+	letter-spacing: 0;
+	font-weight: 400;
+
+	&.italic{
+		font-family: $font-serif-italic;
+		font-style: italic;
+	}
+
+	&.bold,&strong{
+		font-family: $font-serif-bold;
+		font-weight: 700;
+	}
+
+}
+
+
+//type sizes
+//default sizes include:
+//massive, huge, large, medium, regular, small
+
+h1,.h1{
+	@include text-size($text-h1);
+}
+
+h2,.h2{
+	@include text-size($text-h2);
+}
+
+h3,.h3{
+	@include text-size($text-h3);
+}
+
+h4,.h4{
+	@include text-size($text-h4);
+}
+
+h5,.h5{
+	@include text-size($text-h5);
+}
+
+h6,.h6{
+	@include text-size($text-h5);
+}
+
+p{
+	@include text-size($text-h4);
+	margin-top: 0;
+}
+
+//formatting
+
+.bold,strong{
+	font-family: $font-bold;
+	font-weight: bold;
+}
+
+.italic,em{
+	font-family: $font-italic;
+}
+
+.font-light{
+	font-family: $font-light;
+}
+
+.uppercase{
+	text-transform: uppercase;
+}
+
+.underline{
+	text-decoration: underline;
+}
+
+.centered{
+	text-align: center;
+}
+
+.righted{
+	text-align: right;
+}
+
+.tracked-less{
+	letter-spacing: .06em;
+}
+
+.tracked{
+	letter-spacing: .09em;
+}
+
+
+
+//typography colors
+
+.brand{
+	color: $brand;
+}
+
+.brand-yellow{
+	color: $brand-yellow;
+}
+
+.khaki{
+	color: $khaki;
+}
+
+.slate{
+	color: $slate;
+}
+
+.white{
+	color: white;
+}
+
+.ultra-light{
+	color: $ultra-light;
+}
+
+.light{
+	color: $light;
+}
+
+.medium-light{
+	color: $medium-light;
+}
+
+.medium{
+	color: $medium;
+}
+
+.medium-dark{
+	color: $medium-dark;
+}
+
+.dark{
+	color: $dark;
+}
+
+
+//icons
+
+.icon{
+	&:before {
+		content: attr(data-icon);
+		font-family: 'modern_pictograms_proregular';
+		font-size: 24px;
+		line-height: 100%;
+		vertical-align: middle;
+		position: relative;
+	}
+
+	&.large:before{
+		font-size: 72px;
+	}
+}

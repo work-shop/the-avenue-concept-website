@@ -1,0 +1,65 @@
+
+/* Variables */
+
+//brand colors
+$brand: #1E4487;
+$brand-yellow: #DFBA39;
+$khaki: #F3F1EC;
+$slate: #8792A3;
+
+
+//grays
+$ultra-light: #F5F5F5;
+$light: #D8D8D8;
+$medium-light: #9B9B9B;
+$medium: #828282;
+$medium-dark: #555555;
+$dark: #222222;
+
+
+//utility colors
+$error: #ff4a4a;
+
+
+//sizes
+$nav-height: 105px;
+$nav-height-md: 90px;
+$dropdown-height: 600px;
+$dropdown-links-height: 113px;
+$dropdown-graphics-height: $dropdown-height - $dropdown-links-height;
+$nav-plus-dropdown-height: $nav-height + $dropdown-height;
+$nav-drop: $nav-height;
+$nav-drop-after: $nav-height - 1px;
+$nav-height-mobile: 80px;
+$container-fluid-max-width: none;
+$container-fluid-padding: 40px;
+$container-fluid-padding-md: $container-fluid-padding / 2;
+$container-fluid-padding-mobile: 15px;
+$container-fluid-sum: $container-fluid-padding * 2;
+$container-fluid-sum-mobile: $container-fluid-padding-mobile * 2;
+
+
+//transitions
+$modal-transition: .35s;
+
+
+//breakpoints
+$xs: 575px;
+$sm: 767px;
+$md: 991px;
+$lg: 1199px;
+
+
+//site
+$body-background-color: white;
+
+$font-main: 'Akkurat Pro', Helvetica, Arial, Sans-serif;
+$font-italic: 'Akkurat Pro', Helvetica, Arial, Sans-serif;
+$font-bold: 'Akkurat Pro', Helvetica, Arial, Sans-serif;
+$font-bold-italic: 'Akkurat Pro', Helvetica, Arial, Sans-serif;
+$font-light: 'Founders-Light', Helvetica, Arial, Sans-serif;
+$font-light-italic: 'Founders-Light-Italic', Helvetica, Arial, Sans-serif;
+$font-serif: freight-display-pro, Georgia, Times New Roman, Serif;
+$font-serif-italic: freight-display-pro, Georgia, Times New Roman, Serif;
+$font-serif-bold: freight-display-pro, Georgia, Times New Roman, Serif;
+$font-serif-bold-italic: freight-display-pro, Georgia, Times New Roman, Serif;

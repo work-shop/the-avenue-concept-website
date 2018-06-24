@@ -1,0 +1,163 @@
+#alexa-ranking .WhatsThis {
+    position: relative;
+    word-wrap: normal;
+    word-break: normal;
+    margin-top: 10px;
+}
+#alexa-ranking .WhatsThis .container {
+    opacity: 0;
+    transition: visibility 0.2s, opacity 0.2s linear;
+    visibility: hidden;
+    position: absolute;
+    width: 250px;
+    background: #f8f8f8;
+    border: solid 1px #ddd;
+    padding: 10px;
+    box-shadow: 0 1px 3px #cacaca;
+    box-sizing: border-box;
+    font-size: 13px;
+    color: #555;
+    display: none;
+    margin-top: 8px;
+    margin-left: 3px;
+    border-radius: 10px;
+    z-index: 10;
+    left: -17px;
+    text-align: left;
+    font-weight: 400;
+    white-space: normal;
+}
+#alexa-ranking .spark-bars {
+    display: none;
+}
+#alexa-ranking .rank-row {
+	margin-top: 10px !important;
+}
+#alexa-ranking .fa-question-circle{
+    color : #c7c8c9;
+}
+
+#alexa-ranking .fa-question-circle:before {
+    content: "";
+}
+#alexa-ranking .fa-question-circle:hover{
+    color : #262b36;
+}
+
+#alexa-ranking .WhatsThis:hover .container{
+    display: block;
+    visibility: visible;
+    opacity: 1;
+}
+
+#alexa-ranking .metrics-data, #alexa-ranking .metrics-pending {
+    font-size: 24px;
+    font-family: "Open Sans",Helvetica,Arial,sans-serif;
+    color: #333;
+}
+
+#alexa-ranking .metrics-title {
+    font-size: 13px;
+    font-weight: normal;
+    color: #666;
+    margin: 0 0 10px;
+}
+#alexa-ranking .img-inline {
+	margin-bottom: 10px;
+}
+
+.dashboard .panel-body {
+    padding: 27px;
+}
+
+.dashboard .percent_1{
+    font-size: 25px !important;
+    margin-right: 10px !important;
+}
+
+.wpms_dash_widgets{
+    width: 48%;
+    float: left;
+    margin: 0 1%;
+}
+
+.wpms_dashboard_widgets_left{
+    width: 50%;
+    float: left;
+}
+
+.wpms_dashboard_widgets_right{
+    width: 47%;
+    float: left;
+    height: 70px;
+}
+
+.wpms_dashboard_widgets_left{
+    height: 70px;
+    position: relative;
+}
+/*progress*/
+.dashboard .progress-rating {
+    position: relative;
+    height: 8px;
+    display: block;
+    width: 100%;
+    border-radius: 2px;
+    margin: 32px 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.33);
+    float: left;
+}
+
+.dashboard .progress-rating .determinate {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #fff;
+    -webkit-transition: width 0.3s linear;
+    -moz-transition: width 0.3s linear;
+    -o-transition: width 0.3s linear;
+    -ms-transition: width 0.3s linear;
+    transition: width 0.3s linear;
+}
+
+.dashboard .progress {
+    position: relative;
+    height: 5px;
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 2px;
+    margin: 0.5rem 0 1rem 0;
+    overflow: hidden;
+}
+
+.dashboard .dashboard-title {
+    color: #fff !important;
+}
+
+.dashboard p.dashboard-title {
+    font-size: 10px !important;
+}
+
+.dashboard .dashboard-card {
+    background: #00AFF5;
+}
+
+.dashboard h4 {
+    font-weight: normal !important;
+}
+
+.dashboard .panel {
+    height: 70px !important;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.dashboard .wpms_dashboard_widgets_left .percent_1{
+    margin: 12px 0 10px 0 !important;
+}
+
+.dashboard .wpms_dashboard_widgets_left .percent_2{
+    font-size: 10px;
+}

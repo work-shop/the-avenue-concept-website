@@ -1,0 +1,20 @@
+a.info {outline:none; padding-right: 10px}
+a.info:hover {text-decoration:none;} 
+a.info .tooltip {
+    z-index:10;display:none; padding:14px 20px;
+    margin-top:-65px; margin-right:28px;
+    width:250px; line-height:16px;
+}
+a.info:hover .tooltip{
+    display:inline; position:absolute;
+    border:1px solid #DCA;
+    border-radius: 10px;
+    background:rgba(51,51,51,0.8);
+    color:#ffffff;
+    font-style: italic;
+}
+a.info .tooltip
+{
+    border-radius:4px;
+    box-shadow: 5px 5px 8px #CCC;
+}

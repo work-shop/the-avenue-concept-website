@@ -1,0 +1,68 @@
+.wrap_sitemap_option{
+    width: 100%;
+    float: left;
+}
+
+.wpms_save_create_sitemaps , .spinner_save_sitemaps , .wpms_run_linkcheck , .spinner_run_linkchecker{
+    float: left;
+}
+
+.spinner_save_sitemaps{
+    margin: 8px 10px 0;
+}
+
+.div_wpms_save_sitemaps{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    float: left;
+}
+
+.div_sitemap_check_all{
+    width: 100%;
+    float: left;
+    margin: 10px 10px 0 0;
+}
+
+.wpms_wrap .nav-tab{
+    cursor: pointer;
+}
+
+.wpms_source_menu , .wpms_source_posts , .wpms_source_pages{
+    display: none;
+}
+
+.wpms_row_check_all_posts{
+    font-style: italic;
+    font-weight: bold;
+}
+
+.wpms_add_customurl , .wpms_customurl_spinner{
+    float: left;
+}
+
+.wpms_clear_customUrl{
+    line-height: 28px !important;
+    vertical-align: middle;
+    cursor: pointer;
+    color: #f00;
+}
+
+
+a:active {
+    outline: 0 dashed red;
+}
+
+.wpmsleft{
+    float: left;
+}
+
+.wpms_langcheckbox{
+    line-height: 28px;
+    vertical-align: middle;
+}
+
+#menu_source_menus .wpms_row{
+    width: 100%;
+    float: left;
+}

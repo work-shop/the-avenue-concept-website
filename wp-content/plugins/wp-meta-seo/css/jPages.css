@@ -1,0 +1,40 @@
+.holder {
+	margin: 15px 0;
+}
+
+.holder_sitemaps{
+    text-align: center;
+}
+
+.holder a {
+	font-size: 12px;
+	cursor: pointer;
+	margin: 0 5px;
+	color: #333;
+}
+
+.holder a:hover {
+	background-color: #222;
+	color: #fff;
+}
+
+.holder a.jp-previous { margin-right: 15px; border-bottom:0 !important ; box-shadow: 0 0 0 0 currentColor !important; }
+.holder a.jp-next { margin-left: 15px;border-bottom:0 !important ; box-shadow: 0 0 0 0 currentColor !important;}
+
+.holder a.jp-current, a.jp-current:hover { 
+	color: #FF4242;
+	font-weight: bold;
+}
+
+.holder a.jp-disabled, a.jp-disabled:hover {
+	color: #bbb;
+}
+
+.holder a.jp-current, a.jp-current:hover,
+.holder a.jp-disabled, a.jp-disabled:hover {
+	cursor: default; 
+	background: none;
+}
+
+.holder span { margin: 0 5px; }
+.wpms_li_cate{list-style: none;}

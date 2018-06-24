@@ -1,0 +1,82 @@
+
+$text-nav: (
+	xs: (13px, 53px),
+	sm: (12px, 60px),
+	md: (14px, 53px),
+	lg: (16px, 53px),
+	xl: (19px, 53px)
+	);
+
+
+#nav{
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: $nav-height;
+	overflow: hidden;
+	//background: lighten($brand,5%);
+	z-index: 7;
+
+	&.fixed{
+		position: fixed;
+	}
+
+	@media screen and (max-width: $md) {
+		height: $nav-height-md;
+	}
+
+	@media screen and (max-width: $sm) {
+		height: $nav-height-mobile;
+	}
+
+}
+
+
+
+
+
+//LOGOS
+#logo{
+	height: inherit;
+	width: $nav-height;
+	float: left;
+
+	a{
+		padding: 0;
+		height: inherit;
+	}
+
+	svg{
+		height: 100%;
+		width: auto;
+	}
+}
+
+
+.logo{
+
+	a{
+		display: block;
+	}
+}
+
+
+//mobile nav
+
+
+#mobile-nav{
+	position: fixed;
+	width: 100%;
+	height: 100%;
+	right: -100%;
+	top: 0;
+	background: $brand;
+	z-index: 7;
+}
+
+.mobile-nav-open{
+	#mobile-nav{
+		right: 0;
+	}
+}
+
