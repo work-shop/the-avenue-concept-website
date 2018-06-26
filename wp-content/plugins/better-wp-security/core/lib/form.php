@@ -462,6 +462,24 @@ final class ITSEC_Form {
 		$this->add_custom_input( $var, $options );
 	}
 
+	public function add_canonical_roles( $var, $options = array() ) {
+		$roles = array(
+			'administrator' => translate_user_role( 'Administrator' ),
+			'editor'        => translate_user_role( 'Editor' ),
+			'author'        => translate_user_role( 'Author' ),
+			'contributor'   => translate_user_role( 'Contributor' ),
+			'subscriber'    => translate_user_role( 'Subscriber' ),
+		);
+
+		if ( isset( $options['value'] ) ) {
+			$options['value'] = wp_parse_args( $options['value'], $roles );
+		} else {
+			$options['value'] = $roles;
+		}
+
+		$this->add_select( $var, $options );
+	}
+
 	private function add_custom_input( $var, $options ) {
 		if ( empty( $options['type'] ) ) {
 			trigger_error( 'add_custom_input called without a type option set' );

@@ -43,7 +43,7 @@ class MetaSeoOpenGraph
             $meta_title = $post->post_title;
         }
 
-        return $meta_title;
+        return esc_html($meta_title);
     }
 
     /**
@@ -63,7 +63,7 @@ class MetaSeoOpenGraph
             }
         }
 
-        return $meta_title_esc;
+        return esc_html($meta_title_esc);
     }
 
     /**
@@ -79,7 +79,7 @@ class MetaSeoOpenGraph
             $meta_keywords = get_post_meta($id, '_metaseo_metakeywords', true);
             $keywords = esc_attr($meta_keywords);
         }
-        return $keywords;
+        return esc_html($keywords);
     }
 
     /**
@@ -91,22 +91,20 @@ class MetaSeoOpenGraph
      */
     public function getDesc($settings, $id, $content)
     {
-        $meta_description = get_post_meta($id, '_metaseo_metadesc', true);
-        if ($meta_description != maybe_unserialize($meta_description)) {
-            $meta_description = '';
+        $meta_desc_esc = get_post_meta($id, '_metaseo_metadesc', true);
+        if ($meta_desc_esc != maybe_unserialize($meta_desc_esc)) {
+            $meta_desc_esc = '';
         }
 
-        if ($meta_description == '') {
+        if ($meta_desc_esc == '') {
             $content = strip_shortcodes($content);
             $content = trim(strip_tags($content));
             if (strlen($content) > MPMSCAT_DESC_LENGTH) {
-                $meta_description = substr($content, 0, 316) . ' ...';
+                $meta_desc_esc = substr($content, 0, 316) . ' ...';
             } else {
-                $meta_description = $content;
+                $meta_desc_esc = $content;
             }
         }
-
-        $meta_desc_esc = esc_attr($meta_description);
 
         if (get_post_meta($id, '_metaseo_metadesc', true) == '' && is_front_page()) {
             $meta_desc_esc = esc_attr($settings['metaseo_desc_home']);
@@ -114,7 +112,7 @@ class MetaSeoOpenGraph
                 $meta_desc_esc = '';
             }
         }
-        return $meta_desc_esc;
+        return esc_html($meta_desc_esc);
     }
 
     /**
@@ -134,7 +132,7 @@ class MetaSeoOpenGraph
             $meta_fbtitle = $meta_title_esc;
         }
 
-        return $meta_fbtitle;
+        return esc_html($meta_fbtitle);
     }
 
     /**
@@ -154,7 +152,7 @@ class MetaSeoOpenGraph
             $meta_fbdesc = $meta_desc_esc;
         }
 
-        return $meta_fbdesc;
+        return esc_html($meta_fbdesc);
     }
 
     /**
@@ -197,7 +195,7 @@ class MetaSeoOpenGraph
             $meta_twtitle = $meta_title_esc;
         }
 
-        return $meta_twtitle;
+        return esc_html($meta_twtitle);
     }
 
     /**
@@ -218,7 +216,7 @@ class MetaSeoOpenGraph
             $meta_twdesc = $meta_desc_esc;
         }
 
-        return $meta_twdesc;
+        return esc_html($meta_twdesc);
     }
 
     /**
@@ -289,16 +287,25 @@ class MetaSeoOpenGraph
      * Get meta for front page
      * @return array
      */
-    public function getFrontPageMeta()
+    public function getFrontPageMeta($settings)
     {
         $mpage_on_front = get_option('page_on_front');
         $title = esc_attr(get_post_meta($mpage_on_front, '_metaseo_metatitle', true));
         $desc = esc_attr(get_post_meta($mpage_on_front, '_metaseo_metadesc', true));
+
+        if ($title == '') {
+            $title = esc_attr($settings['metaseo_title_home']);
+        }
+
+        if ($desc == '') {
+            $desc = esc_attr($settings['metaseo_desc_home']);
+        }
+
         $page_follow = get_post_meta($mpage_on_front, '_metaseo_metafollow', true);
         $page_index = get_post_meta($mpage_on_front, '_metaseo_metaindex', true);
         return array(
-            'title' => $title,
-            'desc' => $desc,
+            'title' => esc_html($title),
+            'desc' => esc_html($desc),
             'page_follow' => $page_follow,
             'page_index' => $page_index,
         );
@@ -350,8 +357,8 @@ class MetaSeoOpenGraph
         }
 
         return array(
-            'title' => $title,
-            'desc' => $desc,
+            'title' => esc_html($title),
+            'desc' => esc_html($desc),
             'keyword' => $meta_keywords_esc
         );
     }
@@ -538,7 +545,7 @@ class MetaSeoOpenGraph
                 ($meta_title_esc != '' ? true : false))
         );
 
-        if (!empty($settings['metaseo_follow'])) {
+        if (!empty($settings['metaseo_follow']) || !empty($settings['metaseo_index'])) {
             $patterns['follow'] = array(
                 '#<meta name="robots" [^<>]+ ?>#i',
                 '<meta name="robots" content="' . $page_index . ',' . $page_follow . '" />'

@@ -386,7 +386,7 @@ final class ITSEC_Notification_Center {
 		$notification_data[] = $data;
 
 		if ( $enforce_unique ) {
-			$notification_data = array_unique( $notification_data );
+			$notification_data = array_unique( $notification_data, SORT_REGULAR );
 		}
 
 		$all_data[ $notification ] = $notification_data;
@@ -411,12 +411,14 @@ final class ITSEC_Notification_Center {
 	/**
 	 * Initialize a Mail instance.
 	 *
+	 * @param string $name
+	 *
 	 * @return ITSEC_Mail
 	 */
-	public function mail() {
+	public function mail( $name = '' ) {
 		require_once( ITSEC_Core::get_core_dir() . 'lib/class-itsec-mail.php' );
 
-		return new ITSEC_Mail();
+		return new ITSEC_Mail( $name );
 	}
 
 	/**

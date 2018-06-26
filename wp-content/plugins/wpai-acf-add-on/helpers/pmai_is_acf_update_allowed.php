@@ -1,10 +1,21 @@
 <?php
 
-function pmai_is_acf_update_allowed( $cur_meta_key, $options ){
+/**
+ * @param $cur_meta_key
+ * @param $options
+ * @return mixed|void
+ */
+function pmai_is_acf_update_allowed($cur_meta_key, $options ){
 
-	if ($options['update_acf_logic'] == 'full_update') return apply_filters('pmai_is_acf_update_allowed', true, $cur_meta_key, $options);	
+    if ($options['is_keep_former_posts'] == 'yes') return apply_filters('pmai_is_acf_update_allowed', false, $cur_meta_key, $options);
 
-	global $acf;
+    if ($options['update_all_data'] == 'yes') return apply_filters('pmai_is_acf_update_allowed', true, $cur_meta_key, $options);
+
+    if ( ! $options['is_update_acf'] ) return apply_filters('pmai_is_acf_update_allowed', false, $cur_meta_key, $options);
+
+    if ($options['is_update_acf'] && $options['update_acf_logic'] == 'full_update') return apply_filters('pmai_is_acf_update_allowed', true, $cur_meta_key, $options);
+
+    global $acf;
 
 	if ($acf and version_compare($acf->settings['version'], '5.0.0') >= 0){
 
@@ -176,11 +187,6 @@ function pmai_is_acf_update_allowed( $cur_meta_key, $options ){
 				}			
 			}
 		}
-
-		return apply_filters('pmai_is_acf_update_allowed', true, $cur_meta_key, $options);		
-
+		return apply_filters('pmai_is_acf_update_allowed', true, $cur_meta_key, $options);
 	}
-	
 }
-
-?>

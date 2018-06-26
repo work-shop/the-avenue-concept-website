@@ -28,15 +28,13 @@ class MetaSeoDashboard
         $imgs = 0;
         $imgs_are_good = 0;
         $imgs_metas_are_good = array();
-        $meta_keys = array('alt', 'title');
         $response = array(
             'imgs_statis' => array(0, 0, 100),
             'imgs_metas_statis' => array(0, 0, 100),
         );
-        foreach ($meta_keys as $meta_key) {
-            $imgs_metas_are_good[$meta_key] = 0;
-            $imgs_metas_are_not_good[$meta_key] = 0;
-        }
+
+        $imgs_metas_are_good['alt'] = 0;
+        $imgs_metas_are_not_good['alt'] = 0;
 
         $post_types = MetaSeoContentListTable::getPostTypes();
         $query = "SELECT `ID`,`post_content`
@@ -91,11 +89,9 @@ class MetaSeoDashboard
                             $imgs_are_good++;
                         }
 
-                        foreach ($meta_keys as $meta_key) {
-                            if (trim($tag->getAttribute($meta_key))
-                                || (!empty($meta_analysis) && !empty($meta_analysis['imgalt']))) {
-                                $imgs_metas_are_good[$meta_key]++;
-                            }
+                        if (trim($tag->getAttribute('alt'))
+                            || (!empty($meta_analysis) && !empty($meta_analysis['imgalt']))) {
+                            $imgs_metas_are_good['alt']++;
                         }
                     }
 
@@ -104,7 +100,7 @@ class MetaSeoDashboard
             }
 
             //Report analytic of images optimization
-            $imgs_metas = ceil(($imgs_metas_are_good['alt'] + $imgs_metas_are_good['title']) / 2);
+            $imgs_metas = $imgs_metas_are_good['alt'];
             $response['imgs_statis'][0] = $imgs_are_good;
             $response['imgs_statis'][1] = $imgs;
             $response['imgs_metas_statis'][0] = $imgs_metas;
@@ -244,14 +240,18 @@ class MetaSeoDashboard
     public static function getCountPost()
     {
         global $wpdb;
+        $where = array();
         $post_types = get_post_types(array('public' => true, 'exclude_from_search' => false));
-        $post_types = "'" . implode("', '", $post_types) . "'";
+        $post_type = "'" . implode("', '", esc_sql($post_types)) . "'";
+        $where[] = "post_type IN ($post_type)";
         $states = get_post_stati(array('show_in_admin_all_list' => true));
-        $states['trash'] = 'trash';
         $all_states = "'" . implode("', '", $states) . "'";
-        $total_posts = $wpdb->get_var(
-            "SELECT COUNT(*) FROM $wpdb->posts WHERE post_status IN ($all_states) AND post_type IN ($post_types)"
-        );
+        $where[] = "post_status IN ($all_states)";
+        $query = "SELECT COUNT(ID) "
+            . " FROM $wpdb->posts "
+            . " WHERE " . implode(' AND ', $where);
+
+        $total_posts = $wpdb->get_var($query);
         return $total_posts;
     }
 
@@ -309,14 +309,7 @@ class MetaSeoDashboard
     public static function dashboardMetaTitle()
     {
         $results = MetaSeoDashboard::updateDashboard('metatitle');
-        if (isset($_POST['type']) && $_POST['type'] == 'dashboard_widgets') {
-            wp_send_json($results);
-        }
-        ob_start();
-        require_once WPMETASEO_PLUGIN_DIR . 'inc/pages/dashboard/meta_title.php';
-        $html = ob_get_contents();
-        ob_end_clean();
-        wp_send_json($html);
+        wp_send_json($results);
     }
 
     /**
@@ -373,14 +366,7 @@ class MetaSeoDashboard
     public static function dashboardMetaDesc()
     {
         $results = MetaSeoDashboard::updateDashboard('metadesc');
-        if (isset($_POST['type']) && $_POST['type'] == 'dashboard_widgets') {
-            wp_send_json($results);
-        }
-        ob_start();
-        require_once WPMETASEO_PLUGIN_DIR . 'inc/pages/dashboard/meta_desc.php';
-        $html = ob_get_contents();
-        ob_end_clean();
-        wp_send_json($html);
+        wp_send_json($results);
     }
 
     /**
@@ -390,9 +376,9 @@ class MetaSeoDashboard
     public static function linkMeta()
     {
         global $wpdb;
-        $mlink_complete = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->prefix . "wpms_links WHERE meta_title !=''");
+        $mlink_complete = $wpdb->get_var("SELECT COUNT(*) FROM " . $wpdb->prefix . "wpms_links WHERE meta_title !='' AND type ='url'");
         $mcount_link = $wpdb->get_var(
-            "SELECT COUNT(*) FROM " . $wpdb->prefix . "wpms_links WHERE type !='404_automaticaly'"
+            "SELECT COUNT(*) FROM " . $wpdb->prefix . "wpms_links WHERE type ='url'"
         );
 
         if ($mcount_link == 0) {
@@ -411,14 +397,7 @@ class MetaSeoDashboard
     public static function dashboardLinkMeta()
     {
         $results = MetaSeoDashboard::linkMeta();
-        if (isset($_POST['type']) && $_POST['type'] == 'dashboard_widgets') {
-            wp_send_json($results);
-        }
-        ob_start();
-        require_once WPMETASEO_PLUGIN_DIR . 'inc/pages/dashboard/link_meta.php';
-        $html = ob_get_contents();
-        ob_end_clean();
-        wp_send_json($html);
+        wp_send_json($results);
     }
 
     /**
@@ -447,14 +426,7 @@ class MetaSeoDashboard
     public static function dashboardPermalink()
     {
         $permalink = MetaSeoDashboard::permalink();
-        if (isset($_POST['type']) && $_POST['type'] == 'dashboard_widgets') {
-            wp_send_json($permalink);
-        }
-        ob_start();
-        require_once WPMETASEO_PLUGIN_DIR . 'inc/pages/dashboard/permalink.php';
-        $html = ob_get_contents();
-        ob_end_clean();
-        wp_send_json($html);
+        wp_send_json($permalink);
     }
 
     /**
@@ -492,14 +464,7 @@ class MetaSeoDashboard
     public static function dashboardNewContent()
     {
         $results = MetaSeoDashboard::updateDashboard('newcontent');
-        if (isset($_POST['type']) && $_POST['type'] == 'dashboard_widgets') {
-            wp_send_json($results);
-        }
-        ob_start();
-        require_once WPMETASEO_PLUGIN_DIR . 'inc/pages/dashboard/new_content.php';
-        $html = ob_get_contents();
-        ob_end_clean();
-        wp_send_json($html);
+        wp_send_json($results);
     }
 
     /**
@@ -581,32 +546,6 @@ class MetaSeoDashboard
     }
 
     /**
-     * get meta data dashboard
-     * @param string $name param name
-     * @return array
-     */
-    public static function getMetaDataDashBoard($name)
-    {
-        $results = array();
-        switch ($name) {
-            case 'metatitle':
-                $results = MetaSeoDashboard::metaTitle();
-                break;
-            case 'metadesc':
-                $results = MetaSeoDashboard::metaDesc();
-                break;
-            case 'newcontent':
-                $results = MetaSeoDashboard::newContent();
-                break;
-            case 'image_meta':
-                $results = MetaSeoDashboard::moptimizationChecking();
-                break;
-        }
-
-        return $results;
-    }
-
-    /**
      * update time dashboard update
      * @param $name
      */
@@ -624,24 +563,26 @@ class MetaSeoDashboard
      */
     public static function updateOptionDash($options_dashboard, $name)
     {
-        if (!empty($options_dashboard) && is_array($options_dashboard)) {
-            if (empty($options_dashboard[$name])) {
-                $results = MetaSeoDashboard::getMetaDataDashBoard($name);
-                $options_dashboard[$name] = $results;
-                update_option('options_dashboard', $options_dashboard);
-                MetaSeoDashboard::dashLastUpdate($name);
-            } else {
-                $option_last_update_post = get_option('wpms_last_update_post');
-                $option_last_dash_update = get_option('_wpms_dash_last_update');
-                if (!empty($option_last_update_post) && $option_last_update_post > $option_last_dash_update) {
-                    $results = MetaSeoDashboard::getMetaDataDashBoard($name);
-                    $options_dashboard[$name] = $results;
-                    update_option('options_dashboard', $options_dashboard);
-                    MetaSeoDashboard::dashLastUpdate($name);
-                }
+        $last_update_post = get_option('wpms_last_update_post');
+        $last_dash_update = get_option('_wpms_dash_last_update');
+        if (empty($options_dashboard) || is_array($options_dashboard)
+            || (!empty($options_dashboard) && empty($options_dashboard[$name]))
+            || (!empty($options_dashboard) && !empty($options_dashboard[$name]) && !empty($last_update_post) && $last_update_post > $last_dash_update)) {
+            $results = array();
+            switch ($name) {
+                case 'metatitle':
+                    $results = MetaSeoDashboard::metaTitle();
+                    break;
+                case 'metadesc':
+                    $results = MetaSeoDashboard::metaDesc();
+                    break;
+                case 'newcontent':
+                    $results = MetaSeoDashboard::newContent();
+                    break;
+                case 'image_meta':
+                    $results = MetaSeoDashboard::moptimizationChecking();
+                    break;
             }
-        } else {
-            $results = MetaSeoDashboard::getMetaDataDashBoard($name);
             $options_dashboard[$name] = $results;
             update_option('options_dashboard', $options_dashboard);
             MetaSeoDashboard::dashLastUpdate($name);
@@ -657,7 +598,7 @@ class MetaSeoDashboard
         $imgs = 0;
         $imgs_are_good = 0;
         $imgs_metas_are_good = array();
-        $meta_keys = array('alt', 'title');
+        $meta_keys = array('alt');
         // create default value
         $response = array(
             'imgs_statis' => array(0, 0, 100),
@@ -671,16 +612,13 @@ class MetaSeoDashboard
         if (!empty($options_dashboard) && is_array($options_dashboard)
             && !empty($options_dashboard['image_meta']) && $option_last_update_post < $option_last_dash_update) {
             $results = $options_dashboard['image_meta'];
-            if (isset($_POST['type']) && $_POST['type'] == 'dashboard_widgets') {
-                $results['status'] = true;
-                wp_send_json($results);
-            }
+            $results['status'] = true;
+            wp_send_json($results);
         }
 
         // find img good and not good in post content to update
         foreach ($meta_keys as $meta_key) {
             $imgs_metas_are_good[$meta_key] = 0;
-            $imgs_metas_are_not_good[$meta_key] = 0;
         }
 
         $limit = 50;
@@ -743,19 +681,19 @@ class MetaSeoDashboard
                                 $imgs_metas_are_good[$meta_key]++;
                             }
                         }
+                        $imgs++;
                     }
-
-                    $imgs++;
                 }
             }
 
+            $countImg = $imgs + (int)$_POST['imgs_count'];
             //Report analytic of images optimization
-            $c_imgs_metas = ceil(($imgs_metas_are_good['alt'] + $imgs_metas_are_good['title']) / 2);
+            $c_imgs_metas = $imgs_metas_are_good['alt'];
+            // get results for image resize
             $response['imgs_statis'][0] = $imgs_are_good + (int)$_POST['imgs_statis'];
-            $response['imgs_statis'][1] = $imgs + (int)$_POST['imgs_count'];
+            // get results for image meta
             $response['imgs_metas_statis'][0] = $c_imgs_metas + (int)$_POST['imgs_metas_statis'];
-            $response['imgs_metas_statis'][1] = $imgs + (int)$_POST['imgs_count'];
-            $response['imgs_count'] = $imgs + (int)$_POST['imgs_count'];
+            $response['imgs_statis'][1] = $response['imgs_metas_statis'][1] = $response['imgs_count'] = $countImg;
             $response['page'] = (int)$_POST['page'];
         } else {
             if (!empty($_POST['imgs_count'])) {

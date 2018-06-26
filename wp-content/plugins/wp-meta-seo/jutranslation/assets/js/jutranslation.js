@@ -2,8 +2,8 @@ var joomunited_url = 'https://www.joomunited.com/';
 
 jQuery(document).ready(function($){
     // Define jutranslation_ajax_action if doesn't exist
-    if (typeof jutranslation_ajax_action === 'undefined') {
-        jutranslation_ajax_action='';
+    if (typeof jutranslation.ajax_action === 'undefined') {
+        jutranslation.ajax_action='';
     }
 
     //Load the available version from Joomunited
@@ -97,20 +97,19 @@ jQuery(document).ready(function($){
 
                                                 //Initialize ajax request datas
                                                 var ajax_data = {
-                                                    action : jutranslation_ajax_action,
+                                                    action : jutranslation.ajax_action,
                                                     slug: slug,
                                                     strings : JSON.stringify(strings),
                                                     language : result.datas.language,
                                                     extension_version : result.datas.version,
                                                     revision : result.datas.revision,
                                                     modified : modified,
-                                                    wp_nonce : jutranslation_token
+                                                    wp_nonce : jutranslation.token
                                                 };
-                                                ajax_data[jutranslation_token] = 1;
-
+                                                ajax_data[jutranslation.token] = 1;
                                                 $.ajax({
                                                     type: 'POST',
-                                                    url: jutranslation_base_url + 'task=jutranslation.saveStrings',
+                                                    url: jutranslation.base_url + 'task=jutranslation.saveStrings',
                                                     data: ajax_data,
                                                     success: function (result2) {
                                                         result2 = JSON.parse(result2);
@@ -229,19 +228,19 @@ jQuery(document).ready(function($){
                     if (modified === 1) {
                         //Initialize ajax request datas
                         var ajax_data = {
-                            action : jutranslation_ajax_action,
+                            action : jutranslation.ajax_action,
                             strings: JSON.stringify(values),
                             language: language,
                             slug: slug,
                             destination: 'edition',
                             modified: '1',
-                            wp_nonce : jutranslation_token
+                            wp_nonce : jutranslation.token
                         };
-                        ajax_data[jutranslation_token] = 1;
+                        ajax_data[jutranslation.token] = 1;
 
                         $.ajax({
                             type: 'POST',
-                            url: jutranslation_base_url + 'task=jutranslation.saveStrings',
+                            url: jutranslation.base_url + 'task=jutranslation.saveStrings',
                             data: ajax_data,
                             success: function (result) {
                                 result = JSON.parse(result);
@@ -339,18 +338,18 @@ jQuery(document).ready(function($){
 
                     //Initialize ajax request datas
                     var ajax_data = {
-                        action : jutranslation_ajax_action,
+                        action : jutranslation.ajax_action,
                         strings : JSON.stringify(overrides),
                         language : this.language,
                         slug: slug,
                         destination : 'override',
-                        wp_nonce : jutranslation_token
+                        wp_nonce : jutranslation.token
                     };
-                    ajax_data[jutranslation_token] = 1;
+                    ajax_data[jutranslation.token] = 1;
 
                     $.ajax({
                         type : 'POST',
-                        url : jutranslation_base_url + 'task=jutranslation.saveStrings',
+                        url : jutranslation.base_url + 'task=jutranslation.saveStrings',
                         data : ajax_data,
                         success : function(result){
                             result = JSON.parse(result);
@@ -385,10 +384,10 @@ jQuery(document).ready(function($){
         e.preventDefault();
         if(typeof SqueezeBox !== 'undefined' ){
             //Open Joomla lightbox
-            SqueezeBox.open(jutranslation_base_url + 'action=&task=jutranslation.showViewForm&language=' +  $(this).closest('tr').attr('data-lang'), {handler: 'iframe'});
+            SqueezeBox.open(jutranslation.base_url + 'action=&task=jutranslation.showViewForm&wp_nonce='+jutranslation.token+'&language=' +  $(this).closest('tr').attr('data-lang'), {handler: 'iframe'});
         }else{
             //Open Wordpress lightbox
-            tb_show('Share with Joomunited',jutranslation_base_url + 'action=' + jutranslation_ajax_action + '&task=jutranslation.showViewForm&slug=' +  $(this).closest('tr').attr('data-slug') + '&language=' +  $(this).closest('tr').attr('data-lang') + '&TB_iframe=true');
+            tb_show('Share with Joomunited',jutranslation.base_url + 'action=' + jutranslation.ajax_action + '&task=jutranslation.showViewForm&wp_nonce='+jutranslation.token+'&slug=' +  $(this).closest('tr').attr('data-slug') + '&language=' +  $(this).closest('tr').attr('data-lang') + '&TB_iframe=true');
         }
     });
 
@@ -697,11 +696,12 @@ jQuery(document).ready(function($){
         var strings = {};
         $.ajax({
             type: 'POST',
-            url: jutranslation_base_url + 'task=jutranslation.getTranslation',
+            url: jutranslation.base_url + 'task=jutranslation.getTranslation',
             data: {
-                action : jutranslation_ajax_action,
+                action : jutranslation.ajax_action,
                 language: language,
-                slug: slug
+                slug: slug,
+                wp_nonce : jutranslation.token
             },
             success: function (result) {
                 result = JSON.parse(result);
@@ -739,7 +739,7 @@ jQuery(document).ready(function($){
      * @param version2
      * @param revision_version1
      * @param revision_version2
-     * @return 1 if version1>version2, -1 if version1<version2 , 0 if version1==version2
+     * @return int 1 if version1>version2, -1 if version1<version2 , 0 if version1==version2
      */
     function versionCompare(version1, version2, revision_version1, revision_version2){
         if(version1==='') {

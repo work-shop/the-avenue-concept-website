@@ -3,7 +3,7 @@
 Plugin Name: WP All Import - User Import Add-On
 Plugin URI: http://www.wpallimport.com/
 Description: Import Users & User's metadata to WordPress. Requires WP All Import.
-Version: 1.0.9
+Version: 1.1.1
 Author: Soflyy
 */
 /**
@@ -24,7 +24,7 @@ define('PMUI_ROOT_URL', rtrim(plugin_dir_url(__FILE__), '/'));
  */
 define('PMUI_PREFIX', 'pmui_');
 
-define('PMUI_VERSION', '1.0.9');
+define('PMUI_VERSION', '1.1.1');
 
 if ( class_exists('PMUI_Plugin') and PMUI_EDITION == "free"){
 
@@ -52,7 +52,7 @@ else {
 	 * Main plugin file, Introduces MVC pattern
 	 *
 	 * @singletone
-	 * @author Max Tsiplyakov <makstsiplyakov@gmail.com>
+	 * @author Maksym Tsypliakov <maksym.tsypliakov@gmail.com>
 	 */
 
 	final class PMUI_Plugin {
@@ -329,7 +329,7 @@ else {
 							'is_user' => is_user_admin(),
 						);
 						add_filter('current_screen', array($this, 'getAdminCurrentScreen'));
-						add_filter('admin_body_class', create_function('', 'return "' . PMUI_Plugin::PREFIX . 'plugin";'));
+						add_filter('admin_body_class', function(){return PMUI_Plugin::PREFIX . "plugin";});
 
 						$controller = new $controllerName();
 						if ( ! $controller instanceof PMUI_Controller_Admin) {
@@ -363,7 +363,7 @@ else {
 
 		/**
 		 * Autoloader
-		 * It's assumed class name consists of prefix folloed by its name which in turn corresponds to location of source file
+		 * It's assumed class name consists of prefix followed by its name which in turn corresponds to location of source file
 		 * if `_` symbols replaced by directory path separator. File name consists of prefix folloed by last part in class name (i.e.
 		 * symbols after last `_` in class name)
 		 * When class has prefix it's source is looked in `models`, `controllers`, `shortcodes` folders, otherwise it looked in `core` or `library` folder
@@ -432,7 +432,7 @@ else {
 		public function activation() {
 
 			// uncaught exception doesn't prevent plugin from being activated, therefore replace it with fatal error so it does
-			set_exception_handler(create_function('$e', 'trigger_error($e->getMessage(), E_USER_ERROR);'));
+			set_exception_handler(function($e){trigger_error($e->getMessage(), E_USER_ERROR);});
 
 			// create plugin options
 			$option_name = get_class($this) . '_Options';
@@ -474,7 +474,8 @@ else {
 				'is_update_registered' => 1,
 				'is_update_display_name' => 1,
 				'is_update_url' => 1,
-				'do_not_send_password_notification' => 1				
+				'do_not_send_password_notification' => 1,
+				'is_hashed_wordpress_password' => 0
 			);
 		}
 	}

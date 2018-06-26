@@ -687,3 +687,42 @@ span.wpms-seoImgRemove{
 #wpmseo_meta {
     display: block !important;
 }
+
+.wpms_remove_link {
+    width: 100%;
+    color: #f00 !important;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 782px) {
+    #col_image_name, .col_image_name.column-col_image_name,
+    #col_image_title, .col_image_title.column-col_image_title,
+    #col_image_alternative, .col_image_alternative.column-col_image_alternative,
+    #col_image_legend, .col_image_legend.column-col_image_legend,
+    #col_image_desc, .col_image_desc.column-col_image_desc,
+    .column-col_image_name,
+    .column-col_image_title,
+    .column-col_image_alternative,
+    .column-col_image_legend,
+    .column-col_image_desc,
+    .wp-meta-seo_page_metaseo_link_meta #post_id, .wp-meta-seo_page_metaseo_link_meta .column-post_id,
+    .wp-meta-seo_page_metaseo_link_meta #col_link_title, .wp-meta-seo_page_metaseo_link_meta .column-col_link_title,
+    .wp-meta-seo_page_metaseo_link_meta #col_link_label, .wp-meta-seo_page_metaseo_link_meta .column-col_link_label,
+    .wp-meta-seo_page_metaseo_link_meta #col_follow, .wp-meta-seo_page_metaseo_link_meta .column-col_follow,
+    .wp-meta-seo_page_metaseo_link_meta tbody td
+    {
+        display: none !important;
+    }
+
+    .metaseo_images tbody .check-column,
+    .metaseo_images tbody .wpms_link_html {
+        display: table-cell !important;
+    }
+    .metaseo_images td {
+        display: table-cell !important;
+    }
+
+    .metaseo_images th {
+        width: 100px !important;
+    }
+}

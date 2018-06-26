@@ -338,7 +338,7 @@ class MetaSeoSitemap
                 add_settings_field(
                     'wpms_sitemap_include_lang',
                     $label,
-                    array($this, 'wpms_sitemap_include_lang'),
+                    array($this, 'sitemapIncludeLanguages'),
                     'metaseo_settings_sitemap',
                     'metaseo_sitemap',
                     array(

@@ -300,6 +300,7 @@ class MetaSeoContentListTable extends WP_List_Table
         } else {
             $post_type = "'" . $post_type . "'";
         }
+
         $where[] = "post_type IN ($post_type)";
 
         $states = get_post_stati(array('show_in_admin_all_list' => true));
@@ -348,11 +349,11 @@ class MetaSeoContentListTable extends WP_List_Table
         if (isset($_GET['wpms_duplicate_meta']) && $_GET['wpms_duplicate_meta'] != 'none') {
             if ($_GET['wpms_duplicate_meta'] == 'duplicate_title') {
                 $where[] = "mt.meta_key = '_metaseo_metatitle'";
-                $where[] = "mt.meta_value IN (SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key='_metaseo_metatitle' GROUP BY meta_value HAVING COUNT(*) >= 2)";
+                $where[] = "mt.meta_value IN (SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key='_metaseo_metatitle' AND meta_value != '' GROUP BY meta_value HAVING COUNT(*) >= 2)";
 
             } elseif ($_GET['wpms_duplicate_meta'] == 'duplicate_desc') {
                 $where[] = "md.meta_key = '_metaseo_metadesc'";
-                $where[] = "md.meta_value IN (SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key='_metaseo_metadesc' GROUP BY meta_value HAVING COUNT(*) >= 2)";
+                $where[] = "md.meta_value IN (SELECT DISTINCT meta_value FROM $wpdb->postmeta WHERE meta_key='_metaseo_metadesc' AND meta_value != '' GROUP BY meta_value HAVING COUNT(*) >= 2)";
             }
         }
 
@@ -364,10 +365,9 @@ class MetaSeoContentListTable extends WP_List_Table
              WHERE meta_key = '_metaseo_metadesc') md ON md.post_id = $wpdb->posts.ID "
             . " LEFT JOIN (SELECT * FROM $wpdb->postmeta
              WHERE meta_key = '_metaseo_metakeywords') mk ON mk.post_id = $wpdb->posts.ID "
-            . " WHERE " . implode(' AND ', $where) . $orderStr;
+            . " WHERE " . implode(' AND ', $where);
 
         $total_items = $wpdb->get_var($query);
-
         $query = "SELECT DISTINCT ID, post_title, post_name, post_type,  post_status,
          mt.meta_value AS metatitle, md.meta_value AS metadesc ,mk.meta_value AS metakeywords "
             . " FROM $wpdb->posts"

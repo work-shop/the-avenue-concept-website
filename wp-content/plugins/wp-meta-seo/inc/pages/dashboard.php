@@ -158,7 +158,7 @@ $plugin_imgRecycle_file = 'imagerecycle-pdf-image-compression/wp-image-recycle.p
             </div>
 
             <div class="wpms_dash_widgets wpms_dash_imgsmeta"
-                 data-alt="<?php _e('We recommend to use both alt text and image title.
+                 data-alt="<?php _e('We recommend to use both alt text.
                   The main advantage is that it helps search engines discover your images and display
                    them in image search results. Plus, these tags improve the accessibility of your site
                     and give more information about your images. Use our bulk
@@ -170,7 +170,7 @@ $plugin_imgRecycle_file = 'imagerecycle-pdf-image-compression/wp-image-recycle.p
                                 <div class="row">
                                     <div class="wpms_dashboard_widgets_left">
                                         <h4 class="panel-title dashboard-title">
-                                            <?php _e('IMAGE TITLE/ALT', 'wp-meta-seo') ?>
+                                            <?php _e('IMAGE ALT', 'wp-meta-seo') ?>
                                         </h4>
                                         <h3 class="dashboard-title percent_1">0%</h3>
                                         <p class="dashboard-title percent_2">

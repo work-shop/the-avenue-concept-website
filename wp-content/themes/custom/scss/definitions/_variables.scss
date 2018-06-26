@@ -2,10 +2,11 @@
 /* Variables */
 
 //brand colors
-$brand: #1E4487;
-$brand-yellow: #DFBA39;
-$khaki: #F3F1EC;
-$slate: #8792A3;
+$brand: #6ba442;
+$lime: #bdd73d;
+$green: #008653;
+$tan: #dddb91;
+$slate: #a4b5ba;
 
 
 //grays
@@ -14,7 +15,7 @@ $light: #D8D8D8;
 $medium-light: #9B9B9B;
 $medium: #828282;
 $medium-dark: #555555;
-$dark: #222222;
+$dark: #293f46;
 
 
 //utility colors
@@ -22,15 +23,12 @@ $error: #ff4a4a;
 
 
 //sizes
-$nav-height: 105px;
+$nav-height: 100px;
 $nav-height-md: 90px;
-$dropdown-height: 600px;
-$dropdown-links-height: 113px;
-$dropdown-graphics-height: $dropdown-height - $dropdown-links-height;
-$nav-plus-dropdown-height: $nav-height + $dropdown-height;
 $nav-drop: $nav-height;
 $nav-drop-after: $nav-height - 1px;
 $nav-height-mobile: 80px;
+$sitewide-alert-height: 60px;
 $container-fluid-max-width: none;
 $container-fluid-padding: 40px;
 $container-fluid-padding-md: $container-fluid-padding / 2;
@@ -53,13 +51,13 @@ $lg: 1199px;
 //site
 $body-background-color: white;
 
-$font-main: 'Akkurat Pro', Helvetica, Arial, Sans-serif;
-$font-italic: 'Akkurat Pro', Helvetica, Arial, Sans-serif;
-$font-bold: 'Akkurat Pro', Helvetica, Arial, Sans-serif;
-$font-bold-italic: 'Akkurat Pro', Helvetica, Arial, Sans-serif;
-$font-light: 'Founders-Light', Helvetica, Arial, Sans-serif;
-$font-light-italic: 'Founders-Light-Italic', Helvetica, Arial, Sans-serif;
-$font-serif: freight-display-pro, Georgia, Times New Roman, Serif;
-$font-serif-italic: freight-display-pro, Georgia, Times New Roman, Serif;
-$font-serif-bold: freight-display-pro, Georgia, Times New Roman, Serif;
-$font-serif-bold-italic: freight-display-pro, Georgia, Times New Roman, Serif;
+$font-main: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
+$font-italic: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
+$font-bold: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
+$font-bold-italic: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
+$font-light: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
+$font-light-italic: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
+$font-secondary: 'Fugue', Georgia, Times New Roman, Serif;
+$font-secondary-italic: 'Fugue', Georgia, Times New Roman, Serif;
+$font-secondary-bold: 'Fugue', Georgia, Times New Roman, Serif;
+$font-secondary-bold-italic: 'Fugue', Georgia, Times New Roman, Serif;

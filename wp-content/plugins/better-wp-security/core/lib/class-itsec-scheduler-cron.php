@@ -77,8 +77,61 @@ class ITSEC_Scheduler_Cron extends ITSEC_Scheduler {
 
 		$job = $this->make_job( $id, $data, $opts );
 
-		$this->call_action( $job );
 		$this->unschedule_single( $id, $data );
+		$this->call_action( $job );
+	}
+
+	public function run_due_now( $now = 0 ) {
+
+		if ( ! ITSEC_Lib::get_lock( 'scheduler', 120 ) ) {
+			return;
+		}
+
+		if ( ! $crons = _get_cron_array() ) {
+			ITSEC_Lib::release_lock( 'scheduler' );
+
+			return;
+		}
+
+		if ( ! is_main_site() ) {
+			// This is currently never run from a non main site context, but just in case.
+			switch_to_blog( get_network()->site_id );
+		}
+
+		if ( get_transient( 'doing_cron' ) ) {
+			ITSEC_Lib::release_lock( 'scheduler' );
+			is_multisite() && restore_current_blog();
+
+			return;
+		}
+
+		if ( ITSEC_Lib::get_uncached_option( '_transient_doing_cron' ) ) {
+			ITSEC_Lib::release_lock( 'scheduler' );
+			is_multisite() && restore_current_blog();
+
+			return;
+		}
+
+		$now = $now ? $now : ITSEC_Core::get_current_time_gmt();
+
+		foreach ( $crons as $timestamp => $hooks ) {
+			if ( $timestamp > $now || ! isset( $hooks[ self::HOOK ] ) ) {
+				continue;
+			}
+
+			foreach ( $hooks[ self::HOOK ] as $event ) {
+
+				if ( $schedule = $event['schedule'] ) {
+					wp_reschedule_event( $timestamp, $schedule, self::HOOK, $event['args'] );
+				}
+
+				wp_unschedule_event( $timestamp, self::HOOK, $event['args'] );
+				call_user_func_array( array( $this, 'process' ), $event['args'] );
+			}
+		}
+
+		ITSEC_Lib::release_lock( 'scheduler' );
+		is_multisite() && restore_current_blog();
 	}
 
 	public function is_recurring_scheduled( $id ) {
@@ -205,16 +258,15 @@ class ITSEC_Scheduler_Cron extends ITSEC_Scheduler {
 		$data_hash = $this->hash_data( $data );
 		$hash      = $this->make_cron_hash( $id, $data );
 
-		if ( $this->unschedule_by_hash( $hash ) ) {
+		$unscheduled = $this->unschedule_by_hash( $hash );
 
-			$options = $this->get_options();
+		if ( isset( $options['single'][ $id ][ $data_hash ] ) ) {
 			unset( $options['single'][ $id ][ $data_hash ] );
 			$this->set_options( $options );
-
-			return true;
+			$unscheduled = true;
 		}
 
-		return false;
+		return $unscheduled;
 	}
 
 	private function unschedule_by_hash( $hash ) {
@@ -330,9 +382,15 @@ class ITSEC_Scheduler_Cron extends ITSEC_Scheduler {
 
 			unset( $maybe_data['retry_count'] );
 
-			if ( $this->hash_data( $maybe_data ) === $this->hash_data( $data ) ) {
-				return true;
+			if ( $this->hash_data( $maybe_data ) !== $this->hash_data( $data ) ) {
+				continue;
 			}
+
+			if ( ! wp_next_scheduled( self::HOOK, array( $id, $hash ) ) ) {
+				continue;
+			}
+
+			return true;
 		}
 
 		return false;

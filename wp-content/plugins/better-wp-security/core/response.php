@@ -339,6 +339,7 @@ final class ITSEC_Response {
 		$this->errors = array();
 		$this->warnings = array();
 		$this->messages = array();
+		$this->infos = array();
 		$this->success = true;
 		$this->js_function_calls = array();
 		$this->show_default_success_message = true;

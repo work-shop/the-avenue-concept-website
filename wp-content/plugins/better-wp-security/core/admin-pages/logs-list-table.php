@@ -269,8 +269,17 @@ final class ITSEC_Logs_List_Table extends ITSEC_WP_List_Table {
 		$sortable_columns = $this->get_sortable_columns();
 
 		if ( isset( $_GET['orderby'], $_GET['order'] ) ) {
-			$sort_by_column = $_GET['orderby'];
-			$sort_direction = $_GET['order'];
+			if ( preg_match( '/^[a-z_]+$/', $_GET['orderby'] ) ) {
+				$sort_by_column = $_GET['orderby'];
+			} else {
+				$sort_by_column = 'timestamp';
+			}
+
+			if ( in_array( strtoupper( $_GET['order'] ), array( 'DESC', 'ASC' ) ) ) {
+				$sort_direction = strtoupper( $_GET['order'] );
+			} else {
+				$sort_direction = 'DESC';
+			}
 		} else {
 			$sort_by_column = 'timestamp';
 			$sort_direction = 'DESC';
@@ -319,7 +328,7 @@ final class ITSEC_Logs_List_Table extends ITSEC_WP_List_Table {
 			'important'      => esc_html__( 'Important Events (%s)', 'better-wp-security' ),
 			'all'            => esc_html__( 'All Events (%s)', 'better-wp-security' ),
 			'critical-issue' => esc_html__( 'Critical Issues (%s)', 'better-wp-security' ),
-			'fatal-error'    => esc_html__( 'Fatal Errors (%s)', 'better-wp-security' ),
+			'fatal'          => esc_html__( 'Fatal Errors (%s)', 'better-wp-security' ),
 			'error'          => esc_html__( 'Errors (%s)', 'better-wp-security' ),
 			'warning'        => esc_html__( 'Warnings (%s)', 'better-wp-security' ),
 			'action'         => esc_html__( 'Actions (%s)', 'better-wp-security' ),
@@ -350,7 +359,7 @@ final class ITSEC_Logs_List_Table extends ITSEC_WP_List_Table {
 
 			$views[$type] = sprintf( $description, $counts[$type] );
 
-			if ( in_array( $type, array( 'critical-issue', 'fatal-error', 'error', 'warning' ) ) ) {
+			if ( in_array( $type, array( 'critical-issue', 'fatal', 'error', 'warning' ) ) ) {
 				$important_count += $counts[$type];
 			}
 

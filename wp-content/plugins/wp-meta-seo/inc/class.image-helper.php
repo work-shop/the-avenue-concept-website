@@ -176,7 +176,6 @@ class ImageHelper
                         $ifound[$order]['width'] = $tag->getAttribute('width');
                         $ifound[$order]['height'] = $tag->getAttribute('height');
                         $ifound[$order]['alt'] = trim($tag->getAttribute('alt'));
-                        $ifound[$order]['title'] = trim($tag->getAttribute('title'));
                     } else {
                         continue;
                     }
@@ -213,7 +212,7 @@ class ImageHelper
      * @param array $meta_checkout
      * @return array
      */
-    public static function IPrepare($imgs, $posts, $meta_checkout = array())
+    public static function IPrepare($imgs, $posts)
     {
         $iNotGood = array();
         $iNotGoodTotal = array();
@@ -316,21 +315,17 @@ class ImageHelper
                 }
 
                 //Get image that its meta/metas is/are not good
-                if (count($meta_checkout) > 0) {
-                    foreach ($meta_checkout as $key => $meta) {
-                        $meta_value = $img[$meta];
-                        $imNotGood[$iID][$post->ID]['ID'] = $post->ID;
-                        $imNotGood[$iID][$post->ID]['title'] = $post->post_title;
-                        $imNotGood[$iID][$post->ID]['post_type'] = $post->post_type;
-                        $imNotGood[$iID][$post->ID]['meta'][$order]['img_src'] = $img['src'];
-                        $imNotGood[$iID][$post->ID]['meta'][$order]['type'][$meta] = $meta_value;
-                        if ($meta_value == '') {
-                            if (!isset($imNotGoodTotal[$iID][$meta])) {
-                                $imNotGoodTotal[$iID][$meta] = 0;
-                            }
-                            $imNotGoodTotal[$iID][$meta]++;
-                        }
+                $meta_value = $img['alt'];
+                $imNotGood[$iID][$post->ID]['ID'] = $post->ID;
+                $imNotGood[$iID][$post->ID]['title'] = $post->post_title;
+                $imNotGood[$iID][$post->ID]['post_type'] = $post->post_type;
+                $imNotGood[$iID][$post->ID]['meta'][$order]['img_src'] = $img['src'];
+                $imNotGood[$iID][$post->ID]['meta'][$order]['type']['alt'] = $meta_value;
+                if ($meta_value == '') {
+                    if (!isset($imNotGoodTotal[$iID]['alt'])) {
+                        $imNotGoodTotal[$iID]['alt'] = 0;
                     }
+                    $imNotGoodTotal[$iID]['alt']++;
                 }
             }
         }
@@ -346,17 +341,13 @@ class ImageHelper
                 $imNotGood[$iID] = array();
             }
             if (!isset($imNotGoodTotal[$iID])) {
-                foreach ($meta_checkout as $mkey) {
-                    $imNotGoodTotal[$iID][$mkey] = 0;
-                }
+                $imNotGoodTotal[$iID]['alt'] = 0;
             }
         }
 
         foreach ($imNotGoodTotal as &$mStatis) {
-            foreach ($meta_checkout as $mkey) {
-                if (!isset($mStatis[$mkey])) {
-                    $mStatis[$mkey] = 0;
-                }
+            if (!isset($mStatis['alt'])) {
+                $mStatis['alt'] = 0;
             }
         }
 
@@ -401,7 +392,6 @@ class ImageHelper
         }
 
         $msg = array();
-        $meta_keys = array('alt', 'title');
         $_imgs = array_flip($imgs);
         $post_types = MetaSeoContentListTable::getPostTypes();
 
@@ -432,7 +422,7 @@ class ImageHelper
 					WHERE " . implode(' AND ', $where) . " ORDER BY ID";
         // query post
         $posts = $wpdb->get_results($query);
-        $results = self::IPrepare($imgs, $posts, $meta_keys);
+        $results = self::IPrepare($imgs, $posts);
         //Update some value into fields in wp_postmeta
         if (count($results['iNotGood']) > 0) {
             foreach ($results['iNotGood'] as $iID => $post_group) {
@@ -470,19 +460,12 @@ class ImageHelper
         if (count($results['imNotGood']) > 0) {
             foreach ($results['imNotGood'] as $iID => $post_group) {
                 //This has a litle bit value
-                foreach ($meta_keys as $mkey) {
-                    $text = '';
-                    if ($mkey == 'alt') {
-                        $text = ' text';
-                    }
-
-                    if ($results['imNotGoodTotal'][$iID][$mkey] > 1) {
-                        $i = $results['imNotGoodTotal'][$iID][$mkey] . ' ' . $mkey . $text;
-                        $msg[$iID]['imNotGood']['msg'][$mkey] = $i . __('s are missing', 'wp-meta-seo');
-                    } elseif ($results['imNotGoodTotal'][$iID][$mkey] == 1) {
-                        $i = $results['imNotGoodTotal'][$iID][$mkey] . ' ' . $mkey . $text;
-                        $msg[$iID]['imNotGood']['msg'][$mkey] = $i . __(' is missing', 'wp-meta-seo');
-                    }
+                if ($results['imNotGoodTotal'][$iID]['alt'] > 1) {
+                    $i = $results['imNotGoodTotal'][$iID]['alt'] . ' ' . 'alt text';
+                    $msg[$iID]['imNotGood']['msg']['alt'] = $i . __('s are missing', 'wp-meta-seo');
+                } elseif ($results['imNotGoodTotal'][$iID]['alt'] == 1) {
+                    $i = $results['imNotGoodTotal'][$iID]['alt'] . ' ' . 'alt text';
+                    $msg[$iID]['imNotGood']['msg']['alt'] = $i . __(' is missing', 'wp-meta-seo');
                 }
 
                 $msg[$iID]['imNotGood']['warning'] = true;
@@ -498,7 +481,7 @@ class ImageHelper
                 update_post_meta($iID, '_metaseo_fix_metas', $post_group);
 
 
-                if ($results['imNotGoodTotal'][$iID]['alt'] == 0 && $results['imNotGoodTotal'][$iID]['title'] == 0) {
+                if ($results['imNotGoodTotal'][$iID]['alt'] == 0) {
                     if ($results['iNotGoodTotal'][$iID] != -1) {
                         $msg[$iID]['imNotGood']['button'] = '<a href="javascript:void(0);"
                          class=" fix-metas wpmsbtn wpmsbtn_small wpmsbtn_secondary" data-img-name="' . $_imgs[$iID] . '"

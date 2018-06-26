@@ -1,5 +1,8 @@
-<?php 
+<?php
 
+/**
+ * Render admin notices if ACF or WP All Import plugins are activated
+ */
 function pmai_admin_notices() {
 	
 	// notify user if history folder is not writable		

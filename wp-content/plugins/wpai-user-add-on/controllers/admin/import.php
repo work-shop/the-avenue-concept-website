@@ -21,10 +21,11 @@ class PMUI_Admin_Import extends PMUI_Controller_Admin {
 
 		$this->data['post'] =& $post;	
 
+        global $wpdb;
 		// Get All meta keys in the system
 		$this->data['existing_meta_keys'] = array();
 		$meta_keys = new PMXI_Model_List();
-		$meta_keys->setTable(PMXI_Plugin::getInstance()->getWPPrefix() . 'usermeta');
+		$meta_keys->setTable($wpdb->usermeta);
 		$meta_keys->setColumns('umeta_id', 'meta_key')->getBy(NULL, "umeta_id", NULL, NULL, "meta_key");	
 		$hide_fields = array('first_name', 'last_name', 'nickname', 'description', PMXI_Plugin::getInstance()->getWPPrefix() . 'capabilities');
 		if ( ! empty($meta_keys) and $meta_keys->count() ){

@@ -176,7 +176,15 @@ class ITSEC_Scheduler_Page_Load extends ITSEC_Scheduler {
 			return;
 		}
 
-		$now     = ITSEC_Core::get_current_time_gmt();
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			return;
+		}
+
+		$this->run_due_now();
+	}
+
+	public function run_due_now( $now = 0 ) {
+		$now     = $now ? $now : ITSEC_Core::get_current_time_gmt();
 		$options = $this->get_options();
 
 		$to_process = array();
@@ -271,9 +279,8 @@ class ITSEC_Scheduler_Page_Load extends ITSEC_Scheduler {
 
 		$job = $this->make_job( $id, $event['data'], array( 'single' => true ) );
 
-		$this->call_action( $job );
-
 		$this->unschedule_single( $id, $data );
+		$this->call_action( $job );
 
 		if ( $clear_operating_data ) {
 			$this->operating_data = null;

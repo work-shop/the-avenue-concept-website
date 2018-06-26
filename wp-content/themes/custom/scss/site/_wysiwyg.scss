@@ -13,7 +13,7 @@
 	@include text-size($text-page-body);
 
 	*{
-		@extend .serif;
+		@extend .secondary;
 	}
 
 	.p1{

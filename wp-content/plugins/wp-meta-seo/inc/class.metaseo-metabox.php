@@ -291,7 +291,9 @@ class WPMSEOMetabox extends WPMSEOMeta
         }
 
         $cached_replacement_vars['sitename'] = get_option('blogname');
+        $plugin_active = json_encode(get_option('active_plugins'));
         $array_keyword = array(
+            'plugin_active' => $plugin_active,
             'field_prefix' => self::$form_prefix,
             'choose_image' => __('Use Image', 'wp-meta-seo'),
             'wpmseo_meta_desc_length' => self::$meta_length,
@@ -468,11 +470,9 @@ class WPMSEOMetabox extends WPMSEOMeta
     {
         $output = '<div class="metaseo_analysis metaseo_tool" data-title="' . $data_title . '" data-alt="' . $alt . '">';
         if ($dashicon == 'done') {
-            $output .= '<i class="metaseo-dashicons material-icons dashicons-before"
- style="color:#46B450")">done</i>' . $label . '</div>';
+            $output .= '<i class="metaseo-dashicons material-icons dashicons-before icons-mboxdone">done</i>' . $label . '</div>';
         } else {
-            $output .= '<i class="metaseo-dashicons material-icons dashicons-before"
- style="color:#FFB900")">warning</i>' . $label . '</div>';
+            $output .= '<i class="metaseo-dashicons material-icons dashicons-before icons-mboxwarning">warning</i>' . $label . '</div>';
         }
 
         $output .= '<input type="hidden" class="wpms_analysis_hidden" name="wpms[' . $data_title . ']"

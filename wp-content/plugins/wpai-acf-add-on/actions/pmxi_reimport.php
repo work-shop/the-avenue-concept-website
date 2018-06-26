@@ -1,5 +1,9 @@
 <?php
-function pmai_pmxi_reimport($entry, $post){	
+/**
+ * @param $entry
+ * @param $post
+ */
+function pmai_pmxi_reimport($entry, $post){
 
 	global $acf;
 

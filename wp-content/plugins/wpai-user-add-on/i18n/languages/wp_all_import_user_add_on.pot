@@ -1,29 +1,18 @@
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-08 22:16+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: \n"
-"Language: \n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Loco https://localise.biz/"
+"X-Generator: POEditor.com\n"
+"Project-Id-Version: User Import Add-On Pro\n"
+"Language: en-us\n"
 
 #: wpai-user-add-on.php:35
-msgid ""
-"Please de-activate and remove the free version of the User add-on before "
-"activating the paid version."
+msgid "Please de-activate and remove the free version of the User add-on before activating the paid version."
 msgstr ""
 
 #: actions/admin_notices.php:23
-#, php-format
-msgid ""
-"<b>%s Plugin</b>: Please update your WP All Import to the latest version"
+msgid "<b>%s Plugin</b>: Please update your WP All Import to the latest version"
 msgstr ""
 
 #: actions/init.php:6
@@ -68,7 +57,6 @@ msgid "Composing users..."
 msgstr ""
 
 #: models/import/record.php:80
-#, php-format
 msgid "<b>WARNING</b>: unrecognized date format `%s`, assigning current date"
 msgstr ""
 
@@ -141,12 +129,10 @@ msgid "Only ACF presented in import options"
 msgstr ""
 
 #: views/admin/import/confirm.php:49
-#, php-format
 msgid "Only these ACF : %s"
 msgstr ""
 
 #: views/admin/import/confirm.php:52
-#, php-format
 msgid "All ACF except these: %s"
 msgstr ""
 
@@ -155,12 +141,10 @@ msgid "All custom fields"
 msgstr ""
 
 #: views/admin/import/confirm.php:65
-#, php-format
 msgid "Only these custom fields : %s"
 msgstr ""
 
 #: views/admin/import/confirm.php:68
-#, php-format
 msgid "All custom fields except these: %s"
 msgstr ""
 
@@ -189,9 +173,7 @@ msgid "<b>Role</b>"
 msgstr ""
 
 #: views/admin/import/options/_main_options_template.php:21
-msgid ""
-"A string with role slug used to set the user's role. Default role is "
-"subscriber."
+msgid "A string with role slug used to set the user's role. Default role is subscriber."
 msgstr ""
 
 #: views/admin/import/options/_main_options_template.php:25
@@ -231,9 +213,7 @@ msgid "<b>Nicename</b>"
 msgstr ""
 
 #: views/admin/import/options/_main_options_template.php:41
-msgid ""
-"A string that contains a URL-friendly name for the user. The default is the "
-"user's username."
+msgid "A string that contains a URL-friendly name for the user. The default is the user's username."
 msgstr ""
 
 #: views/admin/import/options/_main_options_template.php:45
@@ -257,11 +237,7 @@ msgid "<b>Display Name</b>"
 msgstr ""
 
 #: views/admin/import/options/_main_options_template.php:53
-msgid ""
-"A string that will be shown on the site. Defaults to user's username. It is "
-"likely that you will want to change this, for both appearance and security "
-"through obscurity (that is if you dont use and delete the default admin user)"
-". "
+msgid "A string that will be shown on the site. Defaults to user's username. It is likely that you will want to change this, for both appearance and security through obscurity (that is if you dont use and delete the default admin user). "
 msgstr ""
 
 #: views/admin/import/options/_main_options_template.php:57
@@ -285,9 +261,7 @@ msgid "Delete users that are no longer present in your file"
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:12
-msgid ""
-"Records removed from the import file can only be deleted when importing into "
-"New Items. This feature cannot be enabled when importing into Existing Items."
+msgid "Records removed from the import file can only be deleted when importing into New Items. This feature cannot be enabled when importing into Existing Items."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:19
@@ -295,9 +269,7 @@ msgid "Instead of deletion, set Meta Field"
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:20
-msgid ""
-"Check this option if you want to update users meta fields from the previous "
-"import operation which are not found among newly imported set."
+msgid "Check this option if you want to update users meta fields from the previous import operation which are not found among newly imported set."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:23
@@ -323,73 +295,51 @@ msgid "Choose which data to update"
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:50
-msgid ""
-"Check this option if you want previously imported users to change their "
-"first name."
+msgid "Check this option if you want previously imported users to change their first name."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:56
-msgid ""
-"Check this option if you want previously imported users to change their last "
-"name."
+msgid "Check this option if you want previously imported users to change their last name."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:62
-msgid ""
-"Check this option if you want previously imported users to change their role."
+msgid "Check this option if you want previously imported users to change their role."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:68
-msgid ""
-"Check this option if you want previously imported users to change their "
-"nickname."
+msgid "Check this option if you want previously imported users to change their nickname."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:74
-msgid ""
-"Check this option if you want previously imported users to change their "
-"description."
+msgid "Check this option if you want previously imported users to change their description."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:80
-msgid ""
-"Check this option if you want previously imported users to change their "
-"login."
+msgid "Check this option if you want previously imported users to change their login."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:86
-msgid ""
-"Check this option if you want previously imported users to change their "
-"password."
+msgid "Check this option if you want previously imported users to change their password."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:92
-msgid ""
-"Check this option if you want previously imported users to change their "
-"nicename."
+msgid "Check this option if you want previously imported users to change their nicename."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:98
-msgid ""
-"Check this option if you want previously imported users to change their "
-"email."
+msgid "Check this option if you want previously imported users to change their email."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:104
-msgid ""
-"Check this option if you want previously imported users to change their "
-"registered date."
+msgid "Check this option if you want previously imported users to change their registered date."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:110
-msgid ""
-"Check this option if you want previously imported users to change their "
-"display name."
+msgid "Check this option if you want previously imported users to change their display name."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:116
-msgid ""
-"Check this option if you want previously imported users to change their URL."
+msgid "Check this option if you want previously imported users to change their URL."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:122
@@ -397,11 +347,7 @@ msgid "Meta Fields"
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:123
-msgid ""
-"If Keep Custom Fields box is checked, it will keep all Custom Fields, and "
-"add any new Custom Fields specified in Custom Fields section, as long as "
-"they do not overwrite existing fields. If 'Only keep this Custom Fields' is "
-"specified, it will only keep the specified fields."
+msgid "If Keep Custom Fields box is checked, it will keep all Custom Fields, and add any new Custom Fields specified in Custom Fields section, as long as they do not overwrite existing fields. If 'Only keep this Custom Fields' is specified, it will only keep the specified fields."
 msgstr ""
 
 #: views/admin/import/options/_reimport_options.php:127
@@ -426,15 +372,11 @@ msgid "Choose how exported data will be re-imported."
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:29
-#, php-format
 msgid "WP All Import will create new %s for each unique record in your file."
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:43
-#, php-format
-msgid ""
-"WP All Import will associate records in your file with %s it has already "
-"created from previous runs of this import basis on the Unique Identifier."
+msgid "WP All Import will associate records in your file with %s it has already created from previous runs of this import basis on the Unique Identifier."
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:46
@@ -454,52 +396,30 @@ msgid "Warning: Are you sure you want to edit the Unique Identifier?"
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:56
-#, php-format
-msgid ""
-"It is recommended you delete all %s associated with this import before "
-"editing the unique identifier."
+msgid "It is recommended you delete all %s associated with this import before editing the unique identifier."
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:57
-#, php-format
-msgid ""
-"Editing the unique identifier will dissociate all existing %s linked to this "
-"import. Future runs of the import will result in duplicates, as WP All "
-"Import will no longer be able to update these %s."
+msgid "Editing the unique identifier will dissociate all existing %s linked to this import. Future runs of the import will result in duplicates, as WP All Import will no longer be able to update these %s."
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:58
-msgid ""
-"You really should just re-create your import, and pick the right unique "
-"identifier to start with."
+msgid "You really should just re-create your import, and pick the right unique identifier to start with."
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:64
-msgid ""
-"Drag an element, or combo of elements, to the box above. The Unique "
-"Identifier should be unique for each record in your file, and should stay "
-"the same even if your file is updated. Things like product IDs, titles, and "
-"SKUs are good Unique Identifiers because they probably won't change. Don't "
-"use a description or price, since that might be changed."
+msgid "Drag an element, or combo of elements, to the box above. The Unique Identifier should be unique for each record in your file, and should stay the same even if your file is updated. Things like product IDs, titles, and SKUs are good Unique Identifiers because they probably won't change. Don't use a description or price, since that might be changed."
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:65
-#, php-format
-msgid ""
-"If you run this import again with an updated file, the Unique Identifier "
-"allows WP All Import to correctly link the records in your updated file with "
-"the %s it will create right now. If multiple records in this file have the "
-"same Unique Identifier, only the first will be created. The others will be "
-"detected as duplicates."
+msgid "If you run this import again with an updated file, the Unique Identifier allows WP All Import to correctly link the records in your updated file with the %s it will create right now. If multiple records in this file have the same Unique Identifier, only the first will be created. The others will be detected as duplicates."
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:78
-#, php-format
 msgid "WP All Import will merge data into existing %s."
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:89
-#, php-format
 msgid "Records in your file will be matched with %s on your site based on..."
 msgstr ""
 
@@ -528,23 +448,26 @@ msgid "Block email notifications during import"
 msgstr ""
 
 #: views/admin/import/options/_reimport_template.php:137
-msgid ""
-"If enabled, WP All Import will prevent WordPress from sending notification "
-"emails to imported users while the import is processing."
+msgid "If enabled, WP All Import will prevent WordPress from sending notification emails to imported users while the import is processing."
 msgstr ""
 
 #. Name of the plugin
+#: 
 msgid "WP All Import - User Import Add-On"
 msgstr ""
 
 #. Description of the plugin
+#: 
 msgid "Import Users & User's metadata to WordPress. Requires WP All Import."
 msgstr ""
 
 #. URI of the plugin
+#: 
 msgid "http://www.wpallimport.com/"
 msgstr ""
 
 #. Author of the plugin
+#: 
 msgid "Soflyy"
 msgstr ""
+

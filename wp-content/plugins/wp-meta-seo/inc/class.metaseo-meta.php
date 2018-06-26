@@ -51,14 +51,6 @@ class WPMSEOMeta
                 'help' => '',
                 'rows' => 2
             ),
-            'keywords' => array(
-                'type' => 'textarea',
-                'title' => '',
-                'default_value' => '',
-                'description' => '',
-                'help' => '',
-                'rows' => 2
-            ),
             'desc' => array(
                 'type' => 'textarea',
                 'title' => '',
@@ -67,6 +59,14 @@ class WPMSEOMeta
                 'rows' => 3,
                 'description' => '',
                 'help' => '',
+            ),
+            'keywords' => array(
+                'type' => 'textarea',
+                'title' => '',
+                'default_value' => '',
+                'description' => '',
+                'help' => '',
+                'rows' => 2
             ),
             'metaseo_chart' => array(
                 'type' => 'metaseo_chart',

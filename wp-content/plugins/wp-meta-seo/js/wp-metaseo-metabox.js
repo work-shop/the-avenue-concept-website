@@ -17,9 +17,9 @@ function msReplaceVariables(str, callback) {
     if (typeof str === 'undefined') {
         return;
     }
-    // title
-    if (jQuery('#title').length) {
-        str = str.replace(/%%title%%/g, jQuery('#title').val().replace(/(<([^>]+)>)/ig, ''));
+
+    if (jQuery(wpmsdivtitle).length) {
+        str = str.replace(/%%title%%/g, jQuery(wpmsdivtitle).val().replace(/(<([^>]+)>)/ig, ''));
     }
 
     // These are added in the head for performance reasons.
@@ -268,7 +268,15 @@ function metaseo_status_length(len, id) {
 })();
 
 var replacedVars = [];  // jshint ignore:line
+var wpmsdivtitle = '';
 jQuery(document).ready(function ($) {
+    // title
+    if (wpmseoMetaboxL10n.plugin_active.indexOf('gutenberg.php') !== -1 && typeof wp.blocks !== "undefined") {
+        wpmsdivtitle = '.editor-post-title__input';
+    } else {
+        wpmsdivtitle = '#title';
+    }
+
     if (jQuery('.wpmseo-metabox-tabs-div').length > 0) {
         var active_tab = window.location.hash;
         if (active_tab === '' || active_tab.search('wpmseo') === -1) {
@@ -313,7 +321,7 @@ jQuery(document).ready(function ($) {
         msUpdateKeywords();
     });
 
-    jQuery('#title').keyup(function () {
+    jQuery(wpmsdivtitle).keyup(function () {
         msUpdateTitle();
         msUpdateDesc();
     });

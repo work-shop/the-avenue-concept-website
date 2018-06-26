@@ -19,9 +19,8 @@
 
 .wpmstabs {
     position: relative;
-    overflow-x: auto;
-    overflow-y: hidden;
-    height: 48px;
+    overflow: auto;
+    min-height: 48px;
     width: 100%;
     background-color: #2196F3;
     margin: 0 auto;

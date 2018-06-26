@@ -9,9 +9,8 @@
 }
 
 
-
 body{
-	font-family: $font-main;
+	font-family: $font-secondary;
 	font-weight: normal;
 	@include text-size($text-h4);
 	color: $dark;
@@ -21,18 +20,18 @@ body{
 	font-family: $font-main;
 }
 
-.serif{
-	font-family: $font-serif;
+.secondary{
+	font-family: $font-secondary;
 	letter-spacing: 0;
 	font-weight: 400;
 
 	&.italic{
-		font-family: $font-serif-italic;
+		font-family: $font-secondary-italic;
 		font-style: italic;
 	}
 
 	&.bold,&strong{
-		font-family: $font-serif-bold;
+		font-family: $font-secondary-bold;
 		font-weight: 700;
 	}
 
@@ -45,26 +44,32 @@ body{
 
 h1,.h1{
 	@include text-size($text-h1);
+	font-family: $font-secondary;
 }
 
 h2,.h2{
 	@include text-size($text-h2);
+	font-family: $font-secondary;
 }
 
 h3,.h3{
 	@include text-size($text-h3);
+	font-family: $font-secondary;
 }
 
 h4,.h4{
 	@include text-size($text-h4);
+	font-family: $font-secondary;
 }
 
 h5,.h5{
 	@include text-size($text-h5);
+	font-family: $font-secondary;
 }
 
 h6,.h6{
 	@include text-size($text-h5);
+	font-family: $font-secondary;
 }
 
 p{
@@ -117,18 +122,6 @@ p{
 
 .brand{
 	color: $brand;
-}
-
-.brand-yellow{
-	color: $brand-yellow;
-}
-
-.khaki{
-	color: $khaki;
-}
-
-.slate{
-	color: $slate;
 }
 
 .white{

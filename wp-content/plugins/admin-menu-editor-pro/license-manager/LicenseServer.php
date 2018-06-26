@@ -150,7 +150,7 @@ class Wslm_LicenseServer {
 			foreach($license['addons'] as $slug => $ignored) {
 				$preparedSlugs[] = $this->wpdb->prepare('%s', $slug);
 			}
-			$query .= ' WHERE slug IN (' . implode($preparedSlugs) . ')';
+			$query .= ' WHERE slug IN (' . implode(', ', $preparedSlugs) . ')';
 
 			$this->wpdb->query($query);
 		}
@@ -289,12 +289,12 @@ class Wslm_LicenseServer {
 	 * look for the token. The returned license object will also include
 	 * the URL of the site associated with that token in a 'site_url' field.
 	 *
-	 * @param string|null $licenseKey
+	 * @param string|int|null $licenseKeyOrId
 	 * @param string|null $token
 	 * @throws InvalidArgumentException
 	 * @return Wslm_ProductLicense|null A license object, or null if the license doesn't exist.
 	 */
-	public function loadLicense($licenseKey, $token = null) {
+	public function loadLicense($licenseKeyOrId, $token = null) {
 		if ( !empty($token) ) {
 			$query = "SELECT licenses.*, tokens.site_url
 				 FROM
@@ -303,11 +303,16 @@ class Wslm_LicenseServer {
 				 	ON licenses.license_id = tokens.license_id
 				 WHERE tokens.token = ?";
 			$params = array($token);
-		} else if ( !empty($licenseKey) ) {
+		} else if ( is_numeric($licenseKeyOrId) && (!is_string($licenseKeyOrId) || (strlen($licenseKeyOrId) < 13)) ) {
+			$query =
+				"SELECT licenses.* FROM `{$this->tablePrefix}licenses` AS licenses
+				 WHERE license_id = ?";
+			$params = array($licenseKeyOrId);
+		} else if ( !empty($licenseKeyOrId) ) {
 			$query =
 				"SELECT licenses.* FROM `{$this->tablePrefix}licenses` AS licenses
 				 WHERE license_key = ?";
-			$params = array($licenseKey);
+			$params = array($licenseKeyOrId);
 		} else {
 			throw new InvalidArgumentException('You must specify a license key or a site token.');
 		}
@@ -630,9 +635,25 @@ class Wslm_LicenseServer {
 	 * @return Wslm_ProductLicense[] An array of licenses ordered by status and expiry (newest valid licenses first).
 	 */
 	public function getCustomerLicenses($customerId, $productSlug = null) {
+		//This UNION hack is due to the fact that, when dealing with businesses, different people
+		//can renew or upgrade the same license. People have different emails, so they count as different
+		//customers. We need all of them to be able to access the license.
 		$query = $this->wpdb->prepare(
-			"SELECT * FROM {$this->tablePrefix}licenses WHERE customer_id = %s",
-			$customerId
+			"SELECT customerLicenses.*
+			FROM (
+			    SELECT licenses.*
+				FROM {$this->tablePrefix}licenses AS licenses
+				WHERE (licenses.customer_id = %d)
+				
+			    UNION DISTINCT
+			    
+			    SELECT order_licenses.*
+			    FROM {$this->tablePrefix}orders AS orders JOIN {$this->tablePrefix}licenses AS order_licenses 
+			    	ON (orders.license_id = order_licenses.license_id)
+				WHERE (orders.customer_id = %d)
+			) AS customerLicenses
+			WHERE 1",
+			array($customerId, $customerId)
 		);
 		if ( $productSlug !== null ) {
 			$query .= $this->wpdb->prepare(' AND product_slug=%s', $productSlug);
@@ -643,6 +664,7 @@ class Wslm_LicenseServer {
 		$licenses = array();
 		if ( is_array($rows) ) {
 			foreach($rows as $row) {
+				$row['addons'] = $this->loadLicenseAddOns($row['license_id']);
 				$licenses[] = new Wslm_ProductLicense($row);
 			}
 		}

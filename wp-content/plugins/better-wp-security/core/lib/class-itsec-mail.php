@@ -1,14 +1,19 @@
 <?php
 
 final class ITSEC_Mail {
+	private $name;
 	private $content = '';
+	private $groups = array();
+	private $current_group;
+	private $deferred = '';
 	private $subject = '';
 	private $recipients = array();
 	private $attachments = array();
 	private $template_path = '';
 
-	public function __construct() {
+	public function __construct( $name = '' ) {
 		$this->template_path = dirname( __FILE__ ) . '/mail-templates/';
+		$this->name          = $name;
 	}
 
 	public function add_header( $title, $banner_title, $use_site_logo = false ) {
@@ -31,7 +36,7 @@ final class ITSEC_Mail {
 			'title'        => $title,
 		);
 
-		$this->content .= $this->replace_all( $header, $replacements );
+		$this->add_html( $this->replace_all( $header, $replacements ), 'header' );
 	}
 
 	public function add_footer() {
@@ -74,13 +79,13 @@ final class ITSEC_Mail {
 
 		);
 
-		$this->content .= $this->replace_all( $footer, $replacements );
+		$this->add_html( $this->replace_all( $footer, $replacements ) );
 
 		if ( defined( 'ITSEC_DEBUG' ) && ITSEC_DEBUG ) {
 			$this->include_debug_info();
 		}
 
-		$this->content .= $this->get_template( 'close.html' );
+		$this->add_html( $this->get_template( 'close.html' ), 'footer' );
 	}
 
 	public function add_user_footer() {
@@ -96,51 +101,79 @@ final class ITSEC_Mail {
 		) );
 
 		$footer .= $this->get_template( 'close.html' );
-		$this->content .= $footer;
+		$this->add_html( $footer, 'user-footer' );
 	}
 
 	public function add_text( $content ) {
+		$this->add_html( $this->get_text( $content ) );
+	}
+
+	public function get_text( $content ) {
 		$module = $this->get_template( 'text.html' );
 		$module = $this->replace( $module, 'content', $content );
 
-		$this->content .= $module;
+		return $module;
 	}
 
 	public function add_divider() {
-		$this->content .= $this->get_template( 'divider.html' );
+		$this->add_html( $this->get_divider() );
+	}
+
+	public function get_divider() {
+		return $this->get_template( 'divider.html' );
 	}
 
 	public function add_large_text( $content ) {
+		$this->add_html( $this->get_large_text( $content ) );
+	}
+
+	public function get_large_text( $content ) {
 		$module = $this->get_template( 'large-text.html' );
 		$module = $this->replace( $module, 'content', $content );
 
-		$this->content .= $module;
+		return $module;
 	}
 
 	public function add_info_box( $content, $icon_type = 'info' ) {
+		$this->add_html( $this->get_info_box( $content, $icon_type ) );
+	}
+
+	public function get_info_box( $content, $icon_type = 'info' ) {
 		$icon_url = $this->get_image_url( $icon_type === 'warning' ? 'warning_icon_yellow' : "{$icon_type}_icon" );
 
 		$module = $this->get_template( 'info-box.html' );
 		$module = $this->replace_all( $module, compact( 'content', 'icon_url' ) );
 
-		$this->content .= $module;
+		return $module;
 	}
 
 	public function add_details_box( $content ) {
+		$this->add_html( $this->get_details_box( $content ) );
+	}
+
+	public function get_details_box( $content ) {
 		$module = $this->get_template( 'details-box.html' );
 		$module = $this->replace( $module, 'content', $content );
 
-		$this->content .= $module;
+		return $module;
 	}
 
 	public function add_large_code( $content ) {
+		$this->add_html( $this->get_large_code( $content ) );
+	}
+
+	public function get_large_code( $content ) {
 		$module = $this->get_template( 'large-code.html' );
 		$module = $this->replace( $module, 'content', $content );
 
-		$this->content .= $module;
+		return $module;
 	}
 
 	public function add_section_heading( $content, $icon_type = false ) {
+		$this->add_html( $this->get_section_heading( $content, $icon_type ) );
+	}
+
+	public function get_section_heading( $content, $icon_type = false ) {
 		if ( empty( $icon_type ) ) {
 			$heading = $this->get_template( 'section-heading.html' );
 			$heading = $this->replace_all( $heading, compact( 'content' ) );
@@ -151,7 +184,7 @@ final class ITSEC_Mail {
 			$heading = $this->replace_all( $heading, compact( 'content', 'icon_url' ) );
 		}
 
-		$this->content .= $heading;
+		return $heading;
 	}
 
 	public function add_lockouts_summary( $user_count, $host_count ) {
@@ -166,7 +199,7 @@ final class ITSEC_Mail {
 
 		$lockouts = $this->replace_all( $lockouts, $replacements );
 
-		$this->content .= $lockouts;
+		$this->add_html( $lockouts, 'lockouts-summary' );
 	}
 
 	public function add_file_change_summary( $added, $removed, $modified ) {
@@ -183,19 +216,24 @@ final class ITSEC_Mail {
 
 		$lockouts = $this->replace_all( $lockouts, $replacements );
 
-		$this->content .= $lockouts;
+		$this->add_html( $lockouts, 'file-change-summary' );
 	}
 
 	public function add_button( $link_text, $href ) {
+		$this->add_html( $this->get_button( $link_text, $href ) );
+	}
+
+	public function get_button( $link_text, $href ) {
+
 		$module = $this->get_template( 'module-button.html' );
 		$module = $this->replace( $module, 'href', $href );
 		$module = $this->replace( $module, 'link_text', $link_text );
 
-		$this->content .= $module;
+		return $module;
 	}
 
 	public function add_lockouts_table( $lockouts ) {
-		$entry = $this->get_template( 'lockouts-entry.html' );
+		$entry   = $this->get_template( 'lockouts-entry.html' );
 		$entries = '';
 
 		foreach ( $lockouts as $lockout ) {
@@ -213,15 +251,15 @@ final class ITSEC_Mail {
 		$table = $this->get_template( 'lockouts-table.html' );
 
 		$replacements = array(
-			'heading_types'        => __( 'Host/User', 'better-wp-security' ),
-			'heading_until'        => __( 'Lockout in Effect Until', 'better-wp-security' ),
-			'heading_reason'       => __( 'Reason', 'better-wp-security' ),
-			'entries'              => $entries,
+			'heading_types'  => __( 'Host/User', 'better-wp-security' ),
+			'heading_until'  => __( 'Lockout in Effect Until', 'better-wp-security' ),
+			'heading_reason' => __( 'Reason', 'better-wp-security' ),
+			'entries'        => $entries,
 		);
 
 		$table = $this->replace_all( $table, $replacements );
 
-		$this->content .= $table;
+		$this->add_html( $table, 'lockouts-table' );
 	}
 
 	/**
@@ -231,6 +269,10 @@ final class ITSEC_Mail {
 	 * @param array[]  $entries
 	 */
 	public function add_table( $headers, $entries ) {
+		$this->add_html( $this->get_table( $headers, $entries ) );
+	}
+
+	public function get_table( $headers, $entries ) {
 
 		$template = $this->get_template( 'table.html' );
 		$html     = $this->build_table_header( $headers );
@@ -239,7 +281,7 @@ final class ITSEC_Mail {
 			$html .= $this->build_table_row( $entry, count( $headers ) );
 		}
 
-		$this->content .= $this->replace( $template, 'html', $html );
+		return $this->replace( $template, 'html', $html );
 	}
 
 	/**
@@ -306,6 +348,10 @@ final class ITSEC_Mail {
 	 * @param bool     $bold_first Whether to emphasize the first item of the list.
 	 */
 	public function add_list( $items, $bold_first = false ) {
+		$this->add_html( $this->get_list( $items, $bold_first ) );
+	}
+
+	public function get_list( $items, $bold_first = false ) {
 
 		$template = $this->get_template( 'list.html' );
 		$html     = '';
@@ -314,13 +360,38 @@ final class ITSEC_Mail {
 			$html .= $this->build_list_item( $item, $bold_first && 0 === $i );
 		}
 
-		$this->content .= $this->replace( $template, 'html', $html );
+		return $this->replace( $template, 'html', $html );
 	}
 
 	private function build_list_item( $item, $bold = false ) {
 		$bold_tag = $bold ? 'font-weight: bold;' : '';
 
 		return "<li style=\"margin: 0; padding: 5px 10px;{$bold_tag}\">{$item}</li>";
+	}
+
+	private function add_html( $html, $identifier = null ) {
+
+		if ( null !== $this->current_group ) {
+			$this->deferred .= $html;
+		} elseif ( null !== $identifier ) {
+			$this->groups[ $identifier ] = $html;
+		} else {
+			$this->groups[] = $html;
+		}
+	}
+
+	public function start_group( $identifier ) {
+		$this->current_group = $identifier;
+	}
+
+	public function end_group() {
+		$group    = $this->current_group;
+		$deferred = $this->deferred;
+
+		$this->current_group = null;
+		$this->deferred      = '';
+
+		$this->add_html( $deferred, $group );
 	}
 
 	/**
@@ -359,7 +430,20 @@ final class ITSEC_Mail {
 	}
 
 	public function get_content() {
-		return $this->content;
+
+		$groups = $this->groups;
+
+		if ( $this->name ) {
+			/**
+			 * Filter the HTML groups before building the content.
+			 *
+			 * @param array      $groups
+			 * @param ITSEC_Mail $this
+			 */
+			$groups = apply_filters( "itsec_mail_{$this->name}", $groups, $this );
+		}
+
+		return implode( '', $groups );
 	}
 
 	public function set_subject( $subject, $add_site_url = true ) {
@@ -396,7 +480,7 @@ final class ITSEC_Mail {
 	}
 
 	public function set_default_recipients() {
-		$recipients  = ITSEC_Modules::get_setting( 'global', 'notification_email' );
+		$recipients = ITSEC_Modules::get_setting( 'global', 'notification_email' );
 		$this->set_recipients( $recipients );
 	}
 
@@ -421,7 +505,7 @@ final class ITSEC_Mail {
 			$this->set_default_subject();
 		}
 
-		return wp_mail( $this->recipients, $this->subject, $this->content, array( 'Content-Type: text/html; charset=UTF-8' ), $this->attachments );
+		return wp_mail( $this->recipients, $this->get_subject(), $this->content ? $this->content : $this->get_content(), array( 'Content-Type: text/html; charset=UTF-8' ), $this->attachments );
 	}
 
 	/**

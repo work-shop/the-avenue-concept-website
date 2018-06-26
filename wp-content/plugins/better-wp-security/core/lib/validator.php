@@ -305,6 +305,32 @@ abstract class ITSEC_Validator {
 				$error = wp_sprintf( _n( 'The valid value for %1$s is: %2$l.', 'The valid values for %1$s are: %2$l.', count( $type ), 'better-wp-security' ), $name, $type );
 				$type = 'array';
 			}
+		} elseif ( 'canonical-roles' === $type ) {
+			$roles = array( 'administrator', 'editor', 'author', 'contributor', 'subscriber' );
+			
+			if ( is_array( $this->settings[$var] ) ) {
+				$invalid_entries = array();
+
+				foreach ( $this->settings[$var] as $index => $entry ) {
+					$entry = sanitize_text_field( trim( $entry ) );
+					$this->settings[$var][$index] = $entry;
+
+					if ( empty( $entry ) ) {
+						unset( $this->settings[$var][$index] );
+					} else if ( ! in_array( $entry, $roles, true ) ) {
+						$invalid_entries[] = $entry;
+					}
+				}
+
+				$this->settings[$var] = array_unique( $this->settings[$var] );
+
+				if ( ! empty( $invalid_entries ) ) {
+					$error = wp_sprintf( _n( 'The following entry in %1$s is invalid: %2$l', 'The following entries in %1$s are invalid: %2$l', count( $invalid_entries ), 'better-wp-security' ), $name, $invalid_entries );
+				}
+			} else if ( ! in_array( $this->settings[$var], $roles, true ) ) {
+				$error = wp_sprintf( _n( 'The valid value for %1$s is: %2$l.', 'The valid values for %1$s are: %2$l.', count( $roles ), 'better-wp-security' ), $name, $roles );
+				$type = 'array';
+			}
 		} else if ( 'newline-separated-array' === $type ) {
 			$this->settings[$var] = $this->convert_string_to_array( $this->settings[$var] );
 
@@ -394,7 +420,7 @@ abstract class ITSEC_Validator {
 		}
 
 		if ( false !== $error ) {
-			$this->add_error( new WP_Error( "itsec-validator-$id-invalid-type-$var-$type", $error ) );
+			$this->add_error( $this->generate_error( $id, $var, $type, $error ) );
 			$this->vars_to_skip_validate_matching_types[] = $var;
 
 			if ( $prevent_save_on_error && ITSEC_Core::is_interactive() ) {
@@ -405,6 +431,10 @@ abstract class ITSEC_Validator {
 		}
 
 		return true;
+	}
+
+	protected function generate_error( $id, $var, $type, $error ) {
+		return new WP_Error( "itsec-validator-$id-invalid-type-$var-$type", $error );
 	}
 
 	final protected function convert_string_to_array( $string ) {

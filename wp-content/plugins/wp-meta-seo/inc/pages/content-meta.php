@@ -62,7 +62,7 @@ if (!empty($_REQUEST['_wp_http_referer'])) {
         });
 
         $('.metaseo-metatitle').bind('input propertychange', function () {
-            metaseo_titlelength(this.id, false);
+            metaseo_titlelength(this.id, true);
         });
 
         $('.metaseo-metatitle').blur(function () {

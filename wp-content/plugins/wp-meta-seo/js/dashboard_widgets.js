@@ -8,8 +8,7 @@ jQuery(document).ready(function ($) {
         dataType: 'json',
         data: {
             action: 'wpms',
-            task: 'dash_permalink',
-            type: 'dashboard_widgets'
+            task: 'dash_permalink'
         },
         success: function (res) {
             $('.wpms_dash_permalink .percent_1').html(res +'%');
@@ -29,8 +28,7 @@ jQuery(document).ready(function ($) {
             dataType: 'json',
             data: {
                 action: 'wpms',
-                task: 'dash_newcontent',
-                type: 'dashboard_widgets'
+                task: 'dash_newcontent'
             },
             success: function (res) {
                 $('.wpms_dash_newcontent .percent_1').html(res[0] +'%');
@@ -51,8 +49,7 @@ jQuery(document).ready(function ($) {
             dataType: 'json',
             data: {
                 action: 'wpms',
-                task: 'dash_linkmeta',
-                type: 'dashboard_widgets'
+                task: 'dash_linkmeta'
             },
             success: function (res) {
                 $('.wpms_dash_linkmeta .percent_1').html(res[0] +'%');
@@ -73,8 +70,7 @@ jQuery(document).ready(function ($) {
             dataType: 'json',
             data: {
                 action: 'wpms',
-                task: 'dash_metatitle',
-                type: 'dashboard_widgets'
+                task: 'dash_metatitle'
             },
             success: function (res) {
                 $('.wpms_dash_metatitle .percent_1').html(res[0] +'%');
@@ -97,7 +93,6 @@ jQuery(document).ready(function ($) {
             data: {
                 action: 'wpms',
                 task: 'dash_imgsmeta',
-                type: 'dashboard_widgets',
                 page : page,
                 imgs_statis : imgs_statis,
                 imgs_metas_statis : imgs_meta,
@@ -131,8 +126,7 @@ jQuery(document).ready(function ($) {
             dataType: 'json',
             data: {
                 action: 'wpms',
-                task: 'dash_metadesc',
-                type: 'dashboard_widgets'
+                task: 'dash_metadesc'
             },
             success: function (res) {
                 $('.wpms_dash_metadesc .percent_1').html(res[0] +'%');

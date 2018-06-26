@@ -242,7 +242,7 @@ class ITSEC_Notification_Center_Validator extends ITSEC_Validator {
 		$available_users = array();
 
 		foreach ( $roles->roles as $role => $details ) {
-			if ( isset( $details['capabilities']['manage_options'] ) && ( true === $details['capabilities']['manage_options'] ) ) {
+			if ( ! empty( $details['capabilities']['manage_options'] ) ) {
 				$available_roles["role:$role"] = translate_user_role( $details['name'] );
 
 				$users = get_users( array( 'role' => $role ) );

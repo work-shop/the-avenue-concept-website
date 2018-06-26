@@ -138,6 +138,11 @@ class wsMenuEditorExtras {
 		add_filter('user_has_cap', array($this, 'regrant_virtual_caps_to_user'), 200, 1);
 		add_filter('role_has_cap', array($this, 'grant_virtual_caps_to_role'), 200, 3);
 
+		add_action('load-options.php', array($this, 'disable_virtual_caps_on_all_options'));
+
+		//Make it possible to automatically hide new admin menus.
+		add_filter('admin_menu_editor-new_menu_grant_access', array($this, 'get_new_menu_grant_access'));
+
 		//Remove the plugin from the "Plugins" page for users who're not allowed to see it.
 		if ( $this->wp_menu_editor->get_plugin_option('plugins_page_allowed_user_id') !== null ) {
 			add_filter('all_plugins', array($this, 'filter_plugin_list'));
@@ -1584,6 +1589,61 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 		return isset($default) ? $default : current_user_can($capability);
 	}
 
+	/**
+	 * @see WPMenuEditor::get_new_menu_grant_access()
+	 *
+	 * @param array $defaultGrantAccess Ignored. The default is completely replaced.
+	 * @return array
+	 */
+	public function get_new_menu_grant_access(/** @noinspection PhpUnusedParameterInspection */$defaultGrantAccess = array()) {
+		$capsWereDisabled = $this->disable_virtual_caps;
+		$this->disable_virtual_caps = true;
+
+		$grantAccess = array();
+
+		$roles = array_keys(ameRoleUtils::get_role_names());
+		$currentUser = wp_get_current_user();
+		$access = $this->wp_menu_editor->get_plugin_option('plugin_access');
+
+		if ( ($access === 'super_admin') && !is_multisite() ) {
+			//On a regular WordPress site, is_super_admin() just checks for the "delete_users" capability.
+			$access = 'delete_users';
+		}
+
+		if ( $access === 'super_admin' ) {
+			//Hide from everyone except Super Admins.
+			foreach($roles as $roleId) {
+				$grantAccess['role:' . $roleId] = false;
+			}
+			$grantAccess['special:super_admin'] = true;
+		} else if ( $access === 'specific_user' ) {
+			//Hide from everyone except a specific user.
+			$allowedUser = get_user_by('id', $this->wp_menu_editor->get_plugin_option('allowed_user_id'));
+			if ( $allowedUser && $allowedUser->exists() ) {
+				foreach($roles as $roleId) {
+					$grantAccess['role:' . $roleId] = false;
+				}
+				$grantAccess['user:' . $allowedUser->user_login] = true;
+				if ( is_multisite() ) {
+					$grantAccess['special:super_admin'] = false;
+				}
+			}
+		} else {
+			//Only show to roles that have a certain capability (usually "manage_options").
+			$capability = apply_filters('admin_menu_editor-capability', $access);
+			$grantAccess['user:' . $currentUser->user_login] = current_user_can($capability);
+			foreach($roles as $roleId) {
+				$role = get_role($roleId);
+				if ( $role ) {
+					$grantAccess['role:' . $roleId] = $role->has_cap($capability);
+				}
+			}
+		}
+
+		$this->disable_virtual_caps = $capsWereDisabled;
+		return $grantAccess;
+	}
+
 	function output_menu_dropzone($type = 'menu') {
 		printf(
 			'<div id="ws_%s_dropzone" class="ws_dropzone"> </div>',
@@ -2121,6 +2181,26 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 
 	public function ajax_install_addon() {
 
+	}
+
+	/**
+	 * Prevent non-privileged users from accessing the special "All Settings" page even if
+	 * they've been granted access to other pages that require the "manage_options" capability.
+	 */
+	public function disable_virtual_caps_on_all_options() {
+		//options.php also handles the saving of settings created with the Settings API, so we
+		//need to check if this is a direct request for options.php and not just a form submission.
+		$action = ameUtils::get($_POST, 'action', ameUtils::get($_GET, 'action', ''));
+		$option_page = ameUtils::get($_POST, 'option_page', ameUtils::get($_GET, 'option_page', 'options'));
+
+		if ( ($action !== 'update') && (($option_page === 'options') || empty($option_page)) ) {
+			$this->disable_virtual_caps = true;
+			add_action('admin_enqueue_scripts', array($this, 'enable_virtual_caps'));
+		}
+	}
+
+	public function enable_virtual_caps() {
+		$this->disable_virtual_caps = false;
 	}
 }
 

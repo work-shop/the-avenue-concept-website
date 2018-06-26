@@ -69,7 +69,7 @@ class ITSEC_SSL {
 			add_filter( 'script_loader_src', array( $this, 'script_loader_src' ) );
 			add_filter( 'style_loader_src', array( $this, 'style_loader_src' ) );
 			add_filter( 'upload_dir', array( $this, 'upload_dir' ) );
-		} else if ( 'enabled' === $settings['require_ssl'] && 'GET' === $_SERVER['REQUEST_METHOD'] && ( ! defined( 'WP_CLI' ) || ! WP_CLI ) ) {
+		} else if ( 'enabled' === $settings['require_ssl'] && ( ! defined( 'WP_CLI' ) || ! WP_CLI ) && 'GET' === $_SERVER['REQUEST_METHOD'] ) {
 			$this->redirect_to_https();
 		}
 	}

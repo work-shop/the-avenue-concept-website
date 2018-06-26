@@ -604,17 +604,28 @@ class MetaSeoLinkListTable extends WP_List_Table
 
                         case 'post_id':
                             $post = get_post($rec->source_id);
-                            $row_action = array(
-                                'edit' => '<a target="_blank" href="' . get_edit_post_link($rec->source_id) . '"
+                            if (empty($post)) {
+                                echo '<td class="col_id" colspan="3">';
+                                echo '<a target="_blank"
+                             href="#">' . __('Not found', 'wp-meta-seo') . '</a>';
+                                echo '<p class="wpms_remove_link"
+                                 data-link_id="' . $rec->id . '">
+                                  <span>' . __('Remove link', 'wp-meta-seo') . '</span></p>';
+                                echo '</td>';
+                            } else {
+                                $row_action = array(
+                                    'edit' => '<a target="_blank" href="' . get_edit_post_link($rec->source_id) . '"
  title="Edit this item">Edit</a>',
-                                'view' => '<a target="_blank" href="' . get_permalink($rec->source_id) . '"
+                                    'view' => '<a target="_blank" href="' . get_permalink($rec->source_id) . '"
  title="View &#8220;test&#8221;" rel="permalink">View</a>'
-                            );
-                            echo '<td class="col_id" colspan="3">';
-                            echo '<a target="_blank"
+                                );
+                                echo '<td class="col_id" colspan="3">';
+                                echo '<a target="_blank"
                              href="' . get_edit_post_link($rec->source_id) . '">' . $post->post_title . '</a>';
-                            echo $this->row_actions($row_action, false);
-                            echo '</td>';
+                                echo $this->row_actions($row_action, false);
+                                echo '</td>';
+                            }
+
                             break;
 
                         case 'col_link_url':

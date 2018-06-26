@@ -14,7 +14,7 @@ jQuery(document).ready(function ($) {
      */
     $('.wpms_scan_link').on('click', function () {
         var $this = $(this);
-        wpms_scan_link($this);
+        wpmsScanLink($this);
     });
 
     $('.wpms_flush_link').on('click', function () {

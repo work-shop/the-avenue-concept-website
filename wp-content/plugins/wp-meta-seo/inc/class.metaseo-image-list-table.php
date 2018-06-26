@@ -518,6 +518,11 @@ $wpdb->posts WHERE post_status IN ($all_states) AND post_type IN ($post_types) O
         $this->_column_headers = array($columns, $hidden, $sortable);
 
         $this->items = $wpdb->get_results($query);
+        if (isset($_GET['slmeta']) && ($_GET['slmeta'] == 'missing_information' || $_GET['slmeta'] == 'resizeimages')) {
+            foreach ($this->items as $item) {
+                $item->alt = get_post_meta($item->ID, '_wp_attachment_image_alt', true);
+            }
+        }
     }
 
     /**
@@ -1395,7 +1400,6 @@ $wpdb->posts WHERE post_status IN ($all_states) AND post_type IN ($post_types) O
 
             if ($meta_type != 'alt_text') {
                 $data = array('ID' => $post_id, $aliases[$meta_type] => $meta_value);
-
                 if (wp_update_post($data)) {
                     $response->updated = true;
                     $response->msg = __($label . ' was saved', 'wp-meta-seo');
@@ -1406,11 +1410,12 @@ $wpdb->posts WHERE post_status IN ($all_states) AND post_type IN ($post_types) O
                 $response->msg = __($label . ' was saved', 'wp-meta-seo');
             }
 
-            if ($meta_type == 'alt_text' || $meta_type == 'image_title') {
+            if ($meta_type == 'alt_text') {
                 $settings = get_option('_metaseo_settings');
                 if (!isset($settings['metaseo_overridemeta']) || (!empty($settings['metaseo_overridemeta'])
                         && $settings['metaseo_overridemeta'] == 1)) {
                     // call function auto override in content
+
                     self::autoUpdatePostContent($post_id, $meta_type, $meta_value);
                     $response->type = 'auto_override';
                     $response->pid = $post_id;
@@ -1440,7 +1445,6 @@ $wpdb->posts WHERE post_status IN ($all_states) AND post_type IN ($post_types) O
             if (method_exists('MetaSeoImageListTable', $fn)) {
                 //Get list of posts contain this image and its clones
                 $posts = ImageHelper::getPostList($post_id, 'fix_metas');
-
                 if (count($posts) > 0) {
                     $img_counter = 0;
                     //Now the time to resize the images
@@ -1744,6 +1748,7 @@ $wpdb->posts WHERE post_status IN ($all_states) AND post_type IN ($post_types) O
                     if (!wp_update_post(array('ID' => $post->ID, 'post_content' => $post_content))) {
                         $response->msg = __('The post haven\'t been updated, please check again!', 'wp-meta-seo');
                     } else {
+                        update_option('wpms_last_update_post', time());
                         $response->updated = true;
                         $response->msg = __(ucfirst($meta_type) . ' was saved', 'wp-meta-seo');
                     }
@@ -1994,8 +1999,8 @@ $wpdb->posts WHERE post_status IN ($all_states) AND post_type IN ($post_types) O
     }
 
     /**
-     * Get attachment ID
-     * @param $url
+     * Get attachment ID from URL
+     * @param string $url URl of attachment
      * @return int
      */
     public static function getAttachmentId($url)

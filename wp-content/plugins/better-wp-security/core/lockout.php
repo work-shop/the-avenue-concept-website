@@ -84,9 +84,6 @@ final class ITSEC_Lockout {
 		//Set an error message on improper logout
 		add_action( 'login_head', array( $this, 'set_lockout_error' ) );
 
-		//Process clear lockout form
-		add_action( 'itsec_admin_init', array( $this, 'release_lockout' ) );
-
 		add_action( 'ithemes_sync_register_verbs', array( $this, 'register_sync_verbs' ) );
 		add_filter( 'itsec-filter-itsec-get-everything-verbs', array( $this, 'register_sync_get_everything_verbs' ) );
 

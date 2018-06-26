@@ -74,18 +74,18 @@
                 echo '<div class="wpms_row"><h3>';
                 echo '<div class="pure-checkbox">';
                 echo '<input for="' . $desclink_category_remove . '"
-                 class="sitemap_addlink_categories" id="sitemap_addlink_categories"
+                 class="sitemap_addlink_categories" id="sitemap_addlink_categories_' . $post->cat_ID . '"
                   type="checkbox" value="' . $post->cat_ID . '" checked>';
-                echo '<label for="sitemap_addlink_categories">' . $post->cat_name . '</label>';
+                echo '<label for="sitemap_addlink_categories_' . $post->cat_ID . '">' . $post->cat_name . '</label>';
                 echo '</div>';
                 echo '</h3></div>';
             } else {
                 echo '<div class="wpms_row"><h3>';
                 echo '<div class="pure-checkbox">';
                 echo '<input for="' . $desclink_category_remove . '"
-                 class="sitemap_addlink_categories" id="sitemap_addlink_categories"
+                 class="sitemap_addlink_categories" id="sitemap_addlink_categories_' . $post->cat_ID . '"
                   type="checkbox" value="' . $post->cat_ID . '">';
-                echo '<label for="sitemap_addlink_categories">' . $post->cat_name . '</label>';
+                echo '<label for="sitemap_addlink_categories_' . $post->cat_ID . '">' . $post->cat_name . '</label>';
                 echo '</div>';
                 echo '</h3></div>';
             }

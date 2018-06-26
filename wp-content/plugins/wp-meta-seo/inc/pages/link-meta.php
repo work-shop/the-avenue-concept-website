@@ -37,6 +37,13 @@ if (!empty($_REQUEST['_wp_http_referer'])) {
             $(this).closest('tr').find('.wpms_update_link').show();
         });
 
+        // remove link in source 404
+        $('.wpms_remove_link').on('click', function () {
+            var link_id = $(this).data('link_id');
+            wpmsRemoveLink(link_id);
+        });
+
+        // update link title
         $('.wpms_update_link').on('click', function () {
             saveMetaLinkChanges(this);
         });
@@ -49,9 +56,10 @@ if (!empty($_REQUEST['_wp_http_referer'])) {
             wpmsUpdateFollow(this);
         });
 
+        // index link
         $('.wpms_scan_link').on('click', function () {
             var $this = $(this);
-            wpms_scan_link($this);
+            wpmsScanLink($this);
         });
     });
 

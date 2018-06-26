@@ -122,6 +122,29 @@ function metaseo_updatekeywords(metakeywords_id, needToSave) {
     oldKeywordsValues[postid] = keywords;
 }
 
+
+/**
+ * remove link
+ * @param link_id id of this link
+ */
+function wpmsRemoveLink(link_id) {
+    jQuery.ajax({
+        url: ajaxurl,
+        method: 'POST',
+        dataType: 'json',
+        data: {
+            'action': 'wpms',
+            'task': 'remove_link',
+            'link_id': link_id
+        },
+        success: function (response) {
+            if (response.status) {
+                jQuery('#record_' + link_id).remove();
+            }
+        }
+    });
+}
+
 /**
  * Update meta title for link
  * @param button_update
@@ -226,7 +249,7 @@ function wpmsChangeFollow(button) {
  * Scan link to save to database
  * @param $this
  */
-function wpms_scan_link($this) {
+function wpmsScanLink($this) {
     if ($this.hasClass('page_link_meta')) {
         jQuery('.spinner_apply_follow').css('visibility', 'visible').show();
     }
@@ -288,7 +311,6 @@ function wpms_scan_link($this) {
  */
 function wpmsUpdateFollow(button) {
     var $this = jQuery(button);
-    jQuery('.spinner_apply_follow').css('visibility', 'visible').show();
     var follow_value = jQuery('.metaseo_follow_action').val();
     if (follow_value === 'follow_selected' || follow_value === 'nofollow_selected') {
         if (parseInt(follow_value) === 0)
@@ -315,6 +337,8 @@ function wpmsUpdateFollow(button) {
             follow_value: follow_value
         };
     }
+
+    jQuery('.spinner_apply_follow').css('visibility', 'visible').show();
     jQuery.ajax({
         url: ajaxurl,
         method: 'POST',

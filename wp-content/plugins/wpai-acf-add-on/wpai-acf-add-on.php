@@ -3,7 +3,7 @@
 Plugin Name: WP All Import - ACF Add-On
 Plugin URI: http://www.wpallimport.com/
 Description: Import to Advanced Custom Fields. Requires WP All Import & Advanced Custom Fields.
-Version: 3.1.5
+Version: 3.1.7
 Author: Soflyy
 */
 /**
@@ -24,7 +24,7 @@ define('PMAI_ROOT_URL', rtrim(plugin_dir_url(__FILE__), '/'));
  */
 define('PMAI_PREFIX', 'pmai_');
 
-define('PMAI_VERSION', '3.1.5');
+define('PMAI_VERSION', '3.1.7');
 
 if ( class_exists('PMAI_Plugin') and PMAI_EDITION == "free"){
 
@@ -189,6 +189,10 @@ else {
 				require_once $filePath;
 			}
 
+			if (is_dir(self::ROOT_DIR . '/libraries')) foreach (PMAI_Helper::safe_glob(self::ROOT_DIR . '/libraries/*.php', PMAI_Helper::GLOB_RECURSE | PMAI_Helper::GLOB_PATH | PMAI_Helper::GLOB_NOSORT) as $filePath) {
+				if (strpos($filePath, 'view') === false && strpos($filePath, 'template') === false) require_once $filePath;
+			}
+
 			// init plugin options
 			$option_name = get_class($this) . '_Options';
 			$options_default = PMAI_Config::createFromFile(self::ROOT_DIR . '/config/options.php')->toArray();
@@ -331,7 +335,6 @@ else {
 							'is_user' => is_user_admin(),
 						);
 						add_filter('current_screen', array($this, 'getAdminCurrentScreen'));
-						add_filter('admin_body_class', create_function('', 'return "' . PMAI_Plugin::PREFIX . 'plugin";'));
 
 						$controller = new $controllerName();
 						if ( ! $controller instanceof PMAI_Controller_Admin) {
@@ -438,7 +441,7 @@ else {
 		public function activation() {
 
 			// uncaught exception doesn't prevent plugin from being activated, therefore replace it with fatal error so it does
-			set_exception_handler(create_function('$e', 'trigger_error($e->getMessage(), E_USER_ERROR);'));
+			set_exception_handler(function($e){trigger_error($e->getMessage(), E_USER_ERROR);});
 
 			// create plugin options
 			$option_name = get_class($this) . '_Options';

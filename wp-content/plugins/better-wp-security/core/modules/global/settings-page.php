@@ -1,7 +1,7 @@
 <?php
 
 final class ITSEC_Global_Settings_Page extends ITSEC_Module_Settings_Page {
-	private $version = 1;
+	private $version = 2;
 
 
 	public function __construct() {
@@ -173,7 +173,15 @@ final class ITSEC_Global_Settings_Page extends ITSEC_Module_Settings_Page {
 			<td>
 				<?php $form->add_text( 'log_rotation', array( 'class' => 'small-text' ) ); ?>
 				<label for="itsec-global-log_rotation"><?php _e( 'Days', 'better-wp-security' ); ?></label>
-				<p class="description"><?php _e( 'The number of days database logs should be kept. File logs will be kept indefinitely but will be rotated once the file hits 10MB.', 'better-wp-security' ); ?></p>
+				<p class="description"><?php _e( 'The number of days database logs should be kept.', 'better-wp-security' ); ?></p>
+			</td>
+		</tr>
+		<tr>
+			<th scope="row"><label for="itsec-global-file_log_rotation"><?php _e( 'Days to Keep File Logs', 'better-wp-security' ); ?></label></th>
+			<td>
+				<?php $form->add_text( 'file_log_rotation', array( 'class' => 'small-text' ) ); ?>
+				<label for="itsec-global-log_rotation"><?php _e( 'Days', 'better-wp-security' ); ?></label>
+				<p class="description"><?php _e( 'The number of days file logs should be kept. File logs will additionally be rotated once the file hits 10MB. Set to 0 to only use log rotation.', 'better-wp-security' ); ?></p>
 			</td>
 		</tr>
 		<tr>

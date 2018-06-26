@@ -37,6 +37,8 @@ final class ITSEC_Logs_Page {
 	}
 
 	public function add_scripts() {
+		ITSEC_Lib::enqueue_util();
+
 		foreach ( $this->modules as $id => $module ) {
 			$module->enqueue_scripts_and_styles();
 		}

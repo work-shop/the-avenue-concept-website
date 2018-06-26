@@ -12,22 +12,35 @@ jQuery(document).ready(function ($) {
         wpms_validate_analysis();
     }
 
-    function reload_analysis() {
-        $('.wpmseotab .spinner').css({'visibility': ' inherit'}).show();
-        $('.metaseo_right').html('');
-        var title = $('#title').val();
+    function reload_analysis(first_load) {
+        var mpageurl = '', title = '', mcontent = '', current_editor = '';
         var meta_title = $('#metaseo_wpmseo_title').val();
-        var mpageurl = $('#editable-post-name-full').text();
         var meta_desc = $('#metaseo_wpmseo_desc').val();
-        var mcontent = '';
 
-        if (typeof tinyMCE !== 'undefined' && tinyMCE.get('content') !== null) {
-            mcontent = tinyMCE.editors.content.getContent();
+        if (wpmseoMetaboxL10n.plugin_active.indexOf('gutenberg.php') !== -1 && typeof wp.blocks !== "undefined") {
+            mpageurl = $('#wp-admin-bar-view').find('a').attr('href');
+            current_editor = 'gutenberg';
+            if (parseInt(first_load) === 1) {
+                title = window._wpGutenbergPost.title.rendered;
+            } else {
+                title = $('.editor-post-title__input').val();
+            }
+
+            if (typeof wp.data !== "undefined" && typeof wp.data.select('core/editor') !== "undefined") {
+                mcontent = wp.data.select('core/editor').getEditedPostContent();
+            }
         } else {
-            mcontent = $('#content').val();
+            mpageurl = $('#editable-post-name-full').text();
+            title = $('#title').val();
+            if (typeof tinyMCE !== 'undefined' && tinyMCE.get('content') !== null) {
+                mcontent = tinyMCE.editors.content.getContent();
+            } else {
+                mcontent = $('#content').val();
+            }
         }
 
-        var data = {'post_id': jQuery('.metaseo-progress-bar').data('post_id'), 'title': title, 'meta_title': meta_title, 'mpageurl': mpageurl, 'meta_desc': meta_desc, 'content': mcontent};
+        $('.wpmseotab .spinner').css({'visibility': ' inherit'}).show();
+        $('.metaseo_right').html('');
         $.ajax({
             dataType: 'json',
             method: 'POST',
@@ -35,13 +48,22 @@ jQuery(document).ready(function ($) {
             data: {
                 'action': 'wpms',
                 'task': 'reload_analysis',
-                'datas': data
+                'datas': {
+                    'editor': current_editor,
+                    'first_load': first_load,
+                    'post_id': jQuery('.metaseo-progress-bar').data('post_id'),
+                    'title': title,
+                    'meta_title': meta_title,
+                    'mpageurl': mpageurl,
+                    'meta_desc': meta_desc,
+                    'content': mcontent
+                }
             },
             success: function (res) {
                 if (res) {
                     $('.wpmseotab .spinner').hide();
                     $('.metaseo_right').html(res.output);
-                    mcheck = res.check;
+                    mcheck = parseInt(res.check);
                     $('#progressController').val(res.circliful).change();
                     jQuery('.metaseo_tool').qtip({
                         content: {
@@ -72,10 +94,11 @@ jQuery(document).ready(function ($) {
     }
 
     // init load analysis
-    reload_analysis();
+    reload_analysis(1);
+
     // reload analysis
     $('#reload_analysis').on('click', function () {
-        reload_analysis();
+        reload_analysis(0);
     });
 
     drawInactive(iProgressCTX);
@@ -131,10 +154,10 @@ jQuery(document).ready(function ($) {
     drawProgress(aProgress, percentage, $pCaption);
 
     function wpms_validate_analysis() {
-        jQuery(document).on('click', '.metaseo-dashicons.icons-mwarning', function () {
+        jQuery(document).on('click', '.metaseo-dashicons.icons-mboxwarning', function () {
             var $this = $(this);
-            jQuery(this).removeClass('icons-mwarning').addClass('dashicons-yes');
-            if (mcheck == 0) {
+            jQuery(this).removeClass('icons-mboxwarning').addClass('icons-mboxdone').html('done');
+            if (mcheck === 0) {
                 mcheck = jQuery('#metaseo_alanysis_ok').val();
                 mcheck++;
             } else {
@@ -152,7 +175,7 @@ jQuery(document).ready(function ($) {
                     'field': $this.parent('.metaseo_analysis').data('title')
                 },
                 success: function (res) {
-                    if (res != false) {
+                    if (res !== false) {
                         $('#progressController').val(circliful).change();
                     }
                 }
@@ -160,6 +183,4 @@ jQuery(document).ready(function ($) {
 
         });
     }
-
-
 });

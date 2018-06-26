@@ -2,8 +2,8 @@
 Contributors: JoomUnited
 Tags: google, webmaster tools, keywords, meta, meta description, meta keywords, meta title, robots meta, search engine optimization, seo, wordpress seo, yahoo, image optimization, image resize, custom post seo, redirect, redirection, 301, broken link
 Requires at least: 4.0
-Tested up to: 4.9.4
-Stable tag: 3.6.8
+Tested up to: 4.9.6
+Stable tag: 3.7.2
 Requires PHP: 5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -24,6 +24,7 @@ WP Meta SEO gives you the control over all your meta content and images. Bulk SE
 * Generate XML and HTML sitemaps
 * Facebook and Twitter social sharing custom elements per content
 * Breadcrumb generator
+* Gutenberg new WordPress content ediotor compatible!
 
 > <strong>Features included in WP Meta SEO Addon</strong><br>
 > * Google Search Console keyword suggestion in content
@@ -259,6 +260,9 @@ You can also use the link: www.your-website.com/sitemap.xml after checking the o
 = Is there a real interest for SEO to display a HTML sitemap? =
 It could be! if you have a lot of pages that need to be indexed with no specific priority. Our advice is to keep only the main menus of your website in the HTML sitemap.
 
+= Is it compatible with Gutenberg Editor? =
+Yes WP Meta SEO is compatible with Gutenberg editor since 3.7 version.
+
 == Screenshots ==
 
 1. Main dashboard of the plugin with SEO optimization check
@@ -271,6 +275,19 @@ It could be! if you have a lot of pages that need to be indexed with no specific
 1. Google Analytics integration with all main information and view selection
 
 == Changelog ==
+
+= 3.7.2 =
+* Fix : Jutranslation share with JoomUnited
+
+= 3.7.1 =
+* Fix : Sitemap categories not properly added
+* Fix : Broken link display column header
+* Fix : Render meta description on frontend
+
+= 3.7.0 =
+* Add : Compatible with Gutemberg editor
+* Fix : Reload analysis in metabox
+* Fix : Render title tag
 
 = 3.6.8 =
 * Fix : Conflict with Origin PageBuilder plugin

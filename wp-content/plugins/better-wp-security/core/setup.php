@@ -147,6 +147,10 @@ final class ITSEC_Setup {
 			ITSEC_Core::get_scheduler()->register_events();
 		}
 
+		if ( $build < 4094 ) {
+			ITSEC_Core::get_scheduler()->register_events();
+		}
+
 		// Update stored build number.
 		ITSEC_Modules::set_setting( 'global', 'build', ITSEC_Core::get_plugin_build() );
 	}

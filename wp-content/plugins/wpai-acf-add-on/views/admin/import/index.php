@@ -16,7 +16,7 @@
 
 							if ($acf and version_compare($acf->settings['version'], '5.0.0') >= 0){
 
-								$saved_acfs = get_posts(array('posts_per_page' => -1, 'post_type' => 'acf-field-group'));								
+								$saved_acfs = get_posts(array('posts_per_page' => -1, 'post_type' => 'acf-field-group', 'order'=> 'ASC', 'orderby' => 'title'));
 
 								$acfs = acf_local()->groups;								
 

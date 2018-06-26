@@ -116,11 +116,13 @@ class WPMSEOSnippetPreview
     protected function setSlug()
     {
         $frontpage_post_id = (int)(get_option('page_on_front'));
-
+        $permalink_structure = get_option('permalink_structure');
         if (is_object($this->post) && isset($this->post->post_name) && $this->post->post_name !== ''
             && $this->post->ID !== $frontpage_post_id) {
             $this->slug = sanitize_title($this->title);
-            $this->url .= esc_html($this->slug);
+            if (!empty($permalink_structure)) {
+                $this->url .= esc_html($this->slug);
+            }
         }
     }
 

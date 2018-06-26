@@ -433,6 +433,12 @@ div.wpmseo-tab-content {
     float: right;
 }
 
+.reload_analysis .spinner {
+    position: relative;
+    top: 0;
+    right: 0
+}
+
 .gsc_keywords_filter{
     margin: 5px 0;
     width: 100%;
@@ -461,4 +467,12 @@ div.wpmseo-tab-content {
 
 .wpms_show_tooltip{
     float: left;
+}
+
+.icons-mboxdone {
+    color:#46B450
+}
+
+.icons-mboxwarning {
+    color:#FFB900
 }

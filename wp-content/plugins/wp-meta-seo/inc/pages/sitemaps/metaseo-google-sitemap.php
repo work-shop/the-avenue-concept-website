@@ -51,5 +51,12 @@ $w = '99%';
 $text = __('Bring your WordPress website SEO to the next level with the PRO Addon:
  Sitemap for any custom post type, auto submission to the Google Search Console and more!', 'wp-meta-seo');
 $class_btn_close = 'close_sitemap';
-require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/notification.php');
-?>
+if (!empty($_COOKIE['close_dashboard'])) {
+    $check = time() - (int)$_COOKIE['close_dashboard'];
+    $month = 30 * 24 * 60 * 60;
+}
+
+if ((empty($_COOKIE['close_dashboard']) || (!empty($_COOKIE['close_dashboard']) && $check >= $month))
+&& !is_plugin_active(WPMSEO_ADDON_FILENAME)) {
+    require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/notification.php');
+}
