@@ -28,5 +28,10 @@
 	.social-icon{
 		width: 40px;
 		margin-right: 20px;
+
+		@media screen and (max-width: $md) {
+			width: 20px;
+			margin-right: 10px;
+		}
 	}
 }

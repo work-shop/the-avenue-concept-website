@@ -8,7 +8,7 @@
 			</div>
 		</div>
 		<div class="row section-content-row mb4">
-			<div class="col-8 offset-2">
+			<div class="col-sm-8 offset-sm-2">
 				<?php 
 				$images = get_field('our_work_gallery');
 				$size = 'home_gallery'; 
@@ -26,7 +26,7 @@
 		</div>
 		<?php if( get_field('map_file') ): ?>
 			<div class="row">
-				<div class="col-6 offset-3">
+				<div class="col-8 offset-2 col-sm-6 offset-sm-3">
 					<div class="row">
 						<div class="col-md-10 offset-md-1">
 							<div class="home-work-map blob-background blob-c blob-tan">

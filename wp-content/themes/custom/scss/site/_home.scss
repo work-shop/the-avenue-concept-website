@@ -24,6 +24,10 @@ $dot-padding-combined: $dot-padding*2;
 	bottom: 100px;
 	right: 30px;
 
+	@media screen and (max-width: $sm) {
+		display: none;
+	}
+
 	li{
 		width: $dot + $dot-padding-combined + 4px;
 
@@ -111,12 +115,38 @@ $dot-padding-combined: $dot-padding*2;
 #tagline{
 	font-size: 3vw;
 	@media screen and (max-width: $lg) { font-size: 4vw; }
+	@media screen and (max-width: $sm) {
+		font-size: 4.5vw;
+		margin-top: 50px;
+		text-align: center;
+	}
+	@media screen and (max-width: $xs) {
+		font-size: 6vw;
+	}
+}
+
+.donate-col{
+	display: block;
+	@media screen and (max-width: $sm) {
+		display: none !important;
+	}
+}
+
+.responsive-donate-col{
+	display: none !important;
+	@media screen and (max-width: $sm) {
+		display: flex !important;
+	}
 }
 
 #logo-home{
 	width: 200px;
 	z-index: 6;
 	transition: all .3s;
+
+	@media screen and (max-width: $sm) {
+		width: 130px;
+	}
 
 	&.fixed{
 		position: fixed;
@@ -134,20 +164,20 @@ $dot-padding-combined: $dot-padding*2;
 
 //donate button
 
-#paypal-button-hidden-image{
+.paypal-button-hidden-image{
 	width: 1px;
 	height: 1px;
 	display: inline;
 	float: left;
 }
 
-#paypal-button-image{
+.paypal-button-image{
 	width: 100%;
 	max-width: 100%;
 	height: auto;
 }
 
-#paypal-button-form{
+.paypal-button-form{
 	//outline: 1px solid red;
 	width: 100px;
 }
@@ -155,6 +185,12 @@ $dot-padding-combined: $dot-padding*2;
 
 
 //video
+
+#home-video{
+	@media screen and (max-width: $xs) {
+		width: 125%;
+	}
+}
 
 #landing-video{
 	border: 2px solid white;
@@ -189,6 +225,11 @@ $dot-padding-combined: $dot-padding*2;
 .home-event{
 	max-width: 600px;
 	transition: background .1s;
+	padding: 2em;
+
+	@media screen and (max-width: $sm) {
+		padding: 1em;
+	}
 
 	*{
 		color: $dark;
@@ -211,20 +252,52 @@ $dot-padding-combined: $dot-padding*2;
 
 $modal-padding: 100px;
 $modal-subtract: $modal-padding * 2;
+$modal-padding-md: 40px;
+$modal-subtract-md: $modal-padding-md * 2;
 
 .modal{
 	width: calc( 100vw - #{$modal-subtract} );
 	height: calc( 100vh - #{$modal-subtract} );
 	overflow: scroll;
 	top: $modal-padding;
+	border-radius: 10px;
 
 	&.on{
 		left: $modal-padding;
 	}
+
+	@media screen and (max-width: $md) {
+		width: calc( 100vw - #{$modal-subtract-md} );
+		height: calc( 100vh - #{$modal-subtract-md} );
+		top: $modal-padding-md;
+
+		&.on{
+			left: $modal-padding-md;
+		}
+	}
+
+}
+
+#modal-close{
+	top: $modal-padding - 7px;
+	right: $modal-padding / 3.5;
+
+	@media screen and (max-width: $md) {
+		top: $modal-padding-md - 7px;
+		right: 0px;
+	}
+}
+
+.modal-person-email-link:hover{
+	color: $dark;
 }
 
 #blanket{
 	background: transparentize($dark, .1);
+}
+
+.modal-container{
+	padding: 4vw;
 }
 
 .modal-swap-link{

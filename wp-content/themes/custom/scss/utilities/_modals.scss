@@ -7,7 +7,8 @@
 	top: 0;
 	left: 0;
 	z-index: 9;
-	@include transition(transform $modal-transition);
+	opacity: 0;
+	transition: transform $modal-transition;
 
 	@media only screen and (min-width: 1025px){
 		@include transition(transform $modal-transition);
@@ -18,6 +19,7 @@
 	}
 
 	&.on{
+		opacity: 1;
 		@media only screen and (min-width: 1025px){
 			@include transition(transform $modal-transition);
 			@include transform(translate(0%, 0%));

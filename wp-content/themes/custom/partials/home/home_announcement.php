@@ -1,4 +1,4 @@
-<?php if('show_announcement'): ?>
+<?php if( get_field('show_announcement') ): ?>
 	<section class="block section-padded spy-target bg-white spy-first" id="home-announcement">
 		<div class="container-fluid container-fluid-stretch">
 			<div class="block-background announcement-background" style="background-image: url('<?php bloginfo( 'template_directory' ); ?>/images/blob-announcement.svg');"></div>
@@ -29,4 +29,7 @@
 			</div>
 		</div>
 	</section>
+	<?php else: ?>
+		<section class="block bg-white vh10" id="home-separator">
+		</section>
 	<?php endif; ?>

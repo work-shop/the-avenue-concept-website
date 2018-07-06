@@ -35,15 +35,18 @@
 				</a> 											
 				<a href="https://www.instagram.com/avenuepvd" target="_blank">
 					<img src="<?php bloginfo( 'template_directory' );?>/images/instagram.png" class="social-icon">
+				</a>
+				<a href="https://vimeo.com/theavenueconcept" target="_blank">
+					<img src="<?php bloginfo( 'template_directory' );?>/images/vimeo.png" class="social-icon">
 				</a> 
-				<a href="https://twitter.com/avenuepvd?lang=en" target="_blank">
+				<a href="https://twitter.com/avenuepvd" target="_blank">
 					<img src="<?php bloginfo( 'template_directory' );?>/images/twitter.png" class="social-icon">
 				</a>
 			</div>				
 		</div>
 		<div class="site-credit pb1">
 			<a href="http://workshop.co" target="_blank">
-				<h5 class="white font-primary mb0">Site by Work-Shop Design Studio</h5>
+				<h4 class="white font-primary mb0">Site by Work-Shop Design Studio</h4>
 			</a>
 		</div>
 	</div>

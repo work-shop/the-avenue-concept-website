@@ -11,7 +11,7 @@
 			<div class="row section-content-row">
 				<?php  while ( have_rows('upcoming_events') ) : the_row(); ?>
 					<div class="col-6 mb3">
-						<div class="home-event card-event p2 bg-tan">
+						<div class="home-event card-event bg-tan">
 							<?php 
 							$link = get_field('announcement_link');
 							if( $link ): ?>

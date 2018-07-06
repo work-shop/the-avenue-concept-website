@@ -13,12 +13,12 @@
 				<?php  while ( have_rows('mission_elements') ) : the_row(); ?>
 					<div class="col-6 mb3 mission-element">
 						<div class="row">
-							<div class="col-1">
+							<div class="col-sm-1">
 								<h2 class="white">
 									<?php echo $count; ?>
 								</h2>
 							</div>
-							<div class="col-11 col-md-9">
+							<div class="col-sm-11 col-md-9">
 								<h3 class="white font-main">
 									<?php the_sub_field('mission_element_text'); ?>
 								</h3>
