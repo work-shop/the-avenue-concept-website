@@ -5,6 +5,7 @@
 $brand: #6ba442;
 $lime: #bdd73d;
 $green: #008653;
+$dark-green: #263a15;
 $tan: #dddb91;
 $slate: #a4b5ba;
 
@@ -15,7 +16,7 @@ $light: #D8D8D8;
 $medium-light: #9B9B9B;
 $medium: #828282;
 $medium-dark: #555555;
-$dark: #293f46;
+$dark: #2a3f46;
 
 
 //utility colors
@@ -30,7 +31,7 @@ $nav-drop-after: $nav-height - 1px;
 $nav-height-mobile: 80px;
 $sitewide-alert-height: 60px;
 $container-fluid-max-width: none;
-$container-fluid-padding: 40px;
+$container-fluid-padding: 100px;
 $container-fluid-padding-md: $container-fluid-padding / 2;
 $container-fluid-padding-mobile: 15px;
 $container-fluid-sum: $container-fluid-padding * 2;
@@ -38,7 +39,7 @@ $container-fluid-sum-mobile: $container-fluid-padding-mobile * 2;
 
 
 //transitions
-$modal-transition: .35s;
+$modal-transition: .75s;
 
 
 //breakpoints
@@ -51,13 +52,15 @@ $lg: 1199px;
 //site
 $body-background-color: white;
 
-$font-main: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
-$font-italic: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
-$font-bold: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
-$font-bold-italic: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
+$font-main: 'UntitledSansWeb-Regular', Helvetica, Arial, Sans-serif;
+$font-italic: 'UntitledSansWeb-RegularItalic', Helvetica, Arial, Sans-serif;
+$font-bold: 'UntitledSansWeb-Bold', Helvetica, Arial, Sans-serif;
+$font-bold-italic: 'UntitledSansWeb-BoldItalic', Helvetica, Arial, Sans-serif;
 $font-light: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
 $font-light-italic: 'Untitled Sans Test', Helvetica, Arial, Sans-serif;
-$font-secondary: 'Fugue', Georgia, Times New Roman, Serif;
-$font-secondary-italic: 'Fugue', Georgia, Times New Roman, Serif;
-$font-secondary-bold: 'Fugue', Georgia, Times New Roman, Serif;
-$font-secondary-bold-italic: 'Fugue', Georgia, Times New Roman, Serif;
+$font-secondary: 'raisonne-demibold', Georgia, Times New Roman, Serif;
+$font-secondary-italic: 'raisonne-demibold-italic', Georgia, Times New Roman, Serif;
+$font-secondary-bold: 'raisonne-demibold', Georgia, Times New Roman, Serif;
+$font-secondary-bold-italic: 'raisonne-demibold-italic', Georgia, Times New Roman, Serif;
+
+

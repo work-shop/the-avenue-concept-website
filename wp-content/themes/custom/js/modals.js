@@ -3,7 +3,7 @@
 var modalProperties = {};
 
 function modals( config ) {
-	console.log('modals.js loaded');
+	//console.log('modals.js loaded');
 
 	modalProperties.modalClass = config.modalClass || 'modal';
 	modalProperties.modalToggleClass = config.modalToggleClass || 'modal-toggle';
@@ -32,7 +32,7 @@ function modals( config ) {
 		$('.modal-swap').click(function(e){
 			e.preventDefault();
 			var target = $(this).data('modal-target');
-			modalToggle(target,true);	
+			modalToggle(target, true);	
 		});
 
 	});
@@ -44,12 +44,13 @@ function modalToggle(_target, swap){
 
 	var modalTarget = '#' + _target;
 
+
 	if(swap){
+		console.log(modalTarget);
 		$('.' + modalProperties.modalClass).removeClass('on');
-		$('.' + modalTarget).removeClass('off').addClass('on');
+		$(modalTarget).removeClass('off').addClass('on');
 	}
 	else{
-		console.log('else');
 		if( $('body').hasClass( modalProperties.modalOffBodyClass ) ){
 			$(modalTarget).removeClass('off').addClass('on');
 			$('body').removeClass( modalProperties.modalOffBodyClass ).addClass( modalProperties.modalOnBodyClass );

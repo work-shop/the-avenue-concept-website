@@ -158,3 +158,22 @@ function itsec_record_first_login( $username, $user ) {
 }
 
 add_action( 'wp_login', 'itsec_record_first_login', 15, 2 );
+
+/**
+ * Basename the 'thumb' for attachments to prevent directory traversal
+ * when deleting the main attachment.
+ *
+ * @param array $data
+ *
+ * @return array
+ */
+function itsec_basename_attachment_thumbs( $data ) {
+
+	if ( isset( $data['thumb'] ) && ITSEC_Modules::get_setting( 'wordpress-tweaks', 'patch_thumb_file_traversal' ) ) {
+		$data['thumb'] = basename( $data['thumb'] );
+	}
+
+	return $data;
+}
+
+add_filter( 'wp_update_attachment_metadata', 'itsec_basename_attachment_thumbs' );

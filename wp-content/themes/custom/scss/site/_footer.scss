@@ -1,2 +1,32 @@
 
 /* footer */
+
+#footer{
+	*{
+		color: white;
+	}
+
+	#logo-footer{
+		width: 190px;
+	}
+
+	address,p{
+		font-size: 19px;
+		line-height: 1.5;
+
+		@media screen and (max-width: $md) {
+			font-size: 13px;
+		}
+	}
+
+	.footer-col{
+		@media screen and (max-width: $sm) {
+			margin-bottom: 2em;
+		}
+	}
+
+	.social-icon{
+		width: 40px;
+		margin-right: 20px;
+	}
+}

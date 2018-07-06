@@ -84,7 +84,6 @@ final class ITSEC_Log_Util {
 				if ( in_array( $sort_by, $valid_columns ) ) {
 					$sort_by_column[$index] = "$sort_by DESC";
 				} else if ( ! preg_match( "/^$regex_valid_columns\s+(?:DESC|ASC)$/i", $sort_by ) ) {
-					trigger_error( "Invalid sort_by_column format: $sort_by" );
 					unset( $sort_by_column[$index] );
 				}
 			}

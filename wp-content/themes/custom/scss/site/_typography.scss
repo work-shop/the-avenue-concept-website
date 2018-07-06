@@ -1,13 +1,4 @@
-@font-face {
-	font-family: 'modern_pictograms_proregular';
-	src: url('../fonts/modernpictogramspro_234.eot');
-	src: url('../fonts/modernpictogramspro_234.eot?#iefix') format('embedded-opentype'),
-		url('../fonts/modernpictogramspro_234.woff') format('woff'),
-		url('../fonts/modernpictogramspro_234.ttf') format('truetype');
-	font-weight: normal;
-	font-style: normal;
-}
-
+@import "../../fonts/fonts.css";
 
 body{
 	font-family: $font-secondary;
@@ -17,6 +8,10 @@ body{
 }
 
 *{
+	font-family: $font-main;
+}
+
+.font-main{
 	font-family: $font-main;
 }
 
@@ -48,8 +43,14 @@ h1,.h1{
 }
 
 h2,.h2{
-	@include text-size($text-h2);
+	//@include text-size($text-h2);
 	font-family: $font-secondary;
+
+	font-size: 3.5vw;
+	@media screen and (max-width: $md) { font-size: 5vw; }
+	line-height: 1.1;
+
+
 }
 
 h3,.h3{

@@ -3,7 +3,7 @@ Contributors: ithemes, chrisjean, gerroald, mattdanner, timothyblynjacobs
 Tags: security, security plugin, malware, hack, secure, block, SSL, admin, htaccess, lockdown, login, protect, protection, anti virus, attack, injection, login security, maintenance, permissions, prevention, authentication, administration, password, brute force, ban, permissions, bots, user agents, xml rpc, security log
 Requires at least: 4.7
 Tested up to: 4.9.6
-Stable tag: 7.0.3
+Stable tag: 7.0.4
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -188,6 +188,11 @@ Free support may be available with the help of the community in the <a href="htt
 5. Free malware scan powered by Sucuri SiteCheck.
 
 == Changelog ==
+
+= 7.0.4 =
+* Enhancement: Add mitigation for the WordPress Attachment File Traversal and Deletion vulnerability.
+* Tweak: Fire a WordPress action whenever settings are updated.
+* Bug Fix: Improved input sanitization on the logs page to prevent triggering warnings.
 
 = 7.0.3 =
 * Security Fix: Fixed SQL injection vulnerability in the logs page. Note: Admin privileges are required to exploit this vulnerability. Thanks to Çlirim Emini, Penetration Tester at sentry.co.com, for reporting this vulnerability.
@@ -476,5 +481,5 @@ Free support may be available with the help of the community in the <a href="htt
 
 == Upgrade Notice ==
 
-= 7.0.3 =
-Version 7.0.3 contains an important security big fix. It is recommended for all users.
+= 7.0.4 =
+Version 7.0.4 contains an important security bug fix. It is recommended for all users.

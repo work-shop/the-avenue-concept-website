@@ -1,7 +1,7 @@
 "use strict";
 
 function menuToggle( config ) {
-	console.log('menu-toggle.js loaded');
+	//console.log('menu-toggle.js loaded');
 
 	$(document).ready( function() {
 		$(config.menuToggleSelector).click(function(e) {

@@ -2,8 +2,7 @@
 
 
 function loading( config ){
-
-	console.log('loading.js loaded');
+	//console.log('loading.js loaded');
 
 	$( document ).ready( function() {
 		setTimeout(function(){

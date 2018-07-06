@@ -20,7 +20,7 @@ var config = {
         viewportLabelPxSelector: '#viewport-label-px'
     },
     stickyNav: {
-        selector: '#nav',
+        selector: '#logo-home',
         navHeight: global_config.navHeight,
         mobileNavHeight: global_config.mobileNavHeight,
         mobileBreakpoint: global_config.mobileBreakpoint,

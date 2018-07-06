@@ -1,7 +1,7 @@
 'use strict';
 
 function viewportLabel( config ) {
-	console.log('viewport-label.js loaded');
+	//console.log('viewport-label.js loaded');
 
     var timeout = false, // holder for timeout id
     delay = 50, // delay after event is "complete" to run callback

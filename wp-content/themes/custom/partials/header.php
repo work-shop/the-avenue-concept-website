@@ -30,7 +30,8 @@
 </head>
 <body <?php body_class('loading before-scroll modal-off menu-closed dropdown-off'); ?>>
 
-	<?php get_template_part('partials/nav'); ?>
-	<?php get_template_part('partials/menus'); ?>
+	<?php // get_template_part('partials/nav'); //when turning this back on, be sure to modify home.scss to turn back on body padding ?>
+	<?php // get_template_part('partials/menus'); ?>
+	<?php get_template_part('partials/landing_page_nav'); ?>
 
 	<main id="content">

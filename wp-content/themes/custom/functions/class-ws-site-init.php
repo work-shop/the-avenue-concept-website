@@ -28,11 +28,9 @@ class WS_Site {
 
     public function register_image_sizing() {
         if ( function_exists( 'add_image_size' ) ) {
-
-            add_image_size('social_card', 1200, 630, array( 'x_crop_position' => 'center', 'y_crop_position' => 'center'));
             add_image_size('acf_preview', 300, 300, false);
             add_image_size('page_hero', 1440, 660, false);
-
+            add_image_size('home_gallery', 1440, 1080, false);
         }
     }
 
@@ -57,6 +55,8 @@ class WS_Site {
             $main_css_ver = filemtime( $compiled_resources_dir . $main_css ); // version suffixes for cache-busting.
             $main_js_ver = filemtime( $compiled_resources_dir . $main_css ); // version suffixes for cache-busting.
 
+            wp_register_style( 'fonts', get_template_directory_uri() . '/fonts/fonts.css');
+            wp_enqueue_style( 'fonts' );  
             wp_enqueue_style('main-css', $compiled_resources_uri . $main_css, array(), null);
             wp_enqueue_script('jquery');
             wp_enqueue_script('main-js', $compiled_resources_uri . $main_js, array('jquery'), $main_js_ver);

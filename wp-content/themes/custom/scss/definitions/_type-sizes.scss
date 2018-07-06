@@ -11,19 +11,19 @@ If a key is supplied that is not in the $breakpoints list, the mixin will throw 
 
 //default sizes
 $text-h1: (
-  xs: (27px, 27px),
-  sm: (27px, 27px),
-  md: (36px, 36px),
-  lg: (45px, 46px),
-  xl: (55px, 56px)  
+  xs: (27px, 31px),
+  sm: (27px, 31px),
+  md: (36px, 42px),
+  lg: (45px, 53px),
+  xl: (55px, 65px)  
 );
 
 $text-h2: (
-  xs: (16px, 24px),
-  sm: (17px, 24px),
-  md: (24px, 30px),
-  lg: (29px, 40px),
-  xl: (33px, 35px)  
+  xs: (27px, 31px),
+  sm: (27px, 31px),
+  md: (36px, 42px),
+  lg: (40px, 50px),
+  xl: (50px, 60px) 
 );
 
 $text-h3: (

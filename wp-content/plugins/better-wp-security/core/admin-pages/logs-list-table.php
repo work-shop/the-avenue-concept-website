@@ -268,7 +268,7 @@ final class ITSEC_Logs_List_Table extends ITSEC_WP_List_Table {
 		$hidden_fields    = array( 'id' );
 		$sortable_columns = $this->get_sortable_columns();
 
-		if ( isset( $_GET['orderby'], $_GET['order'] ) ) {
+		if ( isset( $_GET['orderby'], $_GET['order'] ) && is_string( $_GET['orderby'] ) && is_string( $_GET['order'] ) ) {
 			if ( preg_match( '/^[a-z_]+$/', $_GET['orderby'] ) ) {
 				$sort_by_column = $_GET['orderby'];
 			} else {

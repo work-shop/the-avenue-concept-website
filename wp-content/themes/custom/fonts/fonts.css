@@ -8,3 +8,67 @@
 	font-weight: normal;
 	font-style: normal;
 }
+
+@font-face {
+    font-family: 'raisonne-demibold';
+    src: url('raisonne-demibold.eot');
+    src: url('raisonne-demibold.eot?#iefix') format('embedded-opentype'),
+         url('raisonne-demibold.woff') format('woff'),
+         url('raisonne-demibold.woff2') format('woff2'),
+         url('raisonne-demibold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'raisonne-demibold-italic';
+    src: url('raisonne-demibold-italic.eot');
+    src: url('raisonne-demibold-italic.eot?#iefix') format('embedded-opentype'),
+         url('raisonne-demibold-italic.woff') format('woff'),
+         url('raisonne-demibold-italic.woff2') format('woff2'),
+         url('raisonne-demibold-italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'UntitledSansWeb-Regular';
+    src: url('UntitledSansWeb-Regular.eot');
+    src: url('UntitledSansWeb-Regular.eot?#iefix') format('embedded-opentype'),
+         url('UntitledSansWeb-Regular.woff') format('woff'),
+         url('UntitledSansWeb-Regular.woff2') format('woff2'),
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'UntitledSansWeb-RegularItalic';
+    src: url('UntitledSansWeb-RegularItalic.eot');
+    src: url('UntitledSansWeb-RegularItalic.eot?#iefix') format('embedded-opentype'),
+         url('UntitledSansWeb-RegularItalic.woff') format('woff'),
+         url('UntitledSansWeb-RegularItalic.woff2') format('woff2'),
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'UntitledSansWeb-Bold';
+    src: url('UntitledSansWeb-Bold.eot');
+    src: url('UntitledSansWeb-Bold.eot?#iefix') format('embedded-opentype'),
+         url('UntitledSansWeb-Bold.woff') format('woff'),
+         url('UntitledSansWeb-Bold.woff2') format('woff2'),
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'UntitledSansWeb-BoldItalic';
+    src: url('UntitledSansWeb-BoldItalic.eot');
+    src: url('UntitledSansWeb-BoldItalic.eot?#iefix') format('embedded-opentype'),
+         url('UntitledSansWeb-BoldItalic.woff') format('woff'),
+         url('UntitledSansWeb-BoldItalic.woff2') format('woff2'),
+    font-weight: normal;
+    font-style: normal;
+}
+

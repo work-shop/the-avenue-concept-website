@@ -2,7 +2,7 @@
 
 
 function linksNewtab( config ) {
-	console.log('links-newtab.js loaded');
+	//console.log('links-newtab.js loaded');
 
 	$(document).ready( function() {
 		$('a').each(function() {

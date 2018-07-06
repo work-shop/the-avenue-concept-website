@@ -1,0 +1,605 @@
+
+/* SVG CODES */
+//be sure to include the viewbox property, or sizing will not work
+//do not include a fill color or stroke color
+
+$blob-a: '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 306">
+<path d="M538.8,262.8c-38.9,25-74,14.1-110.4,19.2c-55.7,7.7-86.3,19-130.2,22.8c-66.8,5.8-95.5-12.6-149.3-38.6
+c-59.7-28.8-127-54-143.5-87c-31.2-62.5,79.1-116,189.8-138.8C258.6,27.4,288.8,0,350.9,0c41.2,0,67.4,22.7,148.8,13.6
+C583.2,4.2,656.1,187.6,538.8,262.8z"/>
+</svg>';
+
+$blob-b: '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 322">
+<path d="M570.1,264.5c-46.2,22.3-103.5,17.1-143.8,22.6c-61.8,8.5-97.1,28.7-145.9,33c-74.1,6.5-91.9-11.7-151.6-40.5
+c-66.3-32-112.1-21.9-125-60.8c-17.1-51.6,24-58.8,121-138.3C221.5,1.2,274-24.9,499.3,26.7C583.5,45.9,636.4,232.5,570.1,264.5z"/>
+</svg>';
+
+$blob-c: '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 381">
+<path d="M598.8,257.1c-11.5,93.5-96.8,68.8-132.9,73.8c-55.2,7.6-124.7,44.6-168.2,48.5c-66.2,5.8-93-8.2-146.3-33.9
+c-59.2-28.6-127.6-57.9-144-90.6c-30.9-61.9,39.9-111.6,139.4-163.1C209.2,59.5,243.4,0,305.1,0C345.9,0,620.6,80.6,598.8,257.1z"/>
+</svg>';
+
+$blob-d: '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 349">
+<path d="M130.8,40.9c25-11,68.3-12.8,106.3-17.1c35.3-4,100.2-19.2,140.7-22.8c61.6-5.4,72.3,9.8,121.9,33.7
+c55.1,26.6,100.5,49.4,100.3,98.8c-0.4,97.5-73.3,117.3-172.8,148.1c-70.5,21.8-94.1,58.3-150.8,66.4
+C204.1,358.3-205.3,188.6,130.8,40.9z"/>
+</svg>';
+
+$blob-e: '<svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 371">
+<path d="M538.2,231.2c-11.1,14.5-73,93.5-151.1,118.5c-143.8,46-342.9,20.6-383.5-138c-28.8-112.5,121.5-88.8,236-127
+C337.4,52.1,404.3,0,473.9,0C589.9,0,655.6,77.9,538.2,231.2z"/>
+</svg>';
+
+
+
+/* SVG HELPER FUNCTIONS */
+
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@function svg-fill ($svg, $color) {
+  @return str-replace($svg, '<svg', '<svg fill="#{$color}"');
+}
+
+@function svg-fill-stroke ($svg, $fill-color, $stroke-color, $stroke-width ) {
+  @return str-replace($svg, '<svg', '<svg fill="#{$fill-color}" stroke="#{$stroke-color}" stroke-width="#{$stroke-width}" ');
+}
+
+@function svg-size ($svg, $width, $height) {
+  $svg: str-replace($svg, '<svg', '<svg width="#{$width}"');
+  $svg: str-replace($svg, '<svg', '<svg height="#{$height}"');
+
+  @return $svg;
+}
+
+
+
+/* BLOB STYLES */
+
+.blob-background {
+  position: relative;
+  z-index: 1;
+  
+  &:after{
+    content: '';
+    display: block;
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center center;
+    $svg: svg-fill($blob-a, $brand);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+
+  &.blob-a{
+    &:after{
+      $svg: svg-fill($blob-a, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-b, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-b{
+    &:after{
+      $svg: svg-fill($blob-b, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-c, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-c{
+    &:after{
+      $svg: svg-fill($blob-c, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-d, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-d{
+    &:after{
+      $svg: svg-fill($blob-d, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-e, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-e{
+    &:after{
+      $svg: svg-fill($blob-e, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-a, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+}
+
+
+
+.blob-brand{
+  &:after{
+    $svg: svg-fill($blob-a, $brand);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &:hover:after{
+    $svg: svg-fill($blob-b, $brand);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &.blob-a{
+    &:after{
+      $svg: svg-fill($blob-a, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-b, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-b{
+    &:after{
+      $svg: svg-fill($blob-b, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-c, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-c{
+    &:after{
+      $svg: svg-fill($blob-c, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-d, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-d{
+    &:after{
+      $svg: svg-fill($blob-d, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-e, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-e{
+    &:after{
+      $svg: svg-fill($blob-e, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-a, $brand);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+}
+
+
+.blob-dark{
+  &:after{
+    $svg: svg-fill($blob-a, $dark);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &:hover:after{
+    $svg: svg-fill($blob-b, $dark);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &.blob-a{
+    &:after{
+      $svg: svg-fill($blob-a, $dark);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-b, $dark);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-b{
+    &:after{
+      $svg: svg-fill($blob-b, $dark);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-c, $dark);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-c{
+    &:after{
+      $svg: svg-fill($blob-c, $dark);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-d, $dark);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-d{
+    &:after{
+      $svg: svg-fill($blob-d, $dark);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-e, $dark);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-e{
+    &:after{
+      $svg: svg-fill($blob-e, $dark);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-a, $dark);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+}
+
+
+.blob-tan{
+  &:after{
+    $svg: svg-fill($blob-a, $tan);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &:hover:after{
+    $svg: svg-fill($blob-b, $tan);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &.blob-a{
+    &:after{
+      $svg: svg-fill($blob-a, $tan);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-b, $tan);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-b{
+    &:after{
+      $svg: svg-fill($blob-b, $tan);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-c, $tan);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-c{
+    &:after{
+      $svg: svg-fill($blob-c, $tan);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-d, $tan);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-d{
+    &:after{
+      $svg: svg-fill($blob-d, $tan);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-e, $tan);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-e{
+    &:after{
+      $svg: svg-fill($blob-e, $tan);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-a, $tan);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+}
+
+
+.blob-lime{
+  &:after{
+    $svg: svg-fill($blob-a, $lime);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &:hover:after{
+    $svg: svg-fill($blob-b, $lime);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &.blob-a{
+    &:after{
+      $svg: svg-fill($blob-a, $lime);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-b, $lime);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-b{
+    &:after{
+      $svg: svg-fill($blob-b, $lime);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-c, $lime);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-c{
+    &:after{
+      $svg: svg-fill($blob-c, $lime);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-d, $lime);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-d{
+    &:after{
+      $svg: svg-fill($blob-d, $lime);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-e, $lime);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-e{
+    &:after{
+      $svg: svg-fill($blob-e, $lime);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-a, $lime);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+}
+
+
+.blob-green{
+  &:after{
+    $svg: svg-fill($blob-a, $green);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &:hover:after{
+    $svg: svg-fill($blob-b, $green);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &.blob-a{
+    &:after{
+      $svg: svg-fill($blob-a, $green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-b, $green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-b{
+    &:after{
+      $svg: svg-fill($blob-b, $green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-c, $green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-c{
+    &:after{
+      $svg: svg-fill($blob-c, $green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-d, $green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-d{
+    &:after{
+      $svg: svg-fill($blob-d, $green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-e, $green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-e{
+    &:after{
+      $svg: svg-fill($blob-e, $green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-a, $green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+}
+
+
+.blob-dark-green{
+  &.blob-a{
+    &:after{
+      $svg: svg-fill($blob-a, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-b, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+  &.blob-a{
+    &:after{
+      $svg: svg-fill($blob-a, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-b, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-b{
+    &:after{
+      $svg: svg-fill($blob-b, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-c, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-c{
+    &:after{
+      $svg: svg-fill($blob-c, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-d, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-d{
+    &:after{
+      $svg: svg-fill($blob-d, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-e, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-e{
+    &:after{
+      $svg: svg-fill($blob-e, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-a, $dark-green);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+}
+
+.blob-white{
+  &:after{
+    $svg: svg-fill($blob-a, $white);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &:hover:after{
+    $svg: svg-fill($blob-b, $white);
+    background-image: url('data:image/svg+xml;utf8,#{$svg}');
+  }
+  &.blob-a{
+    &:after{
+      $svg: svg-fill($blob-a, $white);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-b, $white);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-b{
+    &:after{
+      $svg: svg-fill($blob-b, $white);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-c, $white);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-c{
+    &:after{
+      $svg: svg-fill($blob-c, $white);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-d, $white);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-d{
+    &:after{
+      $svg: svg-fill($blob-d, $white);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-e, $white);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+
+  &.blob-e{
+    &:after{
+      $svg: svg-fill($blob-e, $white);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+    &:hover:after{
+      $svg: svg-fill($blob-a, $white);
+      background-image: url('data:image/svg+xml;utf8,#{$svg}');
+    }
+  }
+}
