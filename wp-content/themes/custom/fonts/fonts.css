@@ -37,7 +37,7 @@
     src: url('UntitledSansWeb-Regular.eot');
     src: url('UntitledSansWeb-Regular.eot?#iefix') format('embedded-opentype'),
          url('UntitledSansWeb-Regular.woff') format('woff'),
-         url('UntitledSansWeb-Regular.woff2') format('woff2'),
+         url('UntitledSansWeb-Regular.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
@@ -47,7 +47,7 @@
     src: url('UntitledSansWeb-RegularItalic.eot');
     src: url('UntitledSansWeb-RegularItalic.eot?#iefix') format('embedded-opentype'),
          url('UntitledSansWeb-RegularItalic.woff') format('woff'),
-         url('UntitledSansWeb-RegularItalic.woff2') format('woff2'),
+         url('UntitledSansWeb-RegularItalic.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
@@ -57,7 +57,7 @@
     src: url('UntitledSansWeb-Bold.eot');
     src: url('UntitledSansWeb-Bold.eot?#iefix') format('embedded-opentype'),
          url('UntitledSansWeb-Bold.woff') format('woff'),
-         url('UntitledSansWeb-Bold.woff2') format('woff2'),
+         url('UntitledSansWeb-Bold.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }
@@ -67,7 +67,7 @@
     src: url('UntitledSansWeb-BoldItalic.eot');
     src: url('UntitledSansWeb-BoldItalic.eot?#iefix') format('embedded-opentype'),
          url('UntitledSansWeb-BoldItalic.woff') format('woff'),
-         url('UntitledSansWeb-BoldItalic.woff2') format('woff2'),
+         url('UntitledSansWeb-BoldItalic.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
 }

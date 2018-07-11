@@ -199,6 +199,27 @@ $dot-padding-combined: $dot-padding*2;
 
 
 
+//home work
+
+.slick-home{
+
+	img{
+		padding: 15px;
+		@media screen and (max-width: $md) {
+			padding: 0;
+		}
+	}
+	.caption{
+		margin-top: .5em;
+		text-align: center;
+		font-size: 17px;
+		@media screen and (max-width: $md) {
+			font-size: 14px;
+		}
+	}
+}
+
+
 
 //home announcement
 

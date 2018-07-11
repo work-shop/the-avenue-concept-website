@@ -13,7 +13,7 @@
 					<div class="col-6 mb3">
 						<div class="home-event card-event bg-tan">
 							<?php 
-							$link = get_field('announcement_link');
+							$link = get_sub_field('event_link');
 							if( $link ): ?>
 								<a href="<?php echo $link['url']; ?>" target="<?php echo $link['target']; ?>">
 								<?php endif; ?>

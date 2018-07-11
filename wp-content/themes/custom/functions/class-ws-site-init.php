@@ -31,6 +31,7 @@ class WS_Site {
             add_image_size('acf_preview', 300, 300, false);
             add_image_size('page_hero', 1440, 660, false);
             add_image_size('home_gallery', 1440, 1080, false);
+            add_image_size('home_gallery_cropped', 1440, 1080, true);
         }
     }
 

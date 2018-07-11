@@ -323,7 +323,7 @@ $text-button: (
 	position: absolute;
 	top: 50%;
 	margin-top: -50px;
-	left: -90px;
+	left: 10px;
 	z-index: 2;
 	font-size: 0;
 	height: 100px;
@@ -370,7 +370,7 @@ $text-button: (
 
 	&.slick-next{
 		left: auto;
-		right: -90px;
+		right: 10px;
 
 		@media screen and (max-width: $md) {
 			right: 0;

@@ -14,7 +14,22 @@
 		?>
 	</title>
 
-	<!-- typekit or other remote fonts -->
+	<?php 
+	$social_title = 'The Avenue Concept'; 
+	$social_description = '';
+	$social_url = 'http://theavenueconcept.com';
+	$social_image = get_bloginfo( template_directory ) . '/images/social_card_v1.png';
+	?>
+
+	<!-- Facebook Open Graph data -->
+	<meta property="og:title" content="<?php echo $social_title; ?>" />
+	<meta property="og:description" content="<?php echo $social_description; ?>" />
+	<meta property="og:image" content="<?php echo $social_image; ?>" />
+	<meta property="og:url" content="<?php echo $social_url; ?>" />
+	<meta property="og:type" content="website" />
+
+	<!-- Twitter Card data -->
+	<meta name="twitter:card" value="<?php echo $social_description; ?>">
 
 	<link rel="icon" type="image/png" sizes="16x16" href="<?php bloginfo('template_directory'); ?>/images/favicon-16x16.png">
 	<link rel="icon" type="image/png" sizes="32x32" href="<?php bloginfo('template_directory'); ?>/images/favicon-32x32.png">
@@ -23,7 +38,7 @@
 
 	<meta name="description" content="<?php bloginfo('description'); ?>">
 	<meta name="author" content="Work-Shop">
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="viewport" content="width=device-width, initial-cale=1, maximum-scale=1">
 
 	<?php wp_head(); ?>
 
