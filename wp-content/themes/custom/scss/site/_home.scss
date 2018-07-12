@@ -279,7 +279,9 @@ $modal-subtract-md: $modal-padding-md * 2;
 .modal{
 	width: calc( 100vw - #{$modal-subtract} );
 	height: calc( 100vh - #{$modal-subtract} );
-	overflow: scroll;
+	//overflow: scroll;
+	overflow-y: scroll;
+	-webkit-overflow-scrolling: touch;
 	top: $modal-padding;
 	border-radius: 10px;
 

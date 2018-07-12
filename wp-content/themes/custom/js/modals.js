@@ -44,16 +44,17 @@ function modalToggle(_target, swap){
 
 	var modalTarget = '#' + _target;
 
-
 	if(swap){
 		console.log(modalTarget);
 		$('.' + modalProperties.modalClass).removeClass('on');
 		$(modalTarget).removeClass('off').addClass('on');
+		setOverflow('scroll', modalTarget);
 	}
 	else{
 		if( $('body').hasClass( modalProperties.modalOffBodyClass ) ){
 			$(modalTarget).removeClass('off').addClass('on');
 			$('body').removeClass( modalProperties.modalOffBodyClass ).addClass( modalProperties.modalOnBodyClass );
+			setOverflow('scroll', modalTarget);
 		}	
 	}
 
@@ -65,8 +66,19 @@ function closeModal(){
 	if($('body').hasClass( modalProperties.modalOnBodyClass )){
 		$( '.' + modalProperties.modalClass ).removeClass('on').addClass('off');
 		$('body').removeClass( modalProperties.modalOnBodyClass ).addClass( modalProperties.modalOffBodyClass );
+		setOverflow('auto');
 	}
 
+}
+
+function setOverflow(state, modalTarget){
+	$('.modal').css('overflow','auto');
+	if(state === 'scroll'){
+		setTimeout(function() {
+			$(modalTarget).css('overflow','scroll');
+			console.log('set overflow scroll');
+		}, 500);
+	}
 }
 
 

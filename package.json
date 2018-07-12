@@ -21,6 +21,7 @@
     "watch": "gulp",
     "build": "gulp build",
     "deploy": "./.deploy.sh",
+    "deploy-production": "./.deploy-production.sh",
     "pull-database": "./.pull-database.sh"
   },
   "devDependencies": {
