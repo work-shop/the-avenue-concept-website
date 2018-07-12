@@ -15,10 +15,10 @@
 	</title>
 
 	<?php 
-	$social_title = 'The Avenue Concept'; 
-	$social_description = '';
-	$social_url = 'http://theavenueconcept.com';
-	$social_image = get_bloginfo( template_directory ) . '/images/social_card_v1.png';
+	$social_title = get_field('social_media_title'); 
+	$social_description = get_field('social_media_description');
+	$social_url = get_field('social_media_url'); 
+	$social_image = get_bloginfo( template_directory ) . '/images/social_card_v1.jpg';
 	?>
 
 	<!-- Facebook Open Graph data -->
