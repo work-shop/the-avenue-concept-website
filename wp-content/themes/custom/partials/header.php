@@ -37,7 +37,7 @@
 	<link rel="apple-touch-icon" href="<?php bloginfo('template_directory'); ?>/images/apple-icon.png">
 
 	<meta name="description" content="<?php bloginfo('description'); ?>">
-	<meta name="author" content="Work-Shop">
+	<meta name="author" content="Work-Shop Design Studio http://workshop.co">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
 	<?php wp_head(); ?>

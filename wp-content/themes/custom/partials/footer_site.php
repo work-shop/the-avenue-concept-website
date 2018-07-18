@@ -13,7 +13,7 @@
 			<div class="col-md-6 col-lg-3 footer-col">
 				<address class="footer-address">
 					The Avenue Concept<br>
-					304 Lockwood Avenue<br>
+					304 Lockwood Street<br>
 					Providence, RI 02907
 				</address>
 			</div>
