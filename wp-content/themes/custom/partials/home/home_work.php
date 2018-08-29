@@ -3,15 +3,15 @@
 		<div class="row section-header-row">
 			<div class="col-lg-12 col-xl-8">
 				<h3 class="section-header white">
-					Founded in Providence, RI in 2012, The Avenue Concept was the city's first private public art program. Since then it has installed or exhibited more than 150 works of public art, and invested $1.1million in both artwork and infrastucture.
+                    <?php the_field('our_work_heading'); ?>
 				</h3>
 			</div>
 		</div>
 		<div class="row section-content-row mb4">
 			<div class="col-sm-10 offset-sm-1">
-				<?php 
+				<?php
 				$images = get_field('our_work_gallery');
-				$size = 'home_gallery'; 
+				$size = 'home_gallery';
 				if( $images ): ?>
 					<div class="slick slick-home">
 						<?php foreach( $images as $image ): ?>
