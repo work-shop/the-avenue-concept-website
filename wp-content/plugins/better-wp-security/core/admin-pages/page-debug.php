@@ -89,12 +89,12 @@ final class ITSEC_Debug_Page {
 			if ( empty( $_POST['data']['id'] ) ) {
 				ITSEC_Response::add_error( new WP_Error( 'itsec-debug-page-run-event-missing-id', __( 'The server did not receive a valid request. The required "data.id" argument for the "run_event" method is missing.', 'better-wp-security' ) ) );
 			} elseif ( ! empty( $_POST['data']['data'] ) ) {
-				$data = json_decode( wp_unslash( $_POST['data']['data'] ), true );
+				$hash = $_POST['data']['data'];
 
-				if ( ! is_array( $data ) ) {
-					ITSEC_Response::add_error( new WP_Error( 'itsec-debug-page-run-event-invalid-data', __( 'The server did not receive a valid request. The "data.data" argument for the "run_event" method is invalid JSON.', 'better-wp-security' ) ) );
+				if ( ! is_string( $hash ) ) {
+					ITSEC_Response::add_error( new WP_Error( 'itsec-debug-page-run-event-invalid-data', __( 'The server did not receive a valid request. The "data.data" argument for the "run_event" method is an invalid string.', 'better-wp-security' ) ) );
 				} else {
-					ITSEC_Core::get_scheduler()->run_single_event( $_POST['data']['id'], $data );
+					ITSEC_Core::get_scheduler()->run_single_event_by_hash( $_POST['data']['id'], $hash );
 					ITSEC_Response::set_response( $this->get_events_table() );
 					ITSEC_Response::set_success( true );
 					ITSEC_Response::add_message( __( 'Event successfully run.', 'better-wp-security' ) );
@@ -225,7 +225,7 @@ final class ITSEC_Debug_Page {
 				<th><?php esc_html_e( 'ID', 'better-wp-security' ) ?></th>
 				<th><?php esc_html_e( 'Fire At', 'better-wp-security' ) ?></th>
 				<th><?php esc_html_e( 'Schedule', 'better-wp-security' ) ?></th>
-				<th><?php esc_html_e( 'Data', 'better-wp-security' ) ?></th>
+				<th><button class="button-link" id="itsec-events-data-toggle"><?php esc_html_e( 'Data', 'better-wp-security' ) ?></button></th>
 				<th></th>
 			</tr>
 			</thead>
@@ -233,12 +233,12 @@ final class ITSEC_Debug_Page {
 			<?php foreach ( array_merge( $scheduler->get_recurring_events(), $scheduler->get_single_events() ) as $event ) : ?>
 				<tr>
 					<td><?php echo esc_html( $event['id'] ); ?></td>
-					<td><?php echo date( 'Y-m-d H:i:s', $event['fire_at'] ); ?></td>
+					<td><?php echo date( 'Y-m-d H:i:s', $event['fire_at'] ); ?> (<?php echo esc_html( human_time_diff( $event['fire_at'] ) ) ?>)</td>
 					<td><?php echo isset( $event['schedule'] ) ? $event['schedule'] : '–'; ?></td>
-					<td><?php $event['data'] ? ITSEC_Lib::print_r( $event['data'] ) : print( '–' ); ?></td>
+					<td><div class="hidden itsec-events-data"><?php $event['data'] ? ITSEC_Lib::print_r( $event['data'] ) : print( '–' ); ?></div></td>
 					<td>
 						<button class="button" data-id="<?php echo esc_attr( $event['id'] ); ?>"
-								data-data="<?php echo isset( $event['schedule'] ) ? '' : esc_attr( wp_json_encode( $event['data'] ) ); ?>">
+								data-data="<?php echo isset( $event['schedule'] ) ? '' : esc_attr( $event['hash'] ); ?>">
 							<?php esc_html_e( 'Run', 'better-wp-security' ) ?>
 						</button>
 					</td>

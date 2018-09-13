@@ -20,15 +20,17 @@ if (!class_exists('WpmsGaTools')) {
     class WpmsGaTools
     {
         /**
-         * get google analytics client
-         * @param object $client google analytics client
-         * @param array $access access info to connect
-         * @param array $access_default access default info to connect
+         * Get google analytics client
+         *
+         * @param object $client         Google analytics client
+         * @param array  $access         Access info to connect
+         * @param array  $access_default Access default info to connect
+         *
          * @return mixed
          */
         public static function setClient($client, $access, $access_default)
         {
-            if (isset($access['wpmsga_dash_userapi']) && $access['wpmsga_dash_userapi'] == 1) {
+            if (isset($access['wpmsga_dash_userapi']) && (int) $access['wpmsga_dash_userapi'] === 1) {
                 if (!empty($access['wpmsga_dash_clientid']) && !empty($access['wpmsga_dash_clientsecret'])) {
                     $client->setClientId($access['wpmsga_dash_clientid']);
                     $client->setClientSecret($access['wpmsga_dash_clientsecret']);
@@ -45,16 +47,18 @@ if (!class_exists('WpmsGaTools')) {
         }
 
         /**
-         * get selected profile
-         * @param array $profiles list profiles
-         * @param string $profile selected profile
-         * @return bool
+         * Get selected profile
+         *
+         * @param array  $profiles List profiles
+         * @param string $profile  Selected profile
+         *
+         * @return boolean
          */
         public static function getSelectedProfile($profiles, $profile)
         {
             if (!empty($profiles)) {
                 foreach ($profiles as $item) {
-                    if ($item[1] == $profile) {
+                    if ($item[1] === $profile) {
                         return $item;
                     }
                 }
@@ -63,29 +67,31 @@ if (!class_exists('WpmsGaTools')) {
         }
 
         /**
-         * get color
-         * @param $colour
-         * @param $per
+         * Get color
+         *
+         * @param string $colour Color
+         * @param float  $per    Percent
+         *
          * @return string
          */
         public static function colourVariator($colour, $per)
         {
             $colour = substr($colour, 1);
-            $rgb = '';
-            $per = $per / 100 * 255;
+            $rgb    = '';
+            $per    = $per / 100 * 255;
             if ($per < 0) {
                 // Darker
                 $per = abs($per);
-                for ($x = 0; $x < 3; $x++) {
-                    $c = hexdec(substr($colour, (2 * $x), 2)) - $per;
-                    $c = ($c < 0) ? 0 : dechex($c);
+                for ($x = 0; $x < 3; $x ++) {
+                    $c   = hexdec(substr($colour, (2 * $x), 2)) - $per;
+                    $c   = ($c < 0) ? 0 : dechex($c);
                     $rgb .= (strlen($c) < 2) ? '0' . $c : $c;
                 }
             } else {
                 // Lighter
-                for ($x = 0; $x < 3; $x++) {
-                    $c = hexdec(substr($colour, (2 * $x), 2)) + $per;
-                    $c = ($c > 255) ? 'ff' : dechex($c);
+                for ($x = 0; $x < 3; $x ++) {
+                    $c   = hexdec(substr($colour, (2 * $x), 2)) + $per;
+                    $c   = ($c > 255) ? 'ff' : dechex($c);
                     $rgb .= (strlen($c) < 2) ? '0' . $c : $c;
                 }
             }
@@ -93,32 +99,37 @@ if (!class_exists('WpmsGaTools')) {
         }
 
         /**
-         * @param $base
+         * Variations
+         *
+         * @param string $base String
+         *
          * @return array
          */
         public static function variations($base)
         {
             $variations[] = $base;
-            $variations[] = self::colourVariator($base, -10);
-            $variations[] = self::colourVariator($base, +10);
-            $variations[] = self::colourVariator($base, +20);
-            $variations[] = self::colourVariator($base, -20);
-            $variations[] = self::colourVariator($base, +30);
-            $variations[] = self::colourVariator($base, -30);
+            $variations[] = self::colourVariator($base, - 10);
+            $variations[] = self::colourVariator($base, + 10);
+            $variations[] = self::colourVariator($base, + 20);
+            $variations[] = self::colourVariator($base, - 20);
+            $variations[] = self::colourVariator($base, + 30);
+            $variations[] = self::colourVariator($base, - 30);
             return $variations;
         }
 
         /**
-         * check roles
-         * @param array $access_level access level
-         * @param bool $tracking
-         * @return bool
+         * Check roles
+         *
+         * @param array   $access_level Access level
+         * @param boolean $tracking     Tracking
+         *
+         * @return boolean
          */
         public static function checkRoles($access_level, $tracking = false)
         {
             if (is_user_logged_in() && isset($access_level)) {
                 $current_user = wp_get_current_user();
-                $roles = (array)$current_user->roles;
+                $roles        = (array) $current_user->roles;
                 if ((current_user_can('manage_options')) && !$tracking) {
                     return true;
                 }
@@ -132,20 +143,26 @@ if (!class_exists('WpmsGaTools')) {
         }
 
         /**
-         * set cache
-         * @param string $name option cache name
-         * @param string $value option cache value
-         * @param int $expiration
+         * Set cache
+         *
+         * @param string  $name       Option cache name
+         * @param string  $value      Option cache value
+         * @param integer $expiration Expiration
+         *
+         * @return void
          */
         public static function setCache($name, $value, $expiration = 0)
         {
-            $option = array('value' => $value, 'expires' => time() + (int)$expiration);
+            $option = array('value' => $value, 'expires' => time() + (int) $expiration);
             update_option('wpmsga_cache_' . $name, $option);
         }
 
         /**
-         * remove cache
-         * @param string $name option cache name
+         * Remove cache
+         *
+         * @param string $name Option cache name
+         *
+         * @return void
          */
         public static function deleteCache($name)
         {
@@ -153,9 +170,11 @@ if (!class_exists('WpmsGaTools')) {
         }
 
         /**
-         * get cache
-         * @param string $name option cache name
-         * @return bool
+         * Get cache
+         *
+         * @param string $name Option cache name
+         *
+         * @return boolean
          */
         public static function getCache($name)
         {
@@ -174,23 +193,28 @@ if (!class_exists('WpmsGaTools')) {
         }
 
         /**
-         * clear cache
+         * Clear cache
+         *
+         * @return void
          */
         public static function clearCache()
         {
             global $wpdb;
-            $wpdb->query("DELETE FROM $wpdb->options WHERE option_name LIKE 'wpmsga_cache_qr%%'");
+            $wpdb->query('DELETE FROM $wpdb->options WHERE option_name LIKE "wpmsga_cache_qr%%"');
         }
 
         /**
-         * @param string $domain site domain
+         * Get root domain
+         *
+         * @param string $domain Site domain
+         *
          * @return array
          */
         public static function getRootDomain($domain)
         {
             $root = explode('/', $domain);
             preg_match(
-                "/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i",
+                '/(?P<domain>[a-z0-9][a-z0-9\-]{1,63}\.[a-z\.]{2,6})$/i',
                 str_ireplace('www', '', isset($root[2]) ? $root[2] : $domain),
                 $root
             );
@@ -198,12 +222,15 @@ if (!class_exists('WpmsGaTools')) {
         }
 
         /**
-         * @param string $domain site domain
+         * Strip protocol
+         *
+         * @param string $domain Site domain
+         *
          * @return mixed
          */
         public static function stripProtocol($domain)
         {
-            return str_replace(array("https://", "http://", " "), "", $domain);
+            return str_replace(array('https://', 'http://', ' '), '', $domain);
         }
     }
 

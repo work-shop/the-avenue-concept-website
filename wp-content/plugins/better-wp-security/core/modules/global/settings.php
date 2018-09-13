@@ -35,6 +35,7 @@ final class ITSEC_Global_Settings_New extends ITSEC_Settings {
 			'cron_status'               => - 1,
 			'use_cron'                  => true,
 			'cron_test_time'            => 0,
+			'enable_grade_report'       => false,
 		);
 	}
 
@@ -46,6 +47,17 @@ final class ITSEC_Global_Settings_New extends ITSEC_Settings {
 
 		if ( $this->settings['use_cron'] !== $old_settings['use_cron'] ) {
 			$this->handle_cron_change( $this->settings['use_cron'] );
+		}
+
+		if ( $this->settings['enable_grade_report'] && ! $old_settings['enable_grade_report'] ) {
+			update_site_option( 'itsec-enable-grade-report', true );
+			ITSEC_Modules::load_module_file( 'activate.php', 'grade-report' );
+			ITSEC_Response::flag_new_notifications_available();
+			ITSEC_Response::refresh_page();
+		} else if ( ! $this->settings['enable_grade_report'] && $old_settings['enable_grade_report'] ) {
+			update_site_option( 'itsec-enable-grade-report', false );
+			ITSEC_Modules::load_module_file( 'deactivate.php', 'grade-report' );
+			ITSEC_Response::refresh_page();
 		}
 	}
 

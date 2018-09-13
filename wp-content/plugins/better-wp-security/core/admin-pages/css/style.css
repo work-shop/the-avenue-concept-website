@@ -867,3 +867,6 @@ body.security_page_itsec-logs #old-logs-migration-status p {
 #itsec-settings-editor:empty {
 	display: none;
 }
+.itsec-module-cards-container .bulkactions:empty {
+	display: none;
+}

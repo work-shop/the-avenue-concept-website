@@ -726,3 +726,24 @@
 	Enhancement: Add mitigation for the WordPress Attachment File Traversal and Deletion vulnerability.
 	Tweak: Fire a WordPress action whenever settings are updated.
 	Bug Fix: Improved input sanitization on the logs page to prevent triggering warnings.
+4.6.6 - 2018-07-09 - Chris Jean & Timothy Jacobs
+	Tweak: Check if an IP is blacklisted on page load for compatibility with servers that cannot process server configuration level bans immediately.
+4.7.0 - 2018-07-17 - Chris Jean & Timothy Jacobs
+	Tweak: Display a time diff until the next event on the Debug page.
+	Compatibility Fix: 404 detection for plugins that mark is_404 later in the hook sequence.
+4.7.1 - 2018-07-24 - Chris Jean & Timothy Jacobs
+	Tweak: Use Logging API for tracking Notification Center errors.
+	Tweak: Register Scheduler Events whenever the plugin build changes.
+	Tweak: Allow for filtering logs by any module recorded.
+	Bug Fix: Account for any CLI PHP SAPI instead of just WP-CLI in the SSL Module.
+4.7.2 - 2018-07-31 - Chris Jean & Timothy Jacobs
+	New Feature: Allow for globally setting recipients for admin-targeted notifications. All new notifications will default to the recipients in this list. Notifications can be set to use the default list or switch to a custom list.
+	Tweak: Account for 3rd-party Backup Plugin in Security Check.
+4.7.3 - 2018-08-01 - Chris Jean & Timothy Jacobs
+	Bug Fix: Fix serialization of closure error when a plugin registering a hook with a closure is in the boot-up stack and the notification center is triggered too early in the cycle.
+4.7.4 - 2018-08-06 - Chris Jean & Timothy Jacobs
+	Enhancement: Added a setting to enable/disable the Grade Report feature of Pro.
+4.7.5 - 2018-08-07 - Chris Jean & Timothy Jacobs
+	Bug Fix: Fixed how the Grade Report enable/disable status is stored to fix admin page loading issues on some sites.
+4.7.6 - 2018-08-14 - Chris Jean & Timothy Jacobs
+	Bug Fix: REST API Protection blocked the Taxonomies route for all users.

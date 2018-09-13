@@ -19,6 +19,7 @@
                     require(WPMETASEO_ADDON_PLUGIN_DIR . 'inc/page/sitemaps/posts_custom.php');
                     $html = ob_get_contents();
                     ob_end_clean();
+                    // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in 'wp-meta-seo-addon/inc/page/sitemaps/posts_custom.php' file
                     echo $html;
                 }
             }
@@ -27,6 +28,7 @@
             require(WPMETASEO_ADDON_PLUGIN_DIR . 'inc/page/sitemaps/custom_url.php');
             $html = ob_get_contents();
             ob_end_clean();
+            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in 'wp-meta-seo-addon/inc/page/sitemaps/custom_url.php' file
             echo $html;
         }
         if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
@@ -34,29 +36,29 @@
         }
         echo '<div class="div_wpms_save_sitemaps">
 <input type="button" class="wpmsbtn wpms_save_create_sitemaps"
- value="' . __('Regenerate and save sitemaps', 'wp-meta-seo') . '">
+ value="' . esc_attr__('Regenerate and save sitemaps', 'wp-meta-seo') . '">
  <span class="spinner spinner_save_sitemaps"></span></div>';
         if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
             echo '<p class="description">
-' . __("Sitemap automatic submission to Google Search Console on save, ", "wp-meta-seo") . '
-<a href="' . admin_url('admin.php?page=metaseo_console&tab=settings') . '">
-' . __("requires authentication", "wp-meta-seo") . '</a></p>';
+' . esc_html__('Sitemap automatic submission to Google Search Console on save, ', 'wp-meta-seo') . '
+<a href="' . esc_url(admin_url('admin.php?page=metaseo_console&tab=settings')) . '">
+' . esc_html__('requires authentication', 'wp-meta-seo') . '</a></p>';
         }
         ?>
     </form>
 </div>
 
 <?php
-$w = '99%';
-$text = __('Bring your WordPress website SEO to the next level with the PRO Addon:
+$w               = '99%';
+$text            = esc_html__('Bring your WordPress website SEO to the next level with the PRO Addon:
  Sitemap for any custom post type, auto submission to the Google Search Console and more!', 'wp-meta-seo');
 $class_btn_close = 'close_sitemap';
 if (!empty($_COOKIE['close_dashboard'])) {
-    $check = time() - (int)$_COOKIE['close_dashboard'];
+    $check = time() - (int) $_COOKIE['close_dashboard'];
     $month = 30 * 24 * 60 * 60;
 }
 
 if ((empty($_COOKIE['close_dashboard']) || (!empty($_COOKIE['close_dashboard']) && $check >= $month))
-&& !is_plugin_active(WPMSEO_ADDON_FILENAME)) {
+    && !is_plugin_active(WPMSEO_ADDON_FILENAME)) {
     require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/notification.php');
 }

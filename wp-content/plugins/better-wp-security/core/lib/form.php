@@ -27,6 +27,9 @@ final class ITSEC_Form {
 			parse_str( $data['data']['--itsec-form-serialized-data'], $data );
 		}
 
+		if ( get_magic_quotes_gpc() ) {
+			$data = stripslashes_deep( $data );
+		}
 
 		$defaults = array(
 			'booleans' => false,
@@ -478,6 +481,24 @@ final class ITSEC_Form {
 		}
 
 		$this->add_select( $var, $options );
+	}
+
+	public function get_clean_var( $var ) {
+		$clean_var = trim( preg_replace( '/[^a-z0-9_]+/i', '-', $var ), '-' );
+
+		if ( ! empty( $this->input_group ) ) {
+			if ( false === strpos( $var, '[' ) ) {
+				$var = "[{$var}]";
+			} else {
+				$var = preg_replace( '/^([^\[]+)\[/', '[$1][', $var );
+			}
+
+			$var = "{$this->input_group}{$var}";
+
+			$clean_var = trim( preg_replace( '/[^a-z0-9_]+/i', '-', $var ), '-' );
+		}
+
+		return "itsec-$clean_var";
 	}
 
 	private function add_custom_input( $var, $options ) {

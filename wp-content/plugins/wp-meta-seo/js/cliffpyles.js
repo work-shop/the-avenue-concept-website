@@ -21,13 +21,13 @@ jQuery(document).ready(function ($) {
             mpageurl = $('#wp-admin-bar-view').find('a').attr('href');
             current_editor = 'gutenberg';
             if (parseInt(first_load) === 1) {
-                title = window._wpGutenbergPost.title.rendered;
+                title = wpmscliffpyles.post_title;
+                mcontent = wpmscliffpyles.post_content;
             } else {
                 title = $('.editor-post-title__input').val();
-            }
-
-            if (typeof wp.data !== "undefined" && typeof wp.data.select('core/editor') !== "undefined") {
-                mcontent = wp.data.select('core/editor').getEditedPostContent();
+                if (typeof wp.data !== "undefined" && typeof wp.data.select('core/editor') !== "undefined") {
+                    mcontent = wp.data.select('core/editor').getEditedPostContent();
+                }
             }
         } else {
             mpageurl = $('#editable-post-name-full').text();
@@ -57,7 +57,8 @@ jQuery(document).ready(function ($) {
                     'mpageurl': mpageurl,
                     'meta_desc': meta_desc,
                     'content': mcontent
-                }
+                },
+                'wpms_nonce': wpms_localize.wpms_nonce
             },
             success: function (res) {
                 if (res) {
@@ -172,7 +173,8 @@ jQuery(document).ready(function ($) {
                     'action': 'wpms',
                     'task': 'validate_analysis',
                     'post_id': jQuery('.metaseo-progress-bar').data('post_id'),
-                    'field': $this.parent('.metaseo_analysis').data('title')
+                    'field': $this.parent('.metaseo_analysis').data('title'),
+                    'wpms_nonce': wpms_localize.wpms_nonce
                 },
                 success: function (res) {
                     if (res !== false) {

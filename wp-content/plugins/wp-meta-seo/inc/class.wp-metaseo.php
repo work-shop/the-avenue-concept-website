@@ -9,12 +9,16 @@ defined('ABSPATH') || die('No direct script access allowed!');
 class WpMetaSeo
 {
     /**
-     * @var bool
+     * Initiated
+     *
+     * @var boolean
      */
     private static $initiated = false;
 
     /**
      * Init
+     *
+     * @return void
      */
     public static function init()
     {
@@ -26,6 +30,8 @@ class WpMetaSeo
 
     /**
      * Initializes WordPress hooks
+     *
+     * @return void
      */
     private static function initHooks()
     {
@@ -34,8 +40,11 @@ class WpMetaSeo
 
     /**
      * Attached to activate_{ plugin_basename( __FILES__ ) } by register_activation_hook()
-     * @param string $wp default wordpress version
-     * @param string $php default php version
+     *
+     * @param string $wp  Default wordpress version
+     * @param string $php Default php version
+     *
+     * @return void
      */
     public static function pluginActivation($wp = '4.0', $php = '5.3.0')
     {
@@ -54,14 +63,14 @@ class WpMetaSeo
             return;
         }
 
-        $version = 'PHP' == $flag ? $php : $wp;
+        $version = 'PHP' === $flag ? $php : $wp;
         deactivate_plugins(basename(__FILE__));
         wp_die(
             '<p>The <strong>WP Meta SEO</strong>
- plugin requires ' . $flag . '  version ' . $version . ' or greater.</p>',
+ plugin requires ' . esc_html($flag) . '  version ' . esc_html($version) . ' or greater.</p>',
             'Plugin Activation Error',
             array(
-                'response' => 200,
+                'response'  => 200,
                 'back_link' => true
             )
         );
@@ -72,20 +81,24 @@ class WpMetaSeo
                 '<p>To active WP Meta SEO plugin , please install  “dom” PHP extension </p>',
                 'Plugin Activation Error',
                 array(
-                    'response' => 200,
+                    'response'  => 200,
                     'back_link' => true
                 )
             );
         }
     }
 
-    /* create metaseo_images table */
+    /**
+     * Create metaseo_images table
+     *
+     * @return void
+     */
     public static function installDb()
     {
         global $wpdb;
         $table_name = $wpdb->prefix . 'metaseo_images';
 
-        $sql = "CREATE TABLE IF NOT EXISTS $table_name (
+        $sql = 'CREATE TABLE IF NOT EXISTS ' . $table_name . ' (
 			  `id` int(11) NOT NULL AUTO_INCREMENT,
 			  `post_id` int(11) NOT NULL,
 			  `posts_optimized_id` text COLLATE utf8_unicode_ci NOT NULL,
@@ -97,7 +110,7 @@ class WpMetaSeo
 			  `description` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
 			  `link` varchar(150) COLLATE utf8_unicode_ci NOT NULL,
 			  PRIMARY KEY (`id`)
-			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;";
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;';
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
 

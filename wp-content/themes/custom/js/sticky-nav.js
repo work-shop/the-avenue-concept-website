@@ -49,17 +49,17 @@ function checkNavPosition(){
 
 		var footerTrigger = $('#footer').offset().top - $(window).height();
 
-		if ( $(window).scrollTop() >= stickyNavProperties.triggerPosition && stickyNavProperties.element.hasClass('static') ){
+		if ( $(window).scrollTop() >= stickyNavProperties.triggerPosition && stickyNavProperties.element.hasClass('before') ){
 			toggleNav();
-		}else if($(window).scrollTop() < stickyNavProperties.triggerPosition && stickyNavProperties.element.hasClass('fixed') ){
+		}else if($(window).scrollTop() < stickyNavProperties.triggerPosition && stickyNavProperties.element.hasClass('after') ){
 			toggleNav();
 		}
 
-		if( $(window).scrollTop() >= footerTrigger && stickyNavProperties.element.hasClass('shown') ){
-			stickyNavProperties.element.addClass('hidden');		
-		} else if( $(window).scrollTop() < footerTrigger && stickyNavProperties.element.hasClass('hidden') ){
-			stickyNavProperties.element.removeClass('hidden');
-		}
+		// if( $(window).scrollTop() >= footerTrigger && stickyNavProperties.element.hasClass('shown') ){
+		// 	stickyNavProperties.element.addClass('hidden');		
+		// } else if( $(window).scrollTop() < footerTrigger && stickyNavProperties.element.hasClass('hidden') ){
+		// 	stickyNavProperties.element.removeClass('hidden');
+		// }
 
 	}
 
@@ -68,12 +68,12 @@ function checkNavPosition(){
 
 function toggleNav(){
 
-	if ( stickyNavProperties.element.hasClass('static') ){
-		stickyNavProperties.element.removeClass('static').addClass('fixed');
-		$('body').addClass('sticky-nav-fixed');
-	}else if( stickyNavProperties.element.hasClass('fixed') ){
-		stickyNavProperties.element.removeClass('fixed').addClass('static');
-		$('body').removeClass('sticky-nav-fixed');			
+	if ( stickyNavProperties.element.hasClass('before') ){
+		stickyNavProperties.element.removeClass('before').addClass('after');
+		$('body').addClass('nav-after');
+	}else if( stickyNavProperties.element.hasClass('after') ){
+		stickyNavProperties.element.removeClass('after').addClass('before');
+		$('body').removeClass('nav-after');			
 	}	
 
 }

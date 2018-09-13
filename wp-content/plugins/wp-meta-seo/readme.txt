@@ -2,8 +2,8 @@
 Contributors: JoomUnited
 Tags: google, webmaster tools, keywords, meta, meta description, meta keywords, meta title, robots meta, search engine optimization, seo, wordpress seo, yahoo, image optimization, image resize, custom post seo, redirect, redirection, 301, broken link
 Requires at least: 4.0
-Tested up to: 4.9.6
-Stable tag: 3.7.2
+Tested up to: 4.9.8
+Stable tag: 3.7.6
 Requires PHP: 5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -174,12 +174,13 @@ The redirect manager will help you to fix all types of 404 errors you can encoun
 * Google Ananlytics tracking and statistics display
 
 = Main plugins from JoomUnited: =
-* WP Media Folder: <a href="https://www.joomunited.com/wordpress-products/wp-media-folder" rel="friend"> https://www.joomunited.com/wordpress-products/wp-media-folder</a>
-* WP File Download: <a href="https://www.joomunited.com/wordpress-products/wp-table-manager" rel="friend"> https://www.joomunited.com/wordpress-products/wp-table-manager</a>
-* WP Table Manager: <a href="https://www.joomunited.com/wordpress-products/wp-file-download" rel="friend">https://www.joomunited.com/wordpress-products/wp-file-download</a>
-* WP Speed of Light: <a href="https://www.joomunited.com/wordpress-products/wp-speed-of-light" rel="friend">https://www.joomunited.com/wordpress-products/wp-speed-of-light</a>
-* WP Latest Posts: <a href="https://www.joomunited.com/wordpress-products/wp-latest-posts" rel="friend">https://www.joomunited.com/wordpress-products/wp-latest-posts</a>
-* WP Smart Editor: <a href="https://wordpress.org/plugins/wp-smart-editor" rel="friend">https://wordpress.org/plugins/wp-smart-editor</a>
+
+* <a href="https://www.joomunited.com/wordpress-products/wp-media-folder" rel="friend">WP Media Folder:</a>  Supercharge your media library with folders
+* <a href="https://www.joomunited.com/wordpress-products/wp-file-download" rel="friend">WP File Download: </a>  Best in class file and document manager
+* <a href="https://www.joomunited.com/wordpress-products/wp-speed-of-light" rel="friend">WP Speed of Light: </a>  Speedup your website in an easy way
+* <a href="https://www.joomunited.com/wordpress-products/wp-latest-posts" rel="friend">WP Latest Posts: </a>  Super flexible latest posts and content
+* <a href="https://www.joomunited.com/wordpress-products/wp-table-manager" rel="friend"> WP Table Manager: </a>  Create and manage tables with style
+* <a href="https://www.joomunited.com/wordpress-products/advanced-gutenberg" rel="friend"> Advanced Gutenberg: </a>  Light and efficient WP page builder
 
 
 = Support =      
@@ -276,8 +277,23 @@ Yes WP Meta SEO is compatible with Gutenberg editor since 3.7 version.
 
 == Changelog ==
 
+= 3.7.6 =
+* Fix : Redirect to home page when WPMS Addon is not activated
+
+= 3.7.5 =
+* Fix : Warning returned on frontend
+* Fix : Load Dashboard widget content using ajax method (large amount of data)
+* Fix : ¨PHP warning in redirect URL interface
+
+= 3.7.4 =
+* Fix : Update alt meta for Elementor image in content
+* Fix : Redirect URL
+
+= 3.7.3 =
+* Fix : Enhance code readability and performance
+
 = 3.7.2 =
-* Fix : Jutranslation share with JoomUnited
+* Fix : JUtranslation share with JoomUnited
 
 = 3.7.1 =
 * Fix : Sitemap categories not properly added

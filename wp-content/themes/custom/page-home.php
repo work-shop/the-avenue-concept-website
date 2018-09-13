@@ -9,6 +9,8 @@
 
 <?php get_template_part('partials/home/home_work' ); ?>
 
+<?php get_template_part('partials/home/home_map' ); ?>
+
 <?php get_template_part('partials/home/home_events' ); ?>
 
 <?php get_template_part('partials/home/home_contact' ); ?>

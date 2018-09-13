@@ -73,6 +73,11 @@ final class ITSEC_Global_Settings_Page extends ITSEC_Module_Settings_Page {
 			true  => __( 'Yes' ),
 		);
 
+		$enable_grade_report_options = array(
+			false => __( 'No (default)' ),
+			true  => __( 'Yes' ),
+		);
+
 ?>
 	<table class="form-table itsec-settings-section">
 		<tr>
@@ -242,6 +247,15 @@ final class ITSEC_Global_Settings_Page extends ITSEC_Module_Settings_Page {
 				<p class="description"><?php _e( 'Each error message in iThemes Security has an associated error code that can help diagnose an issue. Changing this setting to "Yes" causes these codes to display. This setting should be left set to "No" unless iThemes Security support requests that you change it.', 'better-wp-security' ); ?></p>
 			</td>
 		</tr>
+		<?php if ( ITSEC_Core::is_pro() ) : ?>
+			<tr>
+				<th scope="row"><label for="itsec-global-enable_grade_report"><?php _e( 'Enable Grade Report', 'better-wp-security' ); ?></label></th>
+				<td>
+					<?php $form->add_select( 'enable_grade_report', $enable_grade_report_options ); ?>
+					<p class="description"><?php _e( 'The Grade Report feature can help you identify vulnerabilities on the site. Visit the Notification Center to select which users receive emails from this feature.', 'better-wp-security' ); ?></p>
+				</td>
+			</tr>
+		<?php endif; ?>
 	</table>
 <?php
 

@@ -90,7 +90,8 @@ jQuery(document).ready(function ($) {
                 task: maction,
                 ids: mpost_selected,
                 sl_bulk: sl_bulk,
-                mtype: mtype
+                mtype: mtype,
+                wpms_nonce: wpms_localize.wpms_nonce
             },
             success: function (res) {
                 if (res) {
@@ -114,7 +115,8 @@ jQuery(document).ready(function ($) {
             data: {
                 action: 'wpms',
                 task: 'ajax_check_exist',
-                type: type
+                type: type,
+                wpms_nonce: wpms_localize.wpms_nonce
             },
             success: function (res) {
                 if (res) {

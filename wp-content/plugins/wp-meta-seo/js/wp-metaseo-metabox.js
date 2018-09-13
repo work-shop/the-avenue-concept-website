@@ -348,7 +348,8 @@ jQuery(document).ready(function ($) {
                 action: 'wpms_filter_search_keywords',
                 startDate: startDate,
                 endDate: endDate,
-                postId: postId
+                postId: postId,
+                wpms_nonce: wpms_localize.wpms_nonce
             },
             success: function (res) {
                 if(res.status){
@@ -375,7 +376,8 @@ jQuery(document).ready(function ($) {
                 startDate: startDate,
                 endDate: endDate,
                 postId: postId,
-                page:page
+                page:page,
+                wpms_nonce: wpms_localize.wpms_nonce
             },
             success: function (res) {
                 if(res.status){
@@ -406,7 +408,7 @@ jQuery(document).ready(function ($) {
 
     jQuery('.metaseo_help').qtip({
         content: {
-            attr: 'alt'
+            attr: 'data-alt'
         },
         position: {
             my: 'bottom left',

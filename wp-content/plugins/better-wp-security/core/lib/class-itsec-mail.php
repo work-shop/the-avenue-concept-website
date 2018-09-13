@@ -369,7 +369,13 @@ final class ITSEC_Mail {
 		return "<li style=\"margin: 0; padding: 5px 10px;{$bold_tag}\">{$item}</li>";
 	}
 
-	private function add_html( $html, $identifier = null ) {
+	/**
+	 * Add a section of HTML to the email.
+	 *
+	 * @param string      $html
+	 * @param string|null $identifier
+	 */
+	public function add_html( $html, $identifier = null ) {
 
 		if ( null !== $this->current_group ) {
 			$this->deferred .= $html;
@@ -400,7 +406,18 @@ final class ITSEC_Mail {
 	 * This is automatically included in non-user emails if ITSEC_DEBUG is turned on.
 	 */
 	public function include_debug_info() {
-		$this->add_text( sprintf( esc_html__( 'Debug info (source page): %s', 'better-wp-security' ), esc_url( $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'] ) ) );
+
+		if ( ( defined( 'DOING_CRON' ) && DOING_CRON ) || ( function_exists( 'wp_doing_cron' ) && wp_doing_cron() ) ) {
+			$page = 'WP-Cron';
+		} elseif ( defined( 'WP_CLI' ) && WP_CLI ) {
+			$page = 'WP-CLI';
+		} elseif ( isset( $_SERVER['HTTP_HOST'], $_SERVER['REQUEST_URI'] ) ) {
+			$page = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
+		} else {
+			$page = 'unknown';
+		}
+
+		$this->add_text( sprintf( esc_html__( 'Debug info (source page): %s', 'better-wp-security' ), esc_html( $page ) ) );
 	}
 
 	/**
@@ -429,7 +446,7 @@ final class ITSEC_Mail {
 		$this->content = $content;
 	}
 
-	public function get_content() {
+	public function get_content( $recipient = '' ) {
 
 		$groups = $this->groups;
 
@@ -439,8 +456,9 @@ final class ITSEC_Mail {
 			 *
 			 * @param array      $groups
 			 * @param ITSEC_Mail $this
+			 * @param string     $recipient
 			 */
-			$groups = apply_filters( "itsec_mail_{$this->name}", $groups, $this );
+			$groups = apply_filters( "itsec_mail_{$this->name}", $groups, $this, $recipient );
 		}
 
 		return implode( '', $groups );
@@ -505,7 +523,25 @@ final class ITSEC_Mail {
 			$this->set_default_subject();
 		}
 
-		return wp_mail( $this->recipients, $this->get_subject(), $this->content ? $this->content : $this->get_content(), array( 'Content-Type: text/html; charset=UTF-8' ), $this->attachments );
+		$headers = array(
+			'Content-Type: text/html; charset=UTF-8',
+		);
+
+		if ( $from = ITSEC_Modules::get_setting( 'notification-center', 'from_email' ) ) {
+			$headers[] = "From: <{$from}>";
+		}
+
+		if ( $this->name ) {
+			$result = true;
+
+			foreach ( $this->recipients as $recipient ) {
+				$result = wp_mail( $recipient, $this->get_subject(), $this->content ? $this->content : $this->get_content( $recipient ), $headers, $this->attachments ) && $result;
+			}
+
+			return $result;
+		}
+
+		return wp_mail( $this->recipients, $this->get_subject(), $this->content ? $this->content : $this->get_content(), $headers, $this->attachments );
 	}
 
 	/**

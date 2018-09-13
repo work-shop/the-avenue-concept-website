@@ -33,7 +33,7 @@
     background: none;
 }
 
-#wpms_sitemap ul ul, #sitemap_pages ul {
+#wpms_sitemap ul {
     margin-bottom: 0;
     list-style-type: circle;
 }
@@ -87,4 +87,8 @@
 .wpms_li_cate .cat_name {
     font-weight: bold;
     font-size: 14px;
+}
+
+.page-header-excerpt {
+    display: none;
 }

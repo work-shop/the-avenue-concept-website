@@ -24,7 +24,7 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 		 *
 		 * @access private
 		 */
-		private $plugin_build = 4097;
+		private $plugin_build = 4106;
 
 		/**
 		 * Used to distinguish between a user modifying settings and the API modifying settings (such as from Sync
@@ -604,11 +604,21 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 			return $url;
 		}
 
-		public static function get_logs_page_url( $filter = false ) {
+		public static function get_logs_page_url( $module = false, $type = false ) {
 			$url = network_admin_url( 'admin.php?page=itsec-logs' );
 
-			if ( ! empty( $filter ) ) {
-				$url = add_query_arg( array( 'filters' => rawurlencode( "module|{$filter}" ) ), $url );
+			$filters = array();
+
+			if ( $module ) {
+				$filters[] = rawurlencode("module|{$module}");
+			}
+
+			if ( $type ) {
+				$filters[] = rawurlencode( "type|{$type}" );
+			}
+
+			if ( $filters ) {
+				$url = add_query_arg( array( 'filters' => $filters ), $url );
 			}
 
 			return $url;

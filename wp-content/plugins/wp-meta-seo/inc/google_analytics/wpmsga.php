@@ -12,26 +12,38 @@ if (!class_exists('WpmsGaManager')) {
     final class WpmsGaManager
     {
         /**
+         * Instance
+         *
          * @var null
          */
         private static $instance = null;
         /**
+         * Config
+         *
          * @var null
          */
         public $config = null;
         /**
+         * Tracking
+         *
          * @var null
          */
         public $tracking = null;
         /**
+         * Frontend item reports
+         *
          * @var null
          */
         public $frontend_item_reports = null;
         /**
+         * Backend item reports
+         *
          * @var null
          */
         public $backend_item_reports = null;
         /**
+         * Controller
+         *
          * @var null
          */
         public $controller = null;
@@ -44,13 +56,15 @@ if (!class_exists('WpmsGaManager')) {
             if (null !== self::$instance) {
                 _doing_it_wrong(
                     __FUNCTION__,
-                    __("This is not allowed, please read the documentation!", 'wp-meta-seo'),
+                    esc_html__('This is not allowed, please read the documentation!', 'wp-meta-seo'),
                     '4.6'
                 );
             }
         }
 
         /**
+         * Instance
+         *
          * @return null|WpmsGaManager
          */
         public static function instance()
@@ -65,6 +79,8 @@ if (!class_exists('WpmsGaManager')) {
 
 /**
  * Returns a unique instance of WPMSGA
+ *
+ * @return null|WpmsGaManager
  */
 function WPMSGA()
 {

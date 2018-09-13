@@ -1,55 +1,26 @@
 
-
-
-.page-body-section-introduction{
-	p{
-		@include text-size($text-page-body);
-	}
-}
-
-
 .wysiwyg{
 
-	@include text-size($text-page-body);
-
-	*{
-		@extend .secondary;
-	}
-
-	.p1{
-		padding: 0;
-	}
-
 	h1,h2,h3,h4,h5,h6{
-		font-weight: 700;
-		font-weight: bold;
+		@extend .bold;
+		margin-top: 3.5em;
 	}
-
-	em{
-		font-style: italic;
-		*{
-			font-style: italic;
-		}
-	}
-
-	strong{
-		font-weight: 700;
-		*{
-			font-weight: 700;
-		}
-	}
-
-	a{
-		color: $brand;
-		text-decoration: underline;
-
-		&:hover{
-			color: darken($brand,20%);
-		}
-	}
-
+	
 	ol,ul{
-		-webkit-padding-start: 25px;
+		-webkit-padding-start: 0px;
+		padding-left: 52px;
+
+		@media screen and (max-width: $md) {
+			padding-left: 40px;
+		}
+
+		@media screen and (max-width: $sm) {
+			padding-left: 30px;	
+		}
+
+		li{
+			@include text-size($text-h4);
+		}
 	}
 
 	ul li{
@@ -61,23 +32,128 @@
 	}
 
 	li{
-		font-size: .95em;
 		line-height: 1.3;
-		margin-bottom: .75em;
+		margin-bottom: 1em;
 	}
+
+	p{
+		margin-bottom: 2em;
+	
+		a{
+			color: inherit;
+			text-decoration: underline;
+		}
+	}	
 
 	p ~ ul{
-		margin-top: -20px;
-		margin-bottom: 40px;
+		margin-top: 2em;
+		margin-bottom: 3em;
 	}
 
-	.wp-caption{
+	.p1{
+		padding: 0;
+	}
+
+	img{
+		width: auto;
+		max-width: 100%;
+	}
+
+	//wordpress styles found online @ https://digwp.com/2010/05/default-wordpress-css-styles-hooks/
+	.entry-content img {
+		margin: 0 0 1em 0;
+	}
+
+	.alignleft, img.alignleft {
+		margin-right: 2em;
+		display: inline;
+		float: left;
+
+		@media screen and (max-width: $sm) {
+			width: 39% !important;
+		}
+	}
+
+	.alignright, img.alignright {
+		margin-left: 2em;
+		display: inline;
+		float: right;
+
+		@media screen and (max-width: $sm) {
+			width: 39% !important;
+		}
+	}
+
+	.aligncenter, img.aligncenter {
+		margin-right: auto;
+		margin-left: auto;
+		display: block;
+		clear: both;
+
+		@media screen and (max-width: $sm) {
+			width: 39% !important;
+		}
+	}
+
+	// .alignnone, img.alignnone {}
+
+	.wp-caption {
+		margin-bottom: 0em;
+		padding-top: 7px;
+	}
+
+	.wp-caption img {
+		border: 0 none;
+		padding: 0;
+		margin: 0;
 		width: 100% !important;
 	}
 
 	.wp-caption-text{
-		font-size: .8em;
-		font-style: italic;
+		font-size: .7em;
+		color: $medium;
+		margin-bottom: 0;
 	}
 
+	.wp-smiley {
+		margin: 0 !important;
+		max-height: 1em;
+	}
+
+	blockquote{
+		font-family: $font-secondary;
+		p, p span{
+			font-family: $font-secondary;
+			@extend .h3;
+		}
+		
+	}
+
+	blockquote.left {
+		margin-right: 20px;
+		text-align: right;
+		margin-left: 0;
+		width: 33%;
+		float: left;
+	}
+
+	blockquote.right {
+		margin-left: 20px;
+		text-align: left;
+		margin-right: 0;
+		width: 33%;
+		float: right;
+	}
+
+	.gallery dl {}
+	.gallery dt {}
+	.gallery dd {}
+	.gallery dl a {}
+	.gallery dl img {}
+	.gallery-caption {}
+
+	.size-full {}
+	.size-large {}
+	.size-medium {}
+	.size-thumbnail {}
 }

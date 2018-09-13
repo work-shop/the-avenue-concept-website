@@ -68,10 +68,10 @@ class ITSEC_Notification_Center_Debug {
 				<tr>
 					<td><?php echo esc_html( $slug ); ?></td>
 					<td><?php echo $scheduled ? date( 'Y-m-d H:i:s', $nc->get_last_sent( $slug ) ) : '–'; ?></td>
-					<td><?php echo $scheduled ? date( 'Y-m-d H:i:s', $nc->get_next_send_time( $slug ) ) : '–'; ?></td>
+					<td><?php echo $scheduled && ( $next = $nc->get_next_send_time( $slug ) ) ? date( 'Y-m-d H:i:s', $next ) : '–'; ?></td>
 					<td><?php echo $nc->get_schedule( $slug ); ?></td>
 					<td>
-						<?php if ( $scheduled ): ?>
+						<?php if ( $scheduled && ( ! is_array( $notification['schedule'] ) || empty( $notification['schedule']['setting_only'] ) ) ): ?>
 							<button class="button itsec__send-notification itsec__send-notification--force" data-id="<?php echo esc_attr( $slug ); ?>">
 								<?php esc_html_e( 'Force', 'better-wp-security' ) ?>
 							</button>

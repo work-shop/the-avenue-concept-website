@@ -8,15 +8,21 @@ defined('ABSPATH') || die('No direct script access allowed!');
 class MetaSeoBreadcrumb
 {
     /**
+     * Breadcrumbs array
+     *
      * @var array
      */
     public $breadcrumbs = array();
     /**
+     * Breadcrumb settings
+     *
      * @var array
      */
     public $breadcrumb_settings = array();
     /**
-     * @var
+     * Template no anchor
+     *
+     * @var string
      */
     public $template_no_anchor;
 
@@ -30,15 +36,15 @@ class MetaSeoBreadcrumb
             $home_title = get_bloginfo('title');
         }
         $this->breadcrumb_settings = array(
-            'separator' => ' &gt; ',
-            'include_home' => 1,
+            'separator'         => ' &gt; ',
+            'include_home'      => 1,
             'home_text_default' => 0,
-            'home_text' => $home_title,
-            'clickable' => 1,
-            'apost_post_root' => get_option('page_for_posts'),
-            'apost_page_root' => get_option('page_on_front')
+            'home_text'         => $home_title,
+            'clickable'         => 1,
+            'apost_post_root'   => get_option('page_for_posts'),
+            'apost_page_root'   => get_option('page_on_front')
         );
-        $breadcrumb_settings = get_option('_metaseo_breadcrumbs');
+        $breadcrumb_settings       = get_option('_metaseo_breadcrumbs');
         if (is_array($breadcrumb_settings)) {
             $this->breadcrumb_settings = array_merge($this->breadcrumb_settings, $breadcrumb_settings);
         }
@@ -48,6 +54,8 @@ class MetaSeoBreadcrumb
      * Breadcrumb Trail Filling Function
      *
      * This functions fills the breadcrumb trail.
+     *
+     * @return void
      */
     public function checkPosts()
     {
@@ -59,9 +67,9 @@ class MetaSeoBreadcrumb
             $this->addBreadcrumb($site_name, WPMSEO_TEMPLATE_BREADCRUMB, array('home', 'current-item'));
             if (!is_main_site()) {
                 $site_name = get_site_option('site_name');
-                $template = __('<span property="itemListElement" typeof="ListItem">
-<a property="item" typeof="WebPage" title="Go to %title%." href="%link%" class="%type%">
-<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>', 'wp-meta-seo');
+                $template  = '<span property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" title="' . esc_attr__('Go to %title%.', 'wp-meta-seo') . '" href="%link%" class="%type%">
+<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>';
                 $this->addBreadcrumb(
                     $site_name,
                     $template,
@@ -84,7 +92,7 @@ class MetaSeoBreadcrumb
         } elseif (is_author()) {
             $this->author();
         } elseif (is_archive()) {
-            $type = $wp_query->get_queried_object();
+            $type     = $wp_query->get_queried_object();
             $type_str = get_query_var('post_type');
             if (is_array($type_str)) {
                 $type_str = reset($type_str);
@@ -93,7 +101,7 @@ class MetaSeoBreadcrumb
             if (is_date()) {
                 $this->archiveByDate($this->getType());
             } elseif (is_post_type_archive() && !isset($type->taxonomy)
-                && (!is_numeric($this->breadcrumb_settings['apost_' . $type_str . '_root']))) {
+                      && (!is_numeric($this->breadcrumb_settings['apost_' . $type_str . '_root']))) {
                 $this->archiveByPosttype();
             } elseif (is_category() || is_tag() || is_tax()) {
                 $this->archiveByTerm();
@@ -115,8 +123,11 @@ class MetaSeoBreadcrumb
     }
 
     /**
-     * @param bool $return Whether to return or echo the trail. (optional)
-     * @param bool $reverse Whether to reverse the output or not. (optional)
+     * Render breadcrumb
+     *
+     * @param boolean $return  Whether to return or echo the trail. (optional)
+     * @param boolean $reverse Whether to reverse the output or not. (optional)
+     *
      * @return string
      */
     public function breadcrumbDisplay($return = false, $reverse = false)
@@ -128,7 +139,7 @@ class MetaSeoBreadcrumb
             krsort($this->breadcrumbs);
         }
 
-        $html = '';
+        $html     = '';
         $position = 1;
         //The main compiling loop
         foreach ($this->breadcrumbs as $key => $breadcrumb) {
@@ -144,32 +155,35 @@ class MetaSeoBreadcrumb
             }
 
             $html .= $this->generateBreadcrumb($breadcrumb, $position);
-            $position++;
+            $position ++;
         }
 
         if ($return) {
             return $html; // for return has true
         } else {
+            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method generateBreadcrumb
             echo $html; // for return has false
         }
     }
 
     /**
      * Generate breadcrumb
-     * @param array $breadcrumb breadcrumb info
-     * @param int $position position of breadcrumb element
+     *
+     * @param array   $breadcrumb Breadcrumb info
+     * @param integer $position   Position of breadcrumb element
+     *
      * @return mixed
      */
     public function generateBreadcrumb($breadcrumb, $position)
     {
         $params = array(
-            '%title%' => esc_attr(strip_tags($breadcrumb['name'])),
-            '%link%' => esc_url($breadcrumb['url']),
-            '%htitle%' => $breadcrumb['name'],
-            '%type%' => $breadcrumb['type'],
-            '%ftitle%' => esc_attr(strip_tags($breadcrumb['name'])),
-            '%fhtitle%' => $breadcrumb['name'],
-            '%position%' => $position
+            '%title%'    => esc_attr(strip_tags($breadcrumb['name'])),
+            '%link%'     => esc_url($breadcrumb['url']),
+            '%htitle%'   => esc_html($breadcrumb['name']),
+            '%type%'     => esc_attr($breadcrumb['type']),
+            '%ftitle%'   => esc_attr(strip_tags($breadcrumb['name'])),
+            '%fhtitle%'  => esc_html($breadcrumb['name']),
+            '%position%' => esc_attr($position)
         );
         //The type may be an array, implode it if that is the case
         if (is_array($params['%type%'])) {
@@ -194,7 +208,9 @@ class MetaSeoBreadcrumb
      *
      * This functions fills a breadcrumb for posts
      *
-     * @param $post WP_Post Instance of WP_Post object to create a breadcrumb for
+     * @param object $post WP_Post Instance of WP_Post object to create a breadcrumb for
+     *
+     * @return void
      */
     public function post($post)
     {
@@ -203,26 +219,26 @@ class MetaSeoBreadcrumb
         }
 
         $arrays = array(
-            'name' => get_the_title($post),
+            'name'     => get_the_title($post),
             'template' => WPMSEO_TEMPLATE_BREADCRUMB,
-            'type' => array('post', 'post-' . $post->post_type, 'current-item'),
-            'url' => null,
-            'id' => $post->ID,
-            'click' => false
+            'type'     => array('post', 'post-' . $post->post_type, 'current-item'),
+            'url'      => null,
+            'id'       => $post->ID,
+            'click'    => false
         );
 
         if (is_attachment()) {
-            $template = __('<span property="itemListElement" typeof="ListItem">
-<a property="item" typeof="WebPage" title="Go to %title%." href="%link%" class="%type%">
-<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>', 'wp-meta-seo');
+            $template           = '<span property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" title="' . esc_attr__('Go to %title%.', 'wp-meta-seo') . '" href="%link%" class="%type%">
+<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>';
             $arrays['template'] = $template;
-            $arrays['url'] = get_permalink($post);
-            $arrays['click'] = true;
+            $arrays['url']      = get_permalink($post);
+            $arrays['click']    = true;
         }
         $this->breadcrumbs[] = $arrays;
         if ($post->post_type === 'page') {
             $frontpage = get_option('page_on_front');
-            if ($post->post_parent && $post->ID != $post->post_parent && $frontpage != $post->post_parent) {
+            if ($post->post_parent && (int) $post->ID !== (int) $post->post_parent && (int) $frontpage !== (int) $post->post_parent) {
                 $this->postParents($post->post_parent, $frontpage);
             }
         } else {
@@ -234,17 +250,19 @@ class MetaSeoBreadcrumb
      * A Breadcrumb Trail Filling Function
      *
      * This recursive functions fills the trail with breadcrumbs for parent posts/pages.
-     * @param int $id The id of the parent page.
-     * @param int $frontpage The id of the front page.
+     *
+     * @param integer $id        The id of the parent page.
+     * @param integer $frontpage The id of the front page.
+     *
      * @return WP_Post The parent we stopped at
      */
     public function postParents($id, $frontpage)
     {
         $parent = get_post($id);
         // Add to breadcrumbs list
-        $template = __('<span property="itemListElement" typeof="ListItem">
-<a property="item" typeof="WebPage" title="Go to %title%." href="%link%" class="%type%">
-<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>', 'wp-meta-seo');
+        $template = '<span property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" title="' . esc_attr__('Go to %title%.', 'wp-meta-seo') . '" href="%link%" class="%type%">
+<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>';
         $this->addBreadcrumb(
             get_the_title($id),
             $template,
@@ -252,8 +270,7 @@ class MetaSeoBreadcrumb
             get_permalink($id),
             $id
         );
-        if ($parent->post_parent >= 0 && $parent->post_parent != false
-            && $id != $parent->post_parent && $frontpage != $parent->post_parent) {
+        if ($parent->post_parent >= 0 && $parent->post_parent && (int) $id !== (int) $parent->post_parent && (int) $frontpage !== (int) $parent->post_parent) {
             //If valid call this function
             $parent = $this->postParents($parent->post_parent, $frontpage);
         }
@@ -264,6 +281,8 @@ class MetaSeoBreadcrumb
      * A Breadcrumb Trail Filling Function
      *
      * This functions fills a breadcrumb for an attachment page.
+     *
+     * @return void
      */
     public function attachment()
     {
@@ -278,8 +297,8 @@ class MetaSeoBreadcrumb
         );
         //Done with the current item, now on to the parents
         $frontpage = get_option('page_on_front');
-        if ($post->post_parent >= 0 && $post->post_parent != false && $post->ID != $post->post_parent
-            && $frontpage != $post->post_parent) {
+        if ($post->post_parent >= 0 && $post->post_parent && (int) $post->ID !== (int) $post->post_parent
+            && (int) $frontpage !== (int) $post->post_parent) {
             $parent = get_post($post->post_parent);
             //set the parent's breadcrumb
             $this->post($parent);
@@ -290,12 +309,14 @@ class MetaSeoBreadcrumb
      * A Breadcrumb Trail Filling Function
      *
      * This functions fills a breadcrumb for a search page.
+     *
+     * @return void
      */
     public function search()
     {
-        $template = __('<span property="itemListElement" typeof="ListItem">
-<span property="name">Search results for &#39;%htitle%&#39;</span>
-<meta property="position" content="%position%"></span>', 'wp-meta-seo');
+        $template = '<span property="itemListElement" typeof="ListItem">
+<span property="name">' . esc_html__('Search results for "%htitle%"', 'wp-meta-seo') . '</span>
+<meta property="position" content="%position%"></span>';
         $this->addBreadcrumb(get_search_query(), $template, array('search', 'current-item'));
     }
 
@@ -303,6 +324,8 @@ class MetaSeoBreadcrumb
      * A Breadcrumb Trail Filling Function
      *
      * This functions fills a breadcrumb for an author page.
+     *
+     * @return void
      */
     public function author()
     {
@@ -315,9 +338,9 @@ class MetaSeoBreadcrumb
         $author_name = array('display_name', 'nickname', 'first_name', 'last_name');
         if (in_array('display_name', $author_name)) {
             // Add to breadcrumbs list
-            $template = __('<span property="itemListElement" typeof="ListItem">
-<span property="name">Articles by: %htitle%</span>
-<meta property="position" content="%position%"></span>', 'wp-meta-seo');
+            $template = '<span property="itemListElement" typeof="ListItem">
+<span property="name">' . esc_html__('Articles by: %htitle%', 'wp-meta-seo') . '</span>
+<meta property="position" content="%position%"></span>';
             $this->addBreadcrumb(
                 get_the_author_meta(
                     'display_name',
@@ -338,6 +361,8 @@ class MetaSeoBreadcrumb
      * A Breadcrumb Trail Filling Function
      *
      * This functions fills a breadcrumb for a post type archive (WP 3.1 feature)
+     *
+     * @return void
      */
     public function archiveByPosttype()
     {
@@ -360,31 +385,33 @@ class MetaSeoBreadcrumb
      * This functions fills a breadcrumb for a date archive.
      *
      * @param string $type The type to restrict the date archives to
+     *
+     * @return void
      */
     public function archiveByDate($type)
     {
-        $date_template = __('<span property="itemListElement" typeof="ListItem">
-<a property="item" typeof="WebPage" title="Go to the %title% archives." href="%link%" class="%type%">
-<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>', 'wp-meta-seo');
+        $date_template = '<span property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" title="' . esc_attr__('Go to the %title% archives.', 'wp-meta-seo') . '" href="%link%" class="%type%">
+<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>';
         if (is_day() || is_single()) {
             $arrays = array(
-                'name' => get_the_time(_x('d', 'day archive breadcrumb date format', 'wp-meta-seo')),
+                'name'     => get_the_time(_x('d', 'day archive breadcrumb date format', 'wp-meta-seo')),
                 'template' => WPMSEO_TEMPLATE_BREADCRUMB,
-                'type' => array('archive', 'date-day'),
+                'type'     => array('archive', 'date-day'),
             );
 
             if (is_day()) {
-                $arrays['type'] = 'current-item';
-                $arrays['url'] = null;
+                $arrays['type']  = 'current-item';
+                $arrays['url']   = null;
                 $arrays['click'] = false;
             }
             // if is single
             if (is_single()) {
                 $arrays['template'] = $date_template;
-                $url = get_day_link(get_the_time('Y'), get_the_time('m'), get_the_time('d'));
-                $url = $this->addPosttypeArg($url, $type);
-                $arrays['url'] = $url;
-                $arrays['click'] = true;
+                $url                = get_day_link(get_the_time('Y'), get_the_time('m'), get_the_time('d'));
+                $url                = $this->addPosttypeArg($url, $type);
+                $arrays['url']      = $url;
+                $arrays['click']    = true;
             }
 
             $this->breadcrumbs[] = $arrays;
@@ -393,23 +420,23 @@ class MetaSeoBreadcrumb
         //Now deal with the month breadcrumb
         if (is_month() || is_day() || is_single()) {
             $arrays = array(
-                'name' => get_the_time(_x('F', 'month archive breadcrumb date format', 'wp-meta-seo')),
+                'name'     => get_the_time(_x('F', 'month archive breadcrumb date format', 'wp-meta-seo')),
                 'template' => WPMSEO_TEMPLATE_BREADCRUMB,
-                'type' => array('archive', 'date-month'),
+                'type'     => array('archive', 'date-month'),
             );
 
             if (is_month()) {
-                $arrays['type'] = 'current-item';
-                $arrays['url'] = null;
+                $arrays['type']  = 'current-item';
+                $arrays['url']   = null;
                 $arrays['click'] = false;
             }
 
             if (is_day() || is_single()) {
                 $arrays['template'] = $date_template;
-                $url = get_month_link(get_the_time('Y'), get_the_time('m'));
-                $url = $this->addPosttypeArg($url, $type);
-                $arrays['url'] = $url;
-                $arrays['click'] = true;
+                $url                = get_month_link(get_the_time('Y'), get_the_time('m'));
+                $url                = $this->addPosttypeArg($url, $type);
+                $arrays['url']      = $url;
+                $arrays['click']    = true;
             }
 
             $this->breadcrumbs[] = $arrays;
@@ -417,25 +444,25 @@ class MetaSeoBreadcrumb
 
 
         $arrays = array(
-            'name' => get_the_time(_x('Y', 'year archive breadcrumb date format', 'wp-meta-seo')),
+            'name'     => get_the_time(_x('Y', 'year archive breadcrumb date format', 'wp-meta-seo')),
             'template' => WPMSEO_TEMPLATE_BREADCRUMB,
-            'type' => array('archive', 'date-year'),
+            'type'     => array('archive', 'date-year'),
         );
 
         //If this is a year archive, add current-item type
         if (is_year()) {
-            $arrays['type'] = 'current-item';
-            $arrays['url'] = null;
+            $arrays['type']  = 'current-item';
+            $arrays['url']   = null;
             $arrays['click'] = false;
         }
         // day or month or single
         if (is_day() || is_month() || is_single()) {
             //We're linking, so set the linked template
             $arrays['template'] = $date_template;
-            $url = get_year_link(get_the_time('Y'));
-            $url = $this->addPosttypeArg($url, $type);
-            $arrays['url'] = $url;
-            $arrays['click'] = true;
+            $url                = get_year_link(get_the_time('Y'));
+            $url                = $this->addPosttypeArg($url, $type);
+            $arrays['url']      = $url;
+            $arrays['click']    = true;
         }
 
         $this->breadcrumbs[] = $arrays;
@@ -445,15 +472,17 @@ class MetaSeoBreadcrumb
      * A Breadcrumb Trail Filling Function
      *
      * This function fills a breadcrumb for any taxonomy archive, was previously two separate functions
+     *
+     * @return void
      */
     public function archiveByTerm()
     {
         global $wp_query;
         $term = $wp_query->get_queried_object();
         // Add to breadcrumbs list
-        $template = __('<span property="itemListElement" typeof="ListItem">
-<a property="item" typeof="WebPage" title="Go to the %title% category archives." href="%link%" class="%type%">
-<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>', 'wp-meta-seo');
+        $template = '<span property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" title="' . esc_attr__('Go to the %title% category archives.', 'wp-meta-seo') . '" href="%link%" class="%type%">
+<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>';
         $this->addBreadcrumb(
             $term->name,
             $template,
@@ -476,8 +505,10 @@ class MetaSeoBreadcrumb
      * A Breadcrumb Trail Filling Function
      *
      * This recursive functions fills the trail with breadcrumbs for parent terms.
-     * @param int $id The id of the term.
-     * @param string $taxonomy The name of the taxonomy that the term belongs to
+     *
+     * @param integer $id       The id of the term.
+     * @param string  $taxonomy The name of the taxonomy that the term belongs to
+     *
      * @return WP_Term The term we stopped at
      */
     public function termParents($id, $taxonomy)
@@ -485,9 +516,9 @@ class MetaSeoBreadcrumb
         //Get the current category
         $term = get_term($id, $taxonomy);
         // Add to breadcrumbs list
-        $template = __('<span property="itemListElement" typeof="ListItem">
-<a property="item" typeof="WebPage" title="Go to the %title% category archives." href="%link%" class="%type%">
-<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>', 'wp-meta-seo');
+        $template = '<span property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" title="' . esc_attr__('Go to the %title% category archives.', 'wp-meta-seo') . '" href="%link%" class="%type%">
+<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>';
         $this->addBreadcrumb(
             $term->name,
             $template,
@@ -502,19 +533,22 @@ class MetaSeoBreadcrumb
             ),
             $id
         );
-        if ($term->parent && $term->parent != $id) {
+        if ($term->parent && (int) $term->parent !== (int) $id) {
             $term = $this->termParents($term->parent, $taxonomy);
         }
         return $term;
     }
 
     /**
-     * add a enlement to lists
-     * @param string $name
-     * @param string $template
-     * @param array $type
-     * @param string $url
-     * @param null $id
+     * Add a enlement to lists
+     *
+     * @param string $name     Breadcrumb name
+     * @param string $template Breadcrumb template
+     * @param array  $type     Breadcrumb type
+     * @param string $url      Breadcrumb URL
+     * @param null   $id       Breadcrumb id
+     *
+     * @return void
      */
     public function addBreadcrumb(
         $name = '',
@@ -523,18 +557,18 @@ class MetaSeoBreadcrumb
         $url = '',
         $id = null
     ) {
-        $allowed_html = wp_kses_allowed_html('post');
-        $tmp = __('<span property="itemListElement" typeof="ListItem">
-<a property="item" typeof="WebPage" title="Go to %title%." href="%link%" class="%type%">
-<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>', 'wp-meta-seo');
+        $allowed_html             = wp_kses_allowed_html('post');
+        $tmp                      = '<span property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" title="' . esc_attr__('Go to %title%.', 'wp-meta-seo') . '" href="%link%" class="%type%">
+<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>';
         $this->template_no_anchor = WPMSEO_TEMPLATE_BREADCRUMB;
-        if ($template == null) {
+        if (is_null($template)) {
             $template = wp_kses($tmp, $allowed_html);
         } else {
             //Loose comparison, evaluates to true if URL is '' or null
-            if ($url == null) {
+            if (is_null($url)) {
                 $this->template_no_anchor = wp_kses($template, $allowed_html);
-                $template = wp_kses($tmp, $allowed_html);
+                $template                 = wp_kses($tmp, $allowed_html);
             } else {
                 $template = wp_kses($template, $allowed_html);
             }
@@ -544,7 +578,7 @@ class MetaSeoBreadcrumb
         if (empty($this->breadcrumb_settings['clickable'])) {
             $click = false;
         } else {
-            if ($url == null) {
+            if (is_null($url)) {
                 $click = false;
             } else {
                 $click = true;
@@ -553,12 +587,12 @@ class MetaSeoBreadcrumb
 
         // add to array
         $this->breadcrumbs[] = array(
-            'name' => $name,
+            'name'     => $name,
             'template' => $template,
-            'type' => $type,
-            'url' => $url,
-            'id' => $id,
-            'click' => $click
+            'type'     => $type,
+            'url'      => $url,
+            'id'       => $id,
+            'click'    => $click
         );
     }
 
@@ -566,22 +600,25 @@ class MetaSeoBreadcrumb
      * A Breadcrumb Trail Filling Function
      *
      * This function fills breadcrumbs for any post taxonomy
-     * @param int $id The id of the post to figure out the taxonomy for
+     *
+     * @param integer $id The id of the post to figure out the taxonomy for
+     *
+     * @return void
      */
     public function postHierarchy($id)
     {
         $taxonomy = 'category';
         if (is_taxonomy_hierarchical($taxonomy)) {
             // Get all term of object
-            $wpms_object = get_the_terms($id, $taxonomy);
+            $wpms_object      = get_the_terms($id, $taxonomy);
             $potential_parent = 0;
-            $term = false;
+            $term             = false;
             // check array
             if (is_array($wpms_object)) {
                 $wpms_use_term = key($wpms_object);
                 foreach ($wpms_object as $key => $object) {
                     if ($object->parent > 0 && ($potential_parent === 0 || $object->parent === $potential_parent)) {
-                        $wpms_use_term = $key;
+                        $wpms_use_term    = $key;
                         $potential_parent = $object->term_id;
                     }
                 }
@@ -600,16 +637,16 @@ class MetaSeoBreadcrumb
     /**
      * Adds the post type argument to the URL iff the passed in type is not post
      *
-     * @param string $url The URL to possibly add the post_type argument to
-     * @param string $type [optional] The type to possibly add to the URL
-     * @param string $taxonomy [optional] If we're dealing with a taxonomy term, the taxonomy of that term
+     * @param string $url      The URL to possibly add the post_type argument to
+     * @param string $type     The type to possibly add to the URL
+     * @param string $taxonomy If we're dealing with a taxonomy term, the taxonomy of that term
      *
      * @return string The possibly modified URL
      */
     public function addPosttypeArg($url, $type = null, $taxonomy = null)
     {
         global $wp_taxonomies;
-        if ($type == null) {
+        if (is_null($type)) {
             $type = $this->getType();
         }
 
@@ -622,8 +659,10 @@ class MetaSeoBreadcrumb
     }
 
     /**
-     * get post type
-     * @param string $default
+     * Get post type
+     *
+     * @param string $default Post type
+     *
      * @return string
      */
     public function getType($default = 'post')
@@ -644,15 +683,17 @@ class MetaSeoBreadcrumb
      * A Breadcrumb Trail Filling Function
      *
      * This functions fills a breadcrumb for the home page.
+     *
+     * @return void
      */
     public function home()
     {
         global $current_site;
         //Get the site name
         $site_name = get_option('blogname');
-        $template = __('<span property="itemListElement" typeof="ListItem">
-<a property="item" typeof="WebPage" title="Go to %title%." href="%link%" class="%type%">
-<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>', 'wp-meta-seo');
+        $template  = '<span property="itemListElement" typeof="ListItem">
+<a property="item" typeof="WebPage" title="' . esc_attr__('Go to %title%.', 'wp-meta-seo') . '" href="%link%" class="%type%">
+<span property="name">%htitle%</span></a><meta property="position" content="%position%"></span>';
 
         if (!empty($this->breadcrumb_settings['home_text_default'])) {
             $title = $this->breadcrumb_settings['home_text'];

@@ -3,23 +3,27 @@ wp_enqueue_style('m-style-qtip');
 wp_enqueue_script('jquery-qtip');
 ?>
 <div class="wrap wrap_wpms_settings">
-    <h1><?php _e('WP Meta SEO global settings', 'wp-meta-seo') ?></h1>
+    <h1><?php esc_html_e('WP Meta SEO global settings', 'wp-meta-seo') ?></h1>
     <div class="tab-header">
         <ul class="tabs wpmstabs">
-            <li class="tab wpmstab col active"><a href="#wpms-global"><?php _e('Global', 'wp-meta-seo') ?></a></li>
+            <li class="tab wpmstab col active"><a href="#wpms-global"><?php esc_html_e('Global', 'wp-meta-seo') ?></a>
+            </li>
             <li class="tab wpmstab col"><a
-                        href="#wpms-redirection"><?php _e('Redirections and 404', 'wp-meta-seo') ?></a></li>
-            <li class="tab wpmstab col"><a href="#wpms-breadcrumb"><?php _e('Breadcrumb', 'wp-meta-seo') ?></a></li>
+                        href="#wpms-redirection"><?php esc_html_e('Redirections and 404', 'wp-meta-seo') ?></a></li>
+            <li class="tab wpmstab col"><a href="#wpms-breadcrumb"><?php esc_html_e('Breadcrumb', 'wp-meta-seo') ?></a>
+            </li>
             <?php
             if (is_plugin_active(WPMSEO_ADDON_FILENAME)) :
                 ?>
-                <li class="tab wpmstab col"><a href="#wpms-email"><?php _e('Send Email', 'wp-meta-seo') ?></a></li>
+                <li class="tab wpmstab col"><a href="#wpms-email"><?php esc_html_e('Send Email', 'wp-meta-seo') ?></a>
+                </li>
                 <li class="tab wpmstab col"><a
-                            href="#wpms-local_usiness"><?php _e('Local business', 'wp-meta-seo') ?></a></li>
+                            href="#wpms-local_usiness"><?php esc_html_e('Local business', 'wp-meta-seo') ?></a></li>
                 <?php
             endif;
             ?>
-            <li class="tab wpmstab col"><a href="#wpms-jutranslation"><?php _e('Translation', 'wp-meta-seo') ?></a></li>
+            <li class="tab wpmstab col"><a
+                        href="#wpms-jutranslation"><?php esc_html_e('Translation', 'wp-meta-seo') ?></a></li>
         </ul>
     </div>
     <div class="wpms_content_settings">
@@ -38,16 +42,16 @@ wp_enqueue_script('jquery-qtip');
             <table class="form-table">
                 <tbody>
                 <tr>
-                    <th scope="row"><?php _e('Global home redirect', 'wp-meta-seo') ?></th>
+                    <th scope="row"><?php esc_html_e('Global home redirect', 'wp-meta-seo') ?></th>
                     <td>
                         <input type="hidden" class="wpms_redirect_homepage" name="wpms_redirect[wpms_redirect_homepage]"
-                               value="<?php echo $defaul_settings_404['wpms_redirect_homepage'] ?>">
-                        <label><?php _e('Redirect all 404 errors to home page', 'wp-meta-seo'); ?></label>
+                               value="<?php echo esc_attr($defaul_settings_404['wpms_redirect_homepage']) ?>">
+                        <label><?php esc_html_e('Redirect all 404 errors to home page', 'wp-meta-seo'); ?></label>
                         <div class="switch-optimization">
                             <label class="switch switch-optimization">
                                 <?php
                                 if (isset($defaul_settings_404['wpms_redirect_homepage'])
-                                    && $defaul_settings_404['wpms_redirect_homepage'] == 1) :
+                                    && (int) $defaul_settings_404['wpms_redirect_homepage'] === 1) :
                                     ?>
                                     <input type="checkbox" class="cb_option" id="wpms_redirect_homepage"
                                            data-label="wpms_redirect_homepage"
@@ -63,31 +67,31 @@ wp_enqueue_script('jquery-qtip');
                     </td>
                 </tr>
                 <tr>
-                    <th scope="row"><?php _e('Custom 404 page', 'wp-meta-seo') ?></th>
+                    <th scope="row"><?php esc_html_e('Custom 404 page', 'wp-meta-seo') ?></th>
                     <td>
                         <label>
                             <select name="wpms_redirect[wpms_type_404]"
                                     class="wpms_type_404"
-                                <?php echo ($defaul_settings_404['wpms_redirect_homepage'] == 1) ? "disabled" : "" ?>>
+                                <?php echo ((int) $defaul_settings_404['wpms_redirect_homepage'] === 1) ? 'disabled' : '' ?>>
                                 <?php foreach ($types_404 as $k => $type_404) : ?>
                                     <option <?php selected($defaul_settings_404['wpms_type_404'], $k) ?>
-                                            value="<?php echo $k ?>"><?php echo $type_404 ?></option>
+                                            value="<?php echo esc_attr($k) ?>"><?php echo esc_html($type_404) ?></option>
                                 <?php endforeach; ?>
                             </select>
                             <?php
-                            if ($defaul_settings_404['wpms_redirect_homepage'] == 1
-                                || $defaul_settings_404['wpms_type_404'] != 'custom_page') {
+                            if ((int) $defaul_settings_404['wpms_redirect_homepage'] === 1
+                                || $defaul_settings_404['wpms_type_404'] !== 'custom_page') {
                                 $disable = 'disabled';
                             } else {
                                 $disable = '';
                             }
                             ?>
                             <select name="wpms_redirect[wpms_page_redirected]"
-                                    class="wpms_page_redirected" <?php echo $disable ?>>
-                                <option value="none"><?php _e('— Select —', 'wp-meta-seo') ?></option>
+                                    class="wpms_page_redirected" <?php echo esc_attr($disable) ?>>
+                                <option value="none"><?php esc_html_e('— Select —', 'wp-meta-seo') ?></option>
                                 <?php foreach ($posts as $post) : ?>
                                     <option <?php selected($defaul_settings_404['wpms_page_redirected'], $post->ID) ?>
-                                            value="<?php echo $post->ID ?>"><?php echo $post->post_title ?></option>
+                                            value="<?php echo esc_attr($post->ID) ?>"><?php echo esc_html($post->post_title) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </label>
@@ -97,11 +101,12 @@ wp_enqueue_script('jquery-qtip');
             </table>
             <?php
             if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
+                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in 'wp-meta-seo-addon/inc/page/link_settings.php' file
                 echo $link_settings_html;
             }
             ?>
-            <div class="button wpms_save_settings404"><?php _e('Save', 'wp-meta-seo') ?></div>
-            <span class="message_saved"><?php _e('Saved', 'wp-meta-seo') ?></span>
+            <div class="button wpms_save_settings404"><?php esc_html_e('Save', 'wp-meta-seo') ?></div>
+            <span class="message_saved"><?php esc_html_e('Saved', 'wp-meta-seo') ?></span>
         </div>
 
         <div id="wpms-breadcrumb" class="content-box">
@@ -109,22 +114,22 @@ wp_enqueue_script('jquery-qtip');
                 <tbody>
                 <tr>
                     <th scope="row">
-                        <label for="<?php _e('The separator that materialize the breadcrumb levels', 'wp-meta-seo') ?>">
-                            <?php _e('Breadcrumb separator', 'wp-meta-seo') ?>
+                        <label for="<?php esc_attr_e('The separator that materialize the breadcrumb levels', 'wp-meta-seo') ?>">
+                            <?php esc_html_e('Breadcrumb separator', 'wp-meta-seo') ?>
                         </label>
                     </th>
                     <td>
                         <label>
                             <input id="breadcrumbs_separator" name="_metaseo_breadcrumbs[separator]" type="text"
-                                   value="<?php echo htmlentities($breadcrumbs['separator']) ?>" size="50">
+                                   value="<?php echo esc_attr(htmlentities($breadcrumbs['separator'])) ?>" size="50">
                         </label>
                     </td>
                 </tr>
 
                 <tr>
                     <th scope="row">
-                        <label for="<?php _e('Include the Home element in the breadcrumb', 'wp-meta-seo') ?>">
-                            <?php _e('Include Home', 'wp-meta-seo') ?></label>
+                        <label for="<?php esc_attr_e('Include the Home element in the breadcrumb', 'wp-meta-seo') ?>">
+                            <?php esc_html_e('Include Home', 'wp-meta-seo') ?></label>
                     </th>
                     <td>
                         <input name="_metaseo_breadcrumbs[include_home]" type="hidden" value="0">
@@ -141,9 +146,9 @@ wp_enqueue_script('jquery-qtip');
 
                 <tr>
                     <th scope="row">
-                        <label for="<?php _e('If home is included, you may want to force a text.
+                        <label for="<?php esc_attr_e('If home is included, you may want to force a text.
                          By default it’s the content title', 'wp-meta-seo') ?>">
-                            <?php _e('Home text', 'wp-meta-seo') ?>
+                            <?php esc_html_e('Home text', 'wp-meta-seo') ?>
                         </label>
                     </th>
                     <td>
@@ -160,27 +165,27 @@ wp_enqueue_script('jquery-qtip');
                 </tr>
 
                 <?php
-                if ($breadcrumbs['home_text_default'] == 0) {
+                if ((int) $breadcrumbs['home_text_default'] === 0) {
                     $class = 'hide';
                 } else {
                     $class = 'show';
                 }
                 ?>
-                <tr class="tr_home_text <?php echo $class ?>">
+                <tr class="<?php echo esc_attr('tr_home_text ' . $class) ?>">
                     <th scope="row">
                         <label></label>
                     </th>
                     <td>
                         <label>
                             <input id="breadcrumbs_home_text" name="_metaseo_breadcrumbs[home_text]" type="text"
-                                   value="<?php echo $breadcrumbs['home_text'] ?>" size="50">
+                                   value="<?php echo esc_attr($breadcrumbs['home_text']) ?>" size="50">
                         </label>
                     </td>
                 </tr>
                 <tr>
                     <th scope="row">
-                        <label for="<?php _e('The breadcrumb element can be clickable or not', 'wp-meta-seo') ?>">
-                            <?php _e('Clickable breadcrumb', 'wp-meta-seo') ?></label>
+                        <label for="<?php esc_attr_e('The breadcrumb element can be clickable or not', 'wp-meta-seo') ?>">
+                            <?php esc_html_e('Clickable breadcrumb', 'wp-meta-seo') ?></label>
                     </th>
                     <td>
                         <input name="_metaseo_breadcrumbs[clickable]" type="hidden" value="0">
@@ -197,9 +202,9 @@ wp_enqueue_script('jquery-qtip');
 
                 <tr>
                     <th scope="row">
-                        <label for="<?php _e('Generate a breadcrumb navigation based on your categories or page levels.
+                        <label for="<?php esc_attr_e('Generate a breadcrumb navigation based on your categories or page levels.
                          The shortcode can be included in theme layouts', 'wp-meta-seo') ?>">
-                            <?php _e('PHP Shortcode', 'wp-meta-seo') ?>
+                            <?php esc_html_e('PHP Shortcode', 'wp-meta-seo') ?>
                         </label>
                     </th>
                     <td>
@@ -223,9 +228,9 @@ wp_enqueue_script('jquery-qtip');
 
                 <tr>
                     <th scope="row">
-                        <label for="<?php _e('Generate a breadcrumb navigation based on your categories or page levels.
+                        <label for="<?php esc_attr_e('Generate a breadcrumb navigation based on your categories or page levels.
                          The WordPress shortcode can be called anywhere in your content', 'wp-meta-seo') ?>">
-                            <?php _e('WordPress Shortcode', 'wp-meta-seo') ?>
+                            <?php esc_html_e('WordPress Shortcode', 'wp-meta-seo') ?>
                         </label>
                     </th>
                     <td>
@@ -236,8 +241,8 @@ wp_enqueue_script('jquery-qtip');
                 </tr>
                 </tbody>
             </table>
-            <div class="button wpms_save_settings_breadcrumb"><?php _e('Save', 'wp-meta-seo') ?></div>
-            <span class="message_saved"><?php _e('Saved', 'wp-meta-seo') ?></span>
+            <div class="button wpms_save_settings_breadcrumb"><?php esc_html_e('Save', 'wp-meta-seo') ?></div>
+            <span class="message_saved"><?php esc_html_e('Saved', 'wp-meta-seo') ?></span>
         </div>
 
         <div id="wpms-jutranslation" class="content-box">
@@ -246,7 +251,9 @@ wp_enqueue_script('jquery-qtip');
 
         <?php
         if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
+            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in 'wp-meta-seo-addon/inc/page/email_settings.php' file
             echo $html_tabemail;
+            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in 'wp-meta-seo-addon/inc/page/local_business.php' file
             echo $local_business_html;
         }
         ?>
@@ -309,7 +316,8 @@ wp_enqueue_script('jquery-qtip');
                     'home_text': home_text,
                     'include_home': include_home,
                     'clickable': clickable,
-                    'home_text_default': home_text_default
+                    'home_text_default': home_text_default,
+                    'wpms_nonce': wpms_localize.wpms_nonce
                 },
                 success: function (res) {
                     if (res) {
@@ -344,7 +352,8 @@ wp_enqueue_script('jquery-qtip');
                     'wpms_redirect[wpms_page_redirected]': page_redirected,
                     'enable': enable,
                     'numberFrequency': $('#numberFrequency').val(),
-                    'showlinkFrequency': $('#showlinkFrequency').val()
+                    'showlinkFrequency': $('#showlinkFrequency').val(),
+                    'wpms_nonce': wpms_localize.wpms_nonce
                 },
                 success: function (res) {
                     if (res) {
@@ -375,7 +384,8 @@ wp_enqueue_script('jquery-qtip');
                     port: $('#showSmtpPort').val(),
                     autentication: $('[name="wpms_email_settings[autentication]"]:checked').val(),
                     username: $('#showSmtpUser').val(),
-                    password: $('#showSmtpPass').val()
+                    password: $('#showSmtpPass').val(),
+                    wpms_nonce: wpms_localize.wpms_nonce
                 },
                 success: function (res) {
                     if (res) {
@@ -408,7 +418,8 @@ wp_enqueue_script('jquery-qtip');
                     city: $('#wpms_local_business_city').val(),
                     state: $('#wpms_local_business_state').val(),
                     phone: $('#wpms_local_business_phone').val(),
-                    pricerange: $('#wpms_local_business_pricerange').val()
+                    pricerange: $('#wpms_local_business_pricerange').val(),
+                    wpms_nonce: wpms_localize.wpms_nonce
                 },
                 success: function (res) {
                     if (res) {

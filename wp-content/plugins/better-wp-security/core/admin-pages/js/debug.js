@@ -20,6 +20,10 @@
 			} );
 		} );
 
+		$( document ).on( 'click', '#itsec-events-data-toggle', function () {
+			$( '.itsec-events-data' ).toggleClass( 'hidden' );
+		} );
+
 		$( '#itsec-scheduler-reset' ).on( 'click', function () {
 
 			var $btn = $( this );

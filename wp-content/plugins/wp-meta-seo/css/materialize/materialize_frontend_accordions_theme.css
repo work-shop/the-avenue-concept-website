@@ -22,9 +22,11 @@
     display: block;
     cursor: pointer;
     min-height: 3rem;
-    line-height: 3rem;
     padding: 0 1rem;
-    border-bottom: 1px solid #ddd
+    border-bottom: 1px solid #ddd;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 48px;
 }
 
 .wpms_collapsible .collapsible-header i {

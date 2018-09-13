@@ -9,7 +9,9 @@ defined('ABSPATH') || die('No direct script access allowed!');
 class MetaSeoGoogleAnalytics
 {
     /**
-     * ajax display google analytics
+     * Ajax display google analytics
+     *
+     * @return void
      */
     public static function itemsReport()
     {
@@ -19,7 +21,7 @@ class MetaSeoGoogleAnalytics
 
         if (!isset($_POST['wpms_security_backend_item_reports'])
             || !wp_verify_nonce($_POST['wpms_security_backend_item_reports'], 'wpms_backend_item_reports')) {
-            wp_die(-30);
+            wp_die(- 30);
         }
 
         if (isset($_POST['projectId']) && $_POST['projectId'] !== 'false') {
@@ -27,8 +29,8 @@ class MetaSeoGoogleAnalytics
         } else {
             $projectId = false;
         }
-        $from = $_POST['from'];
-        $to = $_POST['to'];
+        $from  = $_POST['from'];
+        $to    = $_POST['to'];
         $query = $_POST['query'];
         if (isset($_POST['filter'])) {
             $filter_id = $_POST['filter'];
@@ -44,7 +46,7 @@ class MetaSeoGoogleAnalytics
                 $controller = new WpmsGapiController();
             }
         } else {
-            wp_die(-99);
+            wp_die(- 99);
         }
 
         if (!empty($google_alanytics['googleCredentials']) && !empty($google_alanytics['tableid_jail'])
@@ -53,17 +55,17 @@ class MetaSeoGoogleAnalytics
                 $controller = new WpmsGapiController();
             }
         } else {
-            wp_die(-24);
+            wp_die(- 24);
         }
 
-        if ($projectId == false) {
+        if (!$projectId) {
             $projectId = $google_alanytics['tableid_jail'];
         }
         $profile_info = WpmsGaTools::getSelectedProfile($google_alanytics['profile_list'], $projectId);
         if (isset($profile_info[4])) {
             $controller->timeshift = $profile_info[4];
         } else {
-            $controller->timeshift = (int)current_time('timestamp') - time();
+            $controller->timeshift = (int) current_time('timestamp') - time();
         }
 
         $filter = false;
@@ -73,17 +75,17 @@ class MetaSeoGoogleAnalytics
             if (isset($uri_parts[3])) {
                 $uri = '/' . $uri_parts[3];
                 // allow URL correction before sending an API request
-                $filter = apply_filters('wpmsga_backenditem_uri', $uri);
-                $lastchar = substr($filter, -1);
+                $filter   = apply_filters('wpmsga_backenditem_uri', $uri);
+                $lastchar = substr($filter, - 1);
 
-                if (isset($profile_info[6]) && $profile_info[6] && $lastchar == '/') {
+                if (isset($profile_info[6]) && $profile_info[6] && $lastchar === '/') {
                     $filter = $filter . $profile_info[6];
                 }
 
                 // Encode URL
                 $filter = rawurlencode(rawurldecode($filter));
             } else {
-                wp_die(-25);
+                wp_die(- 25);
             }
         }
 
@@ -98,9 +100,16 @@ class MetaSeoGoogleAnalytics
 
     /**
      * Update analytics option
+     *
+     * @return void
      */
     public static function updateOption()
     {
+        if (empty($_POST['wpms_nonce'])
+            || !wp_verify_nonce($_POST['wpms_nonce'], 'wpms_nonce')) {
+            die();
+        }
+
         $options = get_option('wpms_google_alanytics');
         if (isset($_POST['userapi'])) {
             $options['wpmsga_dash_userapi'] = $_POST['userapi'];
@@ -110,7 +119,9 @@ class MetaSeoGoogleAnalytics
     }
 
     /**
-     * ajax clear author
+     * Ajax clear author
+     *
+     * @return void
      */
     public static function clearAuthor()
     {
@@ -119,7 +130,10 @@ class MetaSeoGoogleAnalytics
     }
 
     /**
-     * @param $map
+     * Get map
+     *
+     * @param string $map Map
+     *
      * @return mixed|string
      */
     public static function map($map)

@@ -1,0 +1,84 @@
+
+.accordion{
+
+	margin-bottom: 20px;		
+
+	[data-control]{
+		background: $light;
+		border: 1px solid darken($light, 7%);
+		border-radius: 2px;
+		padding: 20px 6px 5px 20px;	
+		position: relative;
+
+		h4{
+			@extend .bold;	
+			width: calc(100% - 60px);
+		}
+
+		&:hover{
+			cursor: context-menu;
+			cursor: pointer;
+		}
+
+		.icon{
+			position: absolute;
+			right: 15px;
+			top: 50%;
+			height: 20px;
+			margin-top: -10px;
+			@include transform( rotate( 0deg));
+			transition: all .3s;
+
+			&:before{
+				top: 0px;
+			}
+		}
+
+	}
+
+	.accordion-content-inner{
+		background: lighten($ultra-light, 1%);
+		border-radius: 2px;
+		border: 1px solid darken($light, 7%);
+		border-top: none;
+		position: relative;
+		top: -2px;
+		padding: 0;//for closed style
+		padding: 3vh 3vw 3vh 20px;
+
+	}
+
+	.wysiwyg{
+		
+		p{
+			margin-bottom: 1em;
+
+			&:last-child{
+				margin-bottom: 0;
+			}
+		}
+
+		p ~ ul{
+			margin-top: 1em;
+			margin-bottom: 2em;
+		}
+	}
+
+	&.open{
+
+		[data-control]{
+			border-bottom: none;
+			.icon{
+				@include transform( rotate(180deg) );
+				margin-top: -8px
+			}
+		}
+
+	[data-content]{
+		//padding: 3vh 3vw 3vh 20px;
+	}
+
+	}
+
+}
+

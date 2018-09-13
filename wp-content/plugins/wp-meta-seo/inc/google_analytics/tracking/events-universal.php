@@ -11,6 +11,7 @@
 /* Prohibit direct script loading */
 defined('ABSPATH') || die('No direct script access allowed!');
 $domaindata = WpmsGaTools::getRootDomain(esc_html(get_option('siteurl')));
+// phpcs:disable Generic.WhiteSpace.ScopeIndent.Incorrect, WordPress.Security.EscapeOutput.OutputNotEscaped, Squiz.ControlStructures.ControlSignature.SpaceAfterCloseParenthesis, PSR2.Methods.FunctionCallSignature.SpaceBeforeOpenBracket, Squiz.WhiteSpace.ScopeClosingBrace.Indent, Squiz.WhiteSpace.ControlStructureSpacing.SpacingAfterOpen, PSR2.ControlStructures.ControlStructureSpacing.SpaceBeforeCloseBrace, PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace, Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace, Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore, Generic.WhiteSpace.ScopeIndent.IncorrectExact -- Render google analytics script structure on frontend
 ?>
 <script type="text/javascript">
     (function ($) {
@@ -37,7 +38,7 @@ $domaindata = WpmsGaTools::getRootDomain(esc_html(get_option('siteurl')));
             //Track Outbound Links
             $('a[href^="http"]').filter(function () {
                 if (!this.href.match(/.*\.(<?php echo esc_js($this->ga_tracking['wpmsga_event_downloads']);?>)(\?.*)?$/)) {
-                    if (this.href.indexOf('<?php echo $domaindata['domain']; ?>') === -1) return this.href;
+                    if (this.href.indexOf('<?php echo esc_html($domaindata['domain']); ?>') === -1) return this.href;
                 }
             }).click(function () {
                 ga('send', 'event', 'outbound', 'click', this.href<?php if (isset($this->ga_tracking['wpmsga_event_bouncerate']) && $this->ga_tracking['wpmsga_event_bouncerate']) {
@@ -47,7 +48,6 @@ $domaindata = WpmsGaTools::getRootDomain(esc_html(get_option('siteurl')));
             <?php } ?>
             <?php } ?>
             <?php if ($this->ga_tracking['wpmsga_event_affiliates'] && $this->ga_tracking['wpmsga_aff_tracking']){ ?>
-
             //Track Affiliates
             $('a').filter(function () {
                 if ('<?php echo esc_js($this->ga_tracking['wpmsga_event_affiliates']);?>' !== '') {
@@ -63,7 +63,7 @@ $domaindata = WpmsGaTools::getRootDomain(esc_html(get_option('siteurl')));
 
             //Track Hashmarks
             $('a').filter(function () {
-                if (this.href.indexOf('<?php echo $domaindata['domain']; ?>') !== -1 || this.href.indexOf('://') === -1) return this.hash;
+                if (this.href.indexOf('<?php echo esc_html($domaindata['domain']); ?>') !== -1 || this.href.indexOf('://') === -1) return this.hash;
             }).click(function () {
                 ga('send', 'event', 'hashmark', 'click', this.href<?php if (isset($this->ga_tracking['wpmsga_event_bouncerate']) && $this->ga_tracking['wpmsga_event_bouncerate']) {
                     echo ", {'nonInteraction': 1}";
@@ -74,3 +74,4 @@ $domaindata = WpmsGaTools::getRootDomain(esc_html(get_option('siteurl')));
         });
     })(jQuery);
 </script>
+<?php // phpcs:enable ?>

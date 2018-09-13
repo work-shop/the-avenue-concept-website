@@ -12,15 +12,19 @@ class ITSEC_Scheduler_Cron extends ITSEC_Scheduler {
 
 	public function register_cron_schedules( $schedules ) {
 
-		$schedules[ 'itsec-' . self::S_FOUR_DAILY ] = array(
+		$schedules[ 'itsec-' . self::S_TWICE_HOURLY ] = array(
+			'display'  => esc_html__( 'Twice Hourly', 'better-wp-security' ),
+			'interval' => HOUR_IN_SECONDS / 2,
+		);
+		$schedules[ 'itsec-' . self::S_FOUR_DAILY ]   = array(
 			'display'  => esc_html__( 'Four Times per Day', 'better-wp-security' ),
 			'interval' => DAY_IN_SECONDS / 4,
 		);
-		$schedules[ 'itsec-' . self::S_WEEKLY ]     = array(
+		$schedules[ 'itsec-' . self::S_WEEKLY ]       = array(
 			'display'  => esc_html__( 'Weekly', 'better-wp-security' ),
 			'interval' => WEEK_IN_SECONDS,
 		);
-		$schedules[ 'itsec-' . self::S_MONTHLY ]    = array(
+		$schedules[ 'itsec-' . self::S_MONTHLY ]      = array(
 			'display'  => esc_html__( 'Monthly', 'better-wp-security' ),
 			'interval' => MONTH_IN_SECONDS,
 		);
@@ -62,20 +66,18 @@ class ITSEC_Scheduler_Cron extends ITSEC_Scheduler {
 		$this->run_single_event_by_hash( $id, $this->hash_data( $data ) );
 	}
 
-	/**
-	 * Run a single event.
-	 *
-	 * @param string $id
-	 * @param string $hash
-	 */
-	private function run_single_event_by_hash( $id, $hash ) {
+	public function run_single_event_by_hash( $id, $hash ) {
 
 		$opts = array( 'single' => true );
 
 		$storage = $this->get_options();
-		$data    = $storage['single'][ $id ][ $hash ]['data'];
 
-		$job = $this->make_job( $id, $data, $opts );
+		if ( ! isset( $storage['single'][ $id ][ $hash ] ) ) {
+			return;
+		}
+
+		$data = $storage['single'][ $id ][ $hash ]['data'];
+		$job  = $this->make_job( $id, $data, $opts );
 
 		$this->unschedule_single( $id, $data );
 		$this->call_action( $job );
@@ -351,6 +353,7 @@ class ITSEC_Scheduler_Cron extends ITSEC_Scheduler {
 					'id'      => $id,
 					'data'    => $options['single'][ $id ][ $hash ]['data'],
 					'fire_at' => $timestamp,
+					'hash'    => $hash,
 				);
 			}
 		}

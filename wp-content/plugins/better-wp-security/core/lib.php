@@ -39,7 +39,7 @@ final class ITSEC_Lib {
 			w3tc_dbcache_flush();
 			w3tc_objectcache_flush();
 
-		} else if ( function_exists( 'wp_cache_clear_cache' ) && true == $page ) {
+		} elseif ( function_exists( 'wp_cache_clear_cache' ) && true == $page ) {
 
 			wp_cache_clear_cache();
 
@@ -84,7 +84,7 @@ final class ITSEC_Lib {
 	 *
 	 * @since 4.0.0
 	 *
-	 * @param string $url          URL to filter
+	 * @param string $url URL to filter
 	 *
 	 * @return string domain name or '*' on error or domain mapped multisite
 	 * */
@@ -106,7 +106,7 @@ final class ITSEC_Lib {
 		$host_parts = explode( '.', $host );
 
 		if ( count( $host_parts ) > 2 ) {
-			$host_parts = array_slice( $host_parts, -2, 2 );
+			$host_parts = array_slice( $host_parts, - 2, 2 );
 		}
 
 		return implode( '.', $host_parts );
@@ -175,6 +175,7 @@ final class ITSEC_Lib {
 
 			if ( ! empty( $ip ) ) {
 				$GLOBALS['__itsec_remote_ip'] = $ip;
+
 				return $ip;
 			}
 		}
@@ -184,6 +185,7 @@ final class ITSEC_Lib {
 
 		if ( ITSEC_Modules::get_setting( 'global', 'proxy_override' ) ) {
 			$GLOBALS['__itsec_remote_ip'] = $_SERVER['REMOTE_ADDR'];
+
 			return $GLOBALS['__itsec_remote_ip'];
 		}
 
@@ -203,19 +205,19 @@ final class ITSEC_Lib {
 
 		// Loop through twice. The first run won't accept a reserved or private range IP. If an acceptable IP is not
 		// found, try again while accepting reserved or private range IPs.
-		for ( $x = 0; $x < 2; $x++ ) {
+		for ( $x = 0; $x < 2; $x ++ ) {
 			foreach ( $headers as $header ) {
-				if ( ! isset( $_SERVER[$header] ) ) {
+				if ( ! isset( $_SERVER[ $header ] ) ) {
 					continue;
 				}
 
-				$ip = trim( $_SERVER[$header] );
+				$ip = trim( $_SERVER[ $header ] );
 
 				if ( empty( $ip ) ) {
 					continue;
 				}
 
-				if ( false !== ( $comma_index = strpos( $_SERVER[$header], ',' ) ) ) {
+				if ( false !== ( $comma_index = strpos( $_SERVER[ $header ], ',' ) ) ) {
 					$ip = substr( $ip, 0, $comma_index );
 				}
 
@@ -406,21 +408,21 @@ final class ITSEC_Lib {
 
 		if ( - 1 < $memory_limit ) {
 
-			$unit = strtolower( substr( $memory_limit, - 1 ) );
+			$unit         = strtolower( substr( $memory_limit, - 1 ) );
 			$memory_limit = (int) $memory_limit;
 
-			$new_unit = strtolower( substr( $new_memory_limit, - 1 ) );
+			$new_unit         = strtolower( substr( $new_memory_limit, - 1 ) );
 			$new_memory_limit = (int) $new_memory_limit;
 
 			if ( 'm' == $unit ) {
 
 				$memory_limit *= 1048576;
 
-			} else if ( 'g' == $unit ) {
+			} elseif ( 'g' == $unit ) {
 
 				$memory_limit *= 1073741824;
 
-			} else if ( 'k' == $unit ) {
+			} elseif ( 'k' == $unit ) {
 
 				$memory_limit *= 1024;
 
@@ -430,11 +432,11 @@ final class ITSEC_Lib {
 
 				$new_memory_limit *= 1048576;
 
-			} else if ( 'g' == $new_unit ) {
+			} elseif ( 'g' == $new_unit ) {
 
 				$new_memory_limit *= 1073741824;
 
-			} else if ( 'k' == $new_unit ) {
+			} elseif ( 'k' == $new_unit ) {
 
 				$new_memory_limit *= 1024;
 
@@ -531,11 +533,11 @@ final class ITSEC_Lib {
 
 		if ( false === $user ) {
 			$user = wp_get_current_user();
-		} else if ( is_int( $user ) ) {
+		} elseif ( is_int( $user ) ) {
 			$user = get_user_by( 'id', $user );
-		} else if ( is_string( $user ) ) {
+		} elseif ( is_string( $user ) ) {
 			$user = get_user_by( 'login', $user );
-		} else if ( is_object( $user ) && isset( $user->ID ) ) {
+		} elseif ( is_object( $user ) && isset( $user->ID ) ) {
 			$user = get_user_by( 'id', $user->ID );
 		} else {
 			if ( is_object( $user ) ) {
@@ -607,7 +609,7 @@ final class ITSEC_Lib {
 
 			if ( 'Basic ' === $http_auth_type ) {
 				$authentication_types[] = 'header_http_basic_auth';
-			} else if ( 'OAuth ' === $http_auth_type ) {
+			} elseif ( 'OAuth ' === $http_auth_type ) {
 				$authentication_types[] = 'header_http_oauth';
 			}
 		}
@@ -624,14 +626,14 @@ final class ITSEC_Lib {
 			$authentication_types[] = 'post_oauth';
 		}
 
-		if ( defined('XMLRPC_REQUEST') && XMLRPC_REQUEST ) {
-			$source = 'xmlrpc';
+		if ( defined( 'XMLRPC_REQUEST' ) && XMLRPC_REQUEST ) {
+			$source               = 'xmlrpc';
 			$authentication_types = array( 'username_and_password' );
-		} else if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
-			$source = 'rest_api';
+		} elseif ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			$source                 = 'rest_api';
 			$authentication_types[] = 'cookie';
 		} else {
-			$source = 'wp-login.php';
+			$source               = 'wp-login.php';
 			$authentication_types = array( 'username_and_password' );
 		}
 
@@ -673,7 +675,7 @@ final class ITSEC_Lib {
 	 */
 	public static function get_request_path() {
 		if ( ! isset( $GLOBALS['__itsec_lib_get_request_path'] ) ) {
-			$request_uri = preg_replace( '|//+|', '/', $_SERVER['REQUEST_URI'] );
+			$request_uri                             = preg_replace( '|//+|', '/', $_SERVER['REQUEST_URI'] );
 			$GLOBALS['__itsec_lib_get_request_path'] = self::get_url_path( $request_uri, self::get_home_root() );
 		}
 
@@ -696,8 +698,8 @@ final class ITSEC_Lib {
 		global $wpdb;
 		$main_options = $wpdb->base_prefix . 'options';
 
-		$lock = "itsec-lock-{$name}";
-		$now = ITSEC_Core::get_current_time_gmt();
+		$lock       = "itsec-lock-{$name}";
+		$now        = ITSEC_Core::get_current_time_gmt();
 		$release_at = $now + $expires_in;
 
 		if ( is_multisite() ) {
@@ -780,7 +782,7 @@ final class ITSEC_Lib {
 				$alloptions = wp_cache_get( 'alloptions' );
 
 				if ( is_array( $alloptions ) && isset( $alloptions[ $lock ] ) ) {
-					unset( $alloptions[$lock] );
+					unset( $alloptions[ $lock ] );
 					wp_cache_set( 'alloptions', $alloptions, 'options' );
 				} else {
 					wp_cache_delete( $lock, 'options' );
@@ -845,13 +847,13 @@ final class ITSEC_Lib {
 					wp_cache_switch_to_blog( 1 );
 
 					$alloptions = wp_cache_get( 'alloptions' );
-					$set_all = false;
+					$set_all    = false;
 
 					foreach ( $rows as $row ) {
 						$lock = $row->option_name;
 
 						if ( is_array( $alloptions ) && isset( $alloptions[ $lock ] ) ) {
-							unset( $alloptions[$lock] );
+							unset( $alloptions[ $lock ] );
 							$set_all = true;
 						} else {
 							wp_cache_delete( $lock, 'options' );
@@ -918,7 +920,7 @@ final class ITSEC_Lib {
 	public static function get_ssl_support_probability() {
 		if ( is_ssl() ) {
 			$probability = 50; // The site appears to be on an SSL connection but it could be self-signed or otherwise
-			                   // not valid to a visitor.
+			// not valid to a visitor.
 		} else {
 			$probability = 0;
 		}
@@ -1182,5 +1184,84 @@ final class ITSEC_Lib {
 		$array[ $new_key ] = $new_value;
 
 		return $array;
+	}
+
+	/**
+	 * Array unique implementation that allows for non-scalar values.
+	 *
+	 * Will compare elements using `serialize()`.
+	 *
+	 * Keys are preserved. If a numeric array is given, the array will be re-indexed.
+	 *
+	 * @param array $array
+	 *
+	 * @return array
+	 */
+	public static function non_scalar_array_unique( $array ) {
+
+		$is_numeric = wp_is_numeric_array( $array );
+
+		$hashes = array();
+
+		foreach ( $array as $key => $value ) {
+			$hash = serialize( $value );
+
+			if ( isset( $hashes[ $hash ] ) ) {
+				unset( $array[ $key ] );
+			} else {
+				$hashes[ $hash ] = 1;
+			}
+		}
+
+		if ( $is_numeric ) {
+			return array_values( $array );
+		}
+
+		return $array;
+	}
+
+	/**
+	 * Get whatever backup plugin is being used on this site.
+	 *
+	 * @return string
+	 */
+	public static function get_backup_plugin() {
+
+		$possible = array(
+			'backupbuddy/backupbuddy.php',
+			'updraftplus/updraftplus.php',
+			'backwpup/backwpup.php',
+			'xcloner-backup-and-restore/xcloner.php',
+			'duplicator/duplicator.php',
+			'backup/backup.php',
+			'wp-db-backup/wp-db-backup.php',
+			'backupwordpress/backupwordpress.php',
+			'blogvault-real-time-backup/blogvault.php',
+			'wp-all-backup/wp-all-backup.php',
+			'vaultpress/vaultpress.php',
+		);
+
+		/**
+		 * Filter the list of possible backup plugins.
+		 *
+		 * @param string[] List of Backup Plugin __FILE__.
+		 */
+		$possible = apply_filters( 'itsec_possible_backup_plugins', $possible );
+
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		}
+
+		if ( ! function_exists( 'is_plugin_active' ) ) {
+			return '';
+		}
+
+		foreach ( $possible as $file ) {
+			if ( is_plugin_active( $file ) ) {
+				return $file;
+			}
+		}
+
+		return '';
 	}
 }

@@ -129,7 +129,7 @@ final class ITSEC_Lockout {
 
 		$host = ITSEC_Lib::get_ip();
 
-		if ( $this->is_host_locked_out( $host ) ) {
+		if ( $this->is_host_locked_out( $host ) || ITSEC_Lib::is_ip_blacklisted() ) {
 			$this->execute_lock();
 		}
 	}

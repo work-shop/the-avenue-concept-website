@@ -20,9 +20,9 @@ class WS_Site {
 
     public function register_post_types_and_taxonomies() {
 
-        WS_Custom_Category::register();
+        //WS_Custom_Category::register();
 
-        WS_Custom_Post::register();
+        //WS_Custom_Post::register();
 
     }
 

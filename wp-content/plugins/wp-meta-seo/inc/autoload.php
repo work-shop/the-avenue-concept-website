@@ -21,12 +21,15 @@ if (!function_exists('google_api_php_client_autoload')) {
 
     /**
      * Auto include class
-     * @param $className
+     *
+     * @param string $className Class name
+     *
+     * @return void
      */
     function google_api_php_client_autoload($className)
     {
         $classPath = explode('_', $className);
-        if ($classPath[0] != 'Google') {
+        if ($classPath[0] !== 'Google') {
             return;
         }
         if (count($classPath) > 3) {

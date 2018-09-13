@@ -48,7 +48,27 @@ final class ITSEC_Security_Check_Scanner {
 		self::enforce_activation( 'ban-users', __( 'Banned Users', 'better-wp-security' ) );
 		self::enforce_setting( 'ban-users', 'enable_ban_lists', true, __( 'Enabled the Enable Ban Lists setting in Banned Users.', 'better-wp-security' ) );
 
-		self::enforce_activation( 'backup', __( 'Database Backups', 'better-wp-security' ) );
+		if ( $backup = ITSEC_Lib::get_backup_plugin() ) {
+			if ( ! function_exists( 'get_plugin_data' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+			}
+
+			$name = "'{$backup}'";
+
+			if ( function_exists( 'get_plugin_data' ) ) {
+				$data = get_plugin_data( WP_PLUGIN_DIR . '/' . $backup, false, true );
+
+				if ( isset( $data['Name'] ) ) {
+					$name = $data['Name'];
+				}
+			}
+
+			self::$feedback->add_section( 'backup-activation' );
+			self::$feedback->add_text( sprintf( __( 'A 3rd-party Backup Plugin, %s, is being used.', 'better-wp-security' ), $name ) );
+		} else {
+			self::enforce_activation( 'backup', __( 'Database Backups', 'better-wp-security' ) );
+		}
+
 		self::enforce_activation( 'brute-force', __( 'Local Brute Force Protection', 'better-wp-security' ) );
 		self::enforce_activation( 'magic-links', __( 'Magic Links', 'better-wp-security' ) );
 		self::enforce_activation( 'malware-scheduling', __( 'Malware Scan Scheduling', 'better-wp-security' ) );
@@ -59,6 +79,7 @@ final class ITSEC_Security_Check_Scanner {
 		self::enforce_password_requirement_enabled( 'strength', __( 'Strong Password Enforcement', 'better-wp-security' ) );
 		self::enforce_activation( 'two-factor', __( 'Two-Factor Authentication', 'better-wp-security' ) );
 		self::enforce_setting( 'two-factor', 'available_methods', 'all', esc_html__( 'Changed the Authentication Methods Available to Users setting in Two-Factor Authentication to "All Methods".', 'better-wp-security' ) );
+		self::enforce_setting( 'two-factor', 'exclude_type', 'disabled', esc_html__( 'Changed the Disabled Force Two-Factor for Certain Users to "None".', 'better-wp-security' ) );
 		self::enforce_setting( 'two-factor', 'protect_user_type', 'privileged_users', esc_html__( 'Changed the User Type Protection setting in Two-Factor Authentication to "Privileged Users".', 'better-wp-security' ) );
 		self::enforce_setting( 'two-factor', 'protect_vulnerable_users', true, esc_html__( 'Enabled the Vulnerable User Protection setting in Two-Factor Authentication.', 'better-wp-security' ) );
 		self::enforce_setting( 'two-factor', 'protect_vulnerable_site', true, esc_html__( 'Enabled the Vulnerable Site Protection setting in Two-Factor Authentication.', 'better-wp-security' ) );

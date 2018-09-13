@@ -1,7 +1,7 @@
 
 
 body{
-	font-family: $font-secondary;
+	font-family: $font-main;
 	font-weight: normal;
 	@include text-size($text-h4);
 	color: $dark;
@@ -15,7 +15,7 @@ body{
 	font-family: $font-main;
 }
 
-.secondary{
+.font-secondary,.secondary{
 	font-family: $font-secondary;
 	letter-spacing: 0;
 	font-weight: 400;

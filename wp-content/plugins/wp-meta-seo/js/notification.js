@@ -9,7 +9,8 @@ jQuery(document).ready(function($){
              data:{
                  action: 'wpms',
                  task: 'setcookie_notification',
-                 page: page
+                 page: page,
+                 wpms_nonce: wpms_localize.wpms_nonce
              },
              success: function(res){
                 if(res){

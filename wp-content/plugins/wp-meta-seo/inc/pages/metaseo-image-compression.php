@@ -1,70 +1,82 @@
 <?php
-if (!defined('IFRAME_REQUEST') && isset($_GET['action'])
-    && in_array($_GET['action'], array('update-selected', 'activate-plugin', 'update-selected-themes'))) {
-    /**
-     * Iframe request
-     */
-    define('IFRAME_REQUEST', true);
-}
-
-require_once(ABSPATH . 'wp-admin/admin.php');
-include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
-
-$slug = 'imagerecycle-pdf-image-compression';
+$slug        = 'imagerecycle-pdf-image-compression';
 $plugin_file = 'imagerecycle-pdf-image-compression/wp-image-recycle.php';
 if (isset($_GET['action'])) {
+    if (!file_exists(WP_PLUGIN_DIR . '/imagerecycle-pdf-image-compression')) {
+        $ac = 'install-plugin_' . $slug;
+    } else {
+        $ac = 'activate-plugin_' . $plugin_file;
+    }
+
+    if (empty($_GET['_wpnonce'])
+        || !wp_verify_nonce($_GET['_wpnonce'], $ac)) {
+        die();
+    }
+
+    if (!defined('IFRAME_REQUEST') && in_array($_GET['action'], array(
+            'update-selected',
+            'activate-plugin',
+            'update-selected-themes'
+        ))
+    ) {
+        define('IFRAME_REQUEST', true);
+    }
+
+    require_once(ABSPATH . 'wp-admin/admin.php');
+    include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
     $plugin = isset($_REQUEST['plugin']) ? trim($_REQUEST['plugin']) : '';
     $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-    if ($action == 'install-plugin') {
+    if ($action === 'install-plugin') {
         if (!current_user_can('install_plugins')) {
-            wp_die(__('You do not have sufficient permissions to install plugins on this site.', 'wp-meta-seo'));
+            wp_die(esc_html__('You do not have sufficient permissions to install plugins on this site.', 'wp-meta-seo'));
         }
 
         include_once(ABSPATH . 'wp-admin/includes/plugin-install.php'); //for plugins_api..
 
         check_admin_referer('install-plugin_' . $plugin);
         $api = plugins_api('plugin_information', array(
-            'slug' => $plugin,
+            'slug'   => $plugin,
             'fields' => array(
                 'short_description' => false,
-                'sections' => false,
-                'requires' => false,
-                'rating' => false,
-                'ratings' => false,
-                'downloaded' => false,
-                'last_updated' => false,
-                'added' => false,
-                'tags' => false,
-                'compatibility' => false,
-                'homepage' => false,
-                'donate_link' => false,
+                'sections'          => false,
+                'requires'          => false,
+                'rating'            => false,
+                'ratings'           => false,
+                'downloaded'        => false,
+                'last_updated'      => false,
+                'added'             => false,
+                'tags'              => false,
+                'compatibility'     => false,
+                'homepage'          => false,
+                'donate_link'       => false,
             ),
         ));
 
         if (is_wp_error($api)) {
+            // phpcs:ignore WordPress.Security.EscapeOutput -- Variable is object|array|WP_Error
             wp_die($api);
         }
 
-        $title = __('Plugin Install', 'wp-meta-seo');
-        $parent_file = 'plugins.php';
+        $title        = esc_html__('Plugin Install', 'wp-meta-seo');
+        $parent_file  = 'plugins.php';
         $submenu_file = 'plugin-install.php';
 
-        $title = sprintf(__('Installing Plugin: %s', 'wp-meta-seo'), $api->name . ' ' . $api->version);
+        $title = sprintf(esc_html__('Installing Plugin: %s', 'wp-meta-seo'), $api->name . ' ' . $api->version);
         $nonce = 'install-plugin_' . $plugin;
-        $url = 'update.php?action=install-plugin&plugin=' . urlencode($plugin);
+        $url   = 'update.php?action=install-plugin&plugin=' . urlencode($plugin);
         if (isset($_GET['from'])) {
             $url .= '&from=' . urlencode(stripslashes($_GET['from']));
         }
-        $type = 'web'; //Install plugin type, From Web or an Upload.
+        $type     = 'web'; //Install plugin type, From Web or an Upload.
         $upgrader = new Plugin_Upgrader(new Plugin_Installer_Skin(compact('title', 'url', 'nonce', 'plugin', 'api')));
         $upgrader->install($api->download_link);
-    } elseif ('activate' == $action) {
+    } elseif ('activate' === $action) {
         if (!current_user_can('activate_plugins')) {
-            wp_die(__('You do not have sufficient permissions to activate plugins for this site.', 'wp-meta-seo'));
+            wp_die(esc_html__('You do not have sufficient permissions to activate plugins for this site.', 'wp-meta-seo'));
         }
 
         if (is_multisite() && !is_network_admin() && is_network_only_plugin($plugin)) {
-            wp_redirect(self_admin_url("plugins.php?plugin_status=$status&paged=$page&s=$s"));
+            wp_redirect(self_admin_url('plugins.php?plugin_status=' . $status . '&paged=' . $page . '&s=' . $s));
             exit;
         }
 
@@ -76,8 +88,10 @@ if (isset($_GET['action'])) {
             is_network_admin()
         );
         if (is_wp_error($result)) {
-            if ('unexpected_output' == $result->get_error_code()) {
-                $redirect = self_admin_url('plugins.php?error=true&charsout=' . strlen($result->get_error_data()) . '&plugin=' . $plugin . "&plugin_status=$status&paged=$page&s=$s");
+            if ('unexpected_output' === $result->get_error_code()) {
+                $u        = 'plugins.php?error=true&charsout=' . strlen($result->get_error_data());
+                $u        .= '&plugin=' . $plugin . '&plugin_status=' . $status . '&paged=' . $page . '&s=' . $s;
+                $redirect = self_admin_url($u);
                 wp_redirect(
                     add_query_arg(
                         '_error_nonce',
@@ -87,32 +101,31 @@ if (isset($_GET['action'])) {
                 );
                 exit;
             } else {
+                // phpcs:ignore WordPress.Security.EscapeOutput -- Variable is WP_Error|null
                 wp_die($result);
             }
         }
 
         if (!is_network_admin()) {
-            $recent = (array)get_option('recently_activated');
+            $recent = (array) get_option('recently_activated');
             unset($recent[$plugin]);
             update_option('recently_activated', $recent);
         } else {
-            $recent = (array)get_site_option('recently_activated');
+            $recent = (array) get_site_option('recently_activated');
             unset($recent[$plugin]);
             update_site_option('recently_activated', $recent);
         }
 
-        if (isset($_GET['from']) && 'import' == $_GET['from']) {
-            wp_redirect(self_admin_url("import.php?import=" . str_replace('-importer', '', dirname($plugin)))); // overrides the ?error=true one above and redirects to the Imports page, stripping the -importer suffix
+        if (isset($_GET['from']) && 'import' === $_GET['from']) {
+            wp_redirect(self_admin_url('import.php?import=' . str_replace('-importer', '', dirname($plugin)))); // overrides the ?error=true one above and redirects to the Imports page, stripping the -importer suffix
         } else {
             wp_redirect(
-                self_admin_url(
-                    "admin.php?page=metaseo_image_compression&wpmsactive=imagerecycle"
-                )
-            ); // overrides the ?error=true one above
+                self_admin_url('admin.php?page=metaseo_image_compression&wpmsactive=imagerecycle')
+            );
         }
     }
 }
-$button = '';
+$button        = '';
 $check_install = false;
 if (!file_exists(WP_PLUGIN_DIR . '/imagerecycle-pdf-image-compression')) {
     $url = wp_nonce_url(
@@ -121,10 +134,10 @@ if (!file_exists(WP_PLUGIN_DIR . '/imagerecycle-pdf-image-compression')) {
     );
     if (is_multisite()) {
         if (current_user_can('manage_network_plugins')) {
-            $button = '<a style="float: right; background: #554766; line-height: 18px; text-align: center; color: #fff;font-size: 14px;text-decoration: none; text-transform: uppercase; padding: 5px 20px; font-weight:bold;" target="_blank" class="edit" data-slug="imagerecycle-pdf-image-compression" href="' . $url . '" aria-label="Install ImageRecycle pdf &amp; image compression 2.1.1 now" data-name="ImageRecycle pdf &amp; image compression 2.1.1">' . __('Install ImageRecycle plugin', 'wp-meta-seo') . '</a>';
+            $button = '<a style="float: right; background: #554766; line-height: 18px; text-align: center; color: #fff;font-size: 14px;text-decoration: none; text-transform: uppercase; padding: 5px 20px; font-weight:bold;" target="_blank" class="edit" data-slug="imagerecycle-pdf-image-compression" href="' . esc_url($url) . '" aria-label="Install ImageRecycle pdf &amp; image compression 2.1.1 now" data-name="ImageRecycle pdf &amp; image compression 2.1.1">' . esc_html__('Install ImageRecycle plugin', 'wp-meta-seo') . '</a>';
         }
     } else {
-        $button = '<a style="float: right; background: #554766; line-height: 18px; text-align: center;color: #fff;font-size: 14px;text-decoration: none; text-transform: uppercase; padding: 5px 20px; font-weight:bold;" target="_blank" class="edit" data-slug="imagerecycle-pdf-image-compression" href="' . $url . '" aria-label="Install ImageRecycle pdf &amp; image compression 2.1.1 now" data-name="ImageRecycle pdf &amp; image compression 2.1.1">' . __('Install ImageRecycle plugin', 'wp-meta-seo') . '</a>';
+        $button = '<a style="float: right; background: #554766; line-height: 18px; text-align: center;color: #fff;font-size: 14px;text-decoration: none; text-transform: uppercase; padding: 5px 20px; font-weight:bold;" target="_blank" class="edit" data-slug="imagerecycle-pdf-image-compression" href="' . esc_url($url) . '" aria-label="Install ImageRecycle pdf &amp; image compression 2.1.1 now" data-name="ImageRecycle pdf &amp; image compression 2.1.1">' . esc_html__('Install ImageRecycle plugin', 'wp-meta-seo') . '</a>';
     }
 } else {
     if (!is_plugin_active($plugin_file)) {
@@ -134,19 +147,19 @@ if (!file_exists(WP_PLUGIN_DIR . '/imagerecycle-pdf-image-compression')) {
         );
         if (is_multisite()) {
             if (current_user_can('manage_network_plugins')) {
-                $button = '<a style="float: right; background: #554766; line-height: 18px; text-align: center;  color: #fff;font-size: 14px;text-decoration: none; text-transform: uppercase; padding: 5px 20px; font-weight:bold;" href="' . $url . '" class="edit" aria-label="Activate ImageRecycle pdf &amp; image compression">' . __('Activate Plugin', 'wp-meta-seo') . '</a>';
+                $button = '<a style="float: right; background: #554766; line-height: 18px; text-align: center;  color: #fff;font-size: 14px;text-decoration: none; text-transform: uppercase; padding: 5px 20px; font-weight:bold;" href="' . esc_url($url) . '" class="edit" aria-label="Activate ImageRecycle pdf &amp; image compression">' . esc_html__('Activate Plugin', 'wp-meta-seo') . '</a>';
             }
         } else {
-            $button = '<a style="float: right; background: #554766; line-height: 18px; text-align: center;color: #fff;font-size: 14px;text-decoration: none; text-transform: uppercase; padding: 5px 20px; font-weight:bold;" href="' . $url . '" class="edit" aria-label="Activate ImageRecycle pdf &amp; image compression">' . __('Activate Plugin', 'wp-meta-seo') . '</a>';
+            $button = '<a style="float: right; background: #554766; line-height: 18px; text-align: center;color: #fff;font-size: 14px;text-decoration: none; text-transform: uppercase; padding: 5px 20px; font-weight:bold;" href="' . esc_url($url) . '" class="edit" aria-label="Activate ImageRecycle pdf &amp; image compression">' . esc_html__('Activate Plugin', 'wp-meta-seo') . '</a>';
         }
     } else {
         $check_install = true;
-        $button = '<a style="width: 250px; float: right; background: #554766; line-height: 18px; text-align: center;  margin-left:4px;color: #fff;font-size: 14px;text-decoration: none; text-transform: uppercase; padding: 8px 20px; font-weight:bold;" class="edit" href="upload.php?page=wp-image-recycle-page" aria-label="Activate ImageRecycle pdf &amp; image compression">' . __('ImageRecycle is properly installed: manage images', 'wp-meta-seo') . '</a>';
+        $button        = '<a style="width: 250px; float: right; background: #554766; line-height: 18px; text-align: center;  margin-left:4px;color: #fff;font-size: 14px;text-decoration: none; text-transform: uppercase; padding: 8px 20px; font-weight:bold;" class="edit" href="upload.php?page=wp-image-recycle-page" aria-label="Activate ImageRecycle pdf &amp; image compression">' . esc_html__('ImageRecycle is properly installed: manage images', 'wp-meta-seo') . '</a>';
     }
 }
 ?>
 
-<?php if ($check_install == true) : ?>
+<?php if ($check_install) : ?>
     <div class="main-presentation"
          style="margin: 0 auto; max-width: 1200px; background-color:#f0f1f4;font-family: helvetica,arial,sans-serif;">
         <div class="main-textcontent"
@@ -167,11 +180,12 @@ if (!file_exists(WP_PLUGIN_DIR . '/imagerecycle-pdf-image-compression')) {
                 WordPress that run the images optimization automatically on your website &amp; PDF
                 <br/>In order to start the optimization process, please install the WordPress plugin. Enjoy!</p>
             <p></p>
-            <p><?php echo $button; ?></p>
+            <p>
+                <?php echo $button; // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same file) ?>
+            </p>
         </div>
     </div>
 <?php else : ?>
-
     <div class="main-presentation"
          style="margin: 0 auto; max-width: 1200px; background-color:#f0f1f4;font-family: helvetica,arial,sans-serif;">
         <div class="main-textcontent"
@@ -195,7 +209,9 @@ if (!file_exists(WP_PLUGIN_DIR . '/imagerecycle-pdf-image-compression')) {
                 website &amp; PDF<br/>In order to start the optimization process, please install the WordPress plugin.
                 Enjoy!</p>
             <p></p>
-            <p><?php echo $button; ?></p>
+            <p>
+                <?php echo $button; // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same file) ?>
+            </p>
         </div>
     </div>
 

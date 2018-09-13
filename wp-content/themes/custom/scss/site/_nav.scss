@@ -15,8 +15,13 @@ $text-nav: (
 	height: $nav-height;
 	overflow: hidden;
 	@extend .container-fluid;
-	//background: lighten($brand,5%);
 	z-index: 7;
+	//outline: 10px solid $lime;
+
+	&:hover{
+		height: 60vh;
+		//outline: 10px solid $aqua;
+	}
 
 	&.fixed{
 		position: fixed;
@@ -30,33 +35,115 @@ $text-nav: (
 		height: $nav-height-mobile;
 	}
 
+	#nav-menus{
+		padding-top: 40px;
+		float: left;
+		margin-left: 50px;
+	}
+
+	.nav-menu-primary-item{
+		display: inline-block;
+		margin-right: 50px;
+		a{
+			color: white;
+			@extend .font-secondary;
+			@extend .uppercase;
+			@extend .tracked;
+		}
+
+		&.has-sub-menu{
+			position: relative;
+			//background: $aqua;
+
+			&:after{
+				content: 'ﬁ';
+				font-family: 'modern_pictograms_proregular';
+				font-size: 24px;
+				line-height: 100%;
+				vertical-align: middle;
+				position: relative;
+				color: white;
+			}
+
+			&:hover{
+				.sub-menu{
+					display: block;
+				}
+			}
+		}
+	}
+
+	.sub-menu{
+		position: absolute;
+		top: 0px;
+		padding-top: 70px;
+		width: 300px;
+		transform: translate(-50%,-0%);
+		margin-left: 50%;
+		display: none;
+		//background: rgba(255,255,255,.5);
+
+		li{
+			width: 50%;
+			float: left;
+			padding: 10px;
+			//margin: 1.6%;
+			//border: 5px solid $light;
+
+			a{
+				text-transform: none;
+				font-size: 16px;
+				display: block;
+				padding: 10px;
+				text-align: center;
+				background: $brand;
+				border-radius: 25%;
+				box-shadow: 0px 1px 4px transparentize($dark, .5);
+			}
+		}
+	}
+
+	&.after{
+		background: $brand;
+		height: $nav-height-after;
+
+		#logo a{
+			padding: 10px;
+		}
+
+		#nav-menus{
+			padding-top: 23px;
+		}
+	}
+
 }
 
 
 
 
-
 //LOGOS
+
 #logo{
 	height: inherit;
 	float: left;
+	max-height: $nav-height;
 
 	a{
 		padding: 20px;
 		padding-left: 0px;
 		height: inherit;
+		max-height: $nav-height;
 	}
 
 	svg,img{
 		height: 100%;
 		width: auto;
 		max-width: auto;
+		max-height: $nav-height;
 	}
 }
 
-
 .logo{
-
 	a{
 		display: block;
 	}
@@ -64,7 +151,6 @@ $text-nav: (
 
 
 //mobile nav
-
 
 #mobile-nav{
 	position: fixed;

@@ -789,3 +789,17 @@
 	Enhancement: Add mitigation for the WordPress Attachment File Traversal and Deletion vulnerability.
 	Tweak: Fire a WordPress action whenever settings are updated.
 	Bug Fix: Improved input sanitization on the logs page to prevent triggering warnings.
+7.1.0 - 2018-08-15 - Chris Jean & Timothy Jacobs
+	New Feature: Allow for globally setting recipients for admin-targeted notifications. All new notifications will default to the recipients in this list. Notifications can be set to use the default list or switch to a custom list.
+	Enhancement: Added a setting to enable/disable the Grade Report feature of Pro.
+	Tweak: Check if an IP is blacklisted on page load for compatibility with servers that cannot process server configuration level bans immediately.
+	Tweak: Display a time diff until the next event on the Debug page.
+	Tweak: Use Logging API for tracking Notification Center errors.
+	Tweak: Register Scheduler Events whenever the plugin build changes.
+	Tweak: Allow for filtering logs by any module recorded.
+	Tweak: Account for 3rd-party Backup Plugin in Security Check.
+	Bug Fix: 404 detection for plugins that mark is_404 later in the hook sequence.
+	Bug Fix: REST API Protection blocked the Taxonomies route for all users.
+	Bug Fix: Account for any CLI PHP SAPI instead of just WP-CLI in the SSL Module.
+	Bug Fix: Fixed how the Grade Report enable/disable status is stored to fix admin page loading issues on some sites.
+	Bug Fix: Fix serialization of closure error when a plugin registering a hook with a closure is in the boot-up stack and the notification center is triggered too early in the cycle.

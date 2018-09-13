@@ -166,6 +166,33 @@ final class ITSEC_Lib_Canonical_Roles {
 	}
 
 	/**
+	 * Get all users that have the given canonical role.
+	 *
+	 * @param string|string[] $canonical
+	 * @param array           $additional_args
+	 *
+	 * @return WP_User[]
+	 */
+	public static function get_users_with_canonical_role( $canonical, $additional_args = array() ) {
+
+		$canonical = (array) $canonical;
+
+		$roles = array();
+
+		foreach ( wp_roles()->roles as $role => $_ ) {
+			if ( in_array( self::get_canonical_role_from_role( $role ), $canonical, true ) ) {
+				$roles[] = $role;
+			}
+		}
+
+		if ( empty( $roles ) ) {
+			return array();
+		}
+
+		return get_users( array_merge( $additional_args, array( 'role__in' => $roles ) ) );
+	}
+
+	/**
 	 * Get a list of all of the capabilities that are unique to each role.
 	 *
 	 * @return array

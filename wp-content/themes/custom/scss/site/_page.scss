@@ -1,2 +1,14 @@
 
 /* page template */
+
+.hero-gradient{
+	background: -moz-linear-gradient(top, rgba(107,164,66,1) 5%, rgba(107,164,66,0) 100%);
+	background: -webkit-linear-gradient(top, rgba(107,164,66,1) 5%,rgba(107,164,66,0) 100%);
+	background: linear-gradient(to bottom, rgba(107,164,66,1) 5%,rgba(107,164,66,0) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6ba442', endColorstr='#006ba442',GradientType=0 );
+}
+
+.page-hero{
+	height: calc(100vh - #{$nav-height});
+	@extend .hero-gradient;
+}

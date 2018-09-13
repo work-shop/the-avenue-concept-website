@@ -221,7 +221,8 @@
                 wpms_display_order_pages: $('.wpms_display_order_pages').val(),
                 wpms_display_order_menus: $('.wpms_display_order_menus').val(),
                 wpms_display_order_urls: $('.wpms_display_order_urls').val(),
-                wpms_lang_list: $('.wpms_lang_list').val()
+                wpms_lang_list: $('.wpms_lang_list').val(),
+                wpms_nonce: wpms_localize.wpms_nonce
             };
 
             $.each(wpmseositemap.post_type,function(i,post_type){
@@ -271,7 +272,8 @@
                     dataType: 'json',
                     data: {
                         action: 'wpms_clear_customUrl',
-                        idUrl: idUrl
+                        idUrl: idUrl,
+                        wpms_nonce: wpms_localize.wpms_nonce
                     },
                     success: function (res) {
                         if(res){
@@ -330,7 +332,8 @@
                 data: {
                     action : 'wpms_sitemaps_add_customUrl',
                     link: $('#custom_url_link').val(),
-                    title: $('#custom_url_title').val()
+                    title: $('#custom_url_title').val(),
+                    wpms_nonce: wpms_localize.wpms_nonce
                 },
                 success: function (res) {
                     if(res.status){

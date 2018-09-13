@@ -11,6 +11,7 @@
 /* Prohibit direct script loading */
 defined('ABSPATH') || die('No direct script access allowed!');
 $profile = WpmsGaTools::getSelectedProfile($google_alanytics['profile_list'], $google_alanytics['tableid_jail']);
+// phpcs:disable Generic.WhiteSpace.ScopeIndent.Incorrect, WordPress.Security.EscapeOutput.OutputNotEscaped, Squiz.ControlStructures.ForEachLoopDeclaration.SpaceAfterOpen, Squiz.ControlStructures.ForEachLoopDeclaration.SpaceBeforeClose, PSR2.ControlStructures.ControlStructureSpacing.SpaceBeforeCloseBrace, PSR2.ControlStructures.ControlStructureSpacing.SpacingAfterOpenBrace, Squiz.ControlStructures.ControlSignature.NewlineAfterOpenBrace, Squiz.WhiteSpace.ScopeClosingBrace.ContentBefore, Generic.WhiteSpace.ScopeIndent.IncorrectExact -- Render google analytics script structure on frontend
 ?>
 <script>
     (function (i, s, o, g, r, a, m) {
@@ -26,11 +27,11 @@ $profile = WpmsGaTools::getSelectedProfile($google_alanytics['profile_list'], $g
     })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
     <?php
     $create_options = '{';
-    if ($this->ga_tracking['wpmsga_speed_samplerate'] != 1) {
-        $create_options .= "'siteSpeedSampleRate' : " . (int)$this->ga_tracking['wpmsga_speed_samplerate'];
+    if ((int) $this->ga_tracking['wpmsga_speed_samplerate'] !== 1) {
+        $create_options .= "'siteSpeedSampleRate' : " . (int) $this->ga_tracking['wpmsga_speed_samplerate'];
     }
-    if ($this->ga_tracking['wpmsga_crossdomain_tracking'] && $this->ga_tracking['wpmsga_crossdomain_list'] != '') {
-        if ($create_options != '{') {
+    if ($this->ga_tracking['wpmsga_crossdomain_tracking'] && $this->ga_tracking['wpmsga_crossdomain_list'] !== '') {
+        if ($create_options !== '{') {
             $create_options .= ', ';
         }
         $create_options .= "'allowLinker' : true";
@@ -46,21 +47,21 @@ $profile = WpmsGaTools::getSelectedProfile($google_alanytics['profile_list'], $g
         $optionsArray['cookieName'] = $this->ga_tracking['wpmsga_cookiename'];
     }
     if (!empty($this->ga_tracking['wpmsga_cookieexpires'])) {
-        $optionsArray['cookieExpires'] = (int)$this->ga_tracking['wpmsga_cookieexpires'];
+        $optionsArray['cookieExpires'] = (int) $this->ga_tracking['wpmsga_cookieexpires'];
     }
     if (!empty($optionsArray)) {
         $options = json_encode($optionsArray);
     }
     ?>
-    ga('create', '<?php echo esc_html($profile[2]); ?>', <?php echo $options; ?><?php    if ($create_options != '{}') {?>, <?php echo $create_options; }?>);
-    <?php if ($this->ga_tracking ['wpmsga_crossdomain_tracking'] && $this->ga_tracking ['wpmsga_crossdomain_list'] != '') {?>
+    ga('create', '<?php echo $profile[2]; ?>', <?php echo $options; ?><?php    if ($create_options !== '{}') {?>, <?php echo $create_options; }?>);
+    <?php if ($this->ga_tracking ['wpmsga_crossdomain_tracking'] && $this->ga_tracking ['wpmsga_crossdomain_list'] !== '') {?>
     ga('require', 'linker');
     <?php
     $crossdomain_list = explode(',', $this->ga_tracking['wpmsga_crossdomain_list']);
     $crossdomain_list = array_map('trim', $crossdomain_list);
     $crossdomain_list = strip_tags(implode("','", $crossdomain_list));
     ?>
-    ga('linker:autoLink', ['<?php echo($crossdomain_list)?>']);
+    ga('linker:autoLink', ['<?php echo esc_html($crossdomain_list)?>']);
     <?php
     }
     if ( $this->ga_tracking['wpmsga_dash_remarketing'] ) {
@@ -78,19 +79,19 @@ $profile = WpmsGaTools::getSelectedProfile($google_alanytics['profile_list'], $g
     $author_id = $post->post_author;
     $author_name = get_the_author_meta('display_name', $author_id);
     ?>
-    ga('set', 'dimension<?php echo (int)$this->ga_tracking ['wpmsga_author_dimindex']; ?>', '<?php echo esc_attr($author_name); ?>');
+    ga('set', 'dimension<?php echo (int) $this->ga_tracking ['wpmsga_author_dimindex']; ?>', '<?php echo esc_attr($author_name); ?>');
     <?php
     }
     if ( $this->ga_tracking['wpmsga_pubyear_dimindex'] && is_single() ) {
     global $post;
     $date = get_the_date('Y', $post->ID);
     ?>
-    ga('set', 'dimension<?php echo (int)$this->ga_tracking ['wpmsga_pubyear_dimindex']; ?>', '<?php echo (int)$date; ?>');
+    ga('set', 'dimension<?php echo (int) $this->ga_tracking ['wpmsga_pubyear_dimindex']; ?>', '<?php echo (int) $date; ?>');
     <?php
     }
     if ( $this->ga_tracking['wpmsga_category_dimindex'] && is_category() ) {
     ?>
-    ga('set', 'dimension<?php echo (int)$this->ga_tracking ['wpmsga_category_dimindex']; ?>', '<?php echo esc_attr(single_tag_title()); ?>');
+    ga('set', 'dimension<?php echo (int) $this->ga_tracking ['wpmsga_category_dimindex']; ?>', '<?php echo esc_attr(single_tag_title()); ?>');
     <?php
     }
     if ( $this->ga_tracking['wpmsga_tag_dimindex'] && is_single() ) {
@@ -105,7 +106,7 @@ $profile = WpmsGaTools::getSelectedProfile($google_alanytics['profile_list'], $g
     $post_tags_list = rtrim($post_tags_list, ', ');
     if ( $post_tags_list ) {
     ?>
-    ga('set', 'dimension<?php echo (int)$this->ga_tracking ['wpmsga_tag_dimindex']; ?>', '<?php echo esc_attr($post_tags_list); ?>');
+    ga('set', 'dimension<?php echo (int) $this->ga_tracking ['wpmsga_tag_dimindex']; ?>', '<?php echo esc_attr($post_tags_list); ?>');
     <?php
     }
     }
@@ -114,14 +115,14 @@ $profile = WpmsGaTools::getSelectedProfile($google_alanytics['profile_list'], $g
     $categories = get_the_category($post->ID);
     foreach ( $categories as $category ) {
     ?>
-    ga('set', 'dimension<?php echo (int)$this->ga_tracking ['wpmsga_category_dimindex']; ?>', '<?php echo esc_attr($category->name); ?>');
+    ga('set', 'dimension<?php echo (int) $this->ga_tracking ['wpmsga_category_dimindex']; ?>', '<?php echo esc_attr($category->name); ?>');
     <?php
     break;
     }
     }
     if ( $this->ga_tracking['wpmsga_user_dimindex'] ) {
     ?>
-    ga('set', 'dimension<?php echo (int)$this->ga_tracking ['wpmsga_user_dimindex']; ?>', '<?php echo is_user_logged_in() ? 'registered' : 'guest'; ?>');
+    ga('set', 'dimension<?php echo (int) $this->ga_tracking ['wpmsga_user_dimindex']; ?>', '<?php echo is_user_logged_in() ? 'registered' : 'guest'; ?>');
     <?php
     }
     do_action('wpmsga_dash_addtrackingcode');
@@ -135,3 +136,5 @@ $profile = WpmsGaTools::getSelectedProfile($google_alanytics['profile_list'], $g
     window.google_analytics_uacct = "<?php echo esc_html($profile[2]); ?>";
     <?php }?>
 </script>
+<?php // phpcs:enable ?>
+

@@ -110,11 +110,16 @@ final class ITSEC_Logs_List_Table extends ITSEC_WP_List_Table {
 			return;
 		}
 
-		if ( 'four_oh_four' === $item['module'] && 'code' === $column_name ) {
-			$url = self::get_self_link( array( 'filters[10]' => "url|{$item['url']}", 'filters[11]' => 'module|four_oh_four' ) );
+		if ( false === strpos( $item['code'], '::' ) ) {
+			$code = $item['code'];
+			$data = array();
 		} else {
-			$url = self::get_self_link( array( 'filters' => "$column_name|{$item[$column_name]}" ) );
+			list( $code, $data ) = explode( '::', $item['code'], 2 );
+			$data = explode( ',', $data );
 		}
+
+		$vars = apply_filters( "itsec_logs_prepare_{$item['module']}_filter_row_action_for_{$column_name}", array( 'filters' => "{$column_name}|{$item[ $column_name ]}"), $item, $code, $data );
+		$url = $this->get_self_link( $vars );
 
 		$out = '&nbsp;<a class="dashicons dashicons-filter" href="' . esc_url( $url ) . '" title="' . sprintf( esc_attr__( 'Show only entries for this %s', 'better-wp-security' ), strtolower( $column_header ) ) . '">&nbsp;</a>';
 
@@ -372,7 +377,7 @@ final class ITSEC_Logs_List_Table extends ITSEC_WP_List_Table {
 		$current = $this->get_current_view();
 
 		foreach ( $views as $type => $description ) {
-			$url = self::get_self_link( array( 'filters' => "type|$type" ), array() );
+			$url = $this->get_self_link( array( 'filters' => "type|$type" ), array() );
 
 			if ( $current === $type ) {
 				$description = '<a href="' . esc_url( $url ) . '" class="current" aria-current="page">' . $description . '</a>';
@@ -409,28 +414,79 @@ final class ITSEC_Logs_List_Table extends ITSEC_WP_List_Table {
 	}
 
 	protected function extra_tablenav( $which ) {
-		echo '<div class="alignleft actions">';
 
-		if ( 'top' === $which ) {
-/*
-			ob_start();
+		$filters = $this->get_raw_filters();
+		$current = isset( $filters['module'] ) ? $filters['module'] : '';
 
-			$output = ob_get_clean();
+		?>
+		<div class="alignleft actions">
+			<?php if ( 'top' === $which ): ?>
+				<label for="itsec-module-filter" class="screen-reader-text"><?php esc_html_e( 'Filter by Module', 'better-wp-security' ) ?></label>
+				<select name="filters[]" id="itsec-module-filter">
+					<option value=""><?php esc_html_e( 'All Modules', 'better-wp-security' ); ?></option>
+					<?php foreach ( $this->get_modules() as $module => $label ): ?>
+						<option value="module|<?php echo esc_attr( $module ) ?>" <?php selected( $module, $current ); ?>>
+							<?php echo $label; // Expected to be escaped by modules. ?>
+						</option>
+					<?php endforeach; ?>
+				</select>
 
-			if ( ! empty( $output ) ) {
-				echo $output;
-				submit_button( __( 'Filter' ), '', 'filter_action', false, array( 'id' => 'post-query-submit' ) );
-			}*/
-		}
+				<?php submit_button( __( 'Filter' ), '', 'filter_action', false, array( 'id' => 'itsec-logs-query-submit' ) ); ?>
 
-/*		if ( $this->is_trash && current_user_can( get_post_type_object( $this->screen->post_type )->cap->edit_others_posts ) && $this->has_items() ) {
-			submit_button( __( 'Empty Trash' ), 'apply', 'delete_all', false );
-		}*/
-
-		echo '</div>';
+				<?php if ( isset( $filters['type'] ) ): ?>
+					<input type="hidden" name="filters[]" value="type|<?php echo esc_attr( $filters['type'] ); ?>">
+				<?php endif; ?>
+			<?php endif; ?>
+		</div>
+		<?php
 	}
 
 	public function no_items() {
 		esc_html_e( 'No events.', 'better-wp-security' );
+	}
+
+	private function get_modules() {
+		$columns = implode(', ', array(
+			'id',
+			'parent_id',
+			'module',
+			'type',
+			'code',
+			'timestamp',
+			'init_timestamp',
+			'remote_ip',
+			'user_id',
+			'url',
+			'memory_current',
+			'memory_peak',
+		) );
+
+		global $wpdb;
+
+		$items = $wpdb->get_results( "SELECT {$columns} FROM {$wpdb->prefix}itsec_logs GROUP BY `module`", ARRAY_A );
+
+		if ( ! is_array( $items ) ) {
+			return array();
+		}
+
+		$modules = array();
+
+		foreach ( $items as $item ) {
+			if ( false === strpos( $item['code'], '::' ) ) {
+				$code = $item['code'];
+				$data = array();
+			} else {
+				list( $code, $data ) = explode( '::', $item['code'], 2 );
+				$data = explode( ',', $data );
+			}
+
+			$item['description'] = $item['code'];
+			$item['module_display'] = $item['module'];
+			$item = apply_filters( "itsec_logs_prepare_{$item['module']}_entry_for_list_display", $item, $code, $data );
+
+			$modules[ $item['module'] ] = $item['module_display'];
+		}
+
+		return $modules;
 	}
 }

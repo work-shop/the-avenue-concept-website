@@ -476,3 +476,8 @@ div.wpmseo-tab-content {
 .icons-mboxwarning {
     color:#FFB900
 }
+
+.p_index_folder {
+    float: left;
+    width: 100%;
+}

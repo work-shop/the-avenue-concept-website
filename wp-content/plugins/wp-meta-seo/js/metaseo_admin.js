@@ -135,7 +135,8 @@ function wpmsRemoveLink(link_id) {
         data: {
             'action': 'wpms',
             'task': 'remove_link',
-            'link_id': link_id
+            'link_id': link_id,
+            'wpms_nonce': wpms_localize.wpms_nonce
         },
         success: function (response) {
             if (response.status) {
@@ -161,7 +162,8 @@ function saveMetaLinkChanges(button_update) {
             'action': 'wpms',
             'task': 'update_link',
             'link_id': link_id,
-            'meta_title': meta_title
+            'meta_title': meta_title,
+            'wpms_nonce': wpms_localize.wpms_nonce
         },
         success: function (response) {
             jQuery(button_update).closest('tr').find('.wpms_update_link').hide();
@@ -190,7 +192,8 @@ function metaseo_update_pageindex(page_id, index) {
             'action': 'wpms',
             'task': 'update_pageindex',
             'page_id': page_id,
-            'index': index
+            'index': index,
+            'wpms_nonce': wpms_localize.wpms_nonce
         }
     });
 }
@@ -209,7 +212,8 @@ function metaseo_update_pagefollow(page_id, follow) {
             'action': 'wpms',
             'task': 'update_pagefollow',
             'page_id': page_id,
-            'follow': follow
+            'follow': follow,
+            'wpms_nonce': wpms_localize.wpms_nonce
         }
     });
 }
@@ -240,7 +244,8 @@ function wpmsChangeFollow(button) {
             'action': 'wpms',
             'task': 'update_follow',
             'link_id': link_id,
-            'follow': follow
+            'follow': follow,
+            'wpms_nonce': wpms_localize.wpms_nonce
         }
     });
 }
@@ -261,7 +266,8 @@ function wpmsScanLink($this) {
             'action': 'wpms',
             'task': 'scan_link',
             'paged': $this.data('paged'),
-            'comment_paged': $this.data('comment_paged')
+            'comment_paged': $this.data('comment_paged'),
+            'wpms_nonce': wpms_localize.wpms_nonce
         },
         success: function (res) {
             if (!res.status) {
@@ -328,13 +334,15 @@ function wpmsUpdateFollow(button) {
             action: 'wpms',
             task: 'update_multiplefollow',
             linkids: link_selected,
-            follow_value: follow_value
+            follow_value: follow_value,
+            wpms_nonce: wpms_localize.wpms_nonce
         };
     } else {
         data = {
             action: 'wpms',
             task: 'update_multiplefollow',
-            follow_value: follow_value
+            follow_value: follow_value,
+            wpms_nonce: wpms_localize.wpms_nonce
         };
     }
 
@@ -410,7 +418,8 @@ function saveMetaContentChanges(metakey, postid, data) {
         'task': 'updateContentMeta',
         'metakey': metakey,
         'postid': postid,
-        'value': data
+        'value': data,
+        'wpms_nonce': wpms_localize.wpms_nonce
     };
     // We can also pass the url value separately from ajaxurl for front end AJAX implementations
     jQuery.post(wpms_localize.ajax_url, postData, function (response) {
@@ -479,7 +488,8 @@ function saveChanges(element_id, post_id, meta_type, meta_value) {
             'meta_order': element.data('meta-order'),
             'img_post_id': element.data('img-post-id'),
             'post_id': element.data('post-id')
-        }
+        },
+        'wpms_nonce': wpms_localize.wpms_nonce
     };
 
     // We can also pass the url value separately from ajaxurl for front end AJAX implementations
@@ -600,7 +610,8 @@ function _metaSeoScanImages(imgs) {
         data: {
             'action': 'wpms',
             'task': 'scanPosts',
-            'imgs': imgs
+            'imgs': imgs,
+            'wpms_nonce': wpms_localize.wpms_nonce
         },
         dataType: 'json',
         beforeSend: function () {
@@ -749,7 +760,8 @@ function optimize_imgs(element) {
                 'task': 'optimize_imgs',
                 'post_id': post_id,
                 'img_post_id': img_post_id,
-                'img_exclude': img_exclude
+                'img_exclude': img_exclude,
+                'wpms_nonce': wpms_localize.wpms_nonce
             },
             dataType: 'json',
             type: 'post',
@@ -879,7 +891,8 @@ function showPostsList(element) {
         'task': 'load_posts',
         'img_name': that.data('img-name'),
         'post_id': that.data('post-id'),
-        'opt_key': that.data('opt-key')
+        'opt_key': that.data('opt-key'),
+        'wpms_nonce': wpms_localize.wpms_nonce
     };
 
     if (that.data('img-name') !== '') {
@@ -930,7 +943,8 @@ function importMetaData(that, event) {
             data: {
                 'action': 'wpms',
                 'task': 'import_meta_data',
-                'plugin': that.id
+                'plugin': that.id,
+                'wpms_nonce': wpms_localize.wpms_nonce
             },
             dataType: 'json',
             beforeSend: function () {
@@ -1011,7 +1025,8 @@ function wpms_image_scan_meta($this) {
         data: {
             action: "wpms",
             task: "image_scan_meta",
-            paged: $this.data('paged')
+            paged: $this.data('paged'),
+            wpms_nonce: wpms_localize.wpms_nonce
         },
         success: function (res) {
             var w = jQuery('.wpms_process_meta').data('w');
@@ -1116,9 +1131,9 @@ jQuery(document).ready(function ($) {
     });
 
     // when change 'Status' filter in 404 view
-    $('.redirect_fillter').bind('change', function () {
+    $('.redirect_filter').bind('change', function () {
         var value = $(this).val();
-        $('.redirect_fillter').each(function (i, e) {
+        $('.redirect_filter').each(function (i, e) {
             if ($(e).val() !== value) {
                 $(e).val(value);
             }
@@ -1126,9 +1141,9 @@ jQuery(document).ready(function ($) {
     });
 
     // when change broken filter in 404 view
-    $('.broken_fillter').bind('change', function () {
+    $('.broken_filter').bind('change', function () {
         var value = $(this).val();
-        $('.broken_fillter').each(function (i, e) {
+        $('.broken_filter').each(function (i, e) {
             if ($(e).val() !== value) {
                 $(e).val(value);
             }
@@ -1220,7 +1235,8 @@ jQuery(document).ready(function ($) {
                 data: {
                     'action': 'wpms',
                     'task': 'dismiss_import_meta',
-                    'plugin': plugin
+                    'plugin': plugin,
+                    'wpms_nonce': wpms_localize.wpms_nonce
                 },
                 dataType: 'json',
                 beforeSend: function () {

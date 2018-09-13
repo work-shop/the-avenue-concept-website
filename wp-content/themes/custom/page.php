@@ -1,14 +1,27 @@
 
 <?php get_template_part('partials/header'); ?>
 
-<?php get_template_part('partials/page/page_hero' ); ?>
+<?php global $post;
+//check if this is a child page of the donate page
+//this is a hacky workaround to catch all the child pages instead of making their own templates
+if ( $post->post_parent === 189 ) { ?>
 
-<?php get_template_part('partials/page/page_intro' ); ?>
+	<?php get_template_part('partials/page/page_hero' ); ?>
 
-<?php get_template_part('partials/initialize' ); ?>
+	<?php get_template_part('partials/donate/donation' ); ?>
 
-<?php get_template_part('partials/flexible_content/flexible_content' ); ?>
+	<?php get_template_part('partials/donate/donors' ); ?>
+
+	<?php get_template_part('partials/donate/ways' ); ?>
+
+	<?php // else not a donate child page, so it's a generic page ?>
+<?php } else { ?>
+
+	<?php get_template_part('partials/page/page_hero' ); ?>
+
+	<?php get_template_part('partials/flexible_content/flexible_content' ); ?>
+
+<?php } ?>
 
 <?php get_template_part('partials/footer' ); ?>
-
 

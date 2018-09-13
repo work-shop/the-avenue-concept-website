@@ -142,6 +142,19 @@ abstract class ITSEC_Validator {
 			if ( empty( $this->settings[$var] ) ) {
 				$error = sprintf( __( 'The %1$s value cannot be empty.', 'better-wp-security' ), $name );
 			}
+		} elseif ( 'text' === $type || 'non-empty-text' === $type ) {
+			$string = (string) $this->settings[ $var ];
+			$string = wp_strip_all_tags( $string );
+
+			if ( $trim_value ) {
+				$string = trim( $string );
+			}
+
+			$this->settings[ $var ] = $string;
+
+			if ( 'non-empty-text' === $type && empty( $this->settings[ $var ] ) ) {
+				$error = sprintf( __( 'The %1$s value cannot be empty.', 'better-wp-security' ), $name );
+			}
 		} else if ( 'array' === $type ) {
 			if ( ! is_array( $this->settings[$var] ) ) {
 				if ( empty( $this->settings[$var] ) ) {
@@ -414,6 +427,37 @@ abstract class ITSEC_Validator {
 					$error = wp_sprintf( _n( 'The following extension in %1$s is invalid: %2$l', 'The following extensions in %1$s are invalid: %2$l', count( $invalid_extensions ), 'better-wp-security' ), $name, $invalid_extensions );
 				}
 			}
+		} elseif ( is_string( $type ) && 0 === strpos( $type, 'cb-items:' ) ) {
+
+			list( , $method ) = explode( ':', $type );
+
+			if ( ! is_array( $this->settings[ $var ] ) ) {
+				$error = sprintf( __( 'The %1$s value must be an array.', 'better-wp-security' ), $name );
+			} else {
+				$invalid_entries = array();
+
+				foreach ( $this->settings[ $var ] as $index => $entry ) {
+
+					if ( empty( $entry ) ) {
+						unset( $this->settings[ $var ][ $index ] );
+					} else {
+						$result = $this->{$method}( $entry, $index );
+
+						if ( false === $result ) {
+							$invalid_entries[] = is_string( $entry ) ? $entry : $index;
+						} elseif ( is_wp_error( $result ) ) {
+							$invalid_entries[] =  "'{$index}': {$result->get_error_message()}";
+						} else {
+							$this->settings[ $var ][ $index ] = $result;
+						}
+					}
+				}
+
+				if ( ! empty( $invalid_entries ) ) {
+					$error = wp_sprintf( _n( 'The following entry in %1$s is invalid: %2$l', 'The following entries in %1$s are invalid: %2$l', count( $invalid_entries ), 'better-wp-security' ), $name, $invalid_entries );
+				}
+			}
+
 		} else {
 			/* translators: 1: sanitize type, 2: input name */
 			$error = sprintf( __( 'An invalid sanitize type of "%1$s" was received for the %2$s input.', 'better-wp-security' ), $type, $name );

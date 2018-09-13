@@ -1,13 +1,5 @@
 jQuery(document).ready(function ($) {
     var broken_linkId = 0;
-    var correctedURL;
-    $('.wpms-link-url-field,.custom_redirect_url_redirect').on('keyup', function () {
-        var url = $.trim($(this).val());
-        if (url && correctedURL !== url && !/^(?:[a-z]+:|#|\?|\.|\/)/.test(url)) {
-            $(this).val('http://' + url);
-            correctedURL = url;
-        }
-    });
 
     /*
      * Scan all link in posts , pages and comments
@@ -28,7 +20,8 @@ jQuery(document).ready(function ($) {
                 data: {
                     'action': 'wpms',
                     'task': 'flush_link',
-                    'type': $('#filter-by-flush').val()
+                    'type': $('#filter-by-flush').val(),
+                    'wpms_nonce': wpms_localize.wpms_nonce
                 },
                 success: function () {
                     $('#wp-seo-meta-form .spinner').hide();
@@ -72,7 +65,8 @@ jQuery(document).ready(function ($) {
                     'new_text': new_text,
                     'link_redirect': link_redirect,
                     'status_link_redirect': status_link,
-                    'type' : type
+                    'type' : type,
+                    'wpms_nonce': wpms_localize.wpms_nonce
                 },
                 success: function (res) {
                     if (!res.status) {
@@ -178,19 +172,20 @@ jQuery(document).ready(function ($) {
             data: {
                 'action': 'wpms',
                 'task': 'recheck_link',
-                'link_id': link_id
+                'link_id': link_id,
+                'wpms_nonce': wpms_localize.wpms_nonce
             },
             success: function (res) {
                 if (res.status) {
                     var status = res.status_text;
                     if (status.indexOf('404') !== -1 || status === 'Server Not Found') {
-                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_warning metaseo_help_status" alt="404 error, not found">warning</i>');
+                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_warning metaseo_help_status" data-alt="404 error, not found">warning</i>');
                     } else if (status.indexOf('200') !== -1) {
-                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" alt="Link is OK">done</i>');
+                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" data-alt="Link is OK">done</i>');
                     } else if (status.indexOf('301') !== -1) {
-                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" alt="Permanent redirect">done</i>');
+                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" data-alt="Permanent redirect">done</i>');
                     } else if (status.indexOf('302') !== -1) {
-                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" alt="Moved temporarily">done</i>');
+                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" data-alt="Moved temporarily">done</i>');
                     } else {
                         $this.closest('tr').find('.col_status').html(res.status_text);
                     }
@@ -213,7 +208,8 @@ jQuery(document).ready(function ($) {
             data: {
                 'action': 'wpms',
                 'task': 'unlink',
-                'link_id': link_id
+                'link_id': link_id,
+                'wpms_nonce': wpms_localize.wpms_nonce
             },
             success: function (res) {
                 if (res) {
@@ -239,24 +235,26 @@ jQuery(document).ready(function ($) {
                 'new_text': new_text,
                 'link_redirect': link_redirect,
                 'data_type': data_type,
-                'status_redirect': status_redirect
+                'status_redirect': status_redirect,
+                'wpms_nonce': wpms_localize.wpms_nonce
             },
             success: function (res) {
                 if (res.status) {
                     $this.closest('td').find('.wpms-inline-editor-content').hide();
                     //if(res.type != '404_automaticaly'){
-                    $this.closest('td').find('.link_html').html(res.new_link).attr('href', res.new_link);
+                    $this.closest('td').find('.link_html').html(new_link).attr('href', wpms_localize.home_url + '/' + new_link);
+                    $this.closest('td').find('.link_html_redirect').html(link_redirect).attr('href', wpms_localize.home_url + '/' + link_redirect);
                     $this.closest('tr').find('.col_status').html(res.status_text);
 
                     var status = res.status_text;
                     if (status.indexOf('404') !== -1 || status === 'Server Not Found') {
-                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_warning metaseo_help_status" alt="404 error, not found">warning</i>');
+                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_warning metaseo_help_status" data-alt="404 error, not found">warning</i>');
                     } else if (status.indexOf('200') !== -1) {
-                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" alt="Link is OK">done</i>');
+                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" data-alt="Link is OK">done</i>');
                     } else if (status.indexOf('301') !== -1) {
-                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" alt="Permanent redirect">done</i>');
+                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" data-alt="Permanent redirect">done</i>');
                     } else if (status.indexOf('302') !== -1) {
-                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" alt="Moved temporarily">done</i>');
+                        $this.closest('tr').find('.col_status').html('<i class="material-icons wpms_ok metaseo_help_status" data-alt="Moved temporarily">done</i>');
                     } else {
                         $this.closest('tr').find('.col_status').html(res.status_text);
                     }
@@ -279,7 +277,7 @@ jQuery(document).ready(function ($) {
     function wpms_tooltip() {
         jQuery('.metaseo_help_status').qtip({
             content: {
-                attr: 'alt'
+                attr: 'data-alt'
             },
             position: {
                 my: 'bottom left',

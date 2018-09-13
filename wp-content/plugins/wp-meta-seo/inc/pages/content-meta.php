@@ -7,6 +7,7 @@ $metaseo_list_table = new MetaSeoContentListTable();
 $metaseo_list_table->processAction();
 $metaseo_list_table->prepare_items();
 
+// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
 if (!empty($_REQUEST['_wp_http_referer'])) {
     wp_redirect(remove_query_arg(array('_wp_http_referer', '_wpnonce'), stripslashes($_SERVER['REQUEST_URI'])));
     exit;
@@ -15,10 +16,10 @@ if (!empty($_REQUEST['_wp_http_referer'])) {
 
 <div class="wrap seo_extended_table_page">
     <div id="icon-edit-pages" class="icon32 icon32-posts-page"></div>
-    <?php echo '<h1>' . __('Content Meta', 'wp-meta-seo') . '</h1>'; ?>
+    <?php echo '<h1>' . esc_html__('Content Meta', 'wp-meta-seo') . '</h1>'; ?>
     <form id="wp-seo-meta-form" action="" method="post">
         <?php
-        $metaseo_list_table->search_box(__('Search Posts', 'wp-meta-seo'), 'wpms_content');
+        $metaseo_list_table->search_box(esc_html__('Search Posts', 'wp-meta-seo'), 'wpms_content');
         $metaseo_list_table->display();
         ?>
     </form>

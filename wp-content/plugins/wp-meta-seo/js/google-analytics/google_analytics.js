@@ -742,7 +742,8 @@ jQuery.fn.extend({
                         wpms_security_backend_item_reports: wpmsItemData.security,
                         from: from,
                         to: to,
-                        filter: itemId
+                        filter: itemId,
+                        wpms_nonce: wpms_localize.wpms_nonce
                     }
                 } else if (wpmsItemData.scope === 'front-item') {
                     postData = {
@@ -760,7 +761,8 @@ jQuery.fn.extend({
                         wpms_security_backend_item_reports: wpmsItemData.security,
                         projectId: projectId,
                         from: from,
-                        to: to
+                        to: to,
+                        wpms_nonce: wpms_localize.wpms_nonce
                     }
                 }
                 if (period === 'realtime') {
@@ -1033,7 +1035,8 @@ jQuery(document).ready(function () {
             dataType: 'json',
             data: {
                 'action': 'wpms',
-                'task': 'ga_clearauthor'
+                'task': 'ga_clearauthor',
+                'wpms_nonce': wpms_localize.wpms_nonce
             },
             success: function () {
                 window.location.assign(wpmsItemData.admin_url+'admin.php?page=metaseo_google_analytics');
@@ -1054,7 +1057,8 @@ jQuery(document).ready(function () {
             data: {
                 action: 'wpms',
                 task: 'ga_update_option',
-                userapi: userapi
+                userapi: userapi,
+                wpms_nonce: wpms_localize.wpms_nonce
             },
             success: function () {
                 window.location.assign(document.URL);
