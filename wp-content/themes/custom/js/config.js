@@ -10,7 +10,7 @@ var global_config = {
 
 var config = {
     dropdowns: {
-        linkSelector: '.dropdown-link',
+        linkSelector: '.has-sub-menu',
         bodyOffClass: 'dropdown-off',
         bodyOnClass: 'dropdown-on',
         dropdownSelector: '.menu-dropdown',     

@@ -1,5 +1,8 @@
 
 <nav id="nav" class="fixed before">
+	<div id="nav-background">
+		<img src="<?php bloginfo( 'template_directory' ); ?>/images/nav-background.png">
+	</div>
 	<div id="logo" class="logo">
 		<a href="/" title="Home">
 			<?php get_template_part('partials/logo'); ?>
@@ -8,7 +11,10 @@
 	<div id="nav-menus">
 		<ul class="nav-menus-list">
 			<li class="sub-menu-closed has-sub-menu nav-menu-primary-item">
-				<a href="/about" class="dropdown-link <?php if( Helpers::is_tree(161) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="programs">Programs</a>
+				<a href="/about" class="dropdown-link <?php if( Helpers::is_tree(161) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="programs">
+					Programs
+					<span class="icon" data-icon="ﬁ"></span>
+				</a>
 				<ul class="sub-menu">
 					<li>
 						<a href="/programs">
@@ -33,7 +39,10 @@
 				</ul>
 			</li>
 			<li class="sub-menu-closed has-sub-menu nav-menu-primary-item">
-				<a href="/about" class="dropdown-link <?php if( Helpers::is_tree(187) ): echo ' nav-current '; endif; ?>" id="nav-link-artworks" data-dropdown-target="artworks">Artworks</a>
+				<a href="/about" class="dropdown-link <?php if( Helpers::is_tree(187) ): echo ' nav-current '; endif; ?>" id="nav-link-artworks" data-dropdown-target="artworks">
+					Artworks
+					<span class="icon" data-icon="ﬁ"></span>
+				</a>
 				<ul class="sub-menu">
 					<li>
 						<a href="/artworks">
@@ -58,7 +67,10 @@
 				</ul>
 			</li>
 			<li class="sub-menu-closed has-sub-menu nav-menu-primary-item">
-				<a href="/programs" class="dropdown-link <?php if( is_page(159) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="about">About</a>
+				<a href="/programs" class="dropdown-link <?php if( is_page(159) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="about">
+					About
+					<span class="icon" data-icon="ﬁ"></span>
+				</a>
 				<ul class="sub-menu">
 					<li>
 						<a href="/about">

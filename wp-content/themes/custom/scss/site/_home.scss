@@ -139,22 +139,22 @@ $dot-padding-combined: $dot-padding*2;
 	}
 }
 
-#logo-home{
-	width: 200px;
-	z-index: 6;
-	transition: all .3s;
+// #logo-home{
+// 	width: 200px;
+// 	z-index: 6;
+// 	transition: all .3s;
 
-	@media screen and (max-width: $sm) {
-		width: 130px;
-	}
+// 	@media screen and (max-width: $sm) {
+// 		width: 130px;
+// 	}
 
-	&.fixed{
-		position: fixed;
-		top: 20px;
-		left: 20px;
-		width: 130px;
-	}
-}
+// 	&.fixed{
+// 		position: fixed;
+// 		top: 20px;
+// 		left: 20px;
+// 		width: 130px;
+// 	}
+// }
 
 #home-header-nav{
 	display: block;

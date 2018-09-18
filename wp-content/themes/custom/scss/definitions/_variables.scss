@@ -7,7 +7,7 @@ $lime: #bdd73d;
 $green: #008653;
 $aqua: #0f798f;
 $dark-green: #263a15;
-$tan: #dddb91;
+$tan: lighten(#dddb91,10%);
 $slate: #a4b5ba;
 
 
@@ -25,9 +25,9 @@ $error: #ff4a4a;
 
 
 //sizes
-$nav-height: 100px;
+$nav-height: 80px;
 $nav-height-md: 90px;
-$nav-height-after: 70px;
+$nav-height-after: 80px;
 $nav-drop: $nav-height;
 $nav-drop-after: $nav-height - 1px;
 $nav-height-mobile: 80px;

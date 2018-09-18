@@ -14,14 +14,11 @@ $text-nav: (
 	width: 100%;
 	height: $nav-height;
 	overflow: hidden;
-	@extend .container-fluid;
+	//@extend .container-fluid;
+	padding-left: 15px;
 	z-index: 7;
-	//outline: 10px solid $lime;
-
-	&:hover{
-		height: 60vh;
-		//outline: 10px solid $aqua;
-	}
+	//border-bottom: 1px solid $aqua;
+	//height: 100vh;
 
 	&.fixed{
 		position: fixed;
@@ -35,35 +32,52 @@ $text-nav: (
 		height: $nav-height-mobile;
 	}
 
+	#nav-background{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		z-index: -1;
+		height: $nav-height-after;
+		display: none;
+
+		img{
+			height: $nav-height-after;
+			//height: inherit;
+			width: auto;
+		}
+	}
+
 	#nav-menus{
 		padding-top: 40px;
 		float: left;
-		margin-left: 50px;
+		margin-left: 30px;
 	}
 
 	.nav-menu-primary-item{
 		display: inline-block;
 		margin-right: 50px;
+		//padding: 10px;
+		//outline: 1px solid blue;
+
 		a{
 			color: white;
 			@extend .font-secondary;
 			@extend .uppercase;
 			@extend .tracked;
+			display: inline;
+			padding: 10px;
+
+			.icon:before{
+				text-transform: none;
+				display: inline;
+				color: white;
+			}
 		}
 
 		&.has-sub-menu{
 			position: relative;
-			//background: $aqua;
-
-			&:after{
-				content: 'ﬁ';
-				font-family: 'modern_pictograms_proregular';
-				font-size: 24px;
-				line-height: 100%;
-				vertical-align: middle;
-				position: relative;
-				color: white;
-			}
+			z-index: 8;
 
 			&:hover{
 				.sub-menu{
@@ -75,20 +89,17 @@ $text-nav: (
 
 	.sub-menu{
 		position: absolute;
-		top: 0px;
-		padding-top: 70px;
+		top: 35px;
+		padding-top: 35px;
 		width: 300px;
 		transform: translate(-50%,-0%);
 		margin-left: 50%;
 		display: none;
-		//background: rgba(255,255,255,.5);
 
 		li{
 			width: 50%;
 			float: left;
 			padding: 10px;
-			//margin: 1.6%;
-			//border: 5px solid $light;
 
 			a{
 				text-transform: none;
@@ -104,18 +115,45 @@ $text-nav: (
 	}
 
 	&.after{
-		background: $brand;
 		height: $nav-height-after;
 
-		#logo a{
-			padding: 10px;
+		#nav-background{
+			display: block;
+		}
+
+		#logo {
+			width: 140px;
+
+
+			a{
+				padding-top: 12px;
+				padding-bottom: 5px;
+			}
+
 		}
 
 		#nav-menus{
-			padding-top: 23px;
+			padding-top: 25px;
 		}
 	}
 
+	&:hover{
+		//height: 100vh;
+		//overflow: scroll;
+	}
+
+	&.open{
+		height: 100vh;
+		overflow: scroll;
+	}
+
+}
+
+.dropdown-on{
+	#nav{
+		height: 100vh;
+		overflow: scroll;
+	}
 }
 
 
@@ -124,22 +162,17 @@ $text-nav: (
 //LOGOS
 
 #logo{
-	height: inherit;
+	width: 160px;
 	float: left;
-	max-height: $nav-height;
 
 	a{
 		padding: 20px;
 		padding-left: 0px;
-		height: inherit;
-		max-height: $nav-height;
+
 	}
 
 	svg,img{
-		height: 100%;
-		width: auto;
-		max-width: auto;
-		max-height: $nav-height;
+
 	}
 }
 

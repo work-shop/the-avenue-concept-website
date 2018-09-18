@@ -8,25 +8,49 @@
 
 	#logo-footer{
 		width: 190px;
+
+		@media screen and (max-width: $lg) {
+			width: 160px;
+		}
+
+		@media screen and (max-width: $md) {
+			width: 130px;
+			margin-bottom: 2em;
+		}
 	}
 
 	address,p{
 		font-size: 19px;
 		line-height: 1.5;
+		margin-bottom: 1.5em;
+
+		@media screen and (max-width: $lg) {
+			font-size: 16px;
+		}
 
 		@media screen and (max-width: $md) {
-			font-size: 13px;
+			font-size: 14px;
 		}
+	}
+
+	.footer-contact-us{
+		line-height: 1.6;
 	}
 
 	.footer-col{
 		@media screen and (max-width: $sm) {
-			margin-bottom: 2em;
+			//margin-bottom: 2em;
+		}
+	}
+
+	.footer-social{
+		@media screen and (max-width: $md) {
+			//margin-bottom: 2em;
 		}
 	}
 
 	.social-icon{
-		width: 40px;
+		width: 30px;
 		margin-right: 20px;
 
 		@media screen and (max-width: $md) {
@@ -34,4 +58,65 @@
 			margin-right: 10px;
 		}
 	}
+
+	.footer-nav-col{
+		@media screen and (max-width: $md) {
+			margin-top: 2em;
+		}
+
+		.footer-nav-heading{
+			@extend .tracked;
+
+			@media screen and (max-width: $md) {
+				font-size: 17px;
+			}
+		}
+
+		li{
+			margin-bottom: .45em;
+
+			@media screen and (max-width: $md) {
+				margin-bottom: .35em;
+			}
+
+			a{
+				font-size: 16px;
+				@extend .tracked-less;
+				@extend .uppercase;
+				line-height: 1.2;
+				display: block;
+				padding-top: 5px;
+				padding-bottom: 5px;
+
+				&:hover{
+					text-decoration: underline;
+				}
+
+				@media screen and (max-width: $lg) {
+					font-size: 14px;
+				}
+
+				@media screen and (max-width: $md) {
+					font-size: 13px;
+				}
+			}
+		}
+	}
+
+	.footer-donate-button{
+		a{
+			background-image: url('../images/blob-02.svg');
+			background-size: 100% 100%;
+			display: block;
+			width: 140px;
+			height: 100px;
+			margin-top: -33px;
+			text-align: center;	
+
+			@media screen and (max-width: $md) {
+				margin-top: 0px;
+			}		
+		}
+	}
+
 }
