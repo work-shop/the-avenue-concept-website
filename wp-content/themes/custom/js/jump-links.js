@@ -20,7 +20,7 @@ function jumpLinks(config){
 				offset = config.mobileNavHeight + config.jumpPadding;	
 			}
 
-			offset = 0; //override for landing page
+			//offset = 0; //override for landing page
 
 			$('html,body').animate({
 				scrollTop: $( $(this).attr('href') ).offset().top - offset

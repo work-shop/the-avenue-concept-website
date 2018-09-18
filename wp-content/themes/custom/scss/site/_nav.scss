@@ -14,11 +14,8 @@ $text-nav: (
 	width: 100%;
 	height: $nav-height;
 	overflow: hidden;
-	//@extend .container-fluid;
 	padding-left: 15px;
 	z-index: 7;
-	//border-bottom: 1px solid $aqua;
-	//height: 100vh;
 
 	&.fixed{
 		position: fixed;
@@ -41,7 +38,7 @@ $text-nav: (
 		height: $nav-height-after;
 		display: none;
 
-		img{
+		svg{
 			height: $nav-height-after;
 			//height: inherit;
 			width: auto;
@@ -117,6 +114,10 @@ $text-nav: (
 	&.after{
 		height: $nav-height-after;
 
+		@media screen and (max-width: $sm) {
+			height: $nav-height-mobile;
+		}
+
 		#nav-background{
 			display: block;
 		}
@@ -124,6 +125,9 @@ $text-nav: (
 		#logo {
 			width: 140px;
 
+			@media screen and (max-width: $sm) {
+				width: 110px;
+			}
 
 			a{
 				padding-top: 12px;
@@ -164,6 +168,10 @@ $text-nav: (
 #logo{
 	width: 160px;
 	float: left;
+
+	@media screen and (max-width: $sm) {
+		width: 110px;
+	}
 
 	a{
 		padding: 20px;

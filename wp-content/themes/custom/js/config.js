@@ -1,8 +1,8 @@
 'use strict';
 
 var global_config = {
-    navHeight: 100,
-    mobileNavHeight: 80,  
+    navHeight: 80,
+    mobileNavHeight: 60,  
     navPadding: 100,      
     transitionDuration: 1000,
     mobileBreakpoint: 768
@@ -19,8 +19,15 @@ var config = {
     viewportLabel: {
         viewportLabelPxSelector: '#viewport-label-px'
     },
-    stickyNav: {
+    clickyNav: {
         selector: '#nav',
+        navHeight: global_config.navHeight,
+        mobileNavHeight: global_config.mobileNavHeight,
+        mobileBreakpoint: global_config.mobileBreakpoint,
+        activeOnMobile: true        
+    },
+    stickyNav: {
+        selector: '.page-nav',
         navHeight: global_config.navHeight,
         mobileNavHeight: global_config.mobileNavHeight,
         mobileBreakpoint: global_config.mobileBreakpoint,
@@ -32,7 +39,7 @@ var config = {
         selector: '.jump',
         navHeight: global_config.navHeight,
         mobileNavHeight: global_config.mobileNavHeight,
-        jumpPadding: 0,
+        jumpPadding: 100,
         mobileJumpPadding: global_config.navPadding,
         mobileBreakpoint: global_config.mobileBreakpoint,
         transitionDuration: global_config.transitionDuration,
@@ -75,7 +82,7 @@ var config = {
         speed: 700        
     },
     accordian: {
-        
+
     }
 };
 

@@ -1,0 +1,82 @@
+
+#programs{
+	.program-title,.program-description{
+		color: $dark;
+	}
+
+	.program-row{
+
+		.program-col-image{
+			@extend .order-md-0;
+			@extend .col-md-7;
+			@extend .col-sm-8;
+			@extend .offset-sm-2;
+			@extend .col-10;
+			@extend .offset-1;
+			@extend .offset-md-0;
+		}
+		.program-col-text{
+			@extend .order-md-1;
+			@extend .col-md-5;
+			@extend .offset-md-0;
+			@extend .col-lg-4;
+			@extend .offset-lg-1;
+		}
+
+
+		&:nth-child(even){
+			.program-col-image{
+				@extend .order-md-1;
+				@extend .offset-lg-1;
+			}
+			.program-col-text{
+				@extend .order-md-0;
+				@extend .offset-lg-0;
+			}
+
+		}
+
+		&:nth-child(1),&:nth-child(6){
+			.program-image:after{
+				background-image: url('../images/blob-clip-white_d.svg');
+			}
+		}
+		&:nth-child(2),&:nth-child(7){
+			.program-image:after{
+				background-image: url('../images/blob-clip-white_b.svg');
+			}
+		}
+		&:nth-child(3),&:nth-child(8){
+			.program-image:after{
+				background-image: url('../images/blob-clip-white_c.svg');
+			}
+		}
+		&:nth-child(4),&:nth-child(9){
+			.program-image:after{
+				background-image: url('../images/blob-clip-white_d.svg');
+			}
+		}
+		&:nth-child(5),&:nth-child(20){
+			.program-image:after{
+				background-image: url('../images/blob-clip-white_e.svg');
+			}
+		}
+	}
+
+	.program-image{
+		position: relative;
+		&:after{
+			content: '';
+			display: block;
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			background-size: 102% 102%;
+			background-position: -1% -1%;
+			background-repeat: none;
+		}
+	}
+}

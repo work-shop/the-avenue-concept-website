@@ -1,7 +1,7 @@
 
 <nav id="nav" class="fixed before">
 	<div id="nav-background">
-		<img src="<?php bloginfo( 'template_directory' ); ?>/images/nav-background.png">
+		<?php include get_template_directory() . '/images/nav-background.svg'; ?>
 	</div>
 	<div id="logo" class="logo">
 		<a href="/" title="Home">
