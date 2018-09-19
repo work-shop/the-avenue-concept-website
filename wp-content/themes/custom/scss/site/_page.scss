@@ -9,7 +9,7 @@
 }
 
 .page-hero{
-	height: calc(80vh - #{$nav-height});
+	height: calc(90vh - #{$nav-height});
 	@extend .hero-gradient;
 	position: relative;
 

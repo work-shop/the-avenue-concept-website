@@ -47,10 +47,10 @@
 					<h3 class="program-title mb2 mt2">
 						<?php the_title(); ?>
 					</h3>
-					<p class="program-description">
+					<p class="program-description mb2">
 						<?php the_field('program_description'); ?>
 					</p>
-					<a href="<?php the_permalink(); ?>" class="program-link">
+					<a href="<?php the_permalink(); ?>" class="program-link button">
 						Learn More
 					</a>
 				</div>

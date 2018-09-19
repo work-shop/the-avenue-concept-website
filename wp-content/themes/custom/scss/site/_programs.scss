@@ -36,27 +36,27 @@
 
 		}
 
-		&:nth-child(1),&:nth-child(6){
+		&:nth-child(1),&:nth-child(6),&:nth-child(11){
 			.program-image:after{
 				background-image: url('../images/blob-clip-white_d.svg');
 			}
 		}
-		&:nth-child(2),&:nth-child(7){
+		&:nth-child(2),&:nth-child(7),&:nth-child(12){
 			.program-image:after{
 				background-image: url('../images/blob-clip-white_b.svg');
 			}
 		}
-		&:nth-child(3),&:nth-child(8){
+		&:nth-child(3),&:nth-child(8),&:nth-child(13){
 			.program-image:after{
 				background-image: url('../images/blob-clip-white_c.svg');
 			}
 		}
-		&:nth-child(4),&:nth-child(9){
+		&:nth-child(4),&:nth-child(9),&:nth-child(14){
 			.program-image:after{
 				background-image: url('../images/blob-clip-white_d.svg');
 			}
 		}
-		&:nth-child(5),&:nth-child(20){
+		&:nth-child(5),&:nth-child(10),&:nth-child(15){
 			.program-image:after{
 				background-image: url('../images/blob-clip-white_e.svg');
 			}

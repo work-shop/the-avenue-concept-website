@@ -200,19 +200,17 @@ $text-button: (
 	);
 
 .button{
-	background: $dark;
-	padding: 12px 15px 12px 15px;
+	padding: 25px;
 	font-family: $font-main;
 	color: white;
 	@extend .bold;
 	@extend .uppercase;	
 	@extend .tracked-less;
-	border-radius: 10px;
 	display: inline-block;
 	text-align: center;
-	border: none;
-	transition: all .125s;
 	@include text-size($text-button);	
+	background-image: url('../images/blob-button-aqua.svg');
+	background-size: 100% 100%;
 
 	&.button-small{
 		padding: 5px 8px 2px 8px;
@@ -230,29 +228,8 @@ $text-button: (
 		border-radius: 0;
 	}
 
-	&.button-bordered{
-		background: none;
-		border: 1px solid $brand;
-		color: $brand;
-
-		&:hover{
-			background: $brand;
-		}
-	}
-
-	&.button-white-bordered{
-		background: none;
-		border: 1px solid white;
-		color: white;
-
-		&:hover{
-			background: white;
-			color: $brand;
-		}
-	}
-
 	&:hover{
-		background: lighten($brand,0%);
+		background-image: url('../images/blob-button-aqua-hover.svg');
 		cursor: pointer;
 		color: white;
 	}
@@ -263,7 +240,7 @@ $text-button: (
 	}
 
 	@media screen and (max-width: $sm) {
-		padding: 6px 7px 4px 7px;
+		padding: 20px;
 	}
 
 
