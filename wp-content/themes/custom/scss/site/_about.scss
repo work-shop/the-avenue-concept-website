@@ -1,2 +1,71 @@
 
 /* about page */
+
+#about-values{
+
+	ul{
+		padding-left: 40px;
+		@media screen and (max-width: $sm) {
+			padding-left: 30px;
+		}
+	}
+
+	li{
+		padding-right: 8vw;
+		list-style: disc;
+		margin-bottom: 2em;
+		@media screen and (max-width: $sm) {
+			margin-bottom: .75em;
+		}
+	}
+}
+
+.person{
+	margin-bottom: 3em;
+
+	.person-image{
+		margin-bottom: 20px;
+
+		img{
+			max-width: 300px;
+			border-radius: 6px;
+		}
+	}
+
+	.person-email{
+		a{
+			color: $dark;
+			border-bottom: 2px solid $aqua;
+			font-size: 18px;
+
+			@media screen and (max-width: $md) {
+				font-size: 16px;
+			}
+			@media screen and (max-width: $sm) {
+				font-size: 15px;
+				border-bottom: 1px solid $aqua;
+			}
+		}
+	}
+}
+
+#about-board{
+	.person{
+		*{
+			color: white;
+		}
+	}
+
+	.person-title{
+		font-size: 18px;
+
+		@media screen and (max-width: $md) {
+			font-size: 16px;
+		}
+		@media screen and (max-width: $sm) {
+			font-size: 15px;
+			border-bottom: 1px solid $aqua;
+		}
+	}
+}
+
