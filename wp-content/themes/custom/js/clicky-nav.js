@@ -10,6 +10,7 @@ function clickyNav( config ) {
 
 	$(document).ready( function() {
 
+
 		stickyNavProperties.selector = config.selector || '#nav';
 		stickyNavProperties.navHeight = config.navHeight || 75;
 		stickyNavProperties.mobileNavHeight = config.mobileNavHeight || 50;
@@ -17,24 +18,31 @@ function clickyNav( config ) {
 		stickyNavProperties.mobileBreakpoint = config.mobileBreakpoint;
 		stickyNavProperties.activeOnMobile = config.activeOnMobile;
 
-		calculatePositions();
+		if( $('.page-hero').length ){
 
-		$('body').on({ 'touchmove': function(e) { 
-			window.requestAnimationFrame(checkNavPosition); } 
-		});
+			calculatePositions();
 
-		$( window ).scroll( function() {
-			window.requestAnimationFrame(checkNavPosition);
-		});
+			$('body').on({ 'touchmove': function(e) { 
+				window.requestAnimationFrame(checkNavPosition); } 
+			});
 
-		$( window ).resize( function() {
-			window.requestAnimationFrame(calculatePositions);
-			window.requestAnimationFrame(checkNavPosition);
-		});	
+			$( window ).scroll( function() {
+				window.requestAnimationFrame(checkNavPosition);
+			});
 
-		setTimeout(function() {
-			window.requestAnimationFrame(checkNavPosition); 
-		}, 100);
+			$( window ).resize( function() {
+				window.requestAnimationFrame(calculatePositions);
+				window.requestAnimationFrame(checkNavPosition);
+			});	
+
+			setTimeout(function() {
+				window.requestAnimationFrame(checkNavPosition); 
+			}, 200);
+
+		}else{
+			console.log('no page hero');
+			toggleNav();
+		}
 
 	});
 

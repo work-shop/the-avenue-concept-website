@@ -1,4 +1,4 @@
-<div class="page-nav present before">
+<div class="page-nav before">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row">
 			<div class="col col-lg-10 offset-lg-2">

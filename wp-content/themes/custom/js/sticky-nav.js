@@ -10,7 +10,7 @@ function stickyNav( config ) {
 
 	$(document).ready( function() {
 
-		if( $('.page-nav').hasClass('present') ){
+		if( $('.page-nav').length ){
 			//console.log('page nav present');
 
 			stickyNavProperties.selector = config.selector || '#nav';
@@ -22,7 +22,7 @@ function stickyNav( config ) {
 
 			calculatePositions();
 
-			$('body').on({ 'touchmove': function(e) { 
+			$('body').on({ 'touchmove': function() { 
 				window.requestAnimationFrame(checkNavPosition); } 
 			});
 
@@ -34,6 +34,10 @@ function stickyNav( config ) {
 				window.requestAnimationFrame(calculatePositions);
 				window.requestAnimationFrame(checkNavPosition);
 			});	
+
+			setTimeout(function() {
+				window.requestAnimationFrame(checkNavPosition); 
+			}, 200);
 
 		}
 
