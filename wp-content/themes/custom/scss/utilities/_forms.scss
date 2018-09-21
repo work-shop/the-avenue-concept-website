@@ -3,7 +3,13 @@
 .gform_wrapper{
 
 	.gfield{
-		margin-bottom: 1.75em;
+		margin-bottom: 1.5em;
+	}
+
+	.ginput_complex{
+		input,select{
+			margin-bottom: 1em;
+		}
 	}
 
 	.gfield.gform_validation_container{
@@ -75,11 +81,9 @@ img.gform_ajax_spinner {
 	display: none !important;
 }
 
-
-
-input,textarea{
+input,textarea,select{
 	@include transition(all .125s);
-	padding: 7px;
+	padding: 4px 10px;
 	border: none;
 	border: 2px solid $aqua;
 	border-radius: 5px;
@@ -88,7 +92,8 @@ input,textarea{
 	width: 100%;
 	//max-width: 300px;
 	color: $dark;
-	@extend .font-secondary;
+	@extend .font-main;
+	font-size: 19px;
 
 	&:focus{
 		outline: none;
@@ -110,6 +115,10 @@ input,textarea{
 
 }
 
+select{
+	height: 38px;
+}
+
 #input_1_1_3_container,#input_2_1_3_container{
 	input{
 		margin-bottom: 1.75em;
@@ -120,4 +129,5 @@ input,textarea{
 label{
 	display: block;
 	margin-bottom: 4px;
+	font-size: 16px;
 }

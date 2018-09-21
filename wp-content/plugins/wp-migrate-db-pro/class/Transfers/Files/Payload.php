@@ -96,15 +96,22 @@ class Payload {
 	 * @return resource|array
 	 */
 	public function create_payload( $file_list, $state_data, $bottleneck ) {
+		/*
+		 * Other options to use if large files aren't downloading are:
+		 * 	$membuffer = 54 * 1024 * 1024; // 54MB
+		 * 	$handle = apply_filters( 'wpmdb_transfers_payload_handle', fopen( 'php://temp/maxmemory:'. $membuffer ) );
+		 *
+		 * OR
+		 *
+		 * $handle = apply_filters( 'wpmdb_transfers_payload_handle', fopen( WP_CONTENT_DIR . '/.payload', 'wb+' ) );
+		 */
+		$handle = apply_filters( 'wpmdb_transfers_payload_handle', tmpfile() );
 
-		$tmp_file = apply_filters( 'wpmdb_transfers_payload_path', 'php://temp' );
-		$handle   = fopen( $tmp_file, 'wb+' );
-
-		$count      = 0;
-		$sent       = [];
-		$chunked    = [];
-		$chunking   = false;
-		$chunks     = 0;
+		$count    = 0;
+		$sent     = [];
+		$chunked  = [];
+		$chunking = false;
+		$chunks   = 0;
 
 		foreach ( $file_list AS $key => $file ) {
 

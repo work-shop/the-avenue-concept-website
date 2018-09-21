@@ -52,3 +52,62 @@
 		}
 	}
 }
+
+#donation{
+	.name_first,.name_last{
+		float: left;
+		width: 48%;
+	}
+
+	.name_first{
+		margin-right: 2%;
+	}
+
+	.name_last{
+		margin-left: 2%;
+	}
+
+	.ginput_container_name{
+		@extend .clearfix;
+	}
+
+	.address_state, .address_zip{
+		float: left;
+		width: 48%;
+	}
+
+	.address_state{
+		margin-right: 2%;
+	}
+
+	.address_zip{
+		margin-left: 2%;
+	}
+
+	.ginput_card_expiration_month,.ginput_card_expiration_year{
+		float: left;
+		width: 48%;
+	}
+
+	.ginput_card_expiration_month{
+		margin-right: 4%;
+	}
+
+	.ginput_cardinfo_left,.ginput_cardinfo_right{
+		float: left;
+	}
+
+	.ginput_cardinfo_left{
+		width: 60%;
+		margin-right: 6%;
+	}
+
+	.ginput_cardinfo_right{
+		width: 33%;
+		//margin-left: 2%;
+	}
+}
+
+
+
+

@@ -207,6 +207,7 @@ class Receiver {
 		}
 
 		$handle = $this->tmpfile;
+		stream_filter_prepend( $handle, 'zlib.inflate' );
 		rewind( $handle );
 
 		$meta = $this->payload->process_payload( $state_data['stage'], $handle, true );

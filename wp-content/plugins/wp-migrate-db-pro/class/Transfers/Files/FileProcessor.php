@@ -39,6 +39,7 @@ class FileProcessor {
 		$total_size     = 0;
 		$files          = [];
 		$manifest       = [];
+		$is_single      = false;
 		$filtered_files = [];
 
 		foreach ( $directories as $directory ) {
@@ -48,12 +49,18 @@ class FileProcessor {
 				continue;
 			}
 
-			$nice_name = $this->get_item_nice_name( $stage, $directory );
+			if ( ! $this->filesystem->is_dir( $directory ) ) {
+				$is_single = true;
+			}
+
+			$nice_name = $this->get_item_nice_name( $stage, $directory, $is_single );
 
 			// Plugins that are single files need to have their meta data added individually
-			if ( ! $this->filesystem->is_dir( $directory ) ) {
+			if ( $is_single ) {
+				$files_in_directory[] = $directory;
 				list( $file_size, $filtered_files, $files, $count ) = $this->handle_single_file_plugin( $abs_path, $directory, $file_size, $files, $count, $nice_name );
 				$total_size += $file_size;
+				$is_single = false;
 				continue;
 			}
 
@@ -162,10 +169,11 @@ class FileProcessor {
 	/**
 	 * @param string $stage
 	 * @param array  $directory
+	 * @param bool   $is_single
 	 *
 	 * @return string
 	 */
-	public function get_item_nice_name( $stage, $directory ) {
+	public function get_item_nice_name( $stage, $directory, $is_single = false ) {
 		$directory_info = 'themes' === $stage ? wp_get_themes() : get_plugins();
 		$exploded       = explode( DIRECTORY_SEPARATOR, $directory );
 		$directory_key  = $exploded[ count( $exploded ) - 1 ];
@@ -177,7 +185,14 @@ class FileProcessor {
 			}
 		} else {
 			foreach ( $directory_info AS $key => $info ) {
-				$pattern ='/^' . $directory_key . '(\/|\\\)/'; // Account for Windows slashes
+				$pattern = '/^' . $directory_key;
+
+				if ( ! $is_single ) {
+					$pattern .= '(\/|\\\)'; // Account for Windows slashes
+				}
+
+				$pattern .= '/';
+
 				if ( 1 === preg_match( $pattern, $key ) ) {
 					$nice_name = html_entity_decode( $info['Name'] );
 					break;
