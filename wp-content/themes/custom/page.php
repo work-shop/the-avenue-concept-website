@@ -14,6 +14,15 @@ if ( $post->post_parent === 189 ) { ?>
 
 	<?php get_template_part('partials/donate/ways' ); ?>
 
+	<?php // else if a programs sub page ?>
+<?php } else if ( $post->post_parent === 161 ) { ?>
+
+	<?php get_template_part('partials/page/page_hero' ); ?>
+
+	<?php get_template_part('partials/programs/program_intro' ); ?>
+
+	<?php get_template_part('partials/flexible_content/flexible_content' ); ?>
+
 	<?php // else not a donate child page, so it's a generic page ?>
 <?php } else { ?>
 
