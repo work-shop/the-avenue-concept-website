@@ -22,55 +22,102 @@ const js_main_src = path.join( js_main_dir, 'main.js' );
 const js_watch_src = path.join( js_main_dir, '**', '*.js');
 const js_main_dest = path.join( output_dir, 'bundle.js' );
 
-const assets_watch_dest = path.join( output_dir, 'bundle.*' );
 const php_watch_dest = path.join( theme_root, '**', '*.php');
 
 
 
 module.exports = function(grunt) {
+    require('jit-grunt')( grunt );
 
-    var browserify_files = {};
-    browserify_files[ js_main_dest ] = [ js_main_src ];
+    var extract_files = {};
+    extract_files[ output_dir ] = [ js_main_dest ];
 
     grunt.initConfig({
+        pkg: grunt.file.readJSON( 'package.json' ),
         sass: {
             options: {
                 implementation: sass,
-                sourceMap: true,
                 includePaths: [ slick_includePaths ].concat( bourbon_includePaths )
             },
             dev: {
-                src: [ scss_main_src ],
-                dest: css_main_dest,
+                options: {
+                    sourceMap: true, // sourcemaps
+                    sourceComments: true,
+                    outputStyle: 'expanded',
+                },
+                files: [{
+                    src: [ scss_main_src ],
+                    dest: css_main_dest,
+                }]
+            },
+            dist: {
+                options: {
+                    sourceMap: true, // sourcemaps
+                    sourceComments: false,
+                    outputStyle: 'compressed'
+                },
+                files: [{
+                    src: [ scss_main_src ],
+                    dest: css_main_dest,
+                }]
             }
         },
         browserify: {
             dev: {
-                files: browserify_files,
+                src: [ js_main_src ],
+                dest: js_main_dest,
                 options: {
+                    watch: true,
+                    browserifyOptions: {
+                        debug: true // sourcemaps
+                    },
                     transform: [
                         ['babelify', {presets: 'env'}]
                     ]
                 }
             },
+            dist: {
+                src: [ js_main_src ],
+                dest: js_main_dest,
+                options: {
+                    transform: [
+                        ['babelify', {presets: 'env'}],
+                        ['uglifyify', {global: true}]
+                    ]
+                }
+            }
+        },
+        extract_sourcemap: {
+            dev: {
+                options: { removeSourcesContent: true },
+                files: extract_files
+            }
         },
         watch: {
-            sass: {
-                // We watch and compile sass files as normal but don't live reload here
-                files: [ scss_watch_src ],
-                tasks: ['sass'],
+            options: {
+                atBegin: false,
+                livereload: true
             },
-            browserify: {
-                files: [ js_watch_src ],
-                tasks: ['browserify']
-            },
-            livereload: {
-                // Here we watch the files the sass task will compile to
-                // These files are sent to the live reload server after sass compiles to them
+            scss: {
                 options: {
-                    livereload: true
+                    livereload: false,
+                    interrupt: true
                 },
-                files: [ assets_watch_dest, php_watch_dest ]
+                files: [ scss_watch_src ],
+                tasks: ['sass:dev'],
+
+            },
+            css: {
+                files: [ css_main_dest ],
+                tasks: []
+            },
+            js: {
+                files: [ js_main_dest ],
+                tasks: []
+            },
+            php: {
+                files: [ php_watch_dest ],
+                tasks: []
             }
         },
     });
@@ -78,6 +125,11 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-sass');
     grunt.loadNpmTasks('grunt-browserify');
-	grunt.registerTask('default', ['watch']);
+    grunt.loadNpmTasks('grunt-extract-sourcemap');
+
+	grunt.registerTask('default', ['browserify:dev','watch']);
+	grunt.registerTask('dev', ['browserify:dev','sass:dev', 'extract_sourcemap:dev']);
+	grunt.registerTask('dist', ['browserify:dist','sass:dist']);
+
 
 };
