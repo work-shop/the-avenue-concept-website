@@ -13,8 +13,10 @@ const output_dir = path.join( theme_root, 'bundles' );
 
 const scss_main_dir = path.join( theme_root, 'scss' );
 const scss_main_src = path.join( scss_main_dir, 'main.scss' );
+const scss_admin_src = path.join( scss_main_dir, 'admin.scss' )
 const scss_watch_src = path.join( scss_main_dir, '**', '*.scss' );
 const css_main_dest = path.join( output_dir, 'bundle.css' );
+const css_admin_dest = path.join( output_dir, 'admin-bundle.css' );
 
 
 const js_main_dir = path.join( theme_root, 'js' );
@@ -38,6 +40,28 @@ module.exports = function(grunt) {
             options: {
                 implementation: sass,
                 includePaths: [ slick_includePaths ].concat( bourbon_includePaths )
+            },
+            adminDev: {
+                options: {
+                    sourceMap: true, // sourcemaps
+                    sourceComments: true,
+                    outputStyle: 'expanded',
+                },
+                files: [{
+                    src: [ scss_admin_src ],
+                    dest: css_admin_dest,
+                }]
+            },
+            adminDist: {
+                options: {
+                    sourceMap: true, // sourcemaps
+                    sourceComments: false,
+                    outputStyle: 'compressed'
+                },
+                files: [{
+                    src: [ scss_admin_src ],
+                    dest: css_admin_dest,
+                }]
             },
             dev: {
                 options: {
@@ -104,7 +128,7 @@ module.exports = function(grunt) {
                     interrupt: true
                 },
                 files: [ scss_watch_src ],
-                tasks: ['sass:dev'],
+                tasks: ['sass:dev', 'sass:admin:dev'],
 
             },
             css: {
@@ -128,8 +152,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-extract-sourcemap');
 
 	grunt.registerTask('default', ['browserify:dev','watch']);
-	grunt.registerTask('dev', ['browserify:dev','sass:dev', 'extract_sourcemap:dev']);
-	grunt.registerTask('dist', ['browserify:dist','sass:dist']);
+	grunt.registerTask('dev', ['browserify:dev','sass:dev', 'sass:admin:dev', 'extract_sourcemap:dev']);
+	grunt.registerTask('dist', ['browserify:dist','sass:dist', 'sass:admin:dist']);
 
 
 };
