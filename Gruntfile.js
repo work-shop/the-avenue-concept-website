@@ -4,7 +4,6 @@ var path = require('path');
 var sass = require('node-sass');
 
 
-
 const bourbon_includePaths = require('node-bourbon').includePaths;
 const slick_includePaths = path.join(__dirname,'node_modules','slick-carousel', 'slick');
 
@@ -29,7 +28,12 @@ const php_watch_dest = path.join( theme_root, '**', '*.php');
 
 
 module.exports = function(grunt) {
-    require('jit-grunt')( grunt );
+    require('jit-grunt')( grunt, {
+        'sass': 'grunt-sass',
+        'watch': 'grunt-contrib-watch',
+        'extract_sourcemap': 'grunt-extract-sourcemap',
+        'browserify': 'grunt-browserify'
+    });
 
     var extract_files = {};
     extract_files[ output_dir ] = [ js_main_dest ];
@@ -146,10 +150,10 @@ module.exports = function(grunt) {
         },
     });
 
-	grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-sass');
-    grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-extract-sourcemap');
+	// grunt.loadNpmTasks('grunt-contrib-watch');
+    // grunt.loadNpmTasks('grunt-sass');
+    // grunt.loadNpmTasks('grunt-browserify');
+    // grunt.loadNpmTasks('grunt-extract-sourcemap');
 
 	grunt.registerTask('default', ['browserify:dev','watch']);
 	grunt.registerTask('dev', ['browserify:dev','sass:dev', 'sass:adminDev', 'extract_sourcemap:dev']);
