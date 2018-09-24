@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#npm run build
+npm run build-production
 
 source ./.env
 
@@ -23,3 +23,5 @@ scp -P $KINSTA_PRODUCTION_PORT -r ./wp-content/themes/custom $KINSTA_PRODUCTION_
 
 
 # TODO: Add a hook to migrate and string-replace the database.
+
+npm run build-development

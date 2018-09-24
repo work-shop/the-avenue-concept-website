@@ -19,7 +19,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "grunt",
-    "build-dev": "gulp build",
+    "build-development": "grunt dev",
+    "build-production": "grunt dist",
     "deploy": "./.deploy.sh",
     "deploy-production": "./.deploy-production.sh",
     "pull-database": "./.pull-database.sh"

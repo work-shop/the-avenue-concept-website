@@ -128,7 +128,7 @@ module.exports = function(grunt) {
                     interrupt: true
                 },
                 files: [ scss_watch_src ],
-                tasks: ['sass:dev', 'sass:admin:dev'],
+                tasks: ['sass:dev', 'sass:adminDev'],
 
             },
             css: {
@@ -152,8 +152,8 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-extract-sourcemap');
 
 	grunt.registerTask('default', ['browserify:dev','watch']);
-	grunt.registerTask('dev', ['browserify:dev','sass:dev', 'sass:admin:dev', 'extract_sourcemap:dev']);
-	grunt.registerTask('dist', ['browserify:dist','sass:dist', 'sass:admin:dist']);
+	grunt.registerTask('dev', ['browserify:dev','sass:dev', 'sass:adminDev', 'extract_sourcemap:dev']);
+	grunt.registerTask('dist', ['browserify:dist','sass:dist', 'sass:adminDist']);
 
 
 };
