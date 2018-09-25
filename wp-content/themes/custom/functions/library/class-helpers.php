@@ -12,4 +12,15 @@ class Helpers{
 		} 
 	}
 
+	public static function filter_categories(){
+		$terms = get_the_terms( $post, 'category' );
+		if( $terms ):
+			foreach ($terms as $term) :
+				echo 'filter-';
+				echo $term->slug;
+				echo ' ';
+			endforeach;
+		endif;
+	}
+
 } ?>

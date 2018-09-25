@@ -56,7 +56,7 @@ function checkNavPosition(){
 	
 	if( $(window).width() > stickyNavProperties.mobileBreakpoint || stickyNavProperties.activeOnMobile ){
 
-		var footerTrigger = $('#footer').offset().top - $(window).height();
+		//var footerTrigger = $('#footer').offset().top - $(window).height();
 
 		if ( $(window).scrollTop() >= stickyNavProperties.triggerPosition && stickyNavProperties.element.hasClass('before') ){
 			toggleNav();

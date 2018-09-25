@@ -3,6 +3,8 @@
 
 <?php get_template_part('partials/page/page_hero' ); ?>
 
+<?php get_template_part('partials/media/intro' ); ?>
+
 <?php get_template_part('partials/media/social' ); ?>
 
 <?php get_template_part('partials/media/videos' ); ?>

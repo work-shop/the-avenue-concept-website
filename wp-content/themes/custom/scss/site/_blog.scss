@@ -1,0 +1,174 @@
+
+.page-id-193{
+
+	#blog-intro{
+		padding-top: $nav-height-after;
+
+		.page-hero-title{
+			padding-top: 100px;
+		}
+	}
+}
+
+.blog-posts{
+	order: 0;
+
+	@media screen and (max-width: $sm) {
+		order: 1;
+	}
+}
+
+.card-post{
+	transition: transform .1s;
+	*{
+		color: $dark;
+	}
+
+	.card-text{
+		background: lighten($light,10%);
+		transition: background .1s;
+		padding: 1em;
+	}
+
+	.card-post-title{
+		min-height: 150px;
+
+		@media screen and (max-width: $sm) {
+			min-height: 0px;
+		}
+	}
+
+	.post-categories{
+
+		a{
+			font-size: 13px;
+			@extend .uppercase;
+			@extend .tracked-less;
+			transition: transform .1s;
+			display: inline-block;
+			padding-left: 3px;
+			margin-right: 1px;
+			&:first-child{
+				padding-left: 0;
+			}
+
+			&:hover{
+				transform: scale(1.05);
+			}
+		}
+	}
+
+	&:hover{
+		transform: scale(1.02);
+		.card-text{
+			background: $aqua;
+			*{
+				color: white;
+			}
+		}
+	}
+
+}
+
+
+
+
+//filtering
+
+.filter-target{
+	display: none;
+}
+
+.filter-show{
+	display: block !important;
+}
+
+
+.sidebar-heading{
+	color: $medium;
+	@extend .uppercase;
+	@extend .tracked-less;
+	font-size: 16px;
+
+	@media screen and (max-width: $sm) {
+		font-size: 14px;
+	}
+}
+
+.sidebar-categories li{
+	display: inline-block;
+	margin-right: 5px;
+	margin-bottom: 7px;
+
+	a{
+		display: block;
+		border: 1px solid $aqua;
+		border-radius: 100px;
+		font-size: 15px;
+		text-transform: uppercase;
+		padding: 3px 8px;
+		transition: all .1s;
+
+		@media screen and (max-width: $sm) {
+			font-size: 13px;
+			padding: 2px 6px;
+		}
+
+		&:hover{
+			box-shadow: 0px 1px 3px 1px $aqua;
+			transform: scale(1.05);
+		}
+
+		&.filter-active{
+			background: $aqua;
+			color: white;
+			box-shadow: 0px 1px 3px 1px $aqua;
+
+			&:hover{
+				box-shadow: none;
+				background: $light;
+				color: $medium;
+				border: 1px solid $medium;
+			}
+		}
+	}
+}
+
+
+//single
+
+.post-metadata-label{
+	font-size: 16px;
+
+	@media screen and (max-width: $sm) {
+		font-size: 13px;
+	}
+}
+
+.post-metadata-tags{
+	li{
+		display: inline-block;
+		margin-right: 10px;
+		margin-bottom: 7px;
+
+		a{
+			display: block;
+			border: 1px solid $aqua;
+			border-radius: 100px;
+			font-size: 15px;
+			text-transform: uppercase;
+			padding: 3px 8px;
+			transition: all .1s;
+
+			&:hover{
+				transform: scale(1.05);
+				background: $aqua;
+				color: white;
+			}
+			
+		}
+	}
+}
+
+
+

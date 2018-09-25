@@ -3,10 +3,8 @@
 
 <?php get_template_part('partials/page/page_hero' ); ?>
 
+<?php get_template_part('partials/events/intro' ); ?>
+
 <?php get_template_part('partials/events/events' ); ?>
-
-<?php get_template_part('partials/contact/form_contact' ); ?>
-
-<?php get_template_part('partials/contact/form_newsletter' ); ?>
 
 <?php get_template_part('partials/footer' ); ?>

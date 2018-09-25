@@ -419,3 +419,17 @@ $text-button: (
 		font-size: 12px;
 	}
 }
+
+//cards
+
+.card{
+	.card-image{
+		img{
+			border-radius: 4px 4px 0px 0px;
+		}	
+	}
+
+	.card-text{
+		border-radius: 0px 0px 4px 4px;
+	}
+}

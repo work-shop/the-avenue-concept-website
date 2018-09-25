@@ -1,0 +1,26 @@
+
+.page-id-185{
+
+	#events-intro{
+		padding-top: $nav-height-after;
+
+		.page-hero-title{
+			padding-top: 100px;
+		}
+	}
+}
+
+.card-event{
+	*{
+		color: $dark;
+	}
+
+	.card-event-link{
+		color: $aqua;
+		text-decoration: underline;
+	}
+
+	img{
+		max-width: 480px;
+	}
+}

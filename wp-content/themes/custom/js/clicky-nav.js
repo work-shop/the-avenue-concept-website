@@ -10,7 +10,6 @@ function clickyNav( config ) {
 
 	$(document).ready( function() {
 
-
 		stickyNavProperties.selector = config.selector || '#nav';
 		stickyNavProperties.navHeight = config.navHeight || 75;
 		stickyNavProperties.mobileNavHeight = config.mobileNavHeight || 50;
@@ -40,7 +39,7 @@ function clickyNav( config ) {
 			}, 200);
 
 		}else{
-			console.log('no page hero');
+			//console.log('no page hero');
 			toggleNav();
 		}
 
@@ -59,7 +58,7 @@ function checkNavPosition(){
 	
 	if( $(window).width() > stickyNavProperties.mobileBreakpoint || stickyNavProperties.activeOnMobile ){
 
-		var footerTrigger = $('#footer').offset().top - $(window).height();
+		//var footerTrigger = $('#footer').offset().top - $(window).height();
 
 		if ( $(window).scrollTop() >= stickyNavProperties.triggerPosition && stickyNavProperties.element.hasClass('before') ){
 			toggleNav();

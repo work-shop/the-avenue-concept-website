@@ -18,16 +18,17 @@
 					(401) 490-0929
 				</p>
 				<div class="footer-social">
-					<a href="https://www.facebook.com/TheAvenueConcept" target="_blank">
+					<?php $social_media_links = get_field('social_media_links','183'); ?>
+					<a href="<?php echo $social_media_links['facebook_link']; ?>" target="_blank">
 						<img src="<?php bloginfo( 'template_directory' );?>/images/facebook.png" class="social-icon">
 					</a> 											
-					<a href="https://www.instagram.com/avenuepvd" target="_blank">
+					<a href="<?php echo $social_media_links['instagram_link']; ?>" target="_blank">
 						<img src="<?php bloginfo( 'template_directory' );?>/images/instagram.png" class="social-icon">
 					</a>
-					<a href="https://vimeo.com/theavenueconcept" target="_blank">
+					<a href="<?php echo $social_media_links['vimeo_link']; ?>" target="_blank">
 						<img src="<?php bloginfo( 'template_directory' );?>/images/vimeo.png" class="social-icon">
 					</a> 
-					<a href="https://twitter.com/avenuepvd" target="_blank">
+					<a href="<?php echo $social_media_links['twitter_link']; ?>" target="_blank">
 						<img src="<?php bloginfo( 'template_directory' );?>/images/twitter.png" class="social-icon">
 					</a>
 				</div>
