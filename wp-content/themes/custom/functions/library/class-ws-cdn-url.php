@@ -7,7 +7,7 @@ class WS_CDN_Url {
 
         add_action('admin_init', array($this, 'cdn_field_setup'));
         add_filter('wp_get_attachment_url', array($this, 'rewrite_cdn_url') );
-
+        add_filter('wp_get_attachment_image_attributes', array( $this, 'rewrite_cdn_srcset' ) );
     }
 
     /**
@@ -35,6 +35,7 @@ class WS_CDN_Url {
     /**
      * Callback function to render the CDN URL field in the options.
      *
+     * @action 'admin_init'
      * @param $args array the array of value arguments
      *
      */
@@ -47,8 +48,8 @@ class WS_CDN_Url {
      * Rewrite attachment URL from the base CMS form to the desired CDN form.
      *
      * @filter 'wp_get_attachment_url'
-     * @param $original string the original attachment URL
-     * @return String the updated CDN url.
+     * @param string $original  the original attachment URL
+     * @return string the updated CDN url.
      */
     public function rewrite_cdn_url( $original ) {
 
@@ -66,6 +67,27 @@ class WS_CDN_Url {
             return $original;
 
         }
+
+    }
+
+
+    /**
+     * Rewrite attachment srcset to use the cdn url if the cdn_url parameter is set.
+     * This is important so that the Featured Image shows up properly in the sidebar.
+     *
+     * @filter 'wp_get_attachment_image_attributes'
+     * @param array $attrs an attribute array that will be set on the resulting thumbnail
+     * @return array an array with a srcset updated to use the cdn_url
+     */
+    public function rewrite_cdn_srcset( $attrs ) {
+
+        $attrs['srcset'] = implode( ',', array_map( function( $url ) {
+
+            return $this->rewrite_cdn_url( $url );
+
+        }, explode( ',', $attrs['srcset'] )));
+
+        return $attrs;
 
     }
 
