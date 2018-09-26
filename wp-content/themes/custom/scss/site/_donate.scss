@@ -164,6 +164,17 @@
 .gform_card_icon_container{
 	@extend .clearfix;
 	margin-bottom: 1em;
+
+	&:before{
+		float: left;
+		width: 200px; height: 35px;
+		//border: 1px solid red;
+		background-image: url('../images/paypal.png');
+		background-size: contain;
+		background-repeat: no-repeat;
+		margin-right: 15px;
+		//clear: both;
+	}
 }
 
 .gform_wrapper .gform_card_icon_container.gform_card_icon_style1 div.gform_card_icon.gform_card_icon_amex {
@@ -184,7 +195,7 @@
 
 //temporary, delete
 .gfield_creditcard_warning_message{
-	//display: none;
+	display: none;
 }
 
 

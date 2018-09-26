@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var stickyNavProperties = {
 	offset : {},
@@ -17,11 +17,11 @@ function clickyNav( config ) {
 		stickyNavProperties.mobileBreakpoint = config.mobileBreakpoint;
 		stickyNavProperties.activeOnMobile = config.activeOnMobile;
 
-		if( $('.page-hero').length ){
+		if( $('.page-hero').length || $('#home-intro').length ){
 
 			calculatePositions();
 
-			$('body').on({ 'touchmove': function(e) { 
+			$('body').on({ 'touchmove': function() { 
 				window.requestAnimationFrame(checkNavPosition); } 
 			});
 

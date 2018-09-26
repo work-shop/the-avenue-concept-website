@@ -1,6 +1,8 @@
 
 <?php get_template_part('partials/header'); ?>
 
+<?php get_template_part('partials/landing_page_nav' ); ?>
+
 <?php get_template_part('partials/home/home_intro' ); ?>
 
 <?php get_template_part('partials/home/home_announcement' ); ?>
