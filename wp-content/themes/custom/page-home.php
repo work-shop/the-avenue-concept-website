@@ -9,9 +9,9 @@
 
 <?php get_template_part('partials/home/home_about' ); ?>
 
-<?php get_template_part('partials/home/home_work' ); ?>
-
 <?php get_template_part('partials/home/home_map' ); ?>
+
+<?php get_template_part('partials/home/home_work' ); ?>
 
 <?php get_template_part('partials/home/home_events' ); ?>
 

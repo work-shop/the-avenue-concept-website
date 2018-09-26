@@ -1,5 +1,5 @@
-<section class="block section-padded spy-target bg-brand spy-first" id="home-about">
-	<div class="block-background" style="background-image: url('<?php $image = get_field('about_background_image'); echo $image['sizes']['page_hero']; ?> ;">
+<section class="block section-padded spy-target spy-first" id="home-about">
+	<div class="block-background mask-dark" style="background-image: url('<?php $image = get_field('about_background_image'); echo $image['sizes']['page_hero']; ?>');">
 	</div>
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row section-header-row">
@@ -9,10 +9,10 @@
 				</h2>
 			</div>
 		</div>
-		<?php if( have_rows('mission_elements') ): ?>
+		<?php if( have_rows('mission','159') ): ?>
 			<?php $count = 1; ?>
 			<div class="row section-content-row mb4">
-				<?php  while ( have_rows('mission_elements') ) : the_row(); ?>
+				<?php  while ( have_rows('mission','159') ) : the_row(); ?>
 					<div class="col-6 mb3 mission-element">
 						<div class="row">
 							<div class="col-sm-1">
@@ -21,8 +21,8 @@
 								</h2>
 							</div>
 							<div class="col-sm-11 col-md-9">
-								<h3 class="white font-main">
-									<?php the_sub_field('mission_element_text'); ?>
+								<h3 class="white">
+									<?php the_sub_field('mission_element'); ?>
 								</h3>
 							</div>
 						</div>
