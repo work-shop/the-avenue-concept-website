@@ -47,7 +47,7 @@ function filter() {
 
 
 	function filterCategories(filterClass) {
-		console.log('filterCategories: ' + filterClass);
+		//console.log('filterCategories: ' + filterClass);
 		clearFilterMessages();
 
 		if( filterClass !== 'all'){

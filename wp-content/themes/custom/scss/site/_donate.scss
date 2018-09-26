@@ -54,6 +54,42 @@
 }
 
 #donation{
+
+	#field_3_3,#field_3_5{
+		float: left;
+		width: 48%;
+
+		@media screen and (max-width: $sm) {
+			float: none;
+			width: 100%;
+		}
+	}
+
+	#field_3_3{
+		margin-right: 2%;
+		@media screen and (max-width: $sm) {
+			margin-right: 0;
+		}
+	}
+
+	#field_3_5{
+		margin-left: 2%;
+		@media screen and (max-width: $sm) {
+			margin-left: 0;
+			margin-bottom: 2em;
+		}
+	}
+
+	#field_3_1{
+		&:before{
+			display: block;
+			content: '';
+			width: 100%;
+			height: 1px;
+			clear: both;
+		}
+	}
+
 	.name_first,.name_last{
 		float: left;
 		width: 48%;
@@ -116,13 +152,13 @@
 }
 
 .gform_wrapper div.gform_card_icon {
-    margin-right: 4px;
-    text-indent: -9000px;
-    background-image: url(../images/gf-creditcard-icons.png);
-    background-repeat: no-repeat;
-    width: 36px;
-    height: 32px;
-    float: left;
+	margin-right: 4px;
+	text-indent: -9000px;
+	background-image: url(../images/gf-creditcard-icons.png);
+	background-repeat: no-repeat;
+	width: 36px;
+	height: 32px;
+	float: left;
 }
 
 .gform_card_icon_container{
@@ -131,19 +167,19 @@
 }
 
 .gform_wrapper .gform_card_icon_container.gform_card_icon_style1 div.gform_card_icon.gform_card_icon_amex {
-    background-position: -72px 0;
+	background-position: -72px 0;
 }
 
 .gform_wrapper .gform_card_icon_container.gform_card_icon_style1 div.gform_card_icon.gform_card_icon_discover {
-    background-position: -108px 0;
+	background-position: -108px 0;
 }
 
 .gform_wrapper .gform_card_icon_container.gform_card_icon_style1 div.gform_card_icon.gform_card_icon_mastercard {
-    background-position: -36px 0;
+	background-position: -36px 0;
 }
 
 .gform_wrapper .gform_card_icon_container.gform_card_icon_style1 div.gform_card_icon.gform_card_icon_visa {
-    background-position: 0 0;
+	background-position: 0 0;
 }
 
 //temporary, delete
