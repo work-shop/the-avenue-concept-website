@@ -13,7 +13,7 @@ $slate: #a4b5ba;
 
 //grays
 $ultra-light: #F5F5F5;
-$light: #D8D8D8;
+$light: lighten($brand,10%);
 $medium-light: #9B9B9B;
 $medium: #828282;
 $medium-dark: #555555;
