@@ -23,6 +23,8 @@ function menuToggle( config ) {
 			$(config.menuToggleSelector).removeClass('open').addClass('closed');
 			$(config.blanketSelector).removeClass('on').addClass('off');			
 			$('body').removeClass(config.bodyOnClass).addClass(config.bodyOffClass);
+			$('body').removeClass('dropdown-on').addClass('dropdown-off');
+			$('.has-sub-menu').removeClass('open').addClass('closed');
 		}
 
 	}	

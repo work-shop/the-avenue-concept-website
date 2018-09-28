@@ -49,7 +49,7 @@ function clickyNav( config ) {
 
 
 function calculatePositions(){
-	stickyNavProperties.offset = stickyNavProperties.element.offset();
+	//stickyNavProperties.offset = stickyNavProperties.element.offset();
 	stickyNavProperties.triggerPosition = 20;
 }
 

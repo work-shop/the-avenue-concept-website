@@ -15,6 +15,6 @@
 
 <?php get_template_part('partials/home/home_events' ); ?>
 
-<?php get_template_part('partials/home/home_contact' ); ?>
+<?php get_template_part('partials/contact/intro' ); ?>
 
 <?php get_template_part('partials/footer' ); ?>

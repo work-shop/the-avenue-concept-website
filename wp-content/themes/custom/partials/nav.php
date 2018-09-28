@@ -10,14 +10,14 @@
 	</div>
 	<div id="nav-menus">
 		<ul class="nav-menus-list">
-			<li class="sub-menu-closed has-sub-menu nav-menu-primary-item">
+			<li class="has-sub-menu closed nav-menu-primary-item">
 				<a href="/about" class="dropdown-link <?php if( Helpers::is_tree(161) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="programs">
 					Programs
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
-				<ul class="sub-menu">
+				<ul class="sub-menu" id="sub-menu-programs">
 					<li>
-						<a href="/programs">
+						<a href="/programs" class="blob-background blob-background-nav"> 
 							All Programs
 						</a>
 					</li>
@@ -29,8 +29,8 @@
 					);
 					$child_query = new WP_Query( $args );
 					while ( $child_query->have_posts() ) : $child_query->the_post(); ?>
-						<li>
-							<a href="<?php the_permalink(); ?>">
+						<li>								
+							<a href="<?php the_permalink(); ?>" class="blob-background blob-background-nav">
 								<?php the_title(); ?>
 							</a>
 						</li>
@@ -38,62 +38,62 @@
 					<?php wp_reset_postdata(); ?>
 				</ul>
 			</li>
-			<li class="sub-menu-closed has-sub-menu nav-menu-primary-item">
+			<li class="has-sub-menu closed nav-menu-primary-item">
 				<a href="/about" class="dropdown-link <?php if( Helpers::is_tree(187) ): echo ' nav-current '; endif; ?>" id="nav-link-artworks" data-dropdown-target="artworks">
 					Artworks
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
-				<ul class="sub-menu">
+				<ul class="sub-menu" id="sub-menu-artworks">
 					<li>
-						<a href="/artworks">
+						<a href="/artworks" class="blob-background blob-background-nav">
 							Map
 						</a>
 					</li>
 					<li>
-						<a href="/artworks/on-view-now">
+						<a href="/artworks/on-view-now" class="blob-background blob-background-nav">
 							On View Now
 						</a>
 					</li>
 					<li>
-						<a href="/artworks/sculptures">
+						<a href="/artworks/sculptures" class="blob-background blob-background-nav">
 							Sculptures
 						</a>
 					</li>
 					<li>
-						<a href="/artworks/murals">
+						<a href="/artworks/murals" class="blob-background blob-background-nav">
 							Murals
 						</a>
 					</li>
 				</ul>
 			</li>
-			<li class="sub-menu-closed has-sub-menu nav-menu-primary-item">
+			<li class="has-sub-menu closed nav-menu-primary-item">
 				<a href="/programs" class="dropdown-link <?php if( is_page(159) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="about">
 					About
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
-				<ul class="sub-menu">
+				<ul class="sub-menu" id="sub-menu-about">
 					<li>
-						<a href="/about">
+						<a href="/about" class="blob-background blob-background-nav">
 							About TAC
 						</a>
 					</li>
 					<li>
-						<a href="/media">
+						<a href="/media" class="blob-background blob-background-nav">
 							Media
 						</a>
 					</li>
 					<li>
-						<a href="/events">
+						<a href="/events" class="blob-background blob-background-nav">
 							Upcoming Events
 						</a>
 					</li>
 					<li>
-						<a href="/get-involved">
+						<a href="/get-involved" class="blob-background blob-background-nav">
 							Get Involved
 						</a>
 					</li>
 					<li>
-						<a href="/contact">
+						<a href="/contact" class="blob-background blob-background-nav">
 							Contact
 						</a>
 					</li>
@@ -107,8 +107,6 @@
 			</li>
 		</ul>
 	</div>
-</nav>
-<nav id="mobile-nav">
 </nav>
 <div class="hamburger menu-toggle">
 	<span class="hamburger-line hl-1"></span>

@@ -52,6 +52,14 @@ body{
 }
 
 
+.flex-center{
+	@extend .d-flex;
+	@extend .justify-content-center;
+	@extend .align-items-center;
+}
+
+
+
 /* customize bootstrap container fluid parameters */
 .container-fluid{
 	max-width: $container-fluid-max-width;

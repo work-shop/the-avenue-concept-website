@@ -16,6 +16,7 @@ $text-nav: (
 	overflow: hidden;
 	padding-left: 15px;
 	z-index: 7;
+	transition: all .2s;
 
 	&.fixed{
 		position: fixed;
@@ -27,6 +28,8 @@ $text-nav: (
 
 	@media screen and (max-width: $sm) {
 		height: $nav-height-mobile;
+		padding-left: 10px;
+		padding-right: 10px;
 	}
 
 	#nav-background{
@@ -40,35 +43,75 @@ $text-nav: (
 
 		svg{
 			height: $nav-height-after;
-			//height: inherit;
 			width: auto;
 		}
 	}
 
 	#nav-menus{
-		padding-top: 40px;
+		padding-top: 27px;
 		float: left;
 		margin-left: 30px;
+
+		@media screen and (max-width: $lg) {
+			padding-top: 31px;
+		}
+
+		@media screen and (max-width: $md) {
+			padding-top: 23px;
+			margin-left: 10px;
+		}
+
+		@media screen and (max-width: $sm) {
+			clear: left;
+			width: 100%;
+			margin-left: 0;
+		}
 	}
 
 	.nav-menu-primary-item{
 		display: inline-block;
 		margin-right: 50px;
-		//padding: 10px;
-		//outline: 1px solid blue;
+
+		@media screen and (max-width: $lg) {
+			margin-right: 30px;
+		}
+
+		@media screen and (max-width: $md) {
+			margin-right: 10px;
+		}
+
+		@media screen and (max-width: $sm) {
+			display: block;
+			width: 100%;
+			a{
+				width: 100%;
+				display: block;
+				text-align: center;
+			}
+		}
 
 		a{
 			color: white;
 			@extend .font-secondary;
 			@extend .uppercase;
 			@extend .tracked;
-			display: inline;
+			display: inline-block;
 			padding: 10px;
+
+			@media screen and (max-width: $md) {
+				font-size: 16px;
+			}
 
 			.icon:before{
 				text-transform: none;
-				display: inline;
+				display: inline-block;
 				color: white;
+			}
+
+			&:hover{
+				@media screen and (min-width: $sm+1) {
+					transform: scale(1.1);
+				}
 			}
 		}
 
@@ -76,11 +119,28 @@ $text-nav: (
 			position: relative;
 			z-index: 8;
 
-			&:hover{
-				.sub-menu{
-					display: block;
+			&.open{
+				@media screen and (max-width: $sm) {
+
+					.icon:before{
+						transform: rotate(180deg);
+						top: -2px;
+					}
+					.sub-menu{
+						display: block;
+					}
+				}
+
+			}
+
+			@media screen and (min-width: $sm+1) {
+				&:hover{
+					.sub-menu{
+						display: block;
+					}
 				}
 			}
+
 		}
 	}
 
@@ -88,62 +148,189 @@ $text-nav: (
 		position: absolute;
 		top: 35px;
 		padding-top: 35px;
-		width: 300px;
+		width: 400px;
 		transform: translate(-50%,-0%);
 		margin-left: 50%;
 		display: none;
+		background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,.43) 0%,rgba(255,255,255,0) 40%);
+
+		@media screen and (max-width: $sm) {
+			position: static;
+			transform: none;
+			margin-left: 0;
+			background: none;
+			padding-top: 5px;
+			width: 100%;
+			padding-bottom: 20px;
+		}
 
 		li{
 			width: 50%;
 			float: left;
-			padding: 10px;
+			padding: 25px 0;
+			@extend .flex-center;
+			position: relative;
+
+			&:first-child{
+				width: auto;
+				float: none;
+				margin-left: auto;
+				margin-right: auto;
+				padding-top: 10px;
+				padding-bottom: 10px;
+			}
+
+			&:nth-child(1),&:nth-child(6),&:nth-child(11){
+				a{
+					@extend .blob-a;
+				}
+			}
+			&:nth-child(2),&:nth-child(7),&:nth-child(12){
+				a{
+					@extend .blob-b;
+				}
+			}
+			&:nth-child(3),&:nth-child(8),&:nth-child(13){
+				a{
+					@extend .blob-c;
+				}
+			}
+			&:nth-child(4),&:nth-child(9),&:nth-child(14){
+				a{
+					@extend .blob-d;
+				}
+			}
+			&:nth-child(5),&:nth-child(10),&:nth-child(15){
+				a{
+					@extend .blob-e;
+				}
+			}
+
+			&:nth-child(2),&:nth-child(3),&:nth-child(4){
+				width: 33%;
+			}
+
+			&:nth-child(2){
+				transform: translate(0,-40%);
+			}
+
+			&:nth-child(3){
+
+			}
+
+			&:nth-child(4){
+				transform: translate(0,-30%);
+			}
+
+			&:nth-child(5){
+				width: 50%;
+				transform: translate(0,-30%);
+			}
+
+			&:nth-child(6){
+				width: 50%;
+				transform: translate(0,-37%);
+			}
+
+			&:nth-child(7){
+				width: 50%;
+				float: none;
+				margin-left: auto;
+				margin-right: auto;
+				transform: translate(0,-70%);
+			}
+
+			&:nth-child(8){
+				transform: translate(0,-100%);
+			}
+
+			&:nth-child(9){
+				transform: translate(0,-110%);
+			}
+
+			&:nth-child(10){
+				transform: translate(0,-130%);
+				width: 50%;
+				float: none;
+				margin-left: auto;
+				margin-right: auto;
+			}
 
 			a{
 				text-transform: none;
-				font-size: 16px;
+				font-size: 20px;
 				display: block;
-				padding: 10px;
+				width: 100%;
 				text-align: center;
-				background: $brand;
-				border-radius: 25%;
-				box-shadow: 0px 1px 4px transparentize($dark, .5);
+				letter-spacing: 0.03em;
+				padding: 30px 0;
+				filter: drop-shadow(0px 2px 3px transparentize($dark, .2));
 			}
+
+			@media screen and (max-width: $sm) {
+				padding: 0 !important;
+				width: 100% !important;
+				float: none;
+				transform: none !important;
+				padding: 0;
+				margin-bottom: 5px;
+
+				a{
+					padding: 0;
+					filter: none;
+					font-size: 17px;
+
+					&:after{
+						display: none;
+					}
+				}
+			}
+
 		}
 	}
 
+
 	&.after{
 		height: $nav-height-after;
-
-		@media screen and (max-width: $sm) {
-			height: $nav-height-mobile;
-		}
 
 		#nav-background{
 			display: block;
 		}
 
+		@media screen and (max-width: $sm) {
+			height: $nav-height-mobile;
+			background: $brand;
+
+			#nav-background{
+				display: none;
+			}
+		}
+
 		#logo {
 			width: 140px;
-
-			@media screen and (max-width: $sm) {
-				width: 110px;
-			}
 
 			a{
 				padding-top: 12px;
 				padding-bottom: 5px;
 			}
 
+			@media screen and (max-width: $sm) {
+				width: 110px;
+
+				a{
+					padding-top: 12px;
+				}
+			}
+
 		}
 
 		#nav-menus{
-			padding-top: 25px;
-		}
-	}
+			padding-top: 15px;
 
-	&:hover{
-		//height: 100vh;
-		//overflow: scroll;
+			@media screen and (max-width: $lg) {
+				padding-top: 20px;
+			}
+		}
 	}
 
 	&.open{
@@ -153,14 +340,20 @@ $text-nav: (
 
 }
 
+
 .dropdown-on{
 	#nav{
 		height: 100vh;
 		overflow: scroll;
 	}
+
+	#nav-background{
+		display: block;
+		@media screen and (max-width: $sm) {
+			display: none;
+		}
+	}
 }
-
-
 
 
 //LOGOS
@@ -168,6 +361,10 @@ $text-nav: (
 #logo{
 	width: 160px;
 	float: left;
+
+	@media screen and (max-width: $md) {
+		width: 130px;
+	}
 
 	@media screen and (max-width: $sm) {
 		width: 110px;
@@ -177,10 +374,9 @@ $text-nav: (
 		padding: 20px;
 		padding-left: 0px;
 
-	}
-
-	svg,img{
-
+		@media screen and (max-width: $sm) {
+			padding: 12px 20px 10px 0px;
+		}
 	}
 }
 
@@ -193,19 +389,59 @@ $text-nav: (
 
 //mobile nav
 
-#mobile-nav{
+.hamburger{
+	display: none;
 	position: fixed;
-	width: 100%;
-	height: 100%;
-	right: -100%;
-	top: 0;
-	background: $brand;
-	z-index: 7;
-}
+	right: 15px;
+	top: 0px;
+	height: 40px;
+	width: 28px;
+	z-index: 10;
+	padding-top: 21px;
 
-.mobile-nav-open{
-	#mobile-nav{
-		right: 0;
+	.hamburger-line{
+		display: block;
+		width: 100%;
+		height: 2px;
+		background: white;
+		margin-bottom: 8px;
+		position: relative;
+		transition: transform .25s;
+	}
+
+	@media screen and (max-width: $sm) {
+		display: block;
 	}
 }
+
+
+.menu-open{
+
+	#nav{
+		@media screen and (max-width: $sm) {
+			height: 100vh;
+			overflow: scroll;
+			background: $brand;	
+		}
+	}
+
+	.hamburger{
+		padding-top: 18px;
+	}
+
+	.hl-1{
+		@include transform(rotate( 45deg ));
+		top: 10px;
+
+	}
+	.hl-2,.hl-3{
+		@include transform(rotate( -45deg ));
+		top: 0px;
+	}	
+
+	.hl-3{
+		top: -10px;
+	}
+}
+
 

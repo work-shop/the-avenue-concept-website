@@ -1,3 +1,14 @@
+<?php if( is_page(6) ): ?>
+	<div class="container-fluid container-fluid-stretch pt4">
+		<div class="row">
+			<div class="col-md-8">
+				<h3 class="">
+					Contact us
+				</h3>
+			</div>
+		</div>
+	</div>
+<?php endif; ?>
 <?php if( is_page(181) ): ?>
 	<div id="contact-intro">	
 		<div class="container-fluid container-fluid-stretch">
