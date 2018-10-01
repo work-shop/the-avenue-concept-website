@@ -36,14 +36,6 @@
     "grunt-contrib-watch": "^1.1.0",
     "grunt-extract-sourcemap": "^0.1.19",
     "grunt-sass": "^3.0.1",
-    "gulp": "^3.9.1",
-    "gulp-autoprefixer": "^5.0.0",
-    "gulp-livereload": "^3.8.1",
-    "gulp-logger": "0.0.2",
-    "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.2.1",
-    "gulp-sourcemaps": "^2.6.4",
-    "gulp-uglify": "^3.0.0",
     "jit-grunt": "^0.10.0",
     "node-bourbon": "^4.2.8",
     "node-neat": "^2.0.0-beta.0",
@@ -54,6 +46,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
+    "@work-shop/map-module": "^1.0.5",
     "bootstrap": "^3.3.7",
     "bootstrap-sass": "^3.3.7",
     "d3": "^4.11.0",
@@ -64,6 +57,7 @@
     "jquery": "^3.3.1",
     "jquery-bridget": "^2.0.1",
     "slick-carousel": "^1.8.1",
-    "topojson": "^3.0.2"
+    "topojson": "^3.0.2",
+    "zoho": "^1.0.0"
   }
 }

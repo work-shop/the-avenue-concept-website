@@ -20,6 +20,7 @@ import { menuToggle } from './menu-toggle.js';
 import { slickSlideshows } from './slick-slideshows.js';
 import { filter } from './filter.js';
 import { livereload } from './livereload-client.js';
+import { ZohoConnection } from './module-zoho-connection.js';
 
 livereload();
 
@@ -38,4 +39,6 @@ menuToggle(config.menuToggle);
 slickSlideshows(config.slickSlideshows);
 filter();
 
+var z = new ZohoConnection();
+z.getArtworks();
 //console.log('main.js loaded, with gulp!');
