@@ -40,5 +40,8 @@ slickSlideshows(config.slickSlideshows);
 filter();
 
 var z = new ZohoConnection();
-z.getArtworks();
-//console.log('main.js loaded, with gulp!');
+z.getArtworks( {}, function( err, data ) {
+
+    console.log( data );
+
+});
