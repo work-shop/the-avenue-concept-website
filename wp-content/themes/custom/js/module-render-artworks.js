@@ -14,4 +14,4 @@ function ArtworkRenderer() {
 
 }
 
-module.exports = ArtworkRenderer
+export { ArtworkRenderer };

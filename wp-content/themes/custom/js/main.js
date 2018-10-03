@@ -20,7 +20,14 @@ import { menuToggle } from './menu-toggle.js';
 import { slickSlideshows } from './slick-slideshows.js';
 import { filter } from './filter.js';
 import { livereload } from './livereload-client.js';
+
+/**
+ * Artwork related imports
+ */
 import { ZohoConnection } from './module-zoho-connection.js';
+import { isHomePage, HomePageArtworksManager } from './page-home-artworks.js';
+import { isArtworksSingle, SingleArtworksManager } from './page-single-artworks.js';
+import { isArtworksArchive, ArtworksArchiveManager } from './page-archive-artworks.js';
 
 livereload();
 
@@ -39,9 +46,18 @@ menuToggle(config.menuToggle);
 slickSlideshows(config.slickSlideshows);
 filter();
 
-var z = new ZohoConnection();
-z.getArtworks( {}, function( err, data ) {
 
-    console.log( data );
+$( document ).ready( function() {
+
+    if ( isHomePage() ) {
+
+        const homepage = new HomePageArtworksManager();
+        homepage.init();
+
+    } else if ( isArtworksArchive() ) {
+
+    } else if ( isArtworksSingle() ) {
+
+    }
 
 });

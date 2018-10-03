@@ -13,4 +13,4 @@ function URLManager() {
 
 }
 
-module.exports = URLManager;
+export { URLManager };
