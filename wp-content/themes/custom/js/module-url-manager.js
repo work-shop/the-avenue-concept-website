@@ -1,5 +1,8 @@
 'use strict';
 
+
+import createHistory from 'history/createBrowserHistory';
+
 /**
  * file: module-url-manager.js
  *
@@ -9,8 +12,41 @@
 function URLManager() {
     console.log('creating new URLManager instance.');
     if ( !(this instanceof URLManager)) { return new URLManager(); }
-
+    var self = this;
 
 }
+
+/**
+ * Calling this module parses the current URL into
+ * a set of filtering parameters that can be passed
+ * to the filter module
+ *
+ * @return criteria.medium ?string a medium to match artwork against
+ * @return criteria.program ?string a program to match artwork against
+ * @return criteria.installed_on_or_after ?moment a moment data object representing the first possible install date inclusive.
+ * @return criteria.installed_on_or_before ?moment a moment data object representing the last possible install date inclusive.
+ * @return criteria.on_view_now ?boolean a boolean indicating whether to get only art on view, or only art not on view.
+ */
+URLManager.prototype.parseURL = function() {
+    return {};
+};
+
+/**
+ * Update the current url state to reflect a given
+ * set of query parameters passed in the form of an object.
+ */
+URLManager.prototype.updateURL = function( state = {} ) {
+
+    return this;
+};
+
+/**
+ * Register a handler
+ *
+ */
+URLManager.prototype.onUpdateURL = function( callback ) {
+
+    return this;
+};
 
 export { URLManager };
