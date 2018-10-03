@@ -17,6 +17,8 @@ function ArtworkRenderer() {
 
 }
 
+function renderFillColor( artwork ) { return '#6ba442'; }
+
 /**
  * Given an array of artworks or a single artwork object
  *
@@ -57,6 +59,8 @@ function renderThumbnail( artwork = {}, index = 0 ) {
 function renderMapObject( artwork = {}, index = 0 ) {
 
     var feature = { marker: artwork };
+
+    feature.marker.icon.fillColor = renderFillColor( artwork );
 
     var popup = { content: renderThumbnail( artwork ).html() };
 

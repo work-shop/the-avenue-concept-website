@@ -25,7 +25,7 @@ import { livereload } from './livereload-client.js';
  * Artwork related imports
  */
 import { ZohoConnection } from './module-zoho-connection.js';
-import { isHomePage, HomePageArtworksManager } from './page-home-artworks.js';
+import { isHomePage, homePage } from './page-home-artworks.js';
 import { isArtworksSingle, SingleArtworksManager } from './page-single-artworks.js';
 import { isArtworksArchive, ArtworksArchiveManager } from './page-archive-artworks.js';
 
@@ -51,8 +51,7 @@ $( document ).ready( function() {
 
     if ( isHomePage() ) {
 
-        const homepage = new HomePageArtworksManager();
-        homepage.init();
+        homePage();
 
     } else if ( isArtworksArchive() ) {
 

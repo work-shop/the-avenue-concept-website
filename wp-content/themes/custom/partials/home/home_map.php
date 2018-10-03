@@ -16,9 +16,8 @@
 					<?php the_field('map_link_text'); ?>
 				</a>
 			</div>
-			<div class="col-md-8">
-				Map
+			<div id="home-map-container" class="col-md-8">
 			</div>
-		</div>	
+		</div>
 	</div>
 </section>

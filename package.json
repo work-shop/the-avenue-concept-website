@@ -46,7 +46,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "@work-shop/map-module": "^1.0.5",
+    "@work-shop/map-module": "^1.0.7",
     "async": "^2.6.1",
     "bootstrap": "^3.3.7",
     "bootstrap-sass": "^3.3.7",

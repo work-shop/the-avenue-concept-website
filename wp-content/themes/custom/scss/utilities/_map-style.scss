@@ -1,0 +1,276 @@
+.ws-map-popup-float-wrapper {
+  position: absolute;
+  width: 100%;
+}
+
+.ws-map-popup-float-wrapper,
+.ws-map-popup-float-wrapper * {
+  box-sizing: border-box;
+}
+
+[class*='ws-map-popup-wrapper'] {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  font-size: 14px;
+  cursor: default;
+}
+
+.ws-map-popup-wrapper-top {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  margin-top: -40px;
+  margin-left: 0px;
+  -webkit-transform: translate(-50%, -100%);
+          transform: translate(-50%, -100%);
+}
+
+.ws-map-popup-wrapper-bottom {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+  margin-top: 0px;
+  margin-left: 0px;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+}
+
+.ws-map-popup-wrapper-left {
+  margin-top: -20px;
+  margin-left: -11px;
+  -webkit-transform: translate(-100%, -50%);
+          transform: translate(-100%, -50%);
+}
+
+.ws-map-popup-wrapper-right {
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: row-reverse;
+          flex-direction: row-reverse;
+  margin-top: -20px;
+  margin-left: 11px;
+  -webkit-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+}
+
+[class*='ws-map-popup-shadow-wrapper'] {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.29804;
+  z-index: 1;
+}
+
+.ws-map-popup-shadow-wrapper-top,
+.ws-map-popup-shadow-wrapper-bottom {
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+}
+
+.ws-map-popup-shadow-pointer-bottom,
+.ws-map-popup-shadow-pointer-right {
+  -webkit-box-ordinal-group: 0;
+      -ms-flex-order: -1;
+          order: -1;
+}
+
+.ws-map-popup-shadow-frame {
+  box-shadow: 0 1px 3px 0 #000;
+}
+
+[class*='ws-map-popup-shadow-pointer'] {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  margin: auto;
+}
+
+[class*='ws-map-popup-shadow-inner-pointer'] {
+  position: absolute;
+  width: 141%;
+  height: 141%;
+  box-shadow: -0.70711px 0.70711px 3px 0 #000;
+}
+
+.ws-map-popup-shadow-inner-pointer-top {
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%) rotate(-45deg);
+          transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.ws-map-popup-shadow-inner-pointer-bottom {
+  bottom: 0;
+  left: 50%;
+  -webkit-transform: translate(-50%, 50%) rotate(-45deg);
+          transform: translate(-50%, 50%) rotate(-45deg);
+}
+
+.ws-map-popup-shadow-inner-pointer-left {
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%) rotate(-45deg);
+          transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.ws-map-popup-shadow-inner-pointer-right {
+  top: 50%;
+  right: 0;
+  -webkit-transform: translate(50%, -50%) rotate(-45deg);
+          transform: translate(50%, -50%) rotate(-45deg);
+}
+
+.ws-map-popup-frame {
+  position: relative;
+  -webkit-box-flex: 1;
+      -ms-flex: 1 1 auto;
+          flex: 1 1 auto;
+  border-radius: 3px;
+  overflow: hidden;
+  z-index: 2; }
+
+.ws-map-popup-content-wrapper {
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  padding: 12px;
+  background-color: #fff;
+}
+
+.ws-map-popup-has-border .ws-map-popup-content-wrapper {
+  border: 1px solid #bbb;
+}
+
+.ws-map-popup-content {
+  overflow: auto;
+}
+
+.ws-map-popup-close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: 0;
+  outline: none;
+  background-color: transparent;
+  color: inherit;
+  font-family: 'modern_pictograms_proregular', 'Modern Pictograms Pro';
+  font-size: 24px;
+  cursor: pointer;
+  opacity: 0.5;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
+.ws-map-popup-close-button:hover, .ws-map-popup-close-button:focus {
+  opacity: 0.7;
+}
+
+[class*='ws-map-popup-pointer-border'] {
+  position: absolute;
+  border: 15px solid transparent;
+  z-index: 3;
+}
+
+[class*='ws-map-popup-pointer-background'] {
+  position: relative;
+  border: 15px solid transparent;
+  z-index: 4;
+}
+.ws-map-popup-has-border [class*='ws-map-popup-pointer-background'] {
+  border-width: 15px;
+}
+
+.ws-map-popup-pointer-border-top,
+.ws-map-popup-pointer-border-bottom {
+  left: 50%;
+  -webkit-transform: translate(-50%, 0);
+          transform: translate(-50%, 0);
+}
+
+.ws-map-popup-pointer-border-left,
+.ws-map-popup-pointer-border-right {
+  top: 50%;
+  -webkit-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+}
+
+.ws-map-popup-pointer-top {
+  border-bottom: 0;
+}
+
+.ws-map-popup-pointer-border-top {
+  bottom: 1;
+  border-top-color: #bbb; }
+
+.ws-map-popup-pointer-background-top {
+  top: -1px;
+  border-top-color: #fff;
+}
+
+.ws-map-popup-has-border .ws-map-popup-pointer-background-top {
+  margin-bottom: 0px;
+}
+
+.ws-map-popup-pointer-bottom {
+  border-top: 0;
+}
+
+.ws-map-popup-pointer-border-bottom {
+  top: 1;
+  border-bottom-color: #bbb;
+}
+
+.ws-map-popup-pointer-background-bottom {
+  bottom: -1px;
+  border-bottom-color: #fff;
+}
+.ws-map-popup-has-border .ws-map-popup-pointer-background-bottom {
+  margin-top: 0px;
+}
+
+.ws-map-popup-pointer-left {
+  border-right: 0;
+}
+
+.ws-map-popup-pointer-border-left {
+  right: 1;
+  border-left-color: #bbb;
+}
+
+.ws-map-popup-pointer-background-left {
+  left: -1px;
+  border-left-color: #fff;
+}
+.ws-map-popup-has-border .ws-map-popup-pointer-background-left {
+  margin-right: 0px;
+}
+
+.ws-map-popup-pointer-right {
+  border-left: 0;
+}
+
+.ws-map-popup-pointer-border-right {
+  left: 1;
+  border-right-color: #bbb;
+}
+
+.ws-map-popup-pointer-background-right {
+  right: -1px;
+  border-right-color: #fff;
+}
+.ws-map-popup-has-border .ws-map-popup-pointer-background-right {
+  margin-left: 0px;
+}
