@@ -8,7 +8,6 @@
  * is callback driven, and makes asynchronous requests.
  */
 var $ = require('jquery');
-var moment = require('moment');
 var async = require('async');
 
 const zoho_base_uri = 'https://creator.zoho.com/api';
@@ -18,27 +17,7 @@ const database_name = 'artworks-database';
 const view_name = 'All_Public_Artwork';
 const authtoken = '1864b7e6b391f6b94d5cae6a8a9bbd60';
 
-/**
- * The Artwork object represents
- *
- *
- */
-function Artwork( data ) {
-    if (!(this instanceof Artwork)) { return new Artwork( data ); }
-    var self = this;
-
-    self.name = data.Artwork_Title;
-    self.description = data.Artwork_Description;
-
-    self.dates = {
-        created: moment( data.Date_Created, 'DD-MMM-YYYY HH:mm:ss' ),
-        installed: moment( data.Date_Installed, 'DD-MMM-YYYY HH:mm:ss' )
-    };
-
-    self.artist = data.Add_Artist;
-    self.media = data.Add_Media;
-
-}
+import { Artwork } from './module-zoho-artwork.js';
 
 
 function ZohoConnection() {
@@ -79,39 +58,41 @@ function ZohoConnection() {
     function getMediaCriterion( artwork_media ) {
 
         var media = artwork_media.split(',');
+
         media[0] = media[0].substring( 1 );
+
         media[ media.length - 1 ] = media[ media.length - 1 ].substring( 0, media[ media.length - 1 ].length - 1 );
+
         media = media.map( function( m, i ) {
             if ( i > 0 ) { return m.substring( 1 ); }
             else { return m; }
         });
 
-        return media.map( function( name ) { return '\"' + name + '\"'; } );
+        return media;
 
+    }
+
+    function get_resource( view_name, criterion, fieldname, selector = function( x ) { return x; } ) {
+
+        var uri = makeZohoUri( view_name, criterion, fieldname );
+
+        return function( artist_done ) {
+            $.ajax({
+                crossDomain: true,
+                url: uri,
+                dataType: 'jsonp',
+                type: 'GET',
+                success: function( v ) {
+                    artist_done( null, selector( v ) );
+                },
+                error: artist_done
+            });
+        };
     }
 
 
     self.getArtworks = function( parameters, callback = function() {} ) {
 
-        function get_resource( view_name, criterion, fieldname, selector = function( x ) { return x; } ) {
-
-            var uri = makeZohoUri( view_name, criterion, fieldname )
-
-            console.log( uri );
-
-            return function( artist_done ) {
-                $.ajax({
-                    crossDomain: true,
-                    url: uri,
-                    dataType: 'jsonp',
-                    type: 'GET',
-                    success: function( v ) {
-                        artist_done( null, selector( v ) );
-                    },
-                    error: artist_done
-                });
-            };
-        }
 
         $.ajax({
             crossDomain: true,
@@ -130,7 +111,7 @@ function ZohoConnection() {
                                 media: function( media_done ) {
 
                                     async.parallel( getMediaCriterion( artwork.Add_Media ).map( function( media_name ) {
-                                        return get_resource( 'All_Medias', 'Media_Title == ' + media_name, false, function( x ) { return x.Add_Media; });
+                                        return get_resource( 'All_Medias', 'Media_Title == \"' + media_name + '\"', false, function( x ) { return x.Add_Media; });
                                     }), function( err, values ) {
                                         if ( err ) { media_done( err ); }
                                         media_done( null, values.reduce( function( a,b ) { return a.concat( b ); }, []));
@@ -154,7 +135,13 @@ function ZohoConnection() {
                     function( err, artworks ) {
                         if ( err ) { callback( err ); }
 
-                        callback( null, artworks.map( Artwork ) );
+                        callback( null, artworks.map( function( artwork ) {
+
+                            artwork.Medium_field1 = getMediaCriterion( artwork.Medium_field1 );
+
+                            return new Artwork( artwork );
+
+                        } ) );
                     }
                 );
 
