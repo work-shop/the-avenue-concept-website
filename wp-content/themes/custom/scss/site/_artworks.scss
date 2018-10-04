@@ -9,7 +9,6 @@ $sb-width: 360px;
 	width: calc( 100% - #{$sb-width} );
 	height: calc( 100vh - #{$nav-height} + 10px );
 	margin-top: $nav-height - 10px;
-	background: $light;
 }
 
 .artworks-sidebar{
@@ -19,5 +18,60 @@ $sb-width: 360px;
 	top: $nav-height - 10px;
 	right: 0;
 	z-index: 1;
-	background: $medium;
+	background: $light;
+}
+
+.sidebar-row{
+	padding: 20px;
+	border-bottom: 1px solid $medium;
+}
+
+.sidebar-button{
+	display: inline-block;
+	border: 1px solid $aqua;
+	border-radius: 100px;
+	font-size: 15px;
+	text-transform: uppercase;
+	padding: 3px 8px;
+	transition: all .1s;
+
+	@media screen and (max-width: $sm) {
+		font-size: 13px;
+		padding: 2px 6px;
+	}
+
+	&:hover{
+		box-shadow: 0px 1px 3px 1px $aqua;
+		transform: scale(1.05);
+	}
+
+	&.filter-active{
+		background: $aqua;
+		color: white;
+		box-shadow: 0px 1px 3px 1px $aqua;
+
+		&:hover{
+			box-shadow: none;
+			background: $light;
+			color: $medium;
+			border: 1px solid $medium;
+		}
+	}
+
+}
+
+.sidebar-status-input{
+	margin-right: 7px;
+	width: auto;
+
+	&[value="archived"]{
+		margin-left: 15px;
+	}
+}
+
+.sidebar-status-label{
+	display: inline-block;
+	margin-left: 0px;
+	position: relative;
+	top: 2px;
 }
