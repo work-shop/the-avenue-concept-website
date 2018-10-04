@@ -2,7 +2,11 @@
 
 var moment = require('moment');
 var cheerio = require('cheerio');
+var slugify = require('slugify');
+
+
 const creator_export = 'https://creatorexport.zoho.com';
+const base_url = 'artworks';
 
 /**
  * Media Type Mapper
@@ -177,8 +181,12 @@ function Artwork( data ) {
     if (!(this instanceof Artwork)) { return new Artwork( data ); }
     var self = this;
 
+    console.log( data );
+
     self.name = data.Artwork_Title;
     self.description = data.Artwork_Description;
+    self.slug = slugify( self.name ).toLowerCase();
+    self.url = '/' + base_url + '/' + self.slug;
 
     self.dates = {
         created: moment( data.Date_Created, 'DD-MMM-YYYY HH:mm:ss' ),
@@ -190,7 +198,8 @@ function Artwork( data ) {
     self.artist = createArtistObject( data.Add_Artist );
     self.media = media[0];
     self.location = createLocationObject( data.Add_Location );
-    self.featured = media[1][0] || {};
+    self.featured_media = media[1][0] || {};
+    self.featured = data.Feature_Artwork_on_Homepage;
 
     self.program = data.Program;
     self.medium = data.Medium_field1;

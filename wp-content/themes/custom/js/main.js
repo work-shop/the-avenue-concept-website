@@ -24,10 +24,9 @@ import { livereload } from './livereload-client.js';
 /**
  * Artwork related imports
  */
-import { ZohoConnection } from './module-zoho-connection.js';
 import { isHomePage, homePage } from './page-home-artworks.js';
-import { isArtworksSingle, SingleArtworksManager } from './page-single-artworks.js';
-import { isArtworksArchive, ArtworksArchiveManager } from './page-archive-artworks.js';
+import { isArtworksSingle, artworkSingle } from './page-single-artworks.js';
+import { isArtworksArchive, artworksArchive } from './page-archive-artworks.js';
 
 livereload();
 
@@ -47,15 +46,6 @@ slickSlideshows(config.slickSlideshows);
 filter();
 
 
-var zoho = new ZohoConnection();
-
-zoho.getArtworks( {}, function( e, data ) {
-    if ( e ) { console.error( e ); }
-
-    console.log( data );
-
-});
-
 $( document ).ready( function() {
 
     if ( isHomePage() ) {
@@ -63,6 +53,8 @@ $( document ).ready( function() {
         homePage();
 
     } else if ( isArtworksArchive() ) {
+
+        artworksArchive();
 
     } else if ( isArtworksSingle() ) {
 

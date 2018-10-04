@@ -1,5 +1,12 @@
 'use strict';
 
+
+var makeMap = require('@work-shop/map-module');
+
+import { ArtworkFilterer } from './module-filter-artworks.js';
+import { ArtworkRenderer } from './module-render-artworks.js';
+import { URLManager } from './module-url-manager.js';
+
 /**
  * file: page-home-artworks.js
  *
@@ -11,14 +18,13 @@
  * This method returns true if the current page is the archive artworks page,
  * false otherwise.
  */
-function isArtworksArchive() { console.error('isArtworksArchive is unimplemented'); return false; }
+function isArtworksArchive() { return $( document.body ).hasClass('page-id-187'); }
 
 /**
  * This class manages getting and rendering artworks on the archive artworks page
  */
 function ArtworksArchiveManager() {
     if ( !(this instanceof ArtworksArchiveManager)) { return new ArtworksArchiveManager(); }
-
     console.log('ArtworksArchiveManager loaded.');
 }
 
@@ -28,10 +34,17 @@ function ArtworksArchiveManager() {
 ArtworksArchiveManager.prototype.init = function() {
     console.log('ArtworksArchiveManager.init() called');
 
-    var query = {
-        from: '01-01-2017',
-        to: '12-31-2017'
-    };
+    var filterer = new ArtworkFilterer();
+    var renderer = new ArtworkRenderer();
+    var urlmanager = new URLManager();
+
+    console.log( urlmanager.parseURL() );
+
+    // filterer.init( function( error, filter ) {
+    //
+    //
+    //
+    // });
 
     return this;
 };
