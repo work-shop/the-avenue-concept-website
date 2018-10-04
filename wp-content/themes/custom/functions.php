@@ -44,7 +44,7 @@ add_filter( 'template_include', function( $template ) {
     //var_dump($url);
 
     if( preg_match('/^.*?\/artworks\/[^\/]+\/?$/m', $url) == 1 ){
-        $new_template = '/var/www/html/wp-content/themes/custom/artwork-single.php';
+        $new_template = get_template_directory() . '/artwork-single.php';
         $template = $new_template;
     }
 
