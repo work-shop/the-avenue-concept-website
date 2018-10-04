@@ -17,8 +17,9 @@ function dropdowns( config ) {
 				}
 			}, function() {
 				if( $(window).width() > 767 ){
+					var currentLink = $(this);
 					clearTimeout(timer);
-					closeDropdown();
+					closeDropdown(currentLink);
 				}
 			}
 			);
@@ -56,15 +57,17 @@ function dropdowns( config ) {
 
 	//close the dropdown
 	function closeDropdown(link){
-		console.log('closeDropdown');
+		//console.log(link);
+		//console.log('closeDropdown');
 
 		if( $(link).hasClass('open') ){
-			$(link).removeClass('open').addClass('closed');		
+			//console.log('link open');
+			$(link).removeClass('open').addClass('closed');	
 			if( $(window).width() > 767 ){
+				//console.log('breakpoint');
 				$('body').removeClass(config.bodyOnClass).addClass(config.bodyOffClass);
-			}
+			}	
 		}
-
 	}
 
 }

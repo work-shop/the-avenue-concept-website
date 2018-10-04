@@ -39,7 +39,7 @@
 				</ul>
 			</li>
 			<li class="has-sub-menu closed nav-menu-primary-item">
-				<a href="/about" class="dropdown-link <?php if( Helpers::is_tree(187) ): echo ' nav-current '; endif; ?>" id="nav-link-artworks" data-dropdown-target="artworks">
+				<a href="/artworks" class="dropdown-link <?php if( Helpers::is_tree(187) ): echo ' nav-current '; endif; ?>" id="nav-link-artworks" data-dropdown-target="artworks">
 					Artworks
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
