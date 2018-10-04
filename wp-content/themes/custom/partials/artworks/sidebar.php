@@ -3,7 +3,7 @@
 			<h5 class="sidebar-row-heading">
 				View As:
 			</h5>
-			<a href="#" class="sidebar-view-button sidebar-button" data-artworks-view="map">
+			<a href="#" class="sidebar-view-button sidebar-button active" data-artworks-view="map">
 				Map
 			</a>
 			<a href="#" class="sidebar-view-button sidebar-button" data-artworks-view="thumbnails">

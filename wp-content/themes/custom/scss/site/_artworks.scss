@@ -45,7 +45,7 @@ $sb-width: 360px;
 		transform: scale(1.05);
 	}
 
-	&.filter-active{
+	&.active{
 		background: $aqua;
 		color: white;
 		box-shadow: 0px 1px 3px 1px $aqua;
