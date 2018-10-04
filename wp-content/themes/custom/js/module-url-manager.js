@@ -29,12 +29,11 @@ function URLManager() {
  * &from=urlEncode({ installed_on_or_after })
  * &to=urlEncode({ installed_on_or_before })
  *
- *
  * @return criteria.medium ?string a medium to match artwork against
  * @return criteria.program ?string a program to match artwork against
- * @return criteria.installed_on_or_after ?moment a moment data object representing the first possible install date inclusive.
- * @return criteria.installed_on_or_before ?moment a moment data object representing the last possible install date inclusive.
- * @return criteria.on_view_now ?boolean a boolean indicating whether to get only art on view, or only art not on view.
+ * @return criteria.from ?moment a moment data object representing the first possible install date inclusive.
+ * @return criteria.to ?moment a moment data object representing the last possible install date inclusive.
+ * @return criteria.on_view ?boolean a boolean indicating whether to get only art on view, or only art not on view.
  */
 URLManager.prototype.parseURL = function() {
     return {};

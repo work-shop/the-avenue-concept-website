@@ -28,79 +28,46 @@ function HomePageArtworksManager() {
 
 }
 
+
+/**
+ *
+ *
+ */
+
+ function drawMap( mapData ) {
+
+     const map = makeMap({
+         selector: '#home-map-container',
+         map: { streetViewControl: false }
+     })[0];
+
+     map.data( mapData ).removeFeatures().render();
+
+ }
+
 /**
  * This method sets up the home page artworks logic.
  */
 HomePageArtworksManager.prototype.init = function() {
     console.log('HomePageArtworksManager.init() called');
-    var self = this;
 
     var filterer = new ArtworkFilterer();
     var renderer = new ArtworkRenderer();
 
     filterer.init( function( error, filter ) {
 
-        var artworks = filter({ featured: true });
+        var featuredArtworkSlides = renderer.renderSlideshowSlides( filter({ featured: true }) );
+        var mapObjects = renderer.renderMapObjects( filter() );
 
-        console.log( artworks );
+        console.log( filter() );
+
+        console.log( featuredArtworkSlides );
+
+        $('.slick-featured-artworks').append( featuredArtworkSlides );
+
+        drawMap( mapObjects )
 
     });
-
-
-
-
-
-        // self.map = makeMap({
-        //     selector: '#home-map-container',
-        //     map: {
-        //         streetViewControl: false
-        //     },
-        //     data: {
-        //       marker: {
-        //         icon: {
-        //           fillColor: 'red',
-        //         },
-        //         popup: {
-        //           placement: 'left',
-        //           pointer: '8px',
-        //           on: {
-        //             open: function () {
-        //               console.log( 'opened:' + this._options.id );
-        //             },
-        //             close: function () {
-        //               console.log( 'closed:' + this._options.id );
-        //             }
-        //           }
-        //         }
-        //       }
-        //     },
-        //     render: {
-        //       center: { lat: 41.8240, lng: -71.4128 },
-        //       zoom: 14
-        //     }
-        // })[0];
-        //
-        // //var artworks = filterer.filter( { featured: true } )
-        //
-        // self.map.data(
-        //     //renderer.renderMapObjects( artworks )
-        //
-        //     [
-        //         {
-        //             marker: {
-        //                 position: { lat: 41.8240, lng: -71.4128 },
-        //                 icon: { fillColor: '#6ba442' }
-        //             }
-        //         },
-        //         {
-        //             marker: {
-        //                 position: { lat: 41.8240, lng: -71.414 },
-        //                 icon: { fillColor: '#6ba442' },
-        //             }
-        //         }
-        //
-        //     ]
-        // ).removeFeatures().render();
 
     return this;
 };
