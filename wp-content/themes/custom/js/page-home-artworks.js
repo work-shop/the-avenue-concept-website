@@ -38,65 +38,69 @@ HomePageArtworksManager.prototype.init = function() {
     var filterer = new ArtworkFilterer();
     var renderer = new ArtworkRenderer();
 
-    $(window).on('load', function( ) {
+    filterer.init( function( error, filter ) {
 
-        self.map = makeMap({
-            selector: '#home-map-container',
-            map: {
-                streetViewControl: false
-            },
-            data: {
-              marker: {
-                icon: {
-                  fillColor: 'red',
-                },
-                popup: {
-                  placement: 'left',
-                  pointer: '8px',
-                  on: {
-                    open: function () {
-                      console.log( 'opened:' + this._options.id );
-                    },
-                    close: function () {
-                      console.log( 'closed:' + this._options.id );
-                    }
-                  }
-                }
-              }
-            },
-            render: {
-              center: { lat: 41.8240, lng: -71.4128 },
-              zoom: 14
-            }
-        })[0];
+        var artworks = filter({ featured: true });
 
-        //var artworks = filterer.filter( { featured: true } )
-
-        self.map.data(
-            //renderer.renderMapObjects( artworks )
-
-            [
-                {
-                    marker: {
-                        position: { lat: 41.8240, lng: -71.4128 },
-                        icon: { fillColor: '#6ba442' }
-                    }
-                },
-                {
-                    marker: {
-                        position: { lat: 41.8240, lng: -71.414 },
-                        icon: { fillColor: '#6ba442' },
-                    }
-                }
-
-            ]
-        ).removeFeatures().render();
-
-        //var slides = renderer.renderSlideshowSlides( artworks );
-
-        // initialize slideshow with slides (an array of jQuery objects)
+        console.log( artworks );
 
     });
+
+
+
+
+
+        // self.map = makeMap({
+        //     selector: '#home-map-container',
+        //     map: {
+        //         streetViewControl: false
+        //     },
+        //     data: {
+        //       marker: {
+        //         icon: {
+        //           fillColor: 'red',
+        //         },
+        //         popup: {
+        //           placement: 'left',
+        //           pointer: '8px',
+        //           on: {
+        //             open: function () {
+        //               console.log( 'opened:' + this._options.id );
+        //             },
+        //             close: function () {
+        //               console.log( 'closed:' + this._options.id );
+        //             }
+        //           }
+        //         }
+        //       }
+        //     },
+        //     render: {
+        //       center: { lat: 41.8240, lng: -71.4128 },
+        //       zoom: 14
+        //     }
+        // })[0];
+        //
+        // //var artworks = filterer.filter( { featured: true } )
+        //
+        // self.map.data(
+        //     //renderer.renderMapObjects( artworks )
+        //
+        //     [
+        //         {
+        //             marker: {
+        //                 position: { lat: 41.8240, lng: -71.4128 },
+        //                 icon: { fillColor: '#6ba442' }
+        //             }
+        //         },
+        //         {
+        //             marker: {
+        //                 position: { lat: 41.8240, lng: -71.414 },
+        //                 icon: { fillColor: '#6ba442' },
+        //             }
+        //         }
+        //
+        //     ]
+        // ).removeFeatures().render();
 
     return this;
 };

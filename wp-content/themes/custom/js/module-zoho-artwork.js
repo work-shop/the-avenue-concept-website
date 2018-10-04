@@ -177,6 +177,8 @@ function Artwork( data ) {
     if (!(this instanceof Artwork)) { return new Artwork( data ); }
     var self = this;
 
+    console.log( data );
+
     self.name = data.Artwork_Title;
     self.description = data.Artwork_Description;
 
@@ -190,7 +192,8 @@ function Artwork( data ) {
     self.artist = createArtistObject( data.Add_Artist );
     self.media = media[0];
     self.location = createLocationObject( data.Add_Location );
-    self.featured = media[1][0] || {};
+    self.featured_media = media[1][0] || {};
+    self.featured = data.Feature_Artwork_on_Homepage;
 
     self.program = data.Program;
     self.medium = data.Medium_field1;
