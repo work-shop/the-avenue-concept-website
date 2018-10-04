@@ -74,7 +74,21 @@ HomePageArtworksManager.prototype.init = function() {
                 {
                     marker: {
                         position: { lat: 41.8244, lng: -71.4132 },
-                        icon: { fillColor: '#6ba442' }
+                        icon: { fillColor: '#6ba442' },
+                        popup: {
+                          id: 'hello?????',
+                          placement: 'left',
+                          pointer: '8px',
+                          on: {
+                            open: function () {
+                              console.log( 'opened:' + this._options.id );
+                              console.log( this._options );
+                            },
+                            close: function () {
+                              console.log( 'closed:' + this._options )
+                            }
+                          }
+                        }
                     }
                 }
 
