@@ -5,18 +5,24 @@ import createHistory from 'history/createBrowserHistory';
 var queryString = require('query-string');
 var objectAssign = require('object-assign');
 
+const base_url = '/artworks';
+const prequery_seperator = '/?';
+
 /**
  * file: module-url-manager.js
  *
  * This file manages URL state with history push state.
  */
 
-function URLManager( defaultState = { view: 'thumbs' } ) {
+function URLManager( defaultState = { view: 'map' } ) {
     console.log('creating new URLManager instance.');
     if ( !(this instanceof URLManager)) { return new URLManager( defaultState ); }
     var self = this;
 
+    defaultState['on-view'] = null;
+
     self.defaultState = defaultState;
+    self.history = createHistory();
 
 }
 
@@ -55,7 +61,7 @@ URLManager.prototype.parseURL = function() {
     }
 
     if ( typeof query['on-view'] !== 'undefined' ) {
-        result.on_view = query['on-view'];
+        result['on-view'] = query['on-view'];
     }
 
     if ( typeof query.year !== 'undefined' ) {
@@ -76,7 +82,12 @@ URLManager.prototype.parseURL = function() {
 
     result = objectAssign( this.defaultState, result );
 
+    query = queryString.stringify( result );
+
+    this.history.replace( base_url + prequery_seperator + query, result );
+
     return result;
+
 };
 
 /**
@@ -85,16 +96,14 @@ URLManager.prototype.parseURL = function() {
  */
 URLManager.prototype.updateURL = function( state = {} ) {
 
-    return this;
-};
+    var stateWithDefaults = objectAssign( this.defaultState, state );
 
-/**
- * Register a handler
- *
- */
-URLManager.prototype.onUpdateURL = function( callback ) {
+    var query = queryString.stringify( stateWithDefaults );
 
-    return this;
+    this.history.push( base_url + prequery_seperator + query, stateWithDefaults );
+
+    return stateWithDefaults;
+
 };
 
 export { URLManager };

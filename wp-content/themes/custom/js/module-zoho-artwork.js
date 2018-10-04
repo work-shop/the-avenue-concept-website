@@ -5,8 +5,19 @@ var cheerio = require('cheerio');
 var slugify = require('slugify');
 
 
-const creator_export = 'https://creatorexport.zoho.com';
+
 const base_url = 'artworks';
+
+
+const creator_export = 'https://creatorexport.zoho.com/file/';
+const user_name = 'the_avenue_concept';
+const database_name = 'artworks-database';
+const view_name = 'All_Public_Media';
+const split_string = 'image-download/';
+
+
+const media_encryption_key = 'rOrBktNV54sebRgAnUCpp6TGghu26QsJJG2u5feg6CMKT0mmyhnguqhg0QwAeC00xKa76zfJCw6UZtwTfzuFkzYzNpmKpUw46OsG';
+
 
 /**
  * Media Type Mapper
@@ -38,24 +49,32 @@ function mapMediaType( media_type ) {
  * grab that image either from zoho or whatever
  * remote location the image is being hosted at.
  */
-function createImageSources( image_html ) {
+function createImageSources( image_html, media ) {
+
+    console.log( media );
 
     var $ = cheerio.load( image_html );
     var image = $('img');
 
     var src = image.attr('src');
-    var lowqual = image.attr('lowqual');
-    var downqual = image.attr('downqual');
-    var medqual = image.attr('medqual');
 
     if ( src.indexOf( '://' ) === -1 ) {
 
+        var image_name = src.substring( src.indexOf( split_string ) + split_string.length );
+
+        var true_image_src =
+            creator_export +
+            user_name + '/' +
+            database_name + '/' +
+            view_name + '/' +
+            media.ID + '/' +
+            'Image/image-download/' +
+            media_encryption_key +
+            '?filepath=/' + image_name;
+
         return {
             type: 'zoho',
-            src: creator_export + src,
-            lowqual: ( lowqual ) ? creator_export + lowqual : false,
-            downqual: ( downqual ) ? creator_export + downqual : false,
-            medqual: ( medqual ) ? creator_export + medqual : false,
+            src: true_image_src
         };
 
     } else {
@@ -103,7 +122,7 @@ function createMediaObject( media ) {
 
         if ( media_result.type === 'image' ) {
 
-            media_result.image = createImageSources( media_object.Image );
+            media_result.image = createImageSources( media_object.Image, media_object );
 
         } else if ( media_result.type === 'video' ) {
 

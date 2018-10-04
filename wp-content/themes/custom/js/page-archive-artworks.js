@@ -33,22 +33,52 @@ function ArtworksArchiveManager() {
  */
 ArtworksArchiveManager.prototype.init = function() {
     console.log('ArtworksArchiveManager.init() called');
+    var self = this;
 
-    var filterer = new ArtworkFilterer();
-    var renderer = new ArtworkRenderer();
-    var urlmanager = new URLManager();
+    self.filterer = new ArtworkFilterer();
+    self.renderer = new ArtworkRenderer();
+    self.urlmanager = new URLManager();
 
-    console.log( urlmanager.parseURL() );
+    var parsed = self.urlmanager.parseURL();
 
-    // filterer.init( function( error, filter ) {
-    //
-    //
-    //
-    // });
+    self.filterer.init( function( error, filter ) {
+        if ( error ) { console.error( error ); }
 
-    return this;
+        var artworks = filter( parsed );
+
+        console.log( artworks );
+
+        var thumbs = self.renderer.renderThumbnails( artworks );
+
+        $('.artworks-main').append( thumbs );
+
+        self.handleViewClickStream()
+
+
+
+    });
+
+    return self;
 };
 
+function handleNewURL( state ) {
+
+}
+
+ArtworksArchiveManager.prototype.handleViewClickStream = function() {
+
+    var self = this;
+
+    $('.sidebar-view-button').on('click', function() {
+
+        var state = self.urlmanager.updateURL( { view: $(this).data('artwork-view') } );
+
+        console.log( state );
+
+
+    });
+
+};
 
 
 function artworksArchive() {

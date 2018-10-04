@@ -110,7 +110,7 @@ function ZohoConnection() {
                                 media: function( media_done ) {
 
                                     async.parallel( unpackStringArray( artwork.Add_Media ).map( function( media_name ) {
-                                        return get_resource( 'All_Medias', 'Media_Title == \"' + media_name + '\"', false, function( x ) { return x.Add_Media; });
+                                        return get_resource( 'All_Public_Media', 'Media_Title == \"' + media_name + '\"', false, function( x ) { return x.Add_Media; });
                                     }), function( err, values ) {
                                         if ( err ) { media_done( err ); }
                                         media_done( null, values.reduce( function( a,b ) { return a.concat( b ); }, []));
