@@ -59,13 +59,13 @@ HomePageArtworksManager.prototype.init = function() {
         var featuredArtworkSlides = renderer.renderSlideshowSlides( filter({ featured: true }) );
         var mapObjects = renderer.renderMapObjects( filter() );
 
+        console.log('all artworks returned from Zoho:');
         console.log( filter() );
-
-        console.log( featuredArtworkSlides );
+        console.log('\n');
 
         $('.slick-featured-artworks').append( featuredArtworkSlides );
 
-        drawMap( mapObjects )
+        drawMap( mapObjects );
 
     });
 

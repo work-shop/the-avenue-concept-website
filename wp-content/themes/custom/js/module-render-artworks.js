@@ -13,8 +13,6 @@ import { Artwork } from './module-zoho-artwork.js';
 function ArtworkRenderer() {
     console.log('creating new ArtworkRenderer instance.');
     if ( !(this instanceof ArtworkRenderer)) { return new ArtworkRenderer(); }
-    var self = this;
-
 }
 
 /**
