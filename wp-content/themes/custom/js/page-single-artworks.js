@@ -32,4 +32,13 @@ SingleArtworksManager.prototype.init = function() {
 };
 
 
-export { SingleArtworksManager, isArtworksSingle };
+function singleArtwork() {
+
+    var single = new SingleArtworksManager();
+
+    single.init();
+
+}
+
+
+export { singleArtwork, isArtworksSingle };

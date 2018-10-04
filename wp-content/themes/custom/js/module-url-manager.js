@@ -21,6 +21,15 @@ function URLManager() {
  * a set of filtering parameters that can be passed
  * to the filter module
  *
+ * Urls for filtering are represented by query strings:
+ *
+ * ?view={viewtype}
+ * &on-view=urlEncode({ installed_on_or_after })
+ * &program=urlEncode({ program })
+ * &from=urlEncode({ installed_on_or_after })
+ * &to=urlEncode({ installed_on_or_before })
+ *
+ *
  * @return criteria.medium ?string a medium to match artwork against
  * @return criteria.program ?string a program to match artwork against
  * @return criteria.installed_on_or_after ?moment a moment data object representing the first possible install date inclusive.

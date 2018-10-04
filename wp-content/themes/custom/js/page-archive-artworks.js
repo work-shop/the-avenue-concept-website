@@ -28,8 +28,22 @@ function ArtworksArchiveManager() {
 ArtworksArchiveManager.prototype.init = function() {
     console.log('ArtworksArchiveManager.init() called');
 
+    var query = {
+        from: '01-01-2017',
+        to: '12-31-2017'
+    };
+
     return this;
 };
 
 
-export { ArtworksArchiveManager, isArtworksArchive };
+
+function artworksArchive() {
+
+    var archive = new ArtworksArchiveManager();
+
+    archive.init();
+
+}
+
+export { artworksArchive, isArtworksArchive };

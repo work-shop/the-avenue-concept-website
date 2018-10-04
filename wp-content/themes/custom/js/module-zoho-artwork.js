@@ -49,9 +49,9 @@ function createImageSources( image_html ) {
         return {
             type: 'zoho',
             src: creator_export + src,
-            lowqual: creator_export + lowqual,
-            downqual: creator_export + downqual,
-            medqual: creator_export + medqual,
+            lowqual: ( lowqual ) ? creator_export + lowqual : false,
+            downqual: ( downqual ) ? creator_export + downqual : false,
+            medqual: ( medqual ) ? creator_export + medqual : false,
         };
 
     } else {
@@ -84,16 +84,17 @@ function createFileSource( media_file ) {
  */
 function createMediaObject( media ) {
 
-    console.log( media );
+    var featured_results = [];
 
-    return media.map( function( media_object ) {
+    var media_results = media.map( function( media_object ) {
 
         var media_result = {
             type: mapMediaType( media_object.Media_Type ),
             media_type: media_object.Media_Type,
             photographer: media_object.Photographer_Author,
             id: media_object.ID,
-            title: media_object.Media_Title
+            title: media_object.Media_Title,
+            featured: media_object.Website_Featured_Image
         };
 
         if ( media_result.type === 'image' ) {
@@ -110,9 +111,13 @@ function createMediaObject( media ) {
 
         }
 
+        if ( media_result.featured ) { featured_results.push( media_result ); }
+
         return media_result;
 
     });
+
+    return [ media_results, featured_results ];
 
 }
 
@@ -172,8 +177,6 @@ function Artwork( data ) {
     if (!(this instanceof Artwork)) { return new Artwork( data ); }
     var self = this;
 
-    console.log( data );
-
     self.name = data.Artwork_Title;
     self.description = data.Artwork_Description;
 
@@ -182,10 +185,12 @@ function Artwork( data ) {
         installed: moment( data.Date_Installed, 'DD-MMM-YYYY HH:mm:ss' )
     };
 
+    var media = createMediaObject( data.Add_Media );
 
     self.artist = createArtistObject( data.Add_Artist );
-    self.media = createMediaObject( data.Add_Media );
+    self.media = media[0];
     self.location = createLocationObject( data.Add_Location );
+    self.featured = media[1][0] || {};
 
     self.program = data.Program;
     self.medium = data.Medium_field1;

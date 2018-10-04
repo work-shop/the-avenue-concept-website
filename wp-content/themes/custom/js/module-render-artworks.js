@@ -1,7 +1,7 @@
 'use strict';
 
 
-import { Artwork } from './module-zoho-artworks.js';
+import { Artwork } from './module-zoho-artwork.js';
 
 /**
  * file: module-render-artworks.js
@@ -36,9 +36,13 @@ function renderSlide( artwork = {}, index = 0 ) {
  */
 function renderListRow( artwork = {}, index = 0 ) {
 
-    var artworkNode = $('<div>').addClass('artwork-list-row');
+    var artworkWrapper = $('<div>').addClass('artwork-list-row');
+    // var linkTag = $('<a>').attr('href', artwork.getURL() );
+    // var title = $('<h1>').text( artwork.name );
+    //
+    // artworkWrapper.append( linkTag ).append( title );
 
-    return artworkNode;
+    return artworkWrapper;
 }
 
 /**
@@ -102,7 +106,7 @@ function renderWith( renderFunction ) {
 /**
  * Render a set of artwork as slides to be added to slick.
  */
-ArtworkRenderer.prototype.renderSlideshow = renderWith( renderSlide );
+ArtworkRenderer.prototype.renderSlideshowSlides = renderWith( renderSlide );
 
 /**
  * Render a set of artwork as rows to be added to an artwork table.

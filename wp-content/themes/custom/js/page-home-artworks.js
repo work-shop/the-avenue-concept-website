@@ -1,6 +1,10 @@
 'use strict';
 
 var makeMap = require('@work-shop/map-module');
+
+import { ArtworkFilterer } from './module-filter-artworks.js';
+import { ArtworkRenderer } from './module-render-artworks.js';
+
 /**
  * file: page-home-artworks.js
  *
@@ -30,6 +34,9 @@ function HomePageArtworksManager() {
 HomePageArtworksManager.prototype.init = function() {
     console.log('HomePageArtworksManager.init() called');
     var self = this;
+
+    var filterer = new ArtworkFilterer();
+    var renderer = new ArtworkRenderer();
 
     $(window).on('load', function( ) {
 
@@ -63,7 +70,11 @@ HomePageArtworksManager.prototype.init = function() {
             }
         })[0];
 
+        //var artworks = filterer.filter( { featured: true } )
+
         self.map.data(
+            //renderer.renderMapObjects( artworks )
+
             [
                 {
                     marker: {
@@ -73,32 +84,19 @@ HomePageArtworksManager.prototype.init = function() {
                 },
                 {
                     marker: {
-                        position: { lat: 41.8244, lng: -71.4132 },
+                        position: { lat: 41.8240, lng: -71.414 },
                         icon: { fillColor: '#6ba442' },
-                        popup: {
-                          id: 'hello?????',
-                          placement: 'left',
-                          pointer: '8px',
-                          on: {
-                            open: function () {
-                              console.log( 'opened:' + this._options.id );
-                              console.log( this._options );
-                            },
-                            close: function () {
-                              console.log( 'closed:' + this._options )
-                            }
-                          }
-                        }
                     }
                 }
 
             ]
-        ).removeFeatures().render( { zoom: 16 } );
+        ).removeFeatures().render();
 
+        //var slides = renderer.renderSlideshowSlides( artworks );
+
+        // initialize slideshow with slides (an array of jQuery objects)
 
     });
-
-
 
     return this;
 };

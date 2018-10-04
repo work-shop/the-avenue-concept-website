@@ -47,6 +47,15 @@ slickSlideshows(config.slickSlideshows);
 filter();
 
 
+var zoho = new ZohoConnection();
+
+zoho.getArtworks( {}, function( e, data ) {
+    if ( e ) { console.error( e ); }
+
+    console.log( data );
+
+});
+
 $( document ).ready( function() {
 
     if ( isHomePage() ) {
