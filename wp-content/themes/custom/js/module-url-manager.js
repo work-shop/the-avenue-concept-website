@@ -19,9 +19,12 @@ function URLManager( defaultState = { view: 'map' } ) {
     if ( !(this instanceof URLManager)) { return new URLManager( defaultState ); }
     var self = this;
 
-    defaultState['on-view'] = null;
+    defaultState['on-view'] = true;
 
-    self.defaultState = defaultState;
+    self.defaultState = objectAssign( {}, defaultState );
+
+    console.log( defaultState );
+
     self.history = createHistory();
 
 }
@@ -47,48 +50,52 @@ function URLManager( defaultState = { view: 'map' } ) {
  * @return criteria.to ?string a moment data object representing the last possible install date inclusive.
  * @return criteria.on_view ?boolean a boolean indicating whether to get only art on view, or only art not on view.
  */
-URLManager.prototype.parseURL = function() {
+URLManager.prototype.parseURL = function( withDefaults = false ) {
 
-    var result = {};
+    var stateChange = {};
     var query = queryString.parse( window.location.search );
 
     if ( typeof query.view !== 'undefined' ) {
-        result.view = query.view;
+        stateChange.view = query.view;
     }
 
     if ( typeof query.program !== 'undefined' ) {
-        result.program = query.program;
+        stateChange.program = query.program;
     }
 
     if ( typeof query['on-view'] !== 'undefined' ) {
-        result['on-view'] = query['on-view'];
+        stateChange['on-view'] = query['on-view'];
     }
 
     if ( typeof query.year !== 'undefined' ) {
 
-        result.year = query.year;
+        stateChange.year = query.year;
 
     } else {
 
         if ( typeof query.from !== 'undefined' ) {
-            result.from = query.from;
+            stateChange.from = query.from;
         }
 
         if ( typeof query.to !== 'undefined' ) {
-            result.to = query.to;
+            stateChange.to = query.to;
         }
 
     }
 
-    result = objectAssign( this.defaultState, result );
+    var result = objectAssign( {}, ( withDefaults ) ? this.defaultState : {}, this.history.location.state, stateChange );
 
     query = queryString.stringify( result );
 
     this.history.replace( base_url + prequery_seperator + query, result );
 
-    return result;
+    return objectAssign({}, result);
 
 };
+
+
+URLManager.prototype.parseURLWithDefaults = function() { return this.parseURL( true ); };
+
 
 /**
  * Update the current url state to reflect a given
@@ -96,13 +103,13 @@ URLManager.prototype.parseURL = function() {
  */
 URLManager.prototype.updateURL = function( state = {} ) {
 
-    var stateWithDefaults = objectAssign( this.defaultState, state );
+    var newState = objectAssign( {}, this.history.location.state, state );
 
-    var query = queryString.stringify( stateWithDefaults );
+    var query = queryString.stringify( newState );
 
-    this.history.push( base_url + prequery_seperator + query, stateWithDefaults );
+    this.history.push( base_url + prequery_seperator + query, newState );
 
-    return stateWithDefaults;
+    return objectAssign( {}, newState );
 
 };
 

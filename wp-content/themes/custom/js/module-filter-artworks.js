@@ -41,6 +41,11 @@ function ArtworkFilterer() {
  *
  */
 var preprocess = function( criteria, metadata = { date_parse_string: 'DD-MMM-YYYY'} ) {
+
+    if ( typeof criteria['on-view'] !== 'undefined') {
+        criteria.on_view = ( criteria['on-view'] === null ) ? true : criteria['on-view'];
+    }
+
     if ( typeof criteria.year !== 'undefined' ) {
 
         criteria.from = moment( '01-01-' + criteria.year, metadata.date_parse_string );
@@ -117,6 +122,7 @@ var filter = function( self, metadata ) {
 
         });
 
+        // Delete the date keys.
         delete test_criteria.from;
         delete test_criteria.to;
 

@@ -219,6 +219,7 @@ function Artwork( data ) {
     self.location = createLocationObject( data.Add_Location );
     self.featured_media = media[1][0] || {};
     self.featured = data.Feature_Artwork_on_Homepage;
+    self.on_view = data.On_View_Now;
 
     self.program = data.Program;
     self.medium = data.Medium_field1;
