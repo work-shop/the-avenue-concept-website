@@ -64,7 +64,7 @@ URLManager.prototype.parseURL = function( withDefaults = false ) {
     }
 
     if ( typeof query['on-view'] !== 'undefined' ) {
-        stateChange['on-view'] = query['on-view'];
+        stateChange['on-view'] = query['on-view'] == 'true';
     }
 
     if ( typeof query.year !== 'undefined' ) {
