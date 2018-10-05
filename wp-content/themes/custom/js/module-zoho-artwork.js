@@ -200,8 +200,6 @@ function Artwork( data ) {
     if (!(this instanceof Artwork)) { return new Artwork( data ); }
     var self = this;
 
-    console.log( data );
-
     self.name = data.Artwork_Title;
     self.description = data.Artwork_Description;
     self.slug = slugify( self.name ).toLowerCase();
@@ -239,7 +237,17 @@ function Artwork( data ) {
         };
 
     }
-
 }
+
+/**
+ * Returns true if this artwork has a valid set of Lat / Lng coordinates
+ * for use with the map.
+ *
+ * @return bool true if this artwork has a valid coordinate pair, false otherwise.
+ */
+Artwork.prototype.hasLatLng = function() {
+    return (typeof this.position !== 'undefined') && (typeof this.position.lat === 'number') && (typeof this.position.lng === 'number');
+};
+
 
 export { Artwork };

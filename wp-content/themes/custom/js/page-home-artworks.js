@@ -57,7 +57,8 @@ HomePageArtworksManager.prototype.init = function() {
     filterer.init( function( error, filter ) {
 
         var featuredArtworkSlides = renderer.renderSlideshowSlides( filter({ featured: true }) );
-        var mapObjects = renderer.renderMapObjects( filter() );
+
+        var mapObjects = renderer.renderMapObjects( filter().filter( function( artwork ) { return artwork.hasLatLng(); } ) );
 
         console.log('all artworks returned from Zoho:');
         console.log( filter() );
