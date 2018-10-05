@@ -41,14 +41,15 @@ ArtworksArchiveManager.prototype.init = function() {
 
     var parsed = self.urlmanager.parseURLWithDefaults();
 
-    self.filterer.init( function( error, filter ) {
+    self.filterer.init( function( error, filter, diff ) {
         if ( error ) { console.error( error ); }
 
         self.filter = filter;
+        self.diff = diff;
 
-        var artworks = filter( parsed );
+        var add = self.filter( parsed );
 
-        var thumbs = self.renderer.renderThumbnails( artworks );
+        var thumbs = self.renderer.renderThumbnails( add );
 
         $('.artworks-main').append( thumbs );
 
@@ -56,20 +57,79 @@ ArtworksArchiveManager.prototype.init = function() {
 
         self.handleStatusClickStream();
 
+        self.handleProgramsClickStream();
+
+        self.handleYearClickStream();
+
     });
 
     return self;
 };
 
+/**
+ * Handle given a new state constructed by the URL Manager,
+ * construct a state diff against the previous page state,
+ * remove the '.remove' key, using whatever transitions seem
+ * appropriate, and then add the `.add` key, using whatever transitions seem
+ * appropriate.
+ *
+ * @param state the current filter state.
+ */
 ArtworksArchiveManager.prototype.handleNewState = function( state ) {
 
-    var artworks = this.filter( state );
+    var diffObject = this.diff( state );
 
-    console.log( artworks );
+    console.log( diffObject );
+
+    if ( diffObject.remove.length === 0 && diffObject.add.length === 0 ) {
+        // no change to the set of displayed artworks.
+
+    } else {
+
+
+    }
+
 
 };
 
 
+/**
+ *
+ *
+ *
+ */
+ArtworksArchiveManager.prototype.handleProgramsClickStream = function() {
+
+    var self = this;
+
+    $('.sidebar-program-button').on('click', function() {
+
+        console.log( $(this).data('artworks-filter') );
+
+        var newState;
+
+        if ( typeof $(this).data('artworks-filter') === 'undefined' ) {
+
+            newState = self.urlmanager.updateURL( { program: undefined } );
+
+        } else {
+
+            newState = self.urlmanager.updateURL( { program: $(this).data('artworks-filter') } );
+
+        }
+
+        self.handleNewState( newState );
+
+    });
+
+};
+
+
+/**
+ *
+ *
+ *
+ */
 ArtworksArchiveManager.prototype.handleViewClickStream = function() {
 
     var self = this;
@@ -84,6 +144,49 @@ ArtworksArchiveManager.prototype.handleViewClickStream = function() {
 
 };
 
+/**
+ *
+ *
+ *
+ */
+ArtworksArchiveManager.prototype.handleYearClickStream = function() {
+
+    var self = this;
+
+    $('#sidebar-select-year-from, #sidebar-select-year-to').on( 'change', function() {
+
+        var from = $( '#sidebar-select-year-from' ).val();
+        var to = $( '#sidebar-select-year-to' ).val();
+
+        var newState;
+
+        if ( parseInt( from ) > parseInt( to ) ) {
+
+            console.error('"From:" date is greater than "To:" date. Handle?');
+            newState = {};
+
+        } else if ( from === to ) {
+
+            newState = self.urlmanager.updateURL( { year: from, from: undefined, to: undefined} );
+
+        } else {
+
+            newState = self.urlmanager.updateURL( { year: undefined, from: '01-01-' + from, to: '12-31-' + to } );
+
+        }
+
+        self.handleNewState( newState );
+
+    });
+
+};
+
+
+/**
+ *
+ *
+ *
+ */
 ArtworksArchiveManager.prototype.handleStatusClickStream = function() {
 
     var self = this;
@@ -111,7 +214,6 @@ ArtworksArchiveManager.prototype.handleStatusClickStream = function() {
         var newState = self.urlmanager.updateURL( update );
 
         self.handleNewState( newState );
-
 
     });
 

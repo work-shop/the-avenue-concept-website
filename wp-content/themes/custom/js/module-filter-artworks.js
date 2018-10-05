@@ -42,7 +42,7 @@ function ArtworkFilterer() {
  *
  *
  */
-var preprocess = function( criteria, metadata = { date_parse_string: 'DD-MMM-YYYY'} ) {
+var preprocess = function( criteria, metadata = { date_parse_string: 'MM-DD-YYYY'} ) {
 
     if ( typeof criteria['on-view'] !== 'undefined') {
         criteria.on_view = ( criteria['on-view'] === null ) ? true : criteria['on-view'];
@@ -51,7 +51,7 @@ var preprocess = function( criteria, metadata = { date_parse_string: 'DD-MMM-YYY
     if ( typeof criteria.year !== 'undefined' ) {
 
         criteria.from = moment( '01-01-' + criteria.year, metadata.date_parse_string );
-        criteria.to = moment( '31-12-' + criteria.year, metadata.date_parse_string );
+        criteria.to = moment( '12-31-' + criteria.year, metadata.date_parse_string );
 
         delete criteria.year;
 
@@ -63,9 +63,9 @@ var preprocess = function( criteria, metadata = { date_parse_string: 'DD-MMM-YYY
 
         }
 
-        if ( typeof criteria.from !== 'undefined' ) {
+        if ( typeof criteria.to !== 'undefined' ) {
 
-            criteria.from = moment( criteria.from, metadata.date_parse_string );
+            criteria.to = moment( criteria.to, metadata.date_parse_string );
 
         }
 
@@ -105,10 +105,14 @@ var filter = function( self, metadata ) {
         // Noramalize dates in the test criteria.
         var test_criteria = preprocess( criteria, metadata );
 
+        console.log( self.artworks );
+
         // Get the artworks taht are inbounds of the dates.
         var inbounds_artworks = self.artworks.filter( function( artwork ) {
 
             var after = true, before = true;
+
+
 
             if ( typeof test_criteria.from !== 'undefined' ) {
 
@@ -122,13 +126,23 @@ var filter = function( self, metadata ) {
 
             }
 
+            console.log( artwork.dates.created );
+            console.log( test_criteria.from );
+            console.log( after );
+            console.log( test_criteria.to  );
+            console.log( before );
+
+
             return before && after;
 
         });
 
+
+
         // Delete the date keys.
         delete test_criteria.from;
         delete test_criteria.to;
+        delete test_criteria.year;
 
         var final_artworks = inbounds_artworks.filter( function( artwork ) {
 

@@ -51,8 +51,6 @@ function mapMediaType( media_type ) {
  */
 function createImageSources( image_html, media ) {
 
-    console.log( media );
-
     var $ = cheerio.load( image_html );
     var image = $('img');
 
@@ -204,6 +202,7 @@ function Artwork( data ) {
     self.description = data.Artwork_Description;
     self.slug = slugify( self.name ).toLowerCase();
     self.url = '/' + base_url + '/' + self.slug;
+    self.id = data.ID;
 
     self.dates = {
         created: moment( data.Date_Created, 'DD-MMM-YYYY HH:mm:ss' ),
@@ -247,6 +246,18 @@ function Artwork( data ) {
  */
 Artwork.prototype.hasLatLng = function() {
     return (typeof this.position !== 'undefined') && (typeof this.position.lat === 'number') && (typeof this.position.lng === 'number');
+};
+
+
+/**
+ * Given a test object, returns true of this and the other object represent
+ * the same artwork.
+ *
+ * @param object other test object to check equality against
+ * @return true if other is equal to this
+ */
+Artwork.prototype.equals = function( other ) {
+    return other instanceof Artwork && other.id === this.id;
 };
 
 

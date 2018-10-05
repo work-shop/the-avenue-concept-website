@@ -24,10 +24,13 @@
 			<h5 class="sidebar-row-heading">
 				Filter By Program:
 			</h5>
-			<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="3-d">
+            <a href="#" class="sidebar-program-button sidebar-button">
+				All
+			</a>
+			<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="3-D">
 				3-D
 			</a>
-			<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="2-d">
+			<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="2-D">
 				2-D
 			</a>
 			<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="Wayfinding">
@@ -41,7 +44,7 @@
 			<div class="row">
 				<div class="col-lg-6">
 					<h4 class="sidebar-row-label">From:</h4>
-					<select>
+					<select id="sidebar-select-year-from">
 						<option value="2012">2012</option>
 						<option value="2013">2013</option>
 						<option value="2014">2014</option>
@@ -53,7 +56,7 @@
 				</div>
 				<div class="col-lg-6">
 					<h4 class="sidebar-row-label">To:</h4>
-					<select>
+					<select id="sidebar-select-year-to">
 						<option value="2012">2012</option>
 						<option value="2013">2013</option>
 						<option value="2014">2014</option>

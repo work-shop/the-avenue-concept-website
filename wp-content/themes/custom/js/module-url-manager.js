@@ -105,6 +105,8 @@ URLManager.prototype.updateURL = function( state = {} ) {
 
     var newState = objectAssign( {}, this.history.location.state, state );
 
+    console.log( newState );
+
     var query = queryString.stringify( newState );
 
     this.history.push( base_url + prequery_seperator + query, newState );
