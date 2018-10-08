@@ -30,13 +30,11 @@ ArtworksMap.prototype.init = function() {
  * Given a set of map-ready marker objects,
  * update the map module with the set of valid maerk
  */
-ArtworksMap.prototype.update = function( objects ) {
-
-    //console.log( objects );
+ArtworksMap.prototype.update = function( objects, options ) {
 
     var validated = this.validate( objects );
 
-    this.map.data( validated.valid ).removeFeatures().render();
+    this.map.data( validated.valid ).removeFeatures().render( options );
 
     return validated;
 

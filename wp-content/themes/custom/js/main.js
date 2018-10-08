@@ -25,7 +25,7 @@ import { livereload } from './livereload-client.js';
  * Artwork related imports
  */
 import { isHomePage, homePage } from './page-home-artworks.js';
-import { isArtworksSingle, artworkSingle } from './page-single-artworks.js';
+import { isArtworksSingle, singleArtwork } from './page-single-artworks.js';
 import { isArtworksArchive, artworksArchive } from './page-archive-artworks.js';
 
 livereload();
@@ -57,6 +57,8 @@ $( document ).ready( function() {
         artworksArchive();
 
     } else if ( isArtworksSingle() ) {
+
+        singleArtwork();
 
     }
 

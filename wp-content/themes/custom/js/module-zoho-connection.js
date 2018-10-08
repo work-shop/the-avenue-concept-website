@@ -91,11 +91,11 @@ function ZohoConnection() {
     var self = this;
 
 
-    self.getArtworks = function( parameters, callback = function() {} ) {
+    self.getArtworks = function( slug, callback = function() {} ) {
 
         $.ajax({
             crossDomain: true,
-            url: makeZohoUri( view_name ),
+            url: makeZohoUri( view_name, ( slug ) ? 'Slug == \"'+ slug +'\"' : undefined ),
             dataType: 'jsonp',
             type: 'GET',
             success: function( d ) {
