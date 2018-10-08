@@ -35,9 +35,6 @@
 			<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="2-D">
 				2-D
 			</a>
-			<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="Wayfinding">
-				Wayfinding
-			</a>
 		</div>
 		<div class="sidebar-row" id="sidebar-year">
 			<h5 class="sidebar-row-heading">

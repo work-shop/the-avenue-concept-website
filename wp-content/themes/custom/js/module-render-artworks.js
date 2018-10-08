@@ -43,7 +43,7 @@ function renderFillColor( artwork ) {
 function createAsynchrounousImage( src ) {
 
     var img = $('<img>')
-                    .attr('src', 'loading.png')
+                    .attr('src', '/wp-content/themes/custom/images/loading.png')
                     .attr('data-src', src );
 
     var loading = $('<img>').attr('src', src );
@@ -73,7 +73,7 @@ function getFeaturedImageSrc( artwork ) {
 
         } else {
             // handle default case.
-            return 'default.png';
+            return '/wp-content/themes/custom/images/default.png';
 
         }
     }

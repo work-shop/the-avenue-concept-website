@@ -9,8 +9,6 @@ $sb-padding: 20px;
 	}
 }
 
-
-
 .artworks-main{
 	width: calc( 100% - #{$sb-width} );
 	height: calc( 100vh - #{$nav-height} + 0px );
@@ -22,6 +20,10 @@ $sb-padding: 20px;
 		height: 100%;
 		width: 100%;
 	}
+}
+
+#artworks-map-map{
+	height: 70vh;
 }
 
 .artworks-sidebar{
