@@ -1,7 +1,7 @@
 'use strict';
 
 
-var makeMap = require('@work-shop/map-module');
+import { ArtworksMap } from './module-map.js';
 
 import { ArtworkFilterer } from './module-filter-artworks.js';
 import { ArtworkRenderer } from './module-render-artworks.js';
@@ -23,9 +23,12 @@ function isArtworksArchive() { return $( document.body ).hasClass('page-id-187')
 /**
  * This class manages getting and rendering artworks on the archive artworks page
  */
-function ArtworksArchiveManager() {
-    if ( !(this instanceof ArtworksArchiveManager)) { return new ArtworksArchiveManager(); }
+function ArtworksArchiveManager( config ) {
+    if ( !(this instanceof ArtworksArchiveManager)) { return new ArtworksArchiveManager( config ); }
     console.log('ArtworksArchiveManager loaded.');
+
+    this.config = config;
+
 }
 
 /**
@@ -38,20 +41,20 @@ ArtworksArchiveManager.prototype.init = function() {
     self.filterer = new ArtworkFilterer();
     self.renderer = new ArtworkRenderer();
     self.urlmanager = new URLManager();
+    self.map = new ArtworksMap( '#artworks-map-map', self.config );
 
     var parsed = self.urlmanager.parseURLWithDefaults();
 
     self.filterer.init( function( error, filter, diff ) {
-        if ( error ) { console.error( error ); }
+        if ( error ) { throw new Error( error ); }
 
         self.filter = filter;
         self.diff = diff;
+        self.map.init();
 
-        var add = self.filter( parsed );
+        console.log( parsed );
 
-        var thumbs = self.renderer.renderThumbnails( add );
-
-        $('.artworks-main').append( thumbs );
+        self.doStateTransitionByDiff( self.diff( parsed ) );
 
         self.handleViewClickStream();
 
@@ -60,6 +63,8 @@ ArtworksArchiveManager.prototype.init = function() {
         self.handleProgramsClickStream();
 
         self.handleYearClickStream();
+
+        // self.handleLocationClickStream();
 
     });
 
@@ -81,16 +86,55 @@ ArtworksArchiveManager.prototype.handleNewState = function( state ) {
 
     console.log( diffObject );
 
-    if ( diffObject.remove.length === 0 && diffObject.add.length === 0 ) {
-        // no change to the set of displayed artworks.
+    if ( diffObject.remove.length !== 0 || diffObject.add.length !== 0 ) {
 
-    } else {
+        if ( state.view === 'map' ) {
 
+            //
+
+
+        } else {
+
+            // it's either thumbnail or list
+            var elementsToRemove = this.renderer.renderThumbnails( diffObject.remove );
+            var elementsToAdd = this.renderer.renderThumbnails( diffObject.add );
+
+        }
 
     }
 
-
 };
+
+ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject ) {
+
+    console.log( diffObject );
+
+    var artworksToRemove = $( diffObject.remove.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
+    var thumbs = $( '#artworks-thumbnails' );
+    var list = $( '#artworks-list' );
+    var map_list = $( '#artworks-map-list' );
+
+    this.map.update( this.renderer.renderMapObjects( this.filterer.getCurrentState() ) );
+
+
+
+
+}
+
+
+/**
+ * Helper method to manage body classes
+ * based on the particular active
+ * view passed into the state.
+ *
+ * @param String view the current view, one of map, thumbnails, list.
+ */
+function manageBodyClassesForView( view ) {
+    // handle adding and removing bodyclasses.
+    //$( document.body ).removeClass( '' )
+
+
+}
 
 
 /**

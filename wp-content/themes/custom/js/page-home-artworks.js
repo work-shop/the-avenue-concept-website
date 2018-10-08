@@ -1,9 +1,11 @@
 'use strict';
 
-var makeMap = require('@work-shop/map-module');
 
 import { ArtworkFilterer } from './module-filter-artworks.js';
 import { ArtworkRenderer } from './module-render-artworks.js';
+
+import { ArtworksMap } from './module-map.js';
+
 
 /**
  * file: page-home-artworks.js
@@ -28,23 +30,6 @@ function HomePageArtworksManager() {
 
 }
 
-
-/**
- *
- *
- */
-
- function drawMap( mapData ) {
-
-     const map = makeMap({
-         selector: '#home-map-container',
-         map: { streetViewControl: false }
-     })[0];
-
-     map.data( mapData ).removeFeatures().render();
-
- }
-
 /**
  * This method sets up the home page artworks logic.
  */
@@ -53,20 +38,23 @@ HomePageArtworksManager.prototype.init = function() {
 
     var filterer = new ArtworkFilterer();
     var renderer = new ArtworkRenderer();
+    var map = new ArtworksMap('#home-map-container');
+
+    map.init();
 
     filterer.init( function( error, filter ) {
 
+        if ( error ) { console.error( error ); }
+
         var featuredArtworkSlides = renderer.renderSlideshowSlides( filter({ featured: true }) );
 
-        var mapObjects = renderer.renderMapObjects( filter().filter( function( artwork ) { return artwork.hasLatLng(); } ) );
+        map.update( renderer.renderMapObjects( filter() ) );
 
         console.log('all artworks returned from Zoho:');
         console.log( filter() );
         console.log('\n');
 
         $('.slick-featured-artworks').append( featuredArtworkSlides );
-
-        drawMap( mapObjects );
 
     });
 

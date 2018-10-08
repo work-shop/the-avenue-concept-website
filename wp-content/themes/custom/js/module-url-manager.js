@@ -23,8 +23,6 @@ function URLManager( defaultState = { view: 'map' } ) {
 
     self.defaultState = objectAssign( {}, defaultState );
 
-    console.log( defaultState );
-
     self.history = createHistory();
 
 }
@@ -104,8 +102,6 @@ URLManager.prototype.parseURLWithDefaults = function() { return this.parseURL( t
 URLManager.prototype.updateURL = function( state = {} ) {
 
     var newState = objectAssign( {}, this.history.location.state, state );
-
-    console.log( newState );
 
     var query = queryString.stringify( newState );
 

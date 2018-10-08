@@ -95,7 +95,7 @@ function renderSlide( artwork = {}, index = 0 ) {
                     .addClass('slide-' + index )
                     .addClass('featured-artwork')
                     .addClass('col-sm-6')
-                    .attr('id', artwork.slug );
+                    .addClass('artwork-' + artwork.slug );
 
     var a = $('<a>')
                     .addClass('artwork-link')
@@ -125,7 +125,7 @@ function renderSlide( artwork = {}, index = 0 ) {
  */
 function renderListRow( artwork = {}, index = 0 ) {
 
-    var artworkWrapper = $('<div>').addClass('artwork-list-row');
+    var artworkWrapper = $('<div>').addClass('artwork-list-row').addClass('artwork-' + artwork.slug );
 
     // var linkTag = $('<a>').attr('href', artwork.getURL() );
     // var title = $('<h1>').text( artwork.name );
@@ -152,7 +152,7 @@ function renderThumbnail( artwork = {}, index = 0 ) {
                     .addClass('slide-' + index )
                     .addClass('featured-artwork')
                     .addClass('col-sm-6')
-                    .attr('id', artwork.slug );
+                    .addClass('artwork-' + artwork.slug );
 
     var a = $('<a>')
                     .addClass('artwork-link')
