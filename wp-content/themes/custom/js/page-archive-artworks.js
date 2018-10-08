@@ -45,8 +45,11 @@ ArtworksArchiveManager.prototype.init = function() {
 
     var parsed = self.urlmanager.parseURLWithDefaults();
 
-    self.filterer.init( function( error, filter, diff ) {
+    self.filterer.init( function( error, filter, diff, getValues ) {
         if ( error ) { throw new Error( error ); }
+
+        var programs = getValues( 'program' );
+        console.log( programs );
 
         self.filter = filter;
         self.diff = diff;
@@ -88,18 +91,7 @@ ArtworksArchiveManager.prototype.handleNewState = function( state ) {
 
     if ( diffObject.remove.length !== 0 || diffObject.add.length !== 0 ) {
 
-        if ( state.view === 'map' ) {
-
-            //
-
-
-        } else {
-
-            // it's either thumbnail or list
-            var elementsToRemove = this.renderer.renderThumbnails( diffObject.remove );
-            var elementsToAdd = this.renderer.renderThumbnails( diffObject.add );
-
-        }
+        this.doStateTransitionByDiff( diffObject );
 
     }
 

@@ -23,8 +23,6 @@ ArtworksMap.prototype.init = function() {
 
     }
 
-    console.log( this.map );
-
     return this;
 };
 
@@ -33,6 +31,8 @@ ArtworksMap.prototype.init = function() {
  * update the map module with the set of valid maerk
  */
 ArtworksMap.prototype.update = function( objects ) {
+
+    console.log( objects );
 
     var validated = this.validate( objects );
 
