@@ -1,17 +1,19 @@
 	<div class="artworks-sidebar">
-		<div class="sidebar-row" id="sidebar-view">
-			<h5 class="sidebar-row-heading">
+		<div class="" id="sidebar-view">
+			<h5 class="sidebar-row-heading sidebar-view-heading">
 				View As:
 			</h5>
-			<a href="#" class="sidebar-view-button sidebar-button active" data-artworks-view="map">
-				Map
-			</a>
-			<a href="#" class="sidebar-view-button sidebar-button" data-artworks-view="thumbnails">
-				Thumbnails
-			</a>
-			<a href="#" class="sidebar-view-button sidebar-button" data-artworks-view="list">
-				List
-			</a>
+			<div class="sidebar-view-row">
+				<a href="#" class="sidebar-view-button active" data-artworks-view="map">
+					Map
+				</a>
+				<a href="#" class="sidebar-view-button" data-artworks-view="thumbnails">
+					Thumbnails
+				</a>
+				<a href="#" class="sidebar-view-button" data-artworks-view="list">
+					List
+				</a>
+			</div>
 		</div>
 		<div class="sidebar-row" id="sidebar-status">
 			<h5 class="sidebar-row-heading">

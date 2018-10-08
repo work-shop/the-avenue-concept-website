@@ -2,24 +2,13 @@
 
         <?php get_template_part('partials/footer_site' ); ?>
 
-        <?php get_template_part('partials/modals' ); ?>
+        <?php //get_template_part('partials/modals' ); ?>
 
         <?php //get_template_part('partials/viewport_label' ); ?>
 
-        <!--
-          Required: Google Maps JS Bundle
-          - Query paramters
-            - `v=3`  Map Module is written against v3
-            - `key=` The API key being used.
-          - Use with `async defer` if using `$(window).on( 'load' )`
-          - Use without `async defer` if using `$( document ).ready`
-        -->
         <script async defer src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyDTkjwJK80N7YCWoKjhKz8c3J1tNEbJpRg"></script>
-
-
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-122335332-1"></script>
-
         <script>
         	window.dataLayer = window.dataLayer || [];
         	function gtag(){dataLayer.push(arguments);}

@@ -67,7 +67,7 @@
 				</ul>
 			</li>
 			<li class="has-sub-menu closed nav-menu-primary-item">
-				<a href="/programs" class="dropdown-link <?php if( is_page(159) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="about">
+				<a href="/about" class="dropdown-link <?php if( is_page(159) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="about">
 					About
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
