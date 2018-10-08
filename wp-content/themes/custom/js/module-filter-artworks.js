@@ -225,10 +225,54 @@ var diff = function( self ) {
 };
 
 
+/**
+ * Given a set of dimensions, get the set of admissable values
+ * for those dimensions as present on the total set of artwork
+ * being filtered.
+ */
+var values = function( self ) {
+    return function( ) {
+
+        var dimensions = Array.from( arguments );
+        var admissable = {};
+
+        self.artworks.forEach( function( artwork ) {
+
+            dimensions.forEach( function( dimension ) {
+
+                if ( typeof artwork[dimension] !== 'undefined' ) {
+                    if ( typeof admissable[dimension] !=='undefined' ) {
+
+                        admissable[ dimension ][ artwork[ dimension ] ] = true;
+
+                    } else {
+
+                        admissable[ dimension ] = {};
+                        admissable[ dimension ][ artwork[ dimension ] ] = true;
+
+                    }
+                }
+
+            });
+
+        });
+
+        for ( var key in admissable ) {
+            if ( admissable.hasOwnProperty( key ) ) {
+                admissable[ key ] = Object.keys( admissable[key] );
+            }
+        }
+
+        return admissable;
+
+    };
+};
+
+
 ArtworkFilterer.prototype.init = function( callback, featured = false ) {
     var self = this;
 
-    if ( self.initialized ) { callback( null, filter( self ), diff( self ) ); }
+    if ( self.initialized ) { callback( null, filter( self ), diff( self ), values( self ) ); }
 
     self.zoho.getArtworks( { featured: featured }, function( err, artworks ) {
         if ( err ) { callback( err ); }
@@ -236,7 +280,7 @@ ArtworkFilterer.prototype.init = function( callback, featured = false ) {
         self.initialized = true;
         self.artworks = artworks;
 
-        callback( null, filter( self ), diff( self ) );
+        callback( null, filter( self ), diff( self ), values( self ) );
 
     });
 
