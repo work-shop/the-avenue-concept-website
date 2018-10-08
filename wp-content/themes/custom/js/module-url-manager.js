@@ -5,18 +5,25 @@ import createHistory from 'history/createBrowserHistory';
 var queryString = require('query-string');
 var objectAssign = require('object-assign');
 
+const base_url = '/artworks';
+const prequery_seperator = '/?';
+
 /**
  * file: module-url-manager.js
  *
  * This file manages URL state with history push state.
  */
 
-function URLManager( defaultState = { view: 'thumbs' } ) {
+function URLManager( defaultState = { view: 'map' } ) {
     console.log('creating new URLManager instance.');
     if ( !(this instanceof URLManager)) { return new URLManager( defaultState ); }
     var self = this;
 
-    self.defaultState = defaultState;
+    defaultState['on-view'] = true;
+
+    self.defaultState = objectAssign( {}, defaultState );
+
+    self.history = createHistory();
 
 }
 
@@ -41,43 +48,52 @@ function URLManager( defaultState = { view: 'thumbs' } ) {
  * @return criteria.to ?string a moment data object representing the last possible install date inclusive.
  * @return criteria.on_view ?boolean a boolean indicating whether to get only art on view, or only art not on view.
  */
-URLManager.prototype.parseURL = function() {
+URLManager.prototype.parseURL = function( withDefaults = false ) {
 
-    var result = {};
+    var stateChange = {};
     var query = queryString.parse( window.location.search );
 
     if ( typeof query.view !== 'undefined' ) {
-        result.view = query.view;
+        stateChange.view = query.view;
     }
 
     if ( typeof query.program !== 'undefined' ) {
-        result.program = query.program;
+        stateChange.program = query.program;
     }
 
     if ( typeof query['on-view'] !== 'undefined' ) {
-        result.on_view = query['on-view'];
+        stateChange['on-view'] = query['on-view'] == 'true';
     }
 
     if ( typeof query.year !== 'undefined' ) {
 
-        result.year = query.year;
+        stateChange.year = query.year;
 
     } else {
 
         if ( typeof query.from !== 'undefined' ) {
-            result.from = query.from;
+            stateChange.from = query.from;
         }
 
         if ( typeof query.to !== 'undefined' ) {
-            result.to = query.to;
+            stateChange.to = query.to;
         }
 
     }
 
-    result = objectAssign( this.defaultState, result );
+    var result = objectAssign( {}, ( withDefaults ) ? this.defaultState : {}, this.history.location.state, stateChange );
 
-    return result;
+    query = queryString.stringify( result );
+
+    this.history.replace( base_url + prequery_seperator + query, result );
+
+    return objectAssign({}, result);
+
 };
+
+
+URLManager.prototype.parseURLWithDefaults = function() { return this.parseURL( true ); };
+
 
 /**
  * Update the current url state to reflect a given
@@ -85,16 +101,14 @@ URLManager.prototype.parseURL = function() {
  */
 URLManager.prototype.updateURL = function( state = {} ) {
 
-    return this;
-};
+    var newState = objectAssign( {}, this.history.location.state, state );
 
-/**
- * Register a handler
- *
- */
-URLManager.prototype.onUpdateURL = function( callback ) {
+    var query = queryString.stringify( newState );
 
-    return this;
+    this.history.push( base_url + prequery_seperator + query, newState );
+
+    return objectAssign( {}, newState );
+
 };
 
 export { URLManager };

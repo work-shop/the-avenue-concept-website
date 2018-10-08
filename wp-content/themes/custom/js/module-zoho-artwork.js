@@ -5,8 +5,19 @@ var cheerio = require('cheerio');
 var slugify = require('slugify');
 
 
-const creator_export = 'https://creatorexport.zoho.com';
+
 const base_url = 'artworks';
+
+
+const creator_export = 'https://creatorexport.zoho.com/file/';
+const user_name = 'the_avenue_concept';
+const database_name = 'artworks-database';
+const view_name = 'All_Public_Media';
+const split_string = 'image-download/';
+
+
+const media_encryption_key = 'rOrBktNV54sebRgAnUCpp6TGghu26QsJJG2u5feg6CMKT0mmyhnguqhg0QwAeC00xKa76zfJCw6UZtwTfzuFkzYzNpmKpUw46OsG';
+
 
 /**
  * Media Type Mapper
@@ -38,24 +49,30 @@ function mapMediaType( media_type ) {
  * grab that image either from zoho or whatever
  * remote location the image is being hosted at.
  */
-function createImageSources( image_html ) {
+function createImageSources( image_html, media ) {
 
     var $ = cheerio.load( image_html );
     var image = $('img');
 
     var src = image.attr('src');
-    var lowqual = image.attr('lowqual');
-    var downqual = image.attr('downqual');
-    var medqual = image.attr('medqual');
 
     if ( src.indexOf( '://' ) === -1 ) {
 
+        var image_name = src.substring( src.indexOf( split_string ) + split_string.length );
+
+        var true_image_src =
+            creator_export +
+            user_name + '/' +
+            database_name + '/' +
+            view_name + '/' +
+            media.ID + '/' +
+            'Image/image-download/' +
+            media_encryption_key +
+            '?filepath=/' + image_name;
+
         return {
             type: 'zoho',
-            src: creator_export + src,
-            lowqual: ( lowqual ) ? creator_export + lowqual : false,
-            downqual: ( downqual ) ? creator_export + downqual : false,
-            medqual: ( medqual ) ? creator_export + medqual : false,
+            src: true_image_src
         };
 
     } else {
@@ -103,7 +120,7 @@ function createMediaObject( media ) {
 
         if ( media_result.type === 'image' ) {
 
-            media_result.image = createImageSources( media_object.Image );
+            media_result.image = createImageSources( media_object.Image, media_object );
 
         } else if ( media_result.type === 'video' ) {
 
@@ -181,12 +198,11 @@ function Artwork( data ) {
     if (!(this instanceof Artwork)) { return new Artwork( data ); }
     var self = this;
 
-    console.log( data );
-
     self.name = data.Artwork_Title;
     self.description = data.Artwork_Description;
     self.slug = slugify( self.name ).toLowerCase();
     self.url = '/' + base_url + '/' + self.slug;
+    self.id = data.ID;
 
     self.dates = {
         created: moment( data.Date_Created, 'DD-MMM-YYYY HH:mm:ss' ),
@@ -200,6 +216,7 @@ function Artwork( data ) {
     self.location = createLocationObject( data.Add_Location );
     self.featured_media = media[1][0] || {};
     self.featured = data.Feature_Artwork_on_Homepage;
+    self.on_view = data.On_View_Now;
 
     self.program = data.Program;
     self.medium = data.Medium_field1;
@@ -219,7 +236,29 @@ function Artwork( data ) {
         };
 
     }
-
 }
+
+/**
+ * Returns true if this artwork has a valid set of Lat / Lng coordinates
+ * for use with the map.
+ *
+ * @return bool true if this artwork has a valid coordinate pair, false otherwise.
+ */
+Artwork.prototype.hasLatLng = function() {
+    return (typeof this.position !== 'undefined') && (typeof this.position.lat === 'number') && (typeof this.position.lng === 'number');
+};
+
+
+/**
+ * Given a test object, returns true of this and the other object represent
+ * the same artwork.
+ *
+ * @param object other test object to check equality against
+ * @return true if other is equal to this
+ */
+Artwork.prototype.equals = function( other ) {
+    return other instanceof Artwork && other.id === this.id;
+};
+
 
 export { Artwork };

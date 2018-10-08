@@ -4,6 +4,7 @@ import { ZohoConnection } from './module-zoho-connection.js';
 
 var reduce = require('reduce-object');
 var moment = require('moment');
+var objectAssign = require('object-assign');
 
 /**
  * file: module-filter-artworks.js
@@ -27,6 +28,7 @@ function ArtworkFilterer() {
     self.zoho = new ZohoConnection();
     self.artworks = [];
     self.initialized = false;
+    self.currentState = [];
 
 }
 
@@ -40,11 +42,16 @@ function ArtworkFilterer() {
  *
  *
  */
-var preprocess = function( criteria, metadata = { date_parse_string: 'DD-MMM-YYYY'} ) {
+var preprocess = function( criteria, metadata = { date_parse_string: 'MM-DD-YYYY'} ) {
+
+    if ( typeof criteria['on-view'] !== 'undefined') {
+        criteria.on_view = ( criteria['on-view'] === null ) ? true : criteria['on-view'];
+    }
+
     if ( typeof criteria.year !== 'undefined' ) {
 
         criteria.from = moment( '01-01-' + criteria.year, metadata.date_parse_string );
-        criteria.to = moment( '31-12-' + criteria.year, metadata.date_parse_string );
+        criteria.to = moment( '12-31-' + criteria.year, metadata.date_parse_string );
 
         delete criteria.year;
 
@@ -56,9 +63,9 @@ var preprocess = function( criteria, metadata = { date_parse_string: 'DD-MMM-YYY
 
         }
 
-        if ( typeof criteria.from !== 'undefined' ) {
+        if ( typeof criteria.to !== 'undefined' ) {
 
-            criteria.from = moment( criteria.from, metadata.date_parse_string );
+            criteria.to = moment( criteria.to, metadata.date_parse_string );
 
         }
 
@@ -81,6 +88,8 @@ var preprocess = function( criteria, metadata = { date_parse_string: 'DD-MMM-YYY
  * @param criteria.installed_on_or_before ?moment a moment data object representing the last possible install date inclusive.
  * @param criteria.on_view_now ?boolean a boolean indicating whether to get only art on view, or only art not on view.
  * @param criteria.featured ?boolean a boolean indicating whether the artwork is featured or not.
+ *
+ * @return Array<Artwork> an array of artworks matching the criteria.
  */
 var filter = function( self, metadata ) {
     return function( criteria = {} ) {
@@ -96,10 +105,14 @@ var filter = function( self, metadata ) {
         // Noramalize dates in the test criteria.
         var test_criteria = preprocess( criteria, metadata );
 
+        console.log( self.artworks );
+
         // Get the artworks taht are inbounds of the dates.
         var inbounds_artworks = self.artworks.filter( function( artwork ) {
 
             var after = true, before = true;
+
+
 
             if ( typeof test_criteria.from !== 'undefined' ) {
 
@@ -113,22 +126,144 @@ var filter = function( self, metadata ) {
 
             }
 
+            console.log( artwork.dates.created );
+            console.log( test_criteria.from );
+            console.log( after );
+            console.log( test_criteria.to  );
+            console.log( before );
+
+
             return before && after;
 
         });
 
+
+
+        // Delete the date keys.
         delete test_criteria.from;
         delete test_criteria.to;
+        delete test_criteria.year;
 
-        return inbounds_artworks.filter( function( artwork ) {
+        var final_artworks = inbounds_artworks.filter( function( artwork ) {
 
             return reduce( test_criteria, function( acc, criterion_value, criterion_key ) {
 
-                return (acc && artwork[ criterion_key ] === criterion_value) || (acc && typeof artwork[ criterion_key ] === 'undefined');
+                return (acc && typeof criterion_value === 'undefined') || (acc && artwork[ criterion_key ] === criterion_value) || (acc && typeof artwork[ criterion_key ] === 'undefined');
 
             }, true);
 
         });
+
+        self.currentState = final_artworks.slice( 0 );
+
+        return final_artworks;
+
+    };
+};
+
+/**
+ * Given a new set of filter criteria,
+ * compute the diff, in terms of artworks added
+ * and removed, represented by the change in filtering
+ * parameters.
+ *
+ * @see filter();
+ * @param criteria.medium ?string a medium to match artwork against
+ * @param criteria.program ?string a program to match artwork against
+ * @param criteria.installed_on_or_after ?moment a moment data object representing the first possible install date inclusive.
+ * @param criteria.installed_on_or_before ?moment a moment data object representing the last possible install date inclusive.
+ * @param criteria.on_view_now ?boolean a boolean indicating whether to get only art on view, or only art not on view.
+ * @param criteria.featured ?boolean a boolean indicating whether the artwork is featured or not.
+ *
+ * @return diff.add Array<Artwork> an array of artwork added by this filter step.
+ * @return diff.remove Array<Artwork> an array of artwork removed by this filter step.
+ */
+var diff = function( self ) {
+    return function ( criteria ) {
+
+        var oldState = self.currentState.slice(0).map( function( a ) { return { artwork: a, removed: true }; });
+        var newState = filter( self )( criteria ).map( function( a ) { return { artwork: a, added: true }; });
+
+        // console.log( oldState );
+        // console.log( newState );
+
+        var diffObject = {};
+
+        newState.forEach( function( newArtwork ) {
+
+            for ( var i = 0; i < oldState.length; i++ ) {
+
+                var oldArtwork = oldState[ i ];
+
+                if ( newArtwork.artwork.equals( oldArtwork.artwork ) ) {
+                    // If we find an artwork in both the old
+                    // and new state, we just remove it from the
+                    // current state, since it represents no change.
+                    // -=-
+                    // we know we don't need to check that artwork
+                    // again, since we know we're working with sets.
+                    // -=-
+                    // after iteration is complete, currentState will
+                    // represent the elements that were removed from
+                    // the set in the state diff.
+                    oldArtwork.removed = false;
+                    newArtwork.added = false;
+                    break;
+
+                }
+
+            }
+
+        });
+
+        diffObject.add = newState.filter( function( n ) { return n.added; }).map( function( a ) { return a.artwork; });
+        diffObject.remove = oldState.filter( function( o ) { return o.removed; }).map( function( a ) { return a.artwork; });
+
+        return diffObject;
+
+    };
+};
+
+
+/**
+ * Given a set of dimensions, get the set of admissable values
+ * for those dimensions as present on the total set of artwork
+ * being filtered.
+ */
+var values = function( self ) {
+    return function( ) {
+
+        var dimensions = Array.from( arguments );
+        var admissable = {};
+
+        self.artworks.forEach( function( artwork ) {
+
+            dimensions.forEach( function( dimension ) {
+
+                if ( typeof artwork[dimension] !== 'undefined' ) {
+                    if ( typeof admissable[dimension] !=='undefined' ) {
+
+                        admissable[ dimension ][ artwork[ dimension ] ] = true;
+
+                    } else {
+
+                        admissable[ dimension ] = {};
+                        admissable[ dimension ][ artwork[ dimension ] ] = true;
+
+                    }
+                }
+
+            });
+
+        });
+
+        for ( var key in admissable ) {
+            if ( admissable.hasOwnProperty( key ) ) {
+                admissable[ key ] = Object.keys( admissable[key] );
+            }
+        }
+
+        return admissable;
 
     };
 };
@@ -137,7 +272,7 @@ var filter = function( self, metadata ) {
 ArtworkFilterer.prototype.init = function( callback, featured = false ) {
     var self = this;
 
-    if ( self.initialized ) { callback( null, filter ); }
+    if ( self.initialized ) { callback( null, filter( self ), diff( self ), values( self ) ); }
 
     self.zoho.getArtworks( { featured: featured }, function( err, artworks ) {
         if ( err ) { callback( err ); }
@@ -145,12 +280,14 @@ ArtworkFilterer.prototype.init = function( callback, featured = false ) {
         self.initialized = true;
         self.artworks = artworks;
 
-        callback( null, filter( self ) );
+        callback( null, filter( self ), diff( self ), values( self ) );
 
     });
 
 };
 
+
+ArtworkFilterer.prototype.getCurrentState = function() { return this.currentState; };
 
 
 export { ArtworkFilterer };

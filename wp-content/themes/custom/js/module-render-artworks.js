@@ -40,17 +40,43 @@ function renderFillColor( artwork ) {
  * @param Artwork artwork object
  * @return jQuery img tag, with loading handler that switches out the source after the image loaded.
  */
-function createAsynchrounousImage( artwork ) {
+function createAsynchrounousImage( src ) {
 
     var img = $('<img>')
                     .attr('src', 'loading.png')
-                    .attr('data-src', artwork.featured_media.image.src );
+                    .attr('data-src', src );
 
-    var loading = $('<img>').attr('src', artwork.featured_media.image.src );
+    var loading = $('<img>').attr('src', src );
 
     loading.on('load', function() { img.attr('src', img.data('src') ); });
 
     return img;
+
+}
+
+/**
+ * Given an artwork, get the features image object for the artwork.
+ */
+function getFeaturedImageSrc( artwork ) {
+
+    if( typeof artwork.featured_media.image !== 'undefined' ) {
+
+        return artwork.featured_media.image.src;
+
+    } else {
+
+        var image_media = artwork.media.filter( function( m ) { return m.type === 'image'; });
+
+        if ( image_media.length > 0 ) {
+
+            return image_media[0].image.src;
+
+        } else {
+            // handle default case.
+            return 'default.png';
+
+        }
+    }
 
 }
 
@@ -69,7 +95,7 @@ function renderSlide( artwork = {}, index = 0 ) {
                     .addClass('slide-' + index )
                     .addClass('featured-artwork')
                     .addClass('col-sm-6')
-                    .attr('id', artwork.slug );
+                    .addClass('artwork-' + artwork.slug );
 
     var a = $('<a>')
                     .addClass('artwork-link')
@@ -79,7 +105,7 @@ function renderSlide( artwork = {}, index = 0 ) {
                     .addClass('artwork-title')
                     .text( artwork.name );
 
-    var img = createAsynchrounousImage( artwork );
+    var img = createAsynchrounousImage( getFeaturedImageSrc( artwork ) );
 
     //assemble elements into single structure.
     a.append( title );
@@ -99,7 +125,7 @@ function renderSlide( artwork = {}, index = 0 ) {
  */
 function renderListRow( artwork = {}, index = 0 ) {
 
-    var artworkWrapper = $('<div>').addClass('artwork-list-row');
+    var artworkWrapper = $('<div>').addClass('artwork-list-row').addClass('artwork-' + artwork.slug );
 
     // var linkTag = $('<a>').attr('href', artwork.getURL() );
     // var title = $('<h1>').text( artwork.name );
@@ -126,7 +152,7 @@ function renderThumbnail( artwork = {}, index = 0 ) {
                     .addClass('slide-' + index )
                     .addClass('featured-artwork')
                     .addClass('col-sm-6')
-                    .attr('id', artwork.slug );
+                    .addClass('artwork-' + artwork.slug );
 
     var a = $('<a>')
                     .addClass('artwork-link')
@@ -137,7 +163,7 @@ function renderThumbnail( artwork = {}, index = 0 ) {
                     .text( artwork.name );
 
     var img = $('<img>')
-                    .attr('src', artwork.featured_media.image.src);
+                    .attr('src', getFeaturedImageSrc( artwork ) );
 
     //assemble elements into single structure.
     a.append( title );
