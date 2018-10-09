@@ -10,7 +10,7 @@ import { Artwork } from './module-zoho-artwork.js';
  * and returns for further processing.
  */
 
-function ArtworkRenderer() {
+ function ArtworkRenderer() {
     console.log('creating new ArtworkRenderer instance.');
     if ( !(this instanceof ArtworkRenderer)) { return new ArtworkRenderer(); }
 }
@@ -24,7 +24,7 @@ function ArtworkRenderer() {
  * @param Artwork artwork object
  * @return string a CSS-friendly representation of a color.
  */
-function renderFillColor( artwork ) {
+ function renderFillColor( artwork ) {
     if ( artwork.program === '3-D' ) {
         return '#dddb91';
     } else {
@@ -40,11 +40,11 @@ function renderFillColor( artwork ) {
  * @param Artwork artwork object
  * @return jQuery img tag, with loading handler that switches out the source after the image loaded.
  */
-function createAsynchrounousImage( src ) {
+ function createAsynchrounousImage( src ) {
 
     var img = $('<img>')
-                    .attr('src', '/wp-content/themes/custom/images/loading.png')
-                    .attr('data-src', src );
+    .attr('src', '/wp-content/themes/custom/images/loading.png')
+    .attr('data-src', src );
 
     var loading = $('<img>').attr('src', src );
 
@@ -57,7 +57,7 @@ function createAsynchrounousImage( src ) {
 /**
  * Given an artwork, get the features image object for the artwork.
  */
-function getFeaturedImageSrc( artwork ) {
+ function getFeaturedImageSrc( artwork ) {
 
     if( typeof artwork.featured_media.image !== 'undefined' ) {
 
@@ -87,23 +87,23 @@ function getFeaturedImageSrc( artwork ) {
  * @param Artwork artwork object
  * @return jQuery element to be appended to the dom.
  */
-function renderSlide( artwork = {}, index = 0 ) {
+ function renderSlide( artwork = {}, index = 0 ) {
 
     // build consitiuent HTML elements.
     var root = $('<div>')
-                    .addClass('artwork-slide')
-                    .addClass('slide-' + index )
-                    .addClass('featured-artwork')
-                    .addClass('col-sm-6')
-                    .addClass('artwork-' + artwork.slug );
+    .addClass('artwork-slide')
+    .addClass('slide-' + index )
+    .addClass('featured-artwork')
+    .addClass('col-sm-6')
+    .addClass('artwork-' + artwork.slug );
 
     var a = $('<a>')
-                    .addClass('artwork-link')
-                    .attr('href', artwork.url );
+    .addClass('artwork-link')
+    .attr('href', artwork.url );
 
     var title = $('<h1>')
-                    .addClass('artwork-title')
-                    .text( artwork.name );
+    .addClass('artwork-title')
+    .text( artwork.name );
 
     var img = createAsynchrounousImage( getFeaturedImageSrc( artwork ) );
 
@@ -123,7 +123,7 @@ function renderSlide( artwork = {}, index = 0 ) {
  * @param Artwork artwork object
  * @return jQuery element to be appended to the dom.
  */
-function renderListRow( artwork = {}, index = 0 ) {
+ function renderListRow( artwork = {}, index = 0 ) {
 
     var artworkWrapper = $('<div>').addClass('artwork-list-row').addClass('artwork-' + artwork.slug );
 
@@ -144,30 +144,30 @@ function renderListRow( artwork = {}, index = 0 ) {
  * @param Artwork artwork object
  * @return jQuery element to be appended to the dom.
  */
-function renderThumbnail( artwork = {}, index = 0 ) {
+ function renderThumbnail( artwork = {}, index = 0 ) {
 
     // build consitiuent HTML elements.
     var root = $('<div>')
-                    .addClass('artwork-thumbnail')
-                    .addClass('slide-' + index )
-                    .addClass('featured-artwork')
-                    .addClass('col-sm-6')
-                    .addClass('artwork-' + artwork.slug );
+    .addClass('artwork-thumbnail')
+    .addClass('slide-' + index )
+    .addClass('featured-artwork')
+    .addClass('col-sm-6')
+    .addClass('artwork-' + artwork.slug );
 
     var a = $('<a>')
-                    .addClass('artwork-link')
-                    .attr('href', artwork.url );
+    .addClass('artwork-link')
+    .attr('href', artwork.url );
 
     var title = $('<h4>')
-                    .addClass('artwork-title')
-                    .text( artwork.name );
+    .addClass('artwork-title')
+    .text( artwork.name );
 
     var img = $('<img>')
-                    .attr('src', getFeaturedImageSrc( artwork ) );
+    .attr('src', getFeaturedImageSrc( artwork ) );
 
     //assemble elements into single structure.
-    a.append( title );
     a.append( img );
+    a.append( title );
     root.append( a );
 
     return root;
@@ -182,7 +182,7 @@ function renderThumbnail( artwork = {}, index = 0 ) {
  * @param Artwork artwork object
  * @return JSON marker configuration object for use with the Map Module
  */
-function renderMapObject( artwork = {}, index = 0 ) {
+ function renderMapObject( artwork = {}, index = 0 ) {
 
     var feature = { marker: artwork };
 
@@ -203,7 +203,7 @@ function renderMapObject( artwork = {}, index = 0 ) {
  * array of Artwork, or represents some unknown object,
  * and an error should be thrown.
  */
-function renderWith( renderFunction ) {
+ function renderWith( renderFunction ) {
     return function( artworks = [] ) {
 
         if ( artworks instanceof Artwork ) {
@@ -228,21 +228,21 @@ function renderWith( renderFunction ) {
 /**
  * Render a set of artwork as slides to be added to slick.
  */
-ArtworkRenderer.prototype.renderSlideshowSlides = renderWith( renderSlide );
+ ArtworkRenderer.prototype.renderSlideshowSlides = renderWith( renderSlide );
 
 /**
  * Render a set of artwork as rows to be added to an artwork table.
  */
-ArtworkRenderer.prototype.renderListRows = renderWith( renderListRow );
+ ArtworkRenderer.prototype.renderListRows = renderWith( renderListRow );
 
 /**
  * Render a set of artwork as thumbnails to be added to an artwork grid.
  */
-ArtworkRenderer.prototype.renderThumbnails = renderWith( renderThumbnail );
+ ArtworkRenderer.prototype.renderThumbnails = renderWith( renderThumbnail );
 
 /**
  * Render a set of artwork as map objects to be plotted on the map.
  */
-ArtworkRenderer.prototype.renderMapObjects = renderWith( renderMapObject );
+ ArtworkRenderer.prototype.renderMapObjects = renderWith( renderMapObject );
 
-export { ArtworkRenderer };
+ export { ArtworkRenderer };

@@ -359,4 +359,29 @@ $sb-padding: 20px;
 
 
 
+// MAP
+
+.ws-map-popup-float-wrapper{
+	width: 300px;
+}
+
+.ws-map-popup-frame{
+	box-shadow: 0px 1px 10px 3px $medium;
+}
+
+.ws-map-popup-content-wrapper{
+	padding: 0;
+}
+
+.ws-map-popup-close-button {
+	color: white;
+	opacity: 1;
+	text-shadow: 0px 0px 3px $dark;
+}
+
+.ws-map-popup-content{
+	
+
+}
+
 
