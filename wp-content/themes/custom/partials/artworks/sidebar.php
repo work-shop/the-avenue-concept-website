@@ -19,63 +19,99 @@
 			<h5 class="sidebar-row-heading">
 				Status:
 			</h5>
-			<input class="sidebar-status-input" type="checkbox" name="on-view" value="on-view" checked><label class="sidebar-status-label">On View Now</label>
-			<input class="sidebar-status-input" type="checkbox" name="archived" value="archived"><label class="sidebar-status-label">Archived</label>
+			<div class="row m0">
+				<div class="col-12 p0">
+					<input class="sidebar-status-input" type="checkbox" name="on-view" id="on-view" value="on-view" checked>
+					<label class="sidebar-status-label" for="on-view">On View Now</label>
+				</div>
+				<div class="col-12 p0">
+					<input class="sidebar-status-input" type="checkbox" name="archived" id="archived" value="archived">
+					<label class="sidebar-status-label" for="archived">Archived</label>
+				</div>
+			</div>
 		</div>
 		<div class="sidebar-row" id="sidebar-program">
-			<h5 class="sidebar-row-heading">
-				Filter By Program:
-			</h5>
-            <a href="#" class="sidebar-program-button sidebar-button">
-				All
-			</a>
-			<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="3-D">
-				3-D
-			</a>
-			<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="2-D">
-				2-D
-			</a>
+			<div class="row">
+				<div class="col-9">
+					<h5 class="sidebar-row-heading">
+						Filter By Program:
+					</h5>
+				</div>
+				<div class="col-3 justify-content-end d-flex">
+					<a href="#" class="sidebar-button-clear" id="clear-program"><span class="icon" data-icon="ﬂ"></span>clear</a>
+				</div>
+			</div>
+			<div class="program-filters">
+				<a href="#" class="sidebar-program-button sidebar-button active" id="artworks-filter-all">
+					All
+				</a>
+				<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="3-D">
+					3-D
+				</a>
+				<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="2-D">
+					2-D
+				</a>
+			</div>
 		</div>
 		<div class="sidebar-row" id="sidebar-year">
-			<h5 class="sidebar-row-heading">
-				Filter By Year:
-			</h5>
 			<div class="row">
-				<div class="col-lg-6">
+				<div class="col-9">
+					<h5 class="sidebar-row-heading">
+						Filter By Year:
+					</h5>
+				</div>
+				<div class="col-3 justify-content-end d-flex">
+					<a href="#" class="sidebar-button-clear" id="clear-year"><span class="icon" data-icon="ﬂ"></span>clear</a>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-6 year-filters">
 					<h4 class="sidebar-row-label">From:</h4>
 					<select id="sidebar-select-year-from">
-						<option value="2012">2012</option>
-						<option value="2013">2013</option>
-						<option value="2014">2014</option>
-						<option value="2015">2015</option>
-						<option value="2016">2016</option>
-						<option value="2017">2017</option>
-						<option value="2018">2018</option>
+						<option value="" disabled selected>Select Year</option>
+						<?php $first_year = '2012'; ?>
+						<?php $current_year = date('Y'); ?>
+						<?php for ($i = $first_year; $i <= $current_year ; $i++) : ?>
+							<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+						<?php endfor; ?>
 					</select>
 				</div>
 				<div class="col-lg-6">
 					<h4 class="sidebar-row-label">To:</h4>
 					<select id="sidebar-select-year-to">
-						<option value="2012">2012</option>
-						<option value="2013">2013</option>
-						<option value="2014">2014</option>
-						<option value="2015">2015</option>
-						<option value="2016">2016</option>
-						<option value="2017">2017</option>
-						<option value="2018">2018</option>
+						<option value="" disabled selected >Select Year</option>
+						<?php for ($i = $first_year; $i <= $current_year ; $i++) : ?>
+							<option value="<?php echo $i; ?>"><?php echo $i; ?></option>
+						<?php endfor; ?>
 					</select>
 				</div>
 			</div>
 		</div>
 		<div class="sidebar-row" id="sidebar-location">
-			<h5 class="sidebar-row-heading">
-				Filter By Location:
-			</h5>
-			<select>
-				<option value="downtown">Downtown</option>
-				<option value="west-side">West Side</option>
-				<option value="kennedy-plaza">Kennedy Plaza</option>
-			</select>
+			<div class="row">
+				<div class="col-9">
+					<h5 class="sidebar-row-heading">
+						Filter By Location:
+					</h5>
+				</div>
+				<div class="col-3 justify-content-end d-flex">
+					<a href="#" class="sidebar-button-clear"  id="clear-location"><span class="icon" data-icon="ﬂ"></span>clear</a>
+				</div>
+			</div>
+			<div class="location-filters">
+				<select id="sidebar-select-location">
+					<option value="" disabled selected>Select Location</option>
+					<option value="downtown">Downtown</option>
+					<option value="west-side">West Side</option>
+					<option value="kennedy-plaza">Kennedy Plaza</option>
+				</select>
+			</div>
+		</div>
+		<div class="sidebar-reset flex-center">
+			<a href="#" class="sidebar-button-reset">
+				<span class="icon" data-icon="ﬂ"></span>
+				Clear All Filters
+			</a>
 		</div>
 	</div>
 </section><!--close #artworks, opened in artworks/main.php-->

@@ -105,7 +105,7 @@ var filter = function( self, metadata ) {
         // Noramalize dates in the test criteria.
         var test_criteria = preprocess( criteria, metadata );
 
-        console.log( self.artworks );
+        //console.log( self.artworks );
 
         // Get the artworks taht are inbounds of the dates.
         var inbounds_artworks = self.artworks.filter( function( artwork ) {
@@ -126,11 +126,11 @@ var filter = function( self, metadata ) {
 
             }
 
-            console.log( artwork.dates.created );
-            console.log( test_criteria.from );
-            console.log( after );
-            console.log( test_criteria.to  );
-            console.log( before );
+            // console.log( artwork.dates.created );
+            // console.log( test_criteria.from );
+            // console.log( after );
+            // console.log( test_criteria.to  );
+            // console.log( before );
 
 
             return before && after;
@@ -180,6 +180,8 @@ var filter = function( self, metadata ) {
  */
 var diff = function( self ) {
     return function ( criteria ) {
+
+        criteria = objectAssign( {}, criteria );
 
         var oldState = self.currentState.slice(0).map( function( a ) { return { artwork: a, removed: true }; });
         var newState = filter( self )( criteria ).map( function( a ) { return { artwork: a, added: true }; });

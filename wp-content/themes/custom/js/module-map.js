@@ -32,7 +32,7 @@ ArtworksMap.prototype.init = function() {
  */
 ArtworksMap.prototype.update = function( objects ) {
 
-    console.log( objects );
+    //console.log( objects );
 
     var validated = this.validate( objects );
 
