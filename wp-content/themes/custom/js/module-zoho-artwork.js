@@ -200,7 +200,7 @@ function Artwork( data ) {
 
     self.name = data.Artwork_Title;
     self.description = data.Artwork_Description;
-    self.slug = slugify( self.name ).toLowerCase();
+    self.slug = data.Slug;
     self.url = '/' + base_url + '/' + self.slug;
     self.id = data.ID;
 

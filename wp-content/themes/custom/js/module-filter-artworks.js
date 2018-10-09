@@ -276,7 +276,7 @@ ArtworkFilterer.prototype.init = function( callback, featured = false ) {
 
     if ( self.initialized ) { callback( null, filter( self ), diff( self ), values( self ) ); }
 
-    self.zoho.getArtworks( { featured: featured }, function( err, artworks ) {
+    self.zoho.getArtworks( undefined, function( err, artworks ) {
         if ( err ) { callback( err ); }
 
         self.initialized = true;

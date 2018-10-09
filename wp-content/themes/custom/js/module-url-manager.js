@@ -111,4 +111,18 @@ URLManager.prototype.updateURL = function( state = {} ) {
 
 };
 
-export { URLManager };
+/**
+ * Retrieve the proper name of the artwork from the URL,
+ * to be used with a Artwork_Title query from Zoho.
+ *
+ * @return string the name of the artwork represented by the slug
+ */
+function extractArtworkNameFromURL() {
+
+    var pathComponents = window.location.pathname.split('/');
+    return pathComponents.slice( -1 )[0];
+
+}
+
+
+export { URLManager, extractArtworkNameFromURL };

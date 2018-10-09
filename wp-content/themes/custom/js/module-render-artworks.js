@@ -125,12 +125,21 @@ import { Artwork } from './module-zoho-artwork.js';
  */
  function renderListRow( artwork = {}, index = 0 ) {
 
-    var artworkWrapper = $('<div>').addClass('artwork-list-row').addClass('artwork-' + artwork.slug );
+    var artworkWrapper = $('<div>')
+                    .addClass('artwork-list-row')
+                    .addClass('artwork-' + artwork.slug );
 
-    // var linkTag = $('<a>').attr('href', artwork.getURL() );
-    // var title = $('<h1>').text( artwork.name );
 
-    // artworkWrapper.append( linkTag ).append( title );
+    var a = $('<a>')
+                    .addClass('artwork-link')
+                    .attr('href', artwork.url );
+
+    var title = $('<h4>')
+                    .addClass('artwork-title')
+                    .text( artwork.name );
+
+    a.append( title );
+    artworkWrapper.append( a );
 
     return artworkWrapper;
 }
