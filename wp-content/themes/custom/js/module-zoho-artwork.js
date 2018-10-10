@@ -2,7 +2,6 @@
 
 var moment = require('moment');
 var cheerio = require('cheerio');
-var slugify = require('slugify');
 
 
 
@@ -228,7 +227,7 @@ function Artwork( data ) {
             lng: data.Longitude
         };
 
-    } else if ( typeof data.Add_Location !== 'undefined' && data.Add_Location.length > 0 && data.Add_Location.Latitude.length !== 0 && data.Add_Location.Longitude.length !== 0 ) {
+    } else if ( typeof data.Add_Location !== 'undefined' && typeof data.Add_Location.Latitude === 'number' && typeof data.Add_Location.Longitude === 'number' ) {
 
         self.position = {
             lat: data.Add_Location.Latitude,

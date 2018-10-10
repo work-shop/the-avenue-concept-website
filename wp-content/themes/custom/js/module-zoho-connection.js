@@ -102,11 +102,21 @@ function ZohoConnection() {
 
                 async.parallel(
                     d.Add_Artwork.map( function( artwork ) {
+
                         return function( artwork_done ) {
 
+                            var artist_query = ( artwork.Add_Artist.length > 0 ) ?
+                                get_resource( 'All_Artists', 'Name == \"' + artwork.Add_Artist + '\"', false, function( x ) { return x.Add_Artist; } ) :
+                                function( cb ) { return cb( null, {} ); };
+
+
+                            var location_query = ( artwork.Add_Location.length > 0 ) ?
+                                get_resource( 'All_Locations', 'Location_Name == \"'+ artwork.Add_Location +'\"', false, function( x ) { return x.Add_Location; } ) :
+                                function( cb ) { return cb( null, {} ); };
+
                             async.parallel({
-                                artist: get_resource( 'All_Artists', 'Name == \"' + artwork.Add_Artist + '\"', false, function( x ) { return x.Add_Artist; } ),
-                            //    get_resource( 'All_Locations', 'Location_Name == \"'+ artwork.Location_Name +'\"', function( x ) { return x.Add_Location ),
+                                artist: artist_query,
+                                location: location_query,
                                 media: function( media_done ) {
 
                                     async.parallel( unpackStringArray( artwork.Add_Media ).map( function( media_name ) {
@@ -124,6 +134,7 @@ function ZohoConnection() {
 
                                 artwork.Add_Artist = values.artist;
                                 artwork.Add_Media = values.media;
+                                artwork.Add_Location = values.location;
 
                                 artwork_done( null, artwork );
 
