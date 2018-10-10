@@ -21,7 +21,7 @@
 					<h5 id="sidebar-mobile-toggle-label">Filters</h5>
 				</div>
 				<div class="col-6 d-flex justify-content-end">
-					<span id="sidebar-mobile-toggle-icon" class="icon" data-icon="¦"></span>
+					<span id="sidebar-mobile-toggle-icon" class="icon" data-icon="ﬁ"></span>
 				</div>		
 			</div>
 		</div>
@@ -75,7 +75,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-lg-6 year-filters">
+				<div class="col-6 year-filters">
 					<h4 class="sidebar-row-label">From:</h4>
 					<select id="sidebar-select-year-from">
 						<option value="" disabled selected>Select Year</option>
@@ -86,7 +86,7 @@
 						<?php endfor; ?>
 					</select>
 				</div>
-				<div class="col-lg-6">
+				<div class="col-6">
 					<h4 class="sidebar-row-label">To:</h4>
 					<select id="sidebar-select-year-to">
 						<option value="" disabled selected >Select Year</option>

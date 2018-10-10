@@ -12,6 +12,7 @@
 	border-left: 1px solid lighten( $medium, 5% );
 	border-right: 1px solid lighten( $medium, 5% );
 	box-shadow: -2px 0px 12px transparentize($medium, .4);
+	transition: height .25s;
 
 	// background: lighten($tan,15%);
 	// width: $sb-width - $sb-padding;
@@ -29,7 +30,13 @@
 		height: $sb-mobile-toggle-height;
 
 		&.mobile-open{
+			transition: height .25s;
 			height: calc( 100vh - #{$nav-height-mobile});
+
+			.sidebar-mobile-toggle{
+				border-bottom: 2px solid lighten( $medium, 15% );
+				background: white;
+			}
 
 			#sidebar-mobile-toggle-label:before{
 				display: inline-block;
@@ -37,7 +44,7 @@
 			}
 
 			#sidebar-mobile-toggle-icon:before{
-				content: 'x';
+				content: '€';
 				font-size: 27px;
 			}
 		}
@@ -53,6 +60,7 @@
 	padding-left: 10px;
 	padding-right: 10px;
 	border-bottom: 1px solid lighten( $medium, 15% );
+	//background: $medium;
 
 	h5{
 		font-size: 13px;
@@ -61,12 +69,12 @@
 		@extend .font-main;
 		font-weight: 700;
 		color: $aqua;
-		padding-top: 10px;
+		padding-top: 9px;
 	}
 
 	.icon:before{
 		display: block;
-		padding-top: 7px;
+		padding-top: 8px;
 		color: $aqua;
 	}
 
@@ -78,6 +86,10 @@
 .sidebar-row{
 	padding: $sb-padding $sb-padding $sb-padding+5px $sb-padding;
 	border-bottom: 1px solid lighten( $medium, 15% );
+
+	@media screen and (max-width: $sm) {
+		padding: $sb-padding/1.5 $sb-padding/1.5 $sb-padding/1 $sb-padding/1.5;
+	}
 
 	select{
 		border: 1px solid $aqua;
@@ -95,6 +107,11 @@
 	@extend .font-main;
 	@extend .bold;
 	margin-bottom: 15px;
+
+	@media screen and (max-width: $sm) {
+		font-size: 13px;
+		margin-bottom: 10px;
+	}
 }
 
 .sidebar-row-label{
@@ -145,7 +162,7 @@
 	@extend .tracked-less;
 	@extend .flex-center;
 	@extend .col-4;
-	border: 1px solid lighten( $medium, 20% );
+	border: 1px solid lighten( $medium, 15% );
 	font-weight: 700;
 
 	&:nth-child(1){
@@ -195,13 +212,15 @@
 	font-weight: 700;
 
 	@media screen and (max-width: $sm) {
-		font-size: 13px;
+		font-size: 12px;
 		padding: 2px 6px;
 	}
 
 	&:hover{
-		box-shadow: 0px 1px 2px 0px $aqua;
-		transform: scale(1.04);
+		@media screen and (min-width: $sm+1) {
+			box-shadow: 0px 1px 2px 0px $aqua;
+			transform: scale(1.04);
+		}
 	}
 
 	&.active{
@@ -210,10 +229,13 @@
 		box-shadow: 0px 1px 3px 1px $aqua;
 
 		&:hover{
-			box-shadow: none;
-			background: $light;
-			color: $medium;
-			border: 1px solid $medium;
+
+			@media screen and (min-width: $sm+1) {
+				box-shadow: none;
+				background: $light;
+				color: $medium;
+				border: 1px solid $medium;	
+			}
 		}
 	}
 
