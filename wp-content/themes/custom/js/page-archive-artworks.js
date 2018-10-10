@@ -65,7 +65,7 @@ import { URLManager } from './module-url-manager.js';
 
         //console.log( parsed );
 
-        self.doStateTransitionByDiff( self.diff( parsed ) );
+        self.doInitialStateTransition( self.diff( parsed ) );
 
         self.handleViewClickStream();
 
@@ -115,21 +115,33 @@ import { URLManager } from './module-url-manager.js';
 
 };
 
+ArtworksArchiveManager.prototype.doInitialStateTransition = function( diff ) {
+
+    var thumbs = $( '#artworks-thumbnails-row' );
+    var list = $( '#artworks-list-list' );
+    var map_list = $( '#artworks-map-list-list' );
+
+    thumbs.append( this.renderer.renderThumbnails( this.filterer.artworks ) );
+    list.append( this.renderer.renderThumbnails( this.filterer.artworks ) );
+    map_list.append( this.renderer.renderThumbnails( this.filterer.artworks ) );
+
+    this.doStateTransitionByDiff( diff );
+
+};
+
+
 ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject ) {
 
     //console.log('doStateTransitionByDiff: ');
     //console.log( diffObject );
 
+    const fade_duration = 500;
+
     var artworksToRemove = $( diffObject.remove.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
-    var thumbs = $( '#artworks-thumbnails-row' );
-    var list = $( '#artworks-list-list' );
-    var map_list = $( '#artworks-map-list-list' );
+    var artworksToAdd = $( diffObject.add.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
 
-    artworksToRemove.fadeOut( { duration: 500 });
-
-    thumbs.append( this.renderer.renderThumbnails( diffObject.add ) );
-    list.append( this.renderer.renderThumbnails( diffObject.add ) );
-    map_list.append( this.renderer.renderThumbnails( diffObject.add ) );
+    artworksToRemove.fadeOut( { duration: fade_duration });
+    artworksToAdd.fadeIn( { duration: fade_duration });
 
     this.map.update( this.renderer.renderMapObjects( this.filterer.getCurrentState() ) );
 
