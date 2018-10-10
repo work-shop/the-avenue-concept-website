@@ -28,14 +28,15 @@
 		width: 100%;
 		top: $nav-height-mobile;
 		height: $sb-mobile-toggle-height;
+		background: white;
+
 
 		&.mobile-open{
 			transition: height .25s;
 			height: calc( 100vh - #{$nav-height-mobile});
 
 			.sidebar-mobile-toggle{
-				border-bottom: 2px solid lighten( $medium, 15% );
-				background: white;
+				border-bottom: 1px solid lighten( $medium, 15% );
 			}
 
 			#sidebar-mobile-toggle-label:before{
@@ -60,7 +61,7 @@
 	padding-left: 10px;
 	padding-right: 10px;
 	border-bottom: 1px solid lighten( $medium, 15% );
-	//background: $medium;
+	background: lighten($tan,15%);
 
 	h5{
 		font-size: 13px;
@@ -193,6 +194,11 @@
 	@media screen and (max-width: $sm) {
 		height: 40px;
 		font-size: 12px;
+		background: lighten($tan,15%);
+
+		&.active{
+			background: $aqua;
+		}
 	}
 }
 
@@ -343,7 +349,7 @@
 					//background: $medium;
 				}
 				&::after {
-					transform: translateX(19px) translateY(-50%);
+					transform: translateX(13px) translateY(-50%);
 				}
 			}
 		}

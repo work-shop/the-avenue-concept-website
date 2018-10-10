@@ -219,7 +219,7 @@ $sb-mobile-toggle-height: 80px;
 
 #artworks-thumbnails{
 	#artworks-thumbnails-row{
-		column-count: 3;
+		column-count: 2;
 		column-gap: 2vw;
 
 		@media screen and (max-width: $lg) {
