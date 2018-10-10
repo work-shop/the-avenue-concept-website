@@ -45,8 +45,8 @@ import { URLManager } from './module-url-manager.js';
 
     var parsed = self.urlmanager.parseURLWithDefaults();
 
-    console.log('parsed:');
-    console.log(parsed);
+    //console.log('parsed:');
+    //console.log(parsed);
 
     manageClassesForView( parsed );
     manageClassesForProgram( parsed );
@@ -79,6 +79,8 @@ import { URLManager } from './module-url-manager.js';
 
         self.handleResetClickStream();
 
+        self.handleMobileToggle();
+
     });
 
     return self;
@@ -97,8 +99,8 @@ import { URLManager } from './module-url-manager.js';
 
     var diffObject = this.diff( state );
 
-    console.log('handleNewState: ');
-    console.log( state );
+    // console.log('handleNewState: ');
+    // console.log( state );
 
     manageClassesForView( state );
     manageClassesForProgram( state );
@@ -119,20 +121,19 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
     //console.log( diffObject );
 
     var artworksToRemove = $( diffObject.remove.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
-    var thumbs = $( '#artworks-thumbnails' );
-    var list = $( '#artworks-list' );
-    var map_list = $( '#artworks-map-list' );
+    var thumbs = $( '#artworks-thumbnails-row' );
+    var list = $( '#artworks-list-list' );
+    var map_list = $( '#artworks-map-list-list' );
 
     artworksToRemove.fadeOut( { duration: 500 });
 
     thumbs.append( this.renderer.renderThumbnails( diffObject.add ) );
-    list.append( this.renderer.renderListRows( diffObject.add ) );
-    map_list.append( this.renderer.renderListRows( diffObject.add ) );
+    list.append( this.renderer.renderThumbnails( diffObject.add ) );
+    map_list.append( this.renderer.renderThumbnails( diffObject.add ) );
 
     this.map.update( this.renderer.renderMapObjects( this.filterer.getCurrentState() ) );
 
-
-}
+};
 
 
 /**
@@ -142,8 +143,8 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
  * @param object state the current state based on the URL
  */
  function manageClassesForView( state ) {
-    console.log('manageClassesForView: ');
-    console.log( state );
+    // console.log('manageClassesForView: ');
+    // console.log( state );
 
     $( 'body' ).removeClass( 'artworks-view-map' ).removeClass( 'artworks-view-list' ).removeClass( 'artworks-view-thumbnails' );
     $( 'body' ).addClass( 'artworks-view-' + state.view );
@@ -159,8 +160,8 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
  * @param object state the current state based on the URL
  */
  function manageClassesForProgram( state ) {
-    console.log('manageClassesForprogram: ');
-    console.log( state );
+    // console.log('manageClassesForprogram: ');
+    // console.log( state );
 
     // if no program, else program filter is on
     if( typeof state.program !== 'undefined' ){
@@ -182,8 +183,8 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
  * @param object state the current state based on the URL
  */
  function manageClassesForYear( state ) {
-    console.log('manageClassesForYear: ');
-    console.log( state );
+    // console.log('manageClassesForYear: ');
+    // console.log( state );
 
     // if no year, else year filter is on
     if( typeof state.from !== 'undefined' || typeof state.to !== 'undefined' ){
@@ -211,8 +212,8 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
  * @param object state the current state based on the URL
  */
  function manageClassesForLocation( state ) {
-    console.log('manageClassesForLocation: ');
-    console.log( state );
+    // console.log('manageClassesForLocation: ');
+    // console.log( state );
 
     // if no location, else location filter is on
     if( typeof(state.location) !== 'undefined' ){
@@ -416,6 +417,25 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
         var newState;
         newState = self.urlmanager.updateURL( { program: undefined, from: undefined, to: undefined, location: undefined } );
         self.handleNewState( newState );
+    });
+
+};
+
+/**
+ *
+ *
+ *
+ */
+ ArtworksArchiveManager.prototype.handleMobileToggle = function() {
+
+    $('.sidebar-mobile-toggle').on( 'click', function() {
+        if( $('.artworks-sidebar').hasClass('mobile-closed') ){
+            $('.artworks-sidebar').removeClass('mobile-closed');
+            $('.artworks-sidebar').addClass('mobile-open');
+        } else if( $('.artworks-sidebar').hasClass('mobile-open') ){
+            $('.artworks-sidebar').removeClass('mobile-open');
+            $('.artworks-sidebar').addClass('mobile-closed');
+        }
     });
 
 };

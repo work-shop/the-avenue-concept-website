@@ -125,21 +125,12 @@ import { Artwork } from './module-zoho-artwork.js';
  */
  function renderListRow( artwork = {}, index = 0 ) {
 
-    var artworkWrapper = $('<div>')
-                    .addClass('artwork-list-row')
-                    .addClass('artwork-' + artwork.slug );
+    var artworkWrapper = $('<div>').addClass('artwork-list-row').addClass('artwork-' + artwork.slug );
 
+    // var linkTag = $('<a>').attr('href', artwork.getURL() );
+    // var title = $('<h1>').text( artwork.name );
 
-    var a = $('<a>')
-                    .addClass('artwork-link')
-                    .attr('href', artwork.url );
-
-    var title = $('<h4>')
-                    .addClass('artwork-title')
-                    .text( artwork.name );
-
-    a.append( title );
-    artworkWrapper.append( a );
+    // artworkWrapper.append( linkTag ).append( title );
 
     return artworkWrapper;
 }
@@ -155,28 +146,57 @@ import { Artwork } from './module-zoho-artwork.js';
  */
  function renderThumbnail( artwork = {}, index = 0 ) {
 
+    console.log(artwork);
+
     // build consitiuent HTML elements.
     var root = $('<div>')
+    .addClass('artwork-item')
     .addClass('artwork-thumbnail')
-    .addClass('slide-' + index )
-    .addClass('featured-artwork')
-    .addClass('col-sm-6')
+    .addClass('artwork-item-index-' + index )
     .addClass('artwork-' + artwork.slug );
 
     var a = $('<a>')
-    .addClass('artwork-link')
+    .addClass('artwork-item-link')
     .attr('href', artwork.url );
 
+    var text = $('<div>')
+    .addClass('artwork-item-text');
+
     var title = $('<h4>')
-    .addClass('artwork-title')
+    .addClass('artwork-item-title')
     .text( artwork.name );
 
-    var img = $('<img>')
+    var artists = '';
+    for (var i = 0; i < artwork.artist.length; i++) {
+        if( i > 0 && i < (artwork.artist.length - 1) ){
+            artists += ', ';
+        }
+        artists += artwork.artist[i].name;
+    }
+    var artist = $('<h4>')
+    .addClass('artwork-item-artist')
+    .text( artists );
+
+    var year = $('<h4>')
+    .addClass('artwork-item-year')
+    .text( artwork.dates.created.format('YYYY') );
+
+    var location = $('<h4>')
+    .addClass('artwork-item-location')
+    //.text( artwork.location );
+    .text( 'LaSalle Square' );
+
+    var img = $('<img class="artwork-item-image">')
     .attr('src', getFeaturedImageSrc( artwork ) );
+
+    text.append( title );
+    text.append( artist );
+    text.append( year );
+    text.append( location );
 
     //assemble elements into single structure.
     a.append( img );
-    a.append( title );
+    a.append( text );
     root.append( a );
 
     return root;
@@ -197,7 +217,7 @@ import { Artwork } from './module-zoho-artwork.js';
 
     feature.marker.icon = { fillColor: renderFillColor( artwork ) };
 
-    var popup = { content: renderThumbnail( artwork ).html() };
+    var popup = { content: renderThumbnail( artwork ).prop('outerHTML') };
 
     feature.marker.popup = popup;
 

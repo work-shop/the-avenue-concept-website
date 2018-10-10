@@ -1,4 +1,4 @@
-	<div class="artworks-sidebar">
+	<div class="artworks-sidebar mobile-closed">
 		<div class="" id="sidebar-view">
 			<h5 class="sidebar-row-heading sidebar-view-heading">
 				View As:
@@ -13,6 +13,16 @@
 				<a href="#" class="sidebar-view-button" data-artworks-view="list">
 					List
 				</a>
+			</div>
+		</div>
+		<div class="sidebar-mobile-toggle">
+			<div class="row">
+				<div class="col-6 d-flex">
+					<h5 id="sidebar-mobile-toggle-label">Filters</h5>
+				</div>
+				<div class="col-6 d-flex justify-content-end">
+					<span id="sidebar-mobile-toggle-icon" class="icon" data-icon="¦"></span>
+				</div>		
 			</div>
 		</div>
 		<div class="sidebar-row" id="sidebar-status">
