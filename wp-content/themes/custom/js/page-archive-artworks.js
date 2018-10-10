@@ -57,7 +57,7 @@ import { URLManager } from './module-url-manager.js';
         if ( error ) { throw new Error( error ); }
 
         var programs = getValues( 'program' );
-        //console.log( programs );
+        var locations = getValues( 'location', function( x ) { return x.name; } ).map( function( l ) { return l.name; });
 
         self.filter = filter;
         self.diff = diff;

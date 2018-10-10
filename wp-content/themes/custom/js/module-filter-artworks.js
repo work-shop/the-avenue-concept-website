@@ -233,39 +233,21 @@ var diff = function( self ) {
  * being filtered.
  */
 var values = function( self ) {
-    return function( ) {
+    return function( dimension, selector = function( x ) { return x; } ) {
 
-        var dimensions = Array.from( arguments );
-        var admissable = {};
+        var values= {};
 
         self.artworks.forEach( function( artwork ) {
 
-            dimensions.forEach( function( dimension ) {
+            if ( typeof artwork[dimension] !== 'undefined' && artwork[dimension] !== null && Object.keys( artwork[dimension] ).length !== 0 ) {
 
-                if ( typeof artwork[dimension] !== 'undefined' ) {
-                    if ( typeof admissable[dimension] !=='undefined' ) {
+                values[ selector( artwork[ dimension ] ) ] = artwork[ dimension ];
 
-                        admissable[ dimension ][ artwork[ dimension ] ] = true;
-
-                    } else {
-
-                        admissable[ dimension ] = {};
-                        admissable[ dimension ][ artwork[ dimension ] ] = true;
-
-                    }
-                }
-
-            });
+            }
 
         });
 
-        for ( var key in admissable ) {
-            if ( admissable.hasOwnProperty( key ) ) {
-                admissable[ key ] = Object.keys( admissable[key] );
-            }
-        }
-
-        return admissable;
+        return Object.values( values );
 
     };
 };
