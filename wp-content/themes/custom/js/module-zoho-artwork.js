@@ -172,14 +172,19 @@ function createArtistObject( artists ) {
  * parse the repsonse into a simpler represetation
  * for further processing.
  */
-function createLocationObject( locations ) {
-    if ( locations.length === 0 ) {
+function createLocationObject( location ) {
+    if ( location.length === 1 ) {
 
-        return {};
+        return {
+            name: location[0].Location_Name,
+            position: {
+                lat: location[0].Latitude,
+                lng: location[0].Longitude
+            }
+        };
 
     } else {
 
-        console.log('Artwork.createLocationObject: This method is not implemented!');
         return {};
 
     }
