@@ -183,8 +183,7 @@ import { Artwork } from './module-zoho-artwork.js';
 
     var location = $('<h4>')
     .addClass('artwork-item-location')
-    //.text( artwork.location );
-    .text( 'LaSalle Square' );
+    .text( artwork.location.name );
 
     var img = $('<img class="artwork-item-image">')
     .attr('src', getFeaturedImageSrc( artwork ) );

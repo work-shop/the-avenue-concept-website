@@ -58,6 +58,8 @@ import { URLManager } from './module-url-manager.js';
 
         var programs = getValues( 'program' );
         var locations = getValues( 'location', function( x ) { return x.name; } ).map( function( l ) { return l.name; });
+        self.buildLocations( locations, parsed );
+        self.buildPrograms( programs, parsed );
 
         self.filter = filter;
         self.diff = diff;
@@ -82,6 +84,11 @@ import { URLManager } from './module-url-manager.js';
         self.handleMobileToggle();
 
     });
+
+    // manageClassesForView( parsed );
+    // manageClassesForProgram( parsed );
+    // manageClassesForYear( parsed );
+    // manageClassesForLocation( parsed );
 
     return self;
 };
@@ -144,6 +151,36 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
     artworksToAdd.fadeIn( { duration: fade_duration });
 
     this.map.update( this.renderer.renderMapObjects( this.filterer.getCurrentState() ) );
+
+};
+
+
+
+ArtworksArchiveManager.prototype.buildPrograms = function( programs, state ) {
+
+    var programsContainer = $('.program-filters');
+
+    for (var i = 0; i < programs.length; i++) {
+        programsContainer.append(' <a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="' + programs[i] + '">' + programs[i] + '</a> ');
+    }
+
+    manageClassesForProgram( state );
+
+};
+
+
+ArtworksArchiveManager.prototype.buildLocations = function( locations, state ) {
+
+    //console.log('doStateTransitionByDiff: ');
+    //console.log( diffObject );
+    var locationsSelect = $('#sidebar-select-location');
+
+    for (var i = 0; i < locations.length; i++) {
+        locationsSelect.append('<option value="' + locations[i] + '">' + locations[i] + '</option>');
+    }
+
+    manageClassesForLocation( state );
+
 
 };
 

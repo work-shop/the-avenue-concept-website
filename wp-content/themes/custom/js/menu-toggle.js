@@ -13,6 +13,7 @@ function menuToggle( config ) {
 
 	//open and close the menu
 	function menuToggle(){
+		//console.log('menuToggle');
 
 		if($('body').hasClass(config.bodyOffClass)){
 			$(config.menuToggleSelector).removeClass('closed').addClass('open');

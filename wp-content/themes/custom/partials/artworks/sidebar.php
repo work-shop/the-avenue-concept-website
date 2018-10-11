@@ -52,15 +52,7 @@
 				</div>
 			</div>
 			<div class="program-filters">
-				<a href="#" class="sidebar-program-button sidebar-button active" id="artworks-filter-all">
-					All
-				</a>
-				<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="3-D">
-					3-D
-				</a>
-				<a href="#" class="sidebar-program-button sidebar-button" data-artworks-filter="2-D">
-					2-D
-				</a>
+				<a href="#" class="sidebar-program-button sidebar-button active" id="artworks-filter-all">All</a>
 			</div>
 		</div>
 		<div class="sidebar-row" id="sidebar-year">
@@ -111,9 +103,6 @@
 			<div class="location-filters">
 				<select id="sidebar-select-location">
 					<option value="" disabled selected>Select Location</option>
-					<option value="downtown">Downtown</option>
-					<option value="west-side">West Side</option>
-					<option value="kennedy-plaza">Kennedy Plaza</option>
 				</select>
 			</div>
 		</div>

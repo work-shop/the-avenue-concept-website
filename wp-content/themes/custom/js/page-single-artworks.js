@@ -87,7 +87,7 @@ SingleArtworksManager.prototype.renderArtworkToPage = function( artwork ) {
 
     var artist = artwork.artist[0]; // In this case, we're assuming there's only one artist associated with each artwork.
 
-    var thumbnail = artwork.featured_media;
+    //var thumbnail = artwork.featured_media;
     var featured_images = artwork.media.filter( function( media ) { return media.type === 'image' && media.featured; });
     var regular_images = artwork.media.filter( function( media ) { return media.type === 'image' && !media.featured; });
     var featured_videos = artwork.media.filter( function( media ) { return media.type === 'video' && media.featured; });
@@ -99,9 +99,9 @@ SingleArtworksManager.prototype.renderArtworkToPage = function( artwork ) {
 
     $('title').text( title  + ' | The Avenue Concept' );
 
-    $('.artwork-title').html( title);
+    $('.single-artwork-title').html( title );
 
-    $('.artwork-description').html( description );
+    $('.single-artwork-description').html( description );
 
     this.map.update( [this.renderer.renderMapObjects( artwork )], {zoom: 17, center: artwork.position } );
 

@@ -1,3 +1,4 @@
+<?php if( have_rows('donors_list','189') ): ?>
 	<section class="block padded bg-tan" id="donors">
 		<div class="container-fluid container-fluid-stretch">
 			<div class="row section-header-row">
@@ -8,7 +9,6 @@
 				</div>
 			</div>
 			<?php $count = 1; ?>
-			<?php if( have_rows('donors_list','189') ): ?>
 				<div class="row section-content-row donors-list mb2">
 					<?php while ( have_rows('donors_list','189') ) : the_row(); ?>
 						<div class="col-6 col-md-4 col-lg-3 donor">

@@ -8,11 +8,13 @@
 							Donate
 						</a>
 					</li>
-					<li>
-						<a href="#donors" class="jump">
-							Donors
-						</a>
-					</li>
+					<?php if( have_rows('donors_list','189') ): ?>
+						<li>
+							<a href="#donors" class="jump">
+								Donors
+							</a>
+						</li>
+					<?php endif; ?>
 					<li>
 						<a href="#ways-to-donate" class="jump">
 							Ways To Donate

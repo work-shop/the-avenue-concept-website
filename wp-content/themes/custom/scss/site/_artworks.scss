@@ -37,6 +37,12 @@ $sb-mobile-toggle-height: 80px;
 		margin-top: $nav-height-mobile + $sb-mobile-toggle-height;
 		padding: 30px $sb-padding/2;
 	}
+
+	&#artworks-map{
+		@media screen and (max-width: $sm) {
+			padding-top: 20px;
+		}
+	}
 }
 
 .artworks-view-map{
@@ -81,6 +87,10 @@ $sb-mobile-toggle-height: 80px;
 	margin-bottom: $sb-padding*2;
 	border-radius: $sb-padding/2;
 	border: 2px solid $medium;
+
+	@media screen and (max-width: $sm) {
+		height: calc( 100vh - #{$nav-height} - #{$sb-mobile-toggle-height} - 20px);
+	}
 }
 
 
@@ -265,9 +275,13 @@ $sb-mobile-toggle-height: 80px;
 	.artwork-item{
 		@extend .row;
 
-		&:nth-child(even){
-			.artwork-item-text{
-				background: none;
+		&:not([style="display: none;"]){
+			//border: 1px solid red;
+			&:nth-child(odd){
+				//border: 1px solid black;
+				.artwork-item-text{
+					background: lighten($tan,10%);
+				}
 			}
 		}
 
@@ -289,7 +303,7 @@ $sb-mobile-toggle-height: 80px;
 			box-shadow: none;
 			padding-top: 20px;
 			padding-bottom: 20px;
-			background: lighten($tan,10%);
+			background: none;
 
 			@media screen and (max-width: $md) {
 				padding-bottom: 20px;

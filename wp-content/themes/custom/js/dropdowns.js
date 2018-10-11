@@ -24,14 +24,14 @@ function dropdowns( config ) {
 			}
 			);
 
-		$( config.linkSelector ).click(function(e) {
+		$( '.dropdown-link' ).click(function(e) {
 			if( $(window).width() <= 767 ){
 				e.preventDefault();
 				var currentLink = $(this);
-				if( currentLink.hasClass('closed') ){
-					openDropdown( currentLink );
+				if( currentLink.hasClass('mobile-closed') ){
+					openMobileDropdown( currentLink );
 				}else{
-					closeDropdown(currentLink);
+					closeMobileDropdown(currentLink);
 				}
 			}
 		});
@@ -44,12 +44,15 @@ function dropdowns( config ) {
 
 	//open the dropdown
 	function openDropdown( link ){
-		console.log('openDropdown');
+		//console.log(link);
+		//console.log('openDropdown');
 
 		if( $(link).hasClass('closed') ){
 			$(link).removeClass('closed').addClass('open');
 			if( $(window).width() > 767 ){
 				$('body').removeClass(config.bodyOffClass).addClass(config.bodyOnClass);
+			} else{
+				$('body').removeClass('mobile-dropdown-off').addClass('mobile-dropdown-on');
 			}
 		}
 
@@ -61,12 +64,40 @@ function dropdowns( config ) {
 		//console.log('closeDropdown');
 
 		if( $(link).hasClass('open') ){
-			//console.log('link open');
 			$(link).removeClass('open').addClass('closed');	
 			if( $(window).width() > 767 ){
-				//console.log('breakpoint');
 				$('body').removeClass(config.bodyOnClass).addClass(config.bodyOffClass);
 			}	
+		}
+	}
+
+
+	//open the mobile dropdown
+	function openMobileDropdown( link ){
+		//console.log(link);
+		console.log('openDMobileropdown');
+
+		var item = link.parent('.has-sub-menu');
+
+		if( $(item).hasClass('closed') ){
+			$(link).removeClass('mobile-closed').addClass('mobile-open');
+			$(item).removeClass('closed').addClass('open');	
+			$('body').removeClass('mobile-dropdown-off').addClass('mobile-dropdown-on');
+		}
+
+	}	
+
+	//close the mobile dropdown
+	function closeMobileDropdown(link){
+		//console.log(link);
+		console.log('closeMobileDropdown');
+
+		var item = link.parent('.has-sub-menu');
+
+		if( $(item).hasClass('open') ){
+			$(link).removeClass('mobile-open').addClass('mobile-closed');
+			$(item).removeClass('open').addClass('closed');	
+			$('body').removeClass('mobile-dropdown-on').addClass('mobile-dropdown-off');
 		}
 	}
 
