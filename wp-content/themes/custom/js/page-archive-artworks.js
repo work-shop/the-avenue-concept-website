@@ -14,6 +14,8 @@ import { URLManager } from './module-url-manager.js';
  * for the /home page on the site.
  */
 
+ const artworksActiveClass = 'artwork-active';
+
 /**
  * This method returns true if the current page is the archive artworks page,
  * false otherwise.
@@ -147,8 +149,8 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
     var artworksToRemove = $( diffObject.remove.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
     var artworksToAdd = $( diffObject.add.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
 
-    artworksToRemove.fadeOut( { duration: fade_duration });
-    artworksToAdd.fadeIn( { duration: fade_duration });
+    artworksToRemove.removeClass( artworksActiveClass );
+    artworksToAdd.addClass( artworksActiveClass );
 
     this.map.update( this.renderer.renderMapObjects( this.filterer.getCurrentState() ) );
 
