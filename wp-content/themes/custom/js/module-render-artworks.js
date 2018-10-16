@@ -26,7 +26,7 @@ import { Artwork } from './module-zoho-artwork.js';
  */
  function renderFillColor( artwork ) {
     if ( artwork.program === '3-D' ) {
-        return '#dddb91';
+        return '#6ba442';
     } else {
         return '#6ba442';
     }
@@ -43,7 +43,7 @@ import { Artwork } from './module-zoho-artwork.js';
  function createAsynchrounousImage( src ) {
 
     var img = $('<img>')
-    .attr('src', '/wp-content/themes/custom/images/loading.png')
+    .attr('src', '/wp-content/themes/custom/images/default.png')
     .attr('data-src', src );
 
     var loading = $('<img>').attr('src', src );
@@ -116,6 +116,7 @@ import { Artwork } from './module-zoho-artwork.js';
     return root;
 }
 
+
 /**
  * Given an array of artworks or a single artwork object,
  * render a table row representing that artwork.
@@ -146,7 +147,7 @@ import { Artwork } from './module-zoho-artwork.js';
  */
  function renderThumbnail( artwork = {}, index = 0 ) {
 
-    console.log(artwork);
+    //console.log(artwork);
 
     // build consitiuent HTML elements.
     var root = $('<div>')
@@ -168,7 +169,7 @@ import { Artwork } from './module-zoho-artwork.js';
 
     var artists = '';
     for (var i = 0; i < artwork.artist.length; i++) {
-        if( i > 0 && i < (artwork.artist.length - 1) ){
+        if( i > 0 && i < (artwork.artist.length) ){
             artists += ', ';
         }
         artists += artwork.artist[i].name;
@@ -214,7 +215,11 @@ import { Artwork } from './module-zoho-artwork.js';
 
     var feature = { marker: artwork };
 
-    feature.marker.icon = { fillColor: renderFillColor( artwork ) };
+    feature.marker.icon = { 
+        fillColor: renderFillColor( artwork ),
+        strokeColor: '#eee',
+        path: 'M12.7,60c-0.9,0-1.7-4.3-1.7-9.6c0,0,0,0-0.7-0.6c-2-1.7-4.9-1.9-6.7-5.2c-1.8-3.4,0.6-6,0.2-9c-0.6-4.6-3.4-7.3-3.7-10.9c-0.5-5.5,2.1-6.8,4.2-11.3C6.7,8.4,7.7,1.8,10.4,0.4c5.2-2.6,8.7,6.8,10.6,16c1.1,5.2,4.3,7.4,4.3,12.6c0,3.4-2.9,5.3-2.1,12c0.8,6.9-6.8,7.1-7.7,8.3c-1.4,2-1.4,2-1.4,2C14.2,56.1,13.6,60,12.7,60z' 
+    };
 
     var popup = { content: renderThumbnail( artwork ).prop('outerHTML') };
 

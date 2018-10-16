@@ -16,7 +16,7 @@ $text-nav: (
 	overflow: hidden;
 	padding-left: 15px;
 	z-index: 7;
-	transition: all .2s;
+	transition: all 1s;
 
 	&.fixed{
 		position: fixed;
@@ -128,15 +128,26 @@ $text-nav: (
 					}
 					.sub-menu{
 						display: block;
+						transition: opacity 1s;
+						opacity: 1;
 					}
 				}
 
 			}
 
 			@media screen and (min-width: $sm+1) {
+
 				&:hover{
 					.sub-menu{
 						display: block;
+						transition: opacity 2s;
+						opacity: 1;
+
+						li{
+							a{
+								
+							}
+						}
 					}
 				}
 			}
@@ -152,7 +163,8 @@ $text-nav: (
 		transform: translate(-50%,-0%);
 		margin-left: 50%;
 		display: none;
-		background: -webkit-radial-gradient(center, ellipse cover, rgba(255,255,255,.43) 0%,rgba(255,255,255,0) 40%);
+		opacity: 0;
+		transition: all 1s;
 
 		@media screen and (max-width: $sm) {
 			position: static;
@@ -170,6 +182,7 @@ $text-nav: (
 			padding: 25px 0;
 			@extend .flex-center;
 			position: relative;
+			transition: all .5s;
 
 			&:first-child{
 				width: auto;

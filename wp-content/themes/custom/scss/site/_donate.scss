@@ -136,10 +136,17 @@
 	.ginput_cardinfo_left{
 		width: 60%;
 		margin-right: 6%;
+
+		@media screen and (max-width: $xs) {
+			width: 100%;
+		}
 	}
 
 	.ginput_cardinfo_right{
 		width: 33%;
+		@media screen and (max-width: $xs) {
+			width: 48%;
+		}
 	}
 
 	.ginput_cardextras{
@@ -174,6 +181,13 @@
 		background-repeat: no-repeat;
 		margin-right: 15px;
 		//clear: both;
+
+		@media screen and (max-width: $xs) {
+			float: none;
+			width: 160px;
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
 	}
 }
 

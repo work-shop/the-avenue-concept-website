@@ -8,7 +8,10 @@
 		<?php 
 		if( is_front_page() ){
 			bloginfo( 'name' ); echo ' | ';  bloginfo( 'description' );
-		} else{
+		} elseif( is_404() ){
+			bloginfo( 'name' );
+		} 
+		else{
 			wp_title( false ); echo ' | '; bloginfo( 'name' );
 		}
 		?>

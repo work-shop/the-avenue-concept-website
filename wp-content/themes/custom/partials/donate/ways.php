@@ -1,5 +1,5 @@
 <?php if( have_rows('other_donation_options','189') ): ?>
-	<section class="block padded bg-white" id="ways-to-donate">
+	<section class="block padded bg-light" id="ways-to-donate">
 		<div class="container-fluid container-fluid-stretch">
 			<div class="row section-header-row">
 				<div class="col-xl-8">

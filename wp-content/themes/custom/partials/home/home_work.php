@@ -9,7 +9,6 @@
 		</div>
 		<div class="row section-content-row mb4">
 			<div class="slick-featured-artworks slick">
-
 			</div>
 		</div>	
 	</div>

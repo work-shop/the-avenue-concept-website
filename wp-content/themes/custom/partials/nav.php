@@ -11,7 +11,7 @@
 	<div id="nav-menus">
 		<ul class="nav-menus-list">
 			<li class="has-sub-menu closed nav-menu-primary-item">
-				<a href="/about" class="dropdown-link mobile-closed <?php if( Helpers::is_tree(161) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="programs">
+				<a href="/programs" class="dropdown-link mobile-closed <?php if( Helpers::is_tree(161) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="programs">
 					Programs
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
@@ -56,12 +56,12 @@
 					</li>
 					<li>
 						<a href="/artworks/?program=3-D" class="blob-background blob-background-nav">
-							3-D Artworks
+							3-D
 						</a>
 					</li>
 					<li>
 						<a href="/artworks/?program=2-D" class="blob-background blob-background-nav">
-							2-D Artworks
+							2-D
 						</a>
 					</li>
 				</ul>

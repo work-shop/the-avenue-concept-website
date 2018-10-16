@@ -54,6 +54,10 @@
 		*{
 			color: white;
 		}
+
+		@media screen and (max-width: $sm) {
+			margin-bottom: 0em;
+		}
 	}
 
 	.person-title{
@@ -64,7 +68,7 @@
 		}
 		@media screen and (max-width: $sm) {
 			font-size: 15px;
-			border-bottom: 1px solid $aqua;
+			// border-bottom: 1px solid $aqua;
 		}
 	}
 }

@@ -30,6 +30,7 @@
 		top: $nav-height-mobile;
 		height: $sb-mobile-toggle-height;
 		background: white;
+		z-index: 5;
 
 
 		&.mobile-open{

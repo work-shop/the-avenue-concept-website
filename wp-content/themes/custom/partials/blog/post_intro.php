@@ -1,7 +1,7 @@
 <section class="block padded" id="post-intro">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row">
-			<div class="col-sm-12 col-md-6 col-lg-6 mb2">
+			<div class="col-sm-12 col-md-6 col-lg-6 mb2 post-excerpt-container">
 				<p class="post-excerpt">
 					<?php the_field('post_excerpt'); ?>
 				</p>
@@ -23,26 +23,30 @@
 					</ul>
 				</div>
 				<div class="post-metadata-byline">
-					<div class="row">
-						<div class="col-md-4">
-							<h5 class="uppercase font-main medium post-metadata-label m0">
-								Author
-							</h5>
+					<?php if( get_field('author') ): ?>
+						<div class="row">
+							<div class="col-md-4">
+								<h5 class="uppercase font-main medium post-metadata-label m0">
+									Author
+								</h5>
+							</div>
+							<div class="col-md-8">
+								<h4 class="post-metadata-value font-main"><?php the_field('author'); ?></h4>
+							</div>
 						</div>
-						<div class="col-md-8">
-							<h4 class="post-metadata-value font-main"><?php the_field('author'); ?></h4>
+					<?php endif; ?>
+					<?php if( get_field('post_date') ): ?>
+						<div class="row">
+							<div class="col-md-4">
+								<h5 class="uppercase font-main medium post-metadata-label m0">
+									Date
+								</h5>
+							</div>
+							<div class="col-md-8">
+								<h4 class="post-metadata-value font-main"><?php the_field('post_date'); ?></h4>
+							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<h5 class="uppercase font-main medium post-metadata-label m0">
-								Date
-							</h5>
-						</div>
-						<div class="col-md-8">
-							<h4 class="post-metadata-value font-main"><?php the_field('post_date'); ?></h4>
-						</div>
-					</div>
+					<?php endif; ?>
 				</div>
 			</div>
 		</div>
