@@ -85,9 +85,24 @@ function createImageSources( image_html, media ) {
 
 }
 
-function createVideoSource( video_url ) {
-    console.log( 'Artwork.createVideoSource: This method is not implemented!');
-    return video_url;
+
+/**
+ * Given a zoho video URL field, stored as an a tag,
+ * parses the a tag, extracts the href, and returns that.
+ *
+ * @param string video url field
+ * @return string the video's url
+ */
+function createVideoSource( video_url, vimeo_or_youtube ) {
+    var $ = cheerio.load( video_url );
+    var image = $('a');
+
+    var src = image.attr('href');
+
+    return {
+        type: vimeo_or_youtube,
+        src: src
+    };
 }
 
 function createFileSource( media_file ) {
@@ -123,7 +138,7 @@ function createMediaObject( media ) {
 
         } else if ( media_result.type === 'video' ) {
 
-            media_result.video_url = createVideoSource( media_object.Video_URL );
+            media_result.video_url = createVideoSource( media_object.Video_URL, media_object.Vimeo_or_Youtube );
 
         } else {
 
@@ -196,6 +211,8 @@ function Artwork( data ) {
     if (!(this instanceof Artwork)) { return new Artwork( data ); }
     var self = this;
 
+    console.log( data );
+
     self.name = data.Artwork_Title;
     self.description = data.Artwork_Description;
     self.slug = data.Slug;
@@ -218,6 +235,7 @@ function Artwork( data ) {
 
     self.program = data.Program;
     self.medium = data.Medium_field1;
+    self.partners_and_sponsors = data.Partners_Sponsors;
 
     if ( data.Latitude.length !== 0 && data.Longitude.length !== 0 ) {
 

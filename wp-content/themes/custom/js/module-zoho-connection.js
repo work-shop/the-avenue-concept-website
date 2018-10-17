@@ -69,7 +69,8 @@ function get_resource( view_name, criterion, fieldname, selector = function( x )
  */
 function unpackStringArray( arr ) {
 
-    if ( typeof arr === 'undefined' ) { return []; }
+    if ( typeof arr === 'undefined' || arr.length === 0 ) { return []; }
+    if ( arr.charAt(0) !== '[' ) { return [ arr ]; }
 
     var result = arr.split(', ');
 
@@ -93,7 +94,6 @@ function parseBoolean( str ) {
 
 function processMediaObjects( media ) {
     var result = [];
-    var video_i = 0, image_i = 0, other_i = 0;
 
     media.Media_Type.forEach( function( type, type_i ) {
 
@@ -102,25 +102,12 @@ function processMediaObjects( media ) {
             ID: media.ID[ type_i ],
             Photographer_Author: media.Photographer_Author[ type_i ],
             Media_Title: media.Media_Title[ type_i ],
-            Website_Featured_Image: parseBoolean( media.Website_Featured_Image[ type_i ] )
+            Website_Featured_Image: parseBoolean( media.Website_Featured_Image[ type_i ] ),
+            Image: media.Image[ type_i ],
+            Video_URL: media.Video_URL[ type_i ],
+            Media_File: media.Media_File[ type_i ],
+            Vimeo_or_Youtube: media.Vimeo_or_Youtube[ type_i ]
         };
-
-        if ( mapMediaType( type ) === 'image' ) {
-
-            media_item.Image = media.Image[ image_i ];
-            image_i += 1;
-
-        } else if ( mapMediaType( type ) === 'video' ) {
-
-            media_item.Video_URL = media.Video_URL[ video_i ];
-            video_i += 1;
-
-        } else {
-
-            media_item.Media_File = media.Media_File[ other_i ];
-            other_i += 1;
-
-        }
 
         result.push( media_item );
 
@@ -179,8 +166,11 @@ function ZohoConnection() {
                         Media_File: unpackStringArray( artwork['Add_Media.Media_File'] ),
                         ID: unpackStringArray( artwork['Add_Media.ID'] ),
                         Photographer_Author: unpackStringArray( artwork['Add_Media.Photographer_Author'] ),
-                        Website_Featured_Image: unpackStringArray( artwork['Add_Media.Website_Featured_Image'] )
+                        Website_Featured_Image: unpackStringArray( artwork['Add_Media.Website_Featured_Image'] ),
+                        Vimeo_or_Youtube: unpackStringArray( artwork['Add_Media.Vimeo_or_Youtube'] )
                     });
+
+                    artwork.Partners_Sponsors = unpackStringArray( artwork['Partners_Sponsors.Name'] );
 
                     artwork.Medium_field1 = unpackStringArray( artwork.Medium_field1 );
 
@@ -189,7 +179,6 @@ function ZohoConnection() {
                 });
 
                 callback( null, artworks );
-
 
 
 
