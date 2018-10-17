@@ -6,7 +6,7 @@ window.$ = global.$;
 
 import { config } from './config.js';
 import { loading } from './loading.js';
-import { viewportLabel } from './viewport-label.js';
+//import { viewportLabel } from './viewport-label.js';
 import { linksNewtab } from './links-newtab.js';
 import { dropdowns } from './dropdowns.js';
 import { jqueryAccordian } from './jquery-accordian.js';
@@ -33,7 +33,7 @@ livereload();
 
 loading(config.loading);
 linksNewtab(config.linksNewtab);
-viewportLabel(config.viewportLabel);
+//viewportLabel(config.viewportLabel);
 dropdowns(config.dropdowns);
 jqueryAccordian();
 accordian();

@@ -15,6 +15,7 @@ import { URLManager } from './module-url-manager.js';
  */
 
  const artworksActiveClass = 'artwork-active';
+ const artworksHiddenClass = 'artwork-hidden';
 
 /**
  * This method returns true if the current page is the archive artworks page,
@@ -142,13 +143,16 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
     //console.log('doStateTransitionByDiff: ');
     //console.log( diffObject );
 
-    const fade_duration = 500;
+    //const fade_duration = 500;
 
     var artworksToRemove = $( diffObject.remove.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
     var artworksToAdd = $( diffObject.add.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
 
-    artworksToRemove.removeClass( artworksActiveClass );
-    artworksToAdd.addClass( artworksActiveClass );
+    artworksToAdd.removeClass( artworksHiddenClass ).addClass( artworksActiveClass );
+    artworksToRemove.removeClass( artworksActiveClass ).addClass( artworksHiddenClass );
+
+    $('.artwork-item').removeClass('artwork-even');
+    $('.artwork-active:even').addClass('artwork-even');
 
     this.map.update( this.renderer.renderMapObjects( this.filterer.getCurrentState() ) );
 

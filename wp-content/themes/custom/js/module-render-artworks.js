@@ -153,6 +153,7 @@ import { Artwork } from './module-zoho-artwork.js';
     var root = $('<div>')
     .addClass('artwork-item')
     .addClass('artwork-thumbnail')
+    .addClass('artwork-active')
     .addClass('artwork-item-index-' + index )
     .addClass('artwork-' + artwork.slug );
 
