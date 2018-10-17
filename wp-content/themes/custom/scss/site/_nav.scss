@@ -16,7 +16,7 @@ $text-nav: (
 	overflow: hidden;
 	padding-left: 15px;
 	z-index: 7;
-	transition: all 1s;
+	//transition: all 1s;
 
 	&.fixed{
 		position: fixed;
@@ -68,93 +68,8 @@ $text-nav: (
 		}
 	}
 
-	.nav-menu-primary-item{
-		display: inline-block;
-		margin-right: 50px;
 
-		@media screen and (max-width: $lg) {
-			margin-right: 30px;
-		}
-
-		@media screen and (max-width: $md) {
-			margin-right: 10px;
-		}
-
-		@media screen and (max-width: $sm) {
-			display: block;
-			width: 100%;
-			a{
-				width: 100%;
-				display: block;
-				text-align: center;
-			}
-		}
-
-		a{
-			color: white;
-			@extend .font-secondary;
-			@extend .uppercase;
-			@extend .tracked;
-			display: inline-block;
-			padding: 10px;
-
-			@media screen and (max-width: $md) {
-				font-size: 16px;
-			}
-
-			.icon:before{
-				text-transform: none;
-				display: inline-block;
-				color: white;
-			}
-
-			&:hover{
-				@media screen and (min-width: $sm+1) {
-					transform: scale(1.1);
-				}
-			}
-		}
-
-		&.has-sub-menu{
-			position: relative;
-			z-index: 8;
-
-			&.open{
-				@media screen and (max-width: $sm) {
-
-					.icon:before{
-						transform: rotate(180deg);
-						top: -2px;
-					}
-					.sub-menu{
-						display: block;
-						transition: opacity 1s;
-						opacity: 1;
-					}
-				}
-
-			}
-
-			@media screen and (min-width: $sm+1) {
-
-				&:hover{
-					.sub-menu{
-						display: block;
-						transition: opacity 2s;
-						opacity: 1;
-
-						li{
-							a{
-								
-							}
-						}
-					}
-				}
-			}
-
-		}
-	}
-
+	//dropdown default state
 	.sub-menu{
 		position: absolute;
 		top: 35px;
@@ -163,8 +78,6 @@ $text-nav: (
 		transform: translate(-50%,-0%);
 		margin-left: 50%;
 		display: none;
-		opacity: 0;
-		transition: all 1s;
 
 		@media screen and (max-width: $sm) {
 			position: static;
@@ -182,7 +95,6 @@ $text-nav: (
 			padding: 25px 0;
 			@extend .flex-center;
 			position: relative;
-			transition: all .5s;
 
 			&:first-child{
 				width: auto;
@@ -301,6 +213,131 @@ $text-nav: (
 
 		}
 	}
+
+
+	.nav-menu-primary-item{
+		display: inline-block;
+		margin-right: 50px;
+
+		@media screen and (max-width: $lg) {
+			margin-right: 30px;
+		}
+
+		@media screen and (max-width: $md) {
+			margin-right: 10px;
+		}
+
+		@media screen and (max-width: $sm) {
+			display: block;
+			width: 100%;
+			a{
+				width: 100%;
+				display: block;
+				text-align: center;
+			}
+		}
+
+		a{
+			color: white;
+			@extend .font-secondary;
+			@extend .uppercase;
+			@extend .tracked;
+			display: inline-block;
+			padding: 10px;
+
+			@media screen and (max-width: $md) {
+				font-size: 16px;
+			}
+
+			.icon:before{
+				text-transform: none;
+				display: inline-block;
+				color: white;
+			}
+
+			&:hover{
+				@media screen and (min-width: $sm+1) {
+					//transform: scale(1.1);
+				}
+			}
+		}
+
+		//dropdown and mobile nav open states
+		&.has-sub-menu{
+			position: relative;
+			z-index: 8;
+
+			$as: 1s;
+			@keyframes fade-in { to { opacity: 1; } }
+
+			&.open{
+				@media screen and (min-width: $sm+1) {
+					.sub-menu{
+						display: block;
+
+						li{
+							opacity: 0;
+							animation-fill-mode: forwards;
+							animation: fade-in $as ease 0s alternate 1 forwards running;
+
+							&:nth-child(4){
+								animation: fade-in $as ease .02s alternate 1 forwards running;
+							}
+
+							&:nth-child(2){
+								animation: fade-in $as ease .04s alternate 1 forwards running;
+							}
+
+							&:nth-child(6){
+								animation: fade-in $as ease .06s alternate 1 forwards running;
+							}
+
+							&:nth-child(5){
+								animation: fade-in $as ease .08s alternate 1 forwards running;
+							}
+
+							&:nth-child(8){
+								animation: fade-in $as ease .1s alternate 1 forwards running;
+							}
+
+							&:nth-child(9){
+								animation: fade-in $as ease .12s alternate 1 forwards running;
+							}
+
+							&:nth-child(7){
+								animation: fade-in $as ease .14s alternate 1 forwards running;
+							}
+
+							&:nth-child(3){
+								animation: fade-in $as ease .16s alternate 1 forwards running;
+							}
+
+							&:nth-child(10){
+								animation: fade-in $as ease .18s alternate 1 forwards running;
+							}
+
+						}//li
+
+					}
+				}
+
+
+				@media screen and (max-width: $sm) {
+					.icon:before{
+						transform: rotate(180deg);
+						top: -2px;
+					}
+					.sub-menu{
+						display: block;
+					}
+				}
+
+			}
+		}
+
+	}
+
+
 
 
 	&.after{

@@ -19,6 +19,7 @@ import { scrollSpy } from './scroll-spy.js';
 import { menuToggle } from './menu-toggle.js';
 import { slickSlideshows } from './slick-slideshows.js';
 import { filter } from './filter.js';
+import { singlePost } from './single-post.js';
 import { livereload } from './livereload-client.js';
 
 /**
@@ -44,6 +45,7 @@ scrollSpy(config.scrollSpy);
 menuToggle(config.menuToggle);
 slickSlideshows(config.slickSlideshows);
 filter();
+singlePost();
 
 
 $( document ).ready( function() {
