@@ -259,4 +259,4 @@ Artwork.prototype.equals = function( other ) {
 };
 
 
-export { Artwork };
+export { Artwork, mapMediaType };

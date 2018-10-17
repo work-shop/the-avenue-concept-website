@@ -9,6 +9,7 @@
  */
 var $ = require('jquery');
 var async = require('async');
+var json = require('json-serialize');
 //const LocalStorage = require('localstorage');
 
 const zoho_base_uri = 'https://creator.zoho.com/api';
@@ -18,7 +19,7 @@ const database_name = 'artworks-database';
 const view_name = 'All_Public_Artwork';
 const authtoken = '1864b7e6b391f6b94d5cae6a8a9bbd60';
 
-import { Artwork } from './module-zoho-artwork.js';
+import { Artwork, mapMediaType } from './module-zoho-artwork.js';
 
 
 /**
@@ -68,15 +69,61 @@ function get_resource( view_name, criterion, fieldname, selector = function( x )
  */
 function unpackStringArray( arr ) {
 
-    var result = arr.split(',');
+    if ( typeof arr === 'undefined' ) { return []; }
+
+    var result = arr.split(', ');
 
     result[0] = result[0].substring( 1 );
 
     result[ result.length - 1 ] = result[ result.length - 1 ].substring( 0, result[ result.length - 1 ].length - 1 );
 
-    result = result.map( function( m, i ) {
-        if ( i > 0 ) { return m.substring( 1 ); }
-        else { return m; }
+    // result = result.map( function( m, i ) {
+    //     if ( i > 0 ) { return m.substring( 1 ); }
+    //     else { return m; }
+    // });
+
+    return result;
+
+}
+
+function parseBoolean( str ) {
+    return str.trim().toLowerCase() === 'true';
+}
+
+
+function processMediaObjects( media ) {
+    var result = [];
+    var video_i = 0, image_i = 0, other_i = 0;
+
+    media.Media_Type.forEach( function( type, type_i ) {
+
+        var media_item = {
+            Media_Type: type,
+            ID: media.ID[ type_i ],
+            Photographer_Author: media.Photographer_Author[ type_i ],
+            Media_Title: media.Media_Title[ type_i ],
+            Website_Featured_Image: parseBoolean( media.Website_Featured_Image[ type_i ] )
+        };
+
+        if ( mapMediaType( type ) === 'image' ) {
+
+            media_item.Image = media.Image[ image_i ];
+            image_i += 1;
+
+        } else if ( mapMediaType( type ) === 'video' ) {
+
+            media_item.Video_URL = media.Video_URL[ video_i ];
+            video_i += 1;
+
+        } else {
+
+            media_item.Media_File = media.Media_File[ other_i ];
+            other_i += 1;
+
+        }
+
+        result.push( media_item );
+
     });
 
     return result;
@@ -105,56 +152,97 @@ function ZohoConnection() {
             type: 'GET',
             success: function( d ) {
 
-                async.parallel(
-                    d.Add_Artwork.map( function( artwork ) {
-                        return function( artwork_done ) {
+                var artworks = d.Add_Artwork.map( function( artwork ) {
 
-                            async.parallel({
-                                media: function( media_done ) {
+                    artwork.Add_Artist = [{
+                        ID: artwork['Add_Artist.ID'],
+                        Name: artwork['Add_Artist.Name'],
+                        Biography: artwork['Add_Artist.Biography'],
+                        Country_Of_Origin: artwork['Add_Artist.Country_Of_Origin'],
+                        Current_Location: artwork['Add_Artist.Current_Location'],
+                        Website: artwork['Add_Artist.Website']
+                    }];
 
-                                    async.parallel( unpackStringArray( artwork.Add_Media ).map( function( media_name ) {
-                                        return get_resource( 'All_Public_Media', 'Media_Title == \"' + media_name + '\"', false, function( x ) { return x.Add_Media; });
-                                    }), function( err, values ) {
-                                        if ( err ) { media_done( err ); }
-                                        media_done( null, values.reduce( function( a,b ) { return a.concat( b ); }, []));
-                                    });
+                    artwork.Add_Location = [{
+                        ID: artwork['Add_Location.ID'],
+                        Location_Name: artwork['Add_Location.Location_Name'],
+                        Latitude: artwork['Add_Location.Latitude'],
+                        Longitude: artwork['Add_Location.Longitude'],
+                    }];
 
-                                }
+                    artwork.Add_Media = processMediaObjects({
+                        Media_Title: unpackStringArray( artwork['Add_Media.Media_Title'] ),
+                        Public: unpackStringArray( artwork['Add_Media.Public'] ),
+                        Image: unpackStringArray( artwork['Add_Media.Image'] ),
+                        Media_Type: unpackStringArray( artwork['Add_Media.Media_Type'] ),
+                        Video_URL: unpackStringArray( artwork['Add_Media.Video_URL'] ),
+                        Media_File: unpackStringArray( artwork['Add_Media.Media_File'] ),
+                        ID: unpackStringArray( artwork['Add_Media.ID'] ),
+                        Photographer_Author: unpackStringArray( artwork['Add_Media.Photographer_Author'] ),
+                        Website_Featured_Image: unpackStringArray( artwork['Add_Media.Website_Featured_Image'] )
+                    });
 
-                            }, function( err, values ) {
+                    artwork.Medium_field1 = unpackStringArray( artwork.Medium_field1 );
 
-                                if ( err ) { artwork_done( err ); }
+                    return new Artwork( artwork );
 
-                                artwork.Medium_field1 = unpackStringArray( artwork.Medium_field1 );
+                });
 
-                                artwork.Add_Artist = [{
-                                    ID: artwork['Add_Artist.ID'],
-                                    Name: artwork['Add_Artist.Name'],
-                                    Biography: artwork['Add_Artist.Biography'],
-                                    Country_Of_Origin: artwork['Add_Artist.Country_Of_Origin'],
-                                    Current_Location: artwork['Add_Artist.Current_Location'],
-                                    Website: artwork['Add_Artist.Website']
-                                }];
+                callback( null, artworks );
 
-                                artwork.Add_Location = [{
-                                    ID: artwork['Add_Location.ID'],
-                                    Location_Name: artwork['Add_Location.Location_Name'],
-                                    Latitude: artwork['Add_Location.Latitude'],
-                                    Longitude: artwork['Add_Location.Longitude'],
-                                }];
 
-                                artwork.Add_Media = values.media;
 
-                                artwork = new Artwork( artwork )
 
-                                artwork_done( null, artwork );
-
-                            });
-
-                        };
-                    }),
-                    callback
-                );
+                // async.parallel(
+                //     d.Add_Artwork.map( function( artwork ) {
+                //         return function( artwork_done ) {
+                //
+                //             async.parallel({
+                //                 media: function( media_done ) {
+                //
+                //                     async.parallel( unpackStringArray( artwork.Add_Media ).map( function( media_name ) {
+                //                         return get_resource( 'All_Public_Media', 'Media_Title == \"' + media_name + '\"', false, function( x ) { return x.Add_Media; });
+                //                     }), function( err, values ) {
+                //                         if ( err ) { media_done( err ); }
+                //                         media_done( null, values.reduce( function( a,b ) { return a.concat( b ); }, []));
+                //                     });
+                //
+                //                 }
+                //
+                //             }, function( err, values ) {
+                //
+                //                 if ( err ) { artwork_done( err ); }
+                //
+                //                 artwork.Medium_field1 = unpackStringArray( artwork.Medium_field1 );
+                //
+                //                 artwork.Add_Artist = [{
+                //                     ID: artwork['Add_Artist.ID'],
+                //                     Name: artwork['Add_Artist.Name'],
+                //                     Biography: artwork['Add_Artist.Biography'],
+                //                     Country_Of_Origin: artwork['Add_Artist.Country_Of_Origin'],
+                //                     Current_Location: artwork['Add_Artist.Current_Location'],
+                //                     Website: artwork['Add_Artist.Website']
+                //                 }];
+                //
+                //                 artwork.Add_Location = [{
+                //                     ID: artwork['Add_Location.ID'],
+                //                     Location_Name: artwork['Add_Location.Location_Name'],
+                //                     Latitude: artwork['Add_Location.Latitude'],
+                //                     Longitude: artwork['Add_Location.Longitude'],
+                //                 }];
+                //
+                //                 artwork.Add_Media = values.media;
+                //
+                //                 artwork = new Artwork( artwork )
+                //
+                //                 artwork_done( null, artwork );
+                //
+                //             });
+                //
+                //         };
+                //     }),
+                //     callback
+                // );
 
             },
             error: callback
