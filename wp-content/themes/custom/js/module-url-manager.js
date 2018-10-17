@@ -6,7 +6,9 @@ var queryString = require('query-string');
 var objectAssign = require('object-assign');
 
 const base_url = '/artworks';
-const prequery_seperator = '/?';
+const prequery_seperator = '?';
+
+var currentState = [];
 
 /**
  * file: module-url-manager.js
@@ -108,6 +110,25 @@ URLManager.prototype.updateURL = function( state = {} ) {
     this.history.push( base_url + prequery_seperator + query, newState );
 
     return objectAssign( {}, newState );
+
+};
+
+
+/**
+ * Watch the history state for changes, executing the
+ * passed callback whenever the state changes
+ *
+ * @param callback a function that takes the state that we're transitioning to, and the action triggering the transition.
+ * @return this URLManager the url manager instance.
+ */
+URLManager.prototype.on = function( callback = function() {} ) {
+
+    this.history.listen( function( location, action ) {
+
+
+    });
+
+    return this;
 
 };
 

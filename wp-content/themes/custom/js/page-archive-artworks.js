@@ -14,6 +14,8 @@ import { URLManager } from './module-url-manager.js';
  * for the /home page on the site.
  */
 
+ const artworksActiveClass = 'artwork-active';
+
 /**
  * This method returns true if the current page is the archive artworks page,
  * false otherwise.
@@ -54,18 +56,16 @@ import { URLManager } from './module-url-manager.js';
     manageClassesForLocation( parsed );
 
     self.filterer.init( function( error, filter, diff, getValues ) {
-        if ( error ) { throw new Error( error ); }
+        if ( error ) { throw error; }
 
         var programs = getValues( 'program' );
-        var locations = getValues( 'location', function( x ) { return x.name; } ).map( function( l ) { return l.name; });
+        var locations = getValues( 'location' );
         self.buildLocations( locations, parsed );
         self.buildPrograms( programs, parsed );
 
         self.filter = filter;
         self.diff = diff;
         self.map.init();
-
-        //console.log( parsed );
 
         self.doInitialStateTransition( self.diff( parsed ) );
 
@@ -147,8 +147,8 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
     var artworksToRemove = $( diffObject.remove.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
     var artworksToAdd = $( diffObject.add.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
 
-    artworksToRemove.fadeOut( { duration: fade_duration });
-    artworksToAdd.fadeIn( { duration: fade_duration });
+    artworksToRemove.removeClass( artworksActiveClass );
+    artworksToAdd.addClass( artworksActiveClass );
 
     this.map.update( this.renderer.renderMapObjects( this.filterer.getCurrentState() ) );
 
@@ -167,6 +167,7 @@ ArtworksArchiveManager.prototype.buildPrograms = function( programs, state ) {
     manageClassesForProgram( state );
 
 };
+
 
 
 ArtworksArchiveManager.prototype.buildLocations = function( locations, state ) {
