@@ -9,6 +9,7 @@
  */
 var $ = require('jquery');
 var async = require('async');
+//const LocalStorage = require('localstorage');
 
 const zoho_base_uri = 'https://creator.zoho.com/api';
 
@@ -45,6 +46,8 @@ function makeZohoUri( viewname, condition = false, fieldname = false ) {
 function get_resource( view_name, criterion, fieldname, selector = function( x ) { return x; } ) {
 
     var uri = makeZohoUri( view_name, criterion, fieldname );
+
+    //console.log( uri );
 
     return function( done ) {
         $.ajax({
@@ -93,6 +96,8 @@ function ZohoConnection() {
 
     self.getArtworks = function( slug, callback = function() {} ) {
 
+        //console.log( makeZohoUri( view_name, ( slug ) ? 'Slug == \"'+ slug +'\"' : undefined ) );
+
         $.ajax({
             crossDomain: true,
             url: makeZohoUri( view_name, ( slug ) ? 'Slug == \"'+ slug +'\"' : undefined ),
@@ -102,21 +107,9 @@ function ZohoConnection() {
 
                 async.parallel(
                     d.Add_Artwork.map( function( artwork ) {
-
                         return function( artwork_done ) {
 
-                            var artist_query = ( artwork.Add_Artist.length > 0 ) ?
-                                get_resource( 'All_Artists', 'Name == \"' + artwork.Add_Artist + '\"', false, function( x ) { return x.Add_Artist; } ) :
-                                function( cb ) { return cb( null, {} ); };
-
-
-                            var location_query = ( artwork.Add_Location.length > 0 ) ?
-                                get_resource( 'All_Locations', 'Location_Name == \"'+ artwork.Add_Location +'\"', false, function( x ) { return x.Add_Location; } ) :
-                                function( cb ) { return cb( null, {} ); };
-
                             async.parallel({
-                                artist: artist_query,
-                                location: location_query,
                                 media: function( media_done ) {
 
                                     async.parallel( unpackStringArray( artwork.Add_Media ).map( function( media_name ) {
@@ -132,9 +125,27 @@ function ZohoConnection() {
 
                                 if ( err ) { artwork_done( err ); }
 
-                                artwork.Add_Artist = values.artist;
+                                artwork.Medium_field1 = unpackStringArray( artwork.Medium_field1 );
+
+                                artwork.Add_Artist = [{
+                                    ID: artwork['Add_Artist.ID'],
+                                    Name: artwork['Add_Artist.Name'],
+                                    Biography: artwork['Add_Artist.Biography'],
+                                    Country_Of_Origin: artwork['Add_Artist.Country_Of_Origin'],
+                                    Current_Location: artwork['Add_Artist.Current_Location'],
+                                    Website: artwork['Add_Artist.Website']
+                                }];
+
+                                artwork.Add_Location = [{
+                                    ID: artwork['Add_Location.ID'],
+                                    Location_Name: artwork['Add_Location.Location_Name'],
+                                    Latitude: artwork['Add_Location.Latitude'],
+                                    Longitude: artwork['Add_Location.Longitude'],
+                                }];
+
                                 artwork.Add_Media = values.media;
-                                artwork.Add_Location = values.location;
+
+                                artwork = new Artwork( artwork )
 
                                 artwork_done( null, artwork );
 
@@ -142,17 +153,7 @@ function ZohoConnection() {
 
                         };
                     }),
-                    function( err, artworks ) {
-                        if ( err ) { callback( err ); }
-
-                        callback( null, artworks.map( function( artwork ) {
-
-                            artwork.Medium_field1 = unpackStringArray( artwork.Medium_field1 );
-
-                            return new Artwork( artwork );
-
-                        } ) );
-                    }
+                    callback
                 );
 
             },

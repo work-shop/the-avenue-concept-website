@@ -175,17 +175,11 @@ function createArtistObject( artists ) {
 function createLocationObject( location ) {
     if ( location.length === 1 ) {
 
-        return {
-            name: location[0].Location_Name,
-            position: {
-                lat: location[0].Latitude,
-                lng: location[0].Longitude
-            }
-        };
+        return location[0].Location_Name;
 
     } else {
 
-        return {};
+        return '';
 
     }
 }

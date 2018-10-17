@@ -56,18 +56,16 @@ import { URLManager } from './module-url-manager.js';
     manageClassesForLocation( parsed );
 
     self.filterer.init( function( error, filter, diff, getValues ) {
-        if ( error ) { throw new Error( error ); }
+        if ( error ) { throw error; }
 
         var programs = getValues( 'program' );
-        var locations = getValues( 'location', function( x ) { return x.name; } ).map( function( l ) { return l.name; });
+        var locations = getValues( 'location' );
         self.buildLocations( locations, parsed );
         self.buildPrograms( programs, parsed );
 
         self.filter = filter;
         self.diff = diff;
         self.map.init();
-
-        //console.log( parsed );
 
         self.doInitialStateTransition( self.diff( parsed ) );
 
@@ -169,6 +167,7 @@ ArtworksArchiveManager.prototype.buildPrograms = function( programs, state ) {
     manageClassesForProgram( state );
 
 };
+
 
 
 ArtworksArchiveManager.prototype.buildLocations = function( locations, state ) {
