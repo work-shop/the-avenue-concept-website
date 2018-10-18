@@ -263,6 +263,7 @@ ArtworkFilterer.prototype.init = function( callback, featured = false ) {
 
         self.initialized = true;
         self.artworks = artworks;
+        self.currentState = artworks;
 
         callback( null, filter( self ), diff( self ), values( self ) );
 
