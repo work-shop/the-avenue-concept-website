@@ -81,7 +81,7 @@ $hero-offset: 20px;
 
 .single-artwork-description-container{
 	@media screen and (max-width: $md) {
-		display: flex;
+		//display: flex;
 		order: 2;
 	}
 	@media screen and (max-width: $sm) {
@@ -90,8 +90,9 @@ $hero-offset: 20px;
 }
 .single-artwork-metadata-container{
 	@media screen and (max-width: $md) {
-		display: flex;
+		//display: flex;
 		order: 1;
+		margin-bottom: 30px;
 	}
 	@media screen and (max-width: $sm) {
 		display: block;
@@ -130,6 +131,11 @@ $hero-offset: 20px;
 	width: 100%;
 	max-width: 360px;
 	height: 250px;
+
+	@media screen and (max-width: $sm) {
+		height: 200px;
+		max-width: none;
+	}
 }
 
 .single-artwork-images-container{
