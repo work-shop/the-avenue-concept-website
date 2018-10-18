@@ -87,9 +87,14 @@ function unpackStringArray( arr ) {
 
 }
 
-function parseBoolean( str ) {
-    return str.trim().toLowerCase() === 'true';
-}
+/**
+ * Given a string representation of a boolean value,
+ * return true if the value is 'true', false otherwise.
+ *
+ * @param str string an string representing a boolean.
+ * @return boolean true iff str === 'true'.
+ */
+function parseBoolean( str ) { return str.trim().toLowerCase() === 'true'; }
 
 
 function processMediaObjects( media ) {
