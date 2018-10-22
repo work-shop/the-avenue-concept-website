@@ -96,10 +96,10 @@ function createImageSources( image_html, media ) {
         var true_image_low = (typeof low === 'undefined') ? true_image_src : mapTrueImageSource( media.ID, extractImageName( low ) );
         var true_image_med = (typeof med === 'undefined') ? true_image_src : mapTrueImageSource( media.ID, extractImageName( med ) );
 
-        // console.log('qualities:')
+        // console.log('qualities:');
         // console.log( true_image_src );
-        // console.log( true_image_low );
-        // console.log('')
+        // console.log( true_image_med );
+        // console.log('');
         
         return {
             type: 'zoho',

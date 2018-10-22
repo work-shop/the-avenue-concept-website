@@ -128,7 +128,7 @@ function processMediaObjects( media ) {
  * This module
  */
 function ZohoConnection() {
-    console.log('creating new ZohoConnection instance.');
+    //console.log('creating new ZohoConnection instance.');
     if ( !(this instanceof ZohoConnection)) { return new ZohoConnection(); }
     var self = this;
 

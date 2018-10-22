@@ -14,7 +14,6 @@ $hero-offset: 60px;
 }
 
 
-
 .single-artwork-gallery{
 
 	&:after{
@@ -136,7 +135,7 @@ $hero-offset: 60px;
 
 .single-artwork-images-container{
 	column-count: 2;
-	column-gap: 0;
+	column-gap: 2px;
 	//column-gap: 2vw;
 
 	@media screen and (max-width: $sm) {
@@ -145,6 +144,7 @@ $hero-offset: 60px;
 
 	div{
 		//margin-bottom: 2vw;
+		margin-bottom: 2px;
 
 		@media screen and (max-width: $sm) {
 			margin-bottom: 20px;

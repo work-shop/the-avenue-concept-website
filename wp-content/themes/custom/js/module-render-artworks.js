@@ -11,7 +11,7 @@ import { Artwork } from './module-zoho-artwork.js';
  */
 
  function ArtworkRenderer() {
-    console.log('creating new ArtworkRenderer instance.');
+    //console.log('creating new ArtworkRenderer instance.');
     if ( !(this instanceof ArtworkRenderer)) { return new ArtworkRenderer(); }
 }
 
@@ -62,15 +62,15 @@ import { Artwork } from './module-zoho-artwork.js';
     if( typeof artwork.featured_media.image !== 'undefined' ) {
 
         //console.log('featured image');
-        if ( artwork.featured_media.image.has_low_quality_versions === false ){
-            console.log(artwork.featured_media.image);
-        }
+        // if ( artwork.featured_media.image.has_low_quality_versions === false ){
+        //     console.log(artwork.featured_media.image);
+        // }
 
         return artwork.featured_media.image.low;
 
     } else {
 
-        console.log('no featured image');
+        //console.log('no featured image');
 
         var image_media = artwork.media.filter( function( m ) { return m.type === 'image'; });
 
@@ -194,8 +194,13 @@ import { Artwork } from './module-zoho-artwork.js';
     .addClass('artwork-item-location')
     .text( artwork.location );
 
-    var img = $('<img class="artwork-item-image">')
-    .attr('src', getFeaturedImageSrc( artwork ) );
+
+    var img = $('<img class="artwork-item-image">').attr('src', getFeaturedImageSrc( artwork ) );
+    // var qualityFlag = '';
+    // if ( artwork.featured_media.image.has_low_quality_versions === false ){
+    //     qualityFlag = 'janky-image';
+    // }
+    // img.addClass(qualityFlag);
 
     text.append( title );
     text.append( artist );

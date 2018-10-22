@@ -18,7 +18,7 @@ var objectAssign = require('object-assign');
  *
  */
 function ArtworkFilterer() {
-    console.log('creating new ArtworkFilterer instance.');
+    //console.log('creating new ArtworkFilterer instance.');
     if ( !(this instanceof ArtworkFilterer)) { return new ArtworkFilterer(); }
     var self = this;
 

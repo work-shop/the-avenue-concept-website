@@ -24,7 +24,7 @@ import { extractArtworkNameFromURL } from './module-url-manager.js';
  function SingleArtworksManager() {
     if ( !(this instanceof SingleArtworksManager)) { return new SingleArtworksManager(); }
 
-    console.log('SingleArtworksManager loaded.');
+    //console.log('SingleArtworksManager loaded.');
 }
 
 
@@ -32,7 +32,7 @@ import { extractArtworkNameFromURL } from './module-url-manager.js';
  * This method sets up the home page artworks logic.
  */
  SingleArtworksManager.prototype.init = function() {
-    console.log('SingleArtworksManager.init() called');
+    //console.log('SingleArtworksManager.init() called');
     var self = this;
 
     var slug = extractArtworkNameFromURL();
@@ -92,7 +92,7 @@ function nl2br (str, is_xhtml) {
  SingleArtworksManager.prototype.renderArtworkToPage = function( artwork, featured ) {
     //console.log('renderArtworkToPage');
 
-    console.log( artwork );
+    //console.log( artwork );
     this.map.init();
 
     var title = artwork.name;
