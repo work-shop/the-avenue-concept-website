@@ -163,3 +163,20 @@ $hero-offset: 60px;
 		@extend .background;
 	}
 }
+
+.single-artwork-related-container{
+	column-count: 3;
+	column-gap: 2vw;
+
+	@media screen and (max-width: $sm) {
+		column-count: 1;
+	}
+
+	div{
+		margin-bottom: 2vw;
+
+		@media screen and (max-width: $sm) {
+			margin-bottom: 20px;
+		}
+	}
+}

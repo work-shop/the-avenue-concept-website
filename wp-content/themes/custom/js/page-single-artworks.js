@@ -198,7 +198,7 @@ function nl2br (str, is_xhtml) {
         $('.single-meta-sponsors').hide();
     }
 
-    if ( typeof program !== 'undefined' ||  program.trim() ) {
+    if ( typeof program !== 'undefined' ) {
         if ( program.trim() ) {
             $('#single-artwork-meta-program').html( program );
         }
@@ -207,18 +207,33 @@ function nl2br (str, is_xhtml) {
         }
     }
 
-    for (var i = 0; i < regular_images.length; i++) {
-        var image = '<div class="single-artwork-image"><img src="' + regular_images[i].image.src + '" /></div>';
-        $('.single-artwork-images-container').append( image );
+    if ( typeof regular_images !== 'undefined' && regular_images.length > 0 ) {
+        for (var i = 0; i < regular_images.length; i++) {
+            var image = '<div class="single-artwork-image"><img src="' + regular_images[i].image.src + '" /></div>';
+            $('.single-artwork-images-container').append( image );
+        } 
+    } else {
+        $('#single-artwork-images').hide();
     }
 
-    for (var i = 0; i < regular_videos.length; i++) {
-        var video = getVideo( regular_videos[i] );
-        console.log(video);
-        $('.single-artwork-videos-container').append( video );
+    if ( typeof regular_videos !== 'undefined' && regular_videos.length > 0 ) {
+        for (var i = 0; i < regular_videos.length; i++) {
+            var video = getVideo( regular_videos[i] );
+            console.log(video);
+            $('.single-artwork-videos-container').append( video );
+        }
+    } else {
+        $('#single-artwork-videos').hide();
     }
 
     var featured_thumbnails = this.renderer.renderThumbnails( featured );
+    if ( typeof featured_thumbnails !== 'undefined' && featured_thumbnails.length > 0 ) {
+        $('.single-artwork-related-container').append(featured_thumbnails);
+    } else {
+        $('#single-artwork-related').hide();
+    }
+
+
 
     this.map.update( [this.renderer.renderMapObjects( artwork )], {zoom: 17, center: artwork.position } );
 
@@ -234,7 +249,7 @@ function getVideo( video ){
         videoElement = '<div class="col-lg-6 mb2"><div class="single-artwork-video youtube"><iframe src="https://www.youtube.com/embed/' + id + '" frameborder="0" allowfullscreen></iframe></div></div>';
     } else if( video.video_url.type === 'Vimeo'){
         var id = video.video_url.src.split('vimeo.com/').pop();
-        videoElement = '<div class="col-lg-6 mb2"><div class="single-artwork-video vimeo"><iframe src="https://player.vimeo.com/video/' + id + '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
+        videoElement = '<div class="col-md-6 mb2"><div class="single-artwork-video vimeo"><iframe src="https://player.vimeo.com/video/' + id + '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
     }
 
     return videoElement;

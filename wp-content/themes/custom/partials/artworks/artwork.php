@@ -22,7 +22,7 @@
 	</div>
 </section>
 
-<section class="block single-artwork-intro pt4 pb6" id="single-artwork-intro">
+<section class="block single-artwork-intro pt3 pb1" id="single-artwork-intro">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row">
 			<div class="col-lg-5 single-artwork-description-container">
@@ -105,15 +105,28 @@
 		</div>
 	</div>
 </section>
-<section class="block pt4 pb6" id="single-artwork-images">
+<section class="block pt4 pb4" id="single-artwork-images">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="single-artwork-images-container">
 		</div>
 	</div>
 </section>
-<section class="block pt4 pb6" id="single-artwork-videos">
+<section class="block pt4 pb4" id="single-artwork-videos">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="single-artwork-videos-container row">
+		</div>
+	</div>
+</section>
+<section class="block pt4 pb4" id="single-artwork-related">
+	<div class="container-fluid container-fluid-stretch">
+		<div class="row">
+			<div class="col">
+				<h3 class="mb2">
+					More Artworks
+				</h3>
+			</div>
+		</div>
+		<div class="single-artwork-related-container">
 		</div>
 	</div>
 </section>
