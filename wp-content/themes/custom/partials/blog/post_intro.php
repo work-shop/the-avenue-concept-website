@@ -1,10 +1,12 @@
-<section class="block padded" id="post-intro">
+<section class="block pt2 pb2" id="post-intro">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-lg-6 mb2 post-excerpt-container">
-				<p class="post-excerpt">
-					<?php the_field('post_excerpt'); ?>
-				</p>
+				<?php if( get_field('post_excerpt') ): ?>
+					<p class="post-excerpt">
+						<?php the_field('post_excerpt'); ?>
+					</p>
+				<?php endif; ?>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-5 offset-lg-1 post-metadata">
 				<div class="post-metadata-tags mb1">

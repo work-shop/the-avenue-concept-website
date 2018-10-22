@@ -29,7 +29,7 @@
 			</div>
 			<div class="col-lg-7 col-xl-5 offset-xl-2 single-artwork-metadata-container">
 				<div class="row mb1 single-meta-artist">
-					<div class="col-4 d-flex align-items-end">
+					<div class="col-4 d-flex align-items-start">
 						<h4 class="single-artwork-meta-label">
 							Artist
 						</h4>
@@ -40,7 +40,7 @@
 					</div>
 				</div>
 				<div class="row mb1 single-meta-date">
-					<div class="col-4 d-flex align-items-end">
+					<div class="col-4 d-flex align-items-start">
 						<h4 class="single-artwork-meta-label">
 							Date
 						</h4>
@@ -51,7 +51,7 @@
 					</div>
 				</div>
 				<div class="row mb1 single-meta-medium">
-					<div class="col-4 d-flex align-items-end">
+					<div class="col-4 d-flex align-items-start">
 						<h4 class="single-artwork-meta-label">
 							Medium
 						</h4>
@@ -62,7 +62,7 @@
 					</div>
 				</div>
 				<div class="row mb1 single-meta-location">
-					<div class="col-4 d-flex align-items-end">
+					<div class="col-4 d-flex align-items-start">
 						<h4 class="single-artwork-meta-label">
 							Location
 						</h4>
@@ -73,7 +73,7 @@
 					</div>
 				</div>
 				<div class="row mb1 single-meta-sponsors">
-					<div class="col-4 d-flex align-items-end">
+					<div class="col-4 d-flex align-items-start">
 						<h4 class="single-artwork-meta-label">
 							Sponsors
 						</h4>
@@ -84,7 +84,7 @@
 					</div>
 				</div>
 				<div class="row mb1 single-meta-program">
-					<div class="col-4 d-flex align-items-end">
+					<div class="col-4 d-flex align-items-start">
 						<h4 class="single-artwork-meta-label">
 							Program
 						</h4>
@@ -106,6 +106,12 @@
 <section class="block pt4 pb6" id="single-artwork-images">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="single-artwork-images-container">
+		</div>
+	</div>
+</section>
+<section class="block pt4 pb6" id="single-artwork-videos">
+	<div class="container-fluid container-fluid-stretch">
+		<div class="single-artwork-videos-container row">
 		</div>
 	</div>
 </section>

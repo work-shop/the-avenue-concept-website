@@ -9,80 +9,48 @@
 }
 
 .page-hero{
-	height: calc(90vh - #{$nav-height});
+	height: calc(85vh - #{$nav-height});
 	@extend .hero-gradient;
 	position: relative;
+}
 
-	.page-hero-intro{
-		position: absolute;
-		bottom: 0;
-		width: 100%;
-		z-index: 1;
+$svg-height: 100px;
+$svg-padding: 50px;
+$svg-height-md: 50px;
+$svg-padding-md: 50px;
+
+.page-title-container{
+	position: relative;
+	z-index: 1;
+	margin-top: -$svg-height;
+	padding-top: $svg-padding;
+	//border: 1px solid black;
+
+	@media screen and (max-width: $md) {
+		margin-top: -$svg-height-md;
+		padding-top: $svg-padding-md;
+	}
+}
+
+.page-hero-curve{
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: $svg-height;
+	left: 0;
+
+	@media screen and (max-width: $md) {
+		height: $svg-height-md;
 	}
 
-	.page-hero-curve{
+	svg{
 		position: absolute;
-		bottom: 0;
-		width: 100%;
 		height: 100%;
+		width: 100%;
+		top: 0;
 		left: 0;
-
-		svg{
-			position: absolute;
-			height: 100%;
-		}
-	}
-
-	.page-hero-text{
-		padding-top: 8vw;
 	}
 }
-
-
-
-.single-post{
-
-	.page-hero{
-		@media screen and (max-width: $md) {
-			background: -moz-linear-gradient(top, rgba(107,164,66,1) 10%, rgba(107,164,66,.5) 100%);
-			background: -webkit-linear-gradient(top, rgba(107,164,66,1) 10%,rgba(107,164,66,.5) 100%);
-			background: linear-gradient(to bottom, rgba(107,164,66,1) 10%,rgba(107,164,66,.5) 100%);
-			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6ba442', endColorstr='#006ba442',GradientType=0 );		
-		}
-	}
-
-	.page-hero-intro{
-		@media screen and (max-width: $md) {
-			position: relative;
-			height: inherit;	
-		}
-	}
-
-	.page-hero-curve{
-		@media screen and (max-width: $md) {
-			height: 70px;
-			bottom: 0;
-		}
-
-	}
-
-	.page-hero-text{
-		padding-top: 8vw;
-
-		@media screen and (max-width: $md) {
-			padding-top: 0;
-			height: 100%;
-			@extend .flex-center;
-		}
-	}
-
-	.page-hero-title{
-		@media screen and (max-width: $md) {			
-			color: white;	
-		}
-	}
-}
-
 
 
 .sticky-nav-after{
@@ -90,6 +58,7 @@
 		margin-top: 100px;
 	}
 }
+
 
 .page-nav{
 	padding: 20px 0 10px 0;

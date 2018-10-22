@@ -18,27 +18,17 @@ function singlePost( config ) {
 
 function resizeHeading( $heading ){
 
-	// var $characters = $heading.text().length;
+	var $characters = $heading.text().trim().length;
 
-	// if (($characters >= 1) && ($characters < 20)) {
-	// 	if( window.width() > 767 ){
-	// 		$heading.css('font-size', '5vw');
-	// 	} else{
-			
-	// 	}
-	// }
-	// else if (($characters >= 20) && ($characters < 30)) {
-	// 	$heading.css('font-size', '4vw');
-	// }
-	// else if (($characters >= 30) && ($characters < 40)) {
-	// 	$heading.css('font-size', '3vw');
-	// }
-	// else if (($characters >= 40) && ($characters < 50)) {
-	// 	$heading.css('font-size', '2vw');
-	// }
-	// else {
-	// 	$heading.css('font-size', '2vw');
-	// }    
+	if ( ($characters >= 0) && ($characters < 30) ) {
+		$heading.addClass('characters-low');
+	}
+	else if ( ($characters >= 30) && ($characters < 70) ) {
+		$heading.addClass('characters-medium');
+	}
+	else {
+		$heading.addClass('characters-high');
+	} 
 
 }
 

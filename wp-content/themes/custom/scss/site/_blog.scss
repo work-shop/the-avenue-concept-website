@@ -148,6 +148,23 @@
 
 //single
 
+
+
+.single-post{
+	.page-hero-title{
+		padding-top: 25px;
+		&.characters-low{
+			@extend .h1;
+		}
+		&.characters-medium{
+			@extend .h2;
+		}
+		&.characters-high{
+			@extend .h3;
+		}
+	}	
+}
+
 .post-excerpt-container{
 	@media screen and (max-width: $sm) {
 		order: 2;
@@ -186,6 +203,7 @@
 			font-size: 15px;
 			text-transform: uppercase;
 			padding: 3px 8px;
+			margin-bottom: 7px;
 			transition: all .1s;
 
 			@media screen and (max-width: $sm) {

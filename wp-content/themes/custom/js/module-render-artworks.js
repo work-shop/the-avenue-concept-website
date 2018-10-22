@@ -196,7 +196,7 @@ import { Artwork } from './module-zoho-artwork.js';
     text.append( location );
 
     //assemble elements into single structure.
-    a.append( img );
+    //a.append( img );
     a.append( text );
     root.append( a );
 

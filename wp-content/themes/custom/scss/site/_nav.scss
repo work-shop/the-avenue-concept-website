@@ -244,6 +244,7 @@ $text-nav: (
 			@extend .tracked;
 			display: inline-block;
 			padding: 10px;
+			transition: all .2s;
 
 			@media screen and (max-width: $md) {
 				font-size: 16px;
@@ -257,7 +258,8 @@ $text-nav: (
 
 			&:hover{
 				@media screen and (min-width: $sm+1) {
-					//transform: scale(1.1);
+					transition: all .2s;
+					transform: scale(1.1);
 				}
 			}
 		}

@@ -13,6 +13,63 @@ $sb-mobile-toggle-height: 80px;
 	}
 }
 
+#artworks-messages{
+	padding: 50px $sb-padding*2 0px $sb-padding*2;
+	margin-top: $nav-height;
+	width: calc( 100vw - #{$sb-width} );
+	position: relative;
+	z-index: 7;
+	//display: none;
+
+	@media screen and (max-width: $lg) {
+		padding: $sb-padding;
+		width: 100%;
+	}
+
+	*{
+		color: darken($error, 20%);
+	}
+
+	.artworks-messages-container{
+		background: lighten($error, 30%);
+		border-radius: 10px;
+		padding: $sb-padding 60px $sb-padding $sb-padding;
+		position: relative;
+	}
+
+	.artworks-messages-close{
+		position: absolute;
+		top: 50%;
+		right: 30px;
+		margin-top: -15px;
+		margin-right: -15px;
+		height: 30px;
+		width: 30px;
+
+		@media screen and (max-width: $sm) {
+			height: 20px;
+			width: 20px;
+			right: 10px;
+			margin-right: -10px;
+		}
+	}
+}
+
+.artworks-error{
+	#artworks-messages{
+		display: block;
+	}
+
+	.artworks-main{
+		margin-top: 0;
+	}
+
+	.artworks-list-list-header .artworks-list-header{
+		top: auto;
+	}
+
+}
+
 #artworks-track{
 	width: calc( 300vw - #{$sb-width*3} );
 	display: flex;

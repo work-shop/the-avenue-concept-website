@@ -211,7 +211,7 @@ function Artwork( data ) {
     if (!(this instanceof Artwork)) { return new Artwork( data ); }
     var self = this;
 
-    console.log( data );
+    //console.log( data );
 
     self.name = data.Artwork_Title;
     self.description = data.Artwork_Description;

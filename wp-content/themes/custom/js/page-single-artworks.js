@@ -98,7 +98,7 @@ function nl2br (str, is_xhtml) {
     //var thumbnail = artwork.featured_media;
     var featured_images = artwork.media.filter( function( media ) { return media.type === 'image' && media.featured; });
     var regular_images = artwork.media.filter( function( media ) { return media.type === 'image' && !media.featured; });
-    var featured_videos = artwork.media.filter( function( media ) { return media.type === 'video' && media.featured; });
+    //var featured_videos = artwork.media.filter( function( media ) { return media.type === 'video' && media.featured; });
     var regular_videos = artwork.media.filter( function( media ) { return media.type === 'video' && !media.featured; });
 
     for (var i = 0; i < regular_images.length; i++) {
@@ -136,7 +136,7 @@ function nl2br (str, is_xhtml) {
         medium = medium + artwork.medium[i];
     }
     var location = artwork.location.name;
-    var sponsors = artwork.sponsors;
+    var sponsors = artwork.partners_and_sponsors[0];
     var program = artwork.program;
     program = '<a href="/artworks/?program=' + program + '" class="sidebar-program-button sidebar-button">' + program + '</a>';
 
@@ -186,6 +186,7 @@ function nl2br (str, is_xhtml) {
 
     if ( typeof sponsors !== 'undefined' ) {
         if ( sponsors.trim() ) {
+            sponsors = sponsors.split(',').join(', ');
             $('#single-artwork-meta-sponsors').html( sponsors );
         } else{
             $('.single-meta-sponsors').hide();
@@ -208,9 +209,31 @@ function nl2br (str, is_xhtml) {
         $('.single-artwork-images-container').append( image );
     }
 
+    for (var i = 0; i < regular_videos.length; i++) {
+        var video = getVideo( regular_videos[i] );
+        console.log(video);
+        $('.single-artwork-videos-container').append( video );
+    }
+
     this.map.update( [this.renderer.renderMapObjects( artwork )], {zoom: 17, center: artwork.position } );
 
 };
+
+
+function getVideo( video ){
+    console.log(video);
+    var videoElement;
+
+    if( video.video_url.type === 'Youtube'){
+        var id = video.video_url.src.split('?v=').pop();
+        videoElement = '<div class="col-lg-6 mb2"><div class="single-artwork-video youtube"><iframe src="https://www.youtube.com/embed/' + id + '" frameborder="0" allowfullscreen></iframe></div></div>';
+    } else if( video.video_url.type === 'Vimeo'){
+        var id = video.video_url.src.split('vimeo.com/').pop();
+        videoElement = '<div class="col-lg-6 mb2"><div class="single-artwork-video vimeo"><iframe src="https://player.vimeo.com/video/' + id + '" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe></div></div>';
+    }
+
+    return videoElement;
+}
 
 
 SingleArtworksManager.prototype.renderError = function( type, message ) {

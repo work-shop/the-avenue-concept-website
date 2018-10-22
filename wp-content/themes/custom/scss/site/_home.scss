@@ -305,14 +305,13 @@ $modal-subtract-md: $modal-padding-md * 2;
 //HOME ARTWORKS
 
 .slick-featured-artworks{
-	// column-count: 2;
-	// column-gap: 2vw;
+	column-count: 3;
+	column-gap: 2vw;
 
 	.artwork-item{
 		width: 100%;
-		// margin-bottom: 2vw;
-		// display: inline-block;
-		//margin-bottom: 20px;
+		display: inline-block;
+		margin-bottom: 20px;
 	}
 }
 

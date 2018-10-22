@@ -129,7 +129,7 @@ $hero-offset: 20px;
 
 #single-artwork-map{
 	width: 100%;
-	max-width: 360px;
+	max-width: 560px;
 	height: 250px;
 
 	@media screen and (max-width: $sm) {
@@ -152,5 +152,18 @@ $hero-offset: 20px;
 		@media screen and (max-width: $sm) {
 			margin-bottom: 20px;
 		}
+	}
+}
+
+.single-artwork-video{
+	height: 0;
+	overflow: hidden;
+	padding-top: 56.25%;
+	position: relative;
+	display: inline-block;
+	width: 100%;
+
+	iframe{
+		@extend .background;
 	}
 }
