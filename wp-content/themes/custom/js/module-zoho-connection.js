@@ -185,59 +185,6 @@ function ZohoConnection() {
 
                 callback( null, artworks );
 
-
-
-                // async.parallel(
-                //     d.Add_Artwork.map( function( artwork ) {
-                //         return function( artwork_done ) {
-                //
-                //             async.parallel({
-                //                 media: function( media_done ) {
-                //
-                //                     async.parallel( unpackStringArray( artwork.Add_Media ).map( function( media_name ) {
-                //                         return get_resource( 'All_Public_Media', 'Media_Title == \"' + media_name + '\"', false, function( x ) { return x.Add_Media; });
-                //                     }), function( err, values ) {
-                //                         if ( err ) { media_done( err ); }
-                //                         media_done( null, values.reduce( function( a,b ) { return a.concat( b ); }, []));
-                //                     });
-                //
-                //                 }
-                //
-                //             }, function( err, values ) {
-                //
-                //                 if ( err ) { artwork_done( err ); }
-                //
-                //                 artwork.Medium_field1 = unpackStringArray( artwork.Medium_field1 );
-                //
-                //                 artwork.Add_Artist = [{
-                //                     ID: artwork['Add_Artist.ID'],
-                //                     Name: artwork['Add_Artist.Name'],
-                //                     Biography: artwork['Add_Artist.Biography'],
-                //                     Country_Of_Origin: artwork['Add_Artist.Country_Of_Origin'],
-                //                     Current_Location: artwork['Add_Artist.Current_Location'],
-                //                     Website: artwork['Add_Artist.Website']
-                //                 }];
-                //
-                //                 artwork.Add_Location = [{
-                //                     ID: artwork['Add_Location.ID'],
-                //                     Location_Name: artwork['Add_Location.Location_Name'],
-                //                     Latitude: artwork['Add_Location.Latitude'],
-                //                     Longitude: artwork['Add_Location.Longitude'],
-                //                 }];
-                //
-                //                 artwork.Add_Media = values.media;
-                //
-                //                 artwork = new Artwork( artwork )
-                //
-                //                 artwork_done( null, artwork );
-                //
-                //             });
-                //
-                //         };
-                //     }),
-                //     callback
-                // );
-
             },
             error: callback
         });
