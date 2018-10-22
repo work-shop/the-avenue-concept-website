@@ -136,14 +136,15 @@ $hero-offset: 60px;
 
 .single-artwork-images-container{
 	column-count: 2;
-	column-gap: 2vw;
+	column-gap: 0;
+	//column-gap: 2vw;
 
 	@media screen and (max-width: $sm) {
 		column-count: 1;
 	}
 
 	div{
-		margin-bottom: 2vw;
+		//margin-bottom: 2vw;
 
 		@media screen and (max-width: $sm) {
 			margin-bottom: 20px;

@@ -105,19 +105,26 @@
 		</div>
 	</div>
 </section>
-<section class="block pt4 pb4" id="single-artwork-images">
-	<div class="container-fluid container-fluid-stretch">
+<section class="block pt3 pb1" id="single-artwork-images">
+	<div class="">
 		<div class="single-artwork-images-container">
 		</div>
 	</div>
 </section>
-<section class="block pt4 pb4" id="single-artwork-videos">
+<section class="block pt2 pb2" id="single-artwork-videos">
 	<div class="container-fluid container-fluid-stretch">
+		<div class="row">
+			<div class="col">
+				<h3 class="mb2">
+					Videos
+				</h3>
+			</div>
+		</div>
 		<div class="single-artwork-videos-container row">
 		</div>
 	</div>
 </section>
-<section class="block pt4 pb4" id="single-artwork-related">
+<section class="block pt2 pb3" id="single-artwork-related">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row">
 			<div class="col">

@@ -209,7 +209,7 @@ function nl2br (str, is_xhtml) {
 
     if ( typeof regular_images !== 'undefined' && regular_images.length > 0 ) {
         for (var i = 0; i < regular_images.length; i++) {
-            var image = '<div class="single-artwork-image"><img src="' + regular_images[i].image.src + '" /></div>';
+            var image = '<div class="single-artwork-image"><img src="' + regular_images[i].image.med + '" /></div>';
             $('.single-artwork-images-container').append( image );
         } 
     } else {
