@@ -3,6 +3,8 @@
 		<div class="slick slick-single-artwork">
 		</div>
 	</div>
+</section>
+<section class="page-title-container">
 	<div class="page-hero-intro">
 		<div class="page-hero-curve">
 			<?php include get_template_directory() . '/images/page-hero-curve-02.svg'; ?>

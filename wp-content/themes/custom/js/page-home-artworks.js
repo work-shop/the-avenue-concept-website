@@ -40,7 +40,7 @@ import { ArtworksMap } from './module-map.js';
     var renderer = new ArtworkRenderer();
     var map = new ArtworksMap('#home-map-container');
 
-    //map.init();
+    map.init();
 
     filterer.init( function( error, filter ) {
 
@@ -48,7 +48,7 @@ import { ArtworksMap } from './module-map.js';
 
         var featuredArtworkSlides = renderer.renderThumbnails( filter({ featured: true }) );
 
-        //map.update( renderer.renderMapObjects( filter() ) );
+        map.update( renderer.renderMapObjects( filter() ) );
 
         console.log('all artworks returned from Zoho:');
         console.log( filter() );
