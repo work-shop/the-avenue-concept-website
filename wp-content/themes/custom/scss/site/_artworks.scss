@@ -19,7 +19,7 @@ $sb-mobile-toggle-height: 80px;
 	width: calc( 100vw - #{$sb-width} );
 	position: relative;
 	z-index: 7;
-	//display: none;
+	display: none;
 
 	@media screen and (max-width: $lg) {
 		padding: $sb-padding;

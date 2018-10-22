@@ -46,7 +46,7 @@
 	<?php wp_head(); ?>
 
 </head>
-<body <?php body_class('loading before-scroll modal-off menu-closed dropdown-off mobile-dropdown-off artworks-error'); ?>>
+<body <?php body_class('loading before-scroll modal-off menu-closed dropdown-off mobile-dropdown-off'); ?>>
 
 	<?php get_template_part('partials/nav'); //when turning this back on, be sure to modify home.scss to turn back on body padding ?>
 	<?php get_template_part('partials/menus'); ?>
