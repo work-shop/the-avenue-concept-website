@@ -79,6 +79,12 @@ function createImageSources( image_html, media ) {
     var $ = cheerio.load( image_html );
     var image = $('img');
 
+    //if ( media.Website_Featured_Image ) {
+        //console.log( image_html );       
+    //}
+
+
+
     var src = image.attr('src');
     var low = image.attr( 'lowqual');
     var med = image.attr( 'medqual');
@@ -90,10 +96,14 @@ function createImageSources( image_html, media ) {
         var true_image_low = (typeof low === 'undefined') ? true_image_src : mapTrueImageSource( media.ID, extractImageName( low ) );
         var true_image_med = (typeof med === 'undefined') ? true_image_src : mapTrueImageSource( media.ID, extractImageName( med ) );
 
-        console.log( true_image_low );
-
+        // console.log('qualities:')
+        // console.log( true_image_src );
+        // console.log( true_image_low );
+        // console.log('')
+        
         return {
             type: 'zoho',
+            has_low_quality_versions: (typeof low !== 'undefined') || (typeof med !== 'undefined'),
             src: true_image_src,
             med: true_image_med,
             low: true_image_low
@@ -103,6 +113,7 @@ function createImageSources( image_html, media ) {
 
         return {
             type: 'other',
+            has_low_quality_versions: false,
             src: src,
             med: src,
             low: src

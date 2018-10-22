@@ -67,6 +67,10 @@ final class ITSEC_System_Tweaks_Config_Generators {
 			$rewrites .= "\t\tRewriteRule ^$wp_includes/[^/]+\.php$ - [F]\n";
 			$rewrites .= "\t\tRewriteRule ^$wp_includes/js/tinymce/langs/.+\.php - [F]\n";
 			$rewrites .= "\t\tRewriteRule ^$wp_includes/theme-compat/ - [F]\n";
+
+			$hide_dirs = implode( '|', array( 'git', 'svn' ) );
+			$rewrites  .= "\t\tRewriteCond %{REQUEST_FILENAME} -f\n";
+			$rewrites  .= "\t\tRewriteRule (^|.*/)\.({$hide_dirs})/.* - [F]\n";
 		}
 
 		if ( $input['uploads_php'] ) {
@@ -189,6 +193,8 @@ final class ITSEC_System_Tweaks_Config_Generators {
 
 			$modification .= "\tlocation ~ ^/$wp_includes/js/tinymce/langs/.+\.php$ { deny all; }\n";
 			$modification .= "\tlocation ~ ^/$wp_includes/theme-compat/ { deny all; }\n";
+			$modification .= "\tlocation ~ ^.*/\.git/.*$ { deny all; }\n";
+			$modification .= "\tlocation ~ ^.*/\.svn/.*$ { deny all; }\n";
 		}
 
 		// Rewrite Rules for Disable PHP in Uploads

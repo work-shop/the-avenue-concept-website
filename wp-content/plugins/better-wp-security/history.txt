@@ -803,3 +803,9 @@
 	Bug Fix: Account for any CLI PHP SAPI instead of just WP-CLI in the SSL Module.
 	Bug Fix: Fixed how the Grade Report enable/disable status is stored to fix admin page loading issues on some sites.
 	Bug Fix: Fix serialization of closure error when a plugin registering a hook with a closure is in the boot-up stack and the notification center is triggered too early in the cycle.
+7.2.0 - 2018-10-10 - Chris Jean & Timothy Jacobs
+	Enhancement: Allow for selecting the particular Proxy header a server is configured to use. Improve the language to indicate the importance of configuring this setting. H/t Filippo Cavallarin CEO at wearesegment.com
+	Enhancement: Block access to git and svn repositories when System Tweaks -> Protect System Files is enabled.
+	Tweak: Update jQuery Validation library to 1.17.0
+	Bug Fix: Improve detection of blocking the File Change Scan from being scheduled if one is already being run.
+	Bug Fix: Prevent infinite recursion error when trying to access directories outside of the allowed file tree.

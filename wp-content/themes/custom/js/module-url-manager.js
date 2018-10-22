@@ -17,7 +17,7 @@ var currentState = [];
  */
 
 function URLManager( defaultState = { view: 'map' } ) {
-    console.log('creating new URLManager instance.');
+    //console.log('creating new URLManager instance.');
     if ( !(this instanceof URLManager)) { return new URLManager( defaultState ); }
     var self = this;
 

@@ -12,9 +12,6 @@ class WPMDBPro extends WPMDB {
 		add_action( 'wpmdb_notices', array( $this, 'template_secret_key_warning' ) );
 		add_action( 'wpmdb_notices', array( $this, 'template_block_external_warning' ) );
 
-		add_action( 'wpmdb_notices', array( $this, 'template_notice_enable_usage_tracking' ) );
-		add_action( 'wpmdb_additional_settings_advanced', array( $this, 'template_toggle_usage_tracking' ) );
-
 		// Internal AJAX handlers
 		add_action( 'wp_ajax_wpmdb_verify_connection_to_remote_site', array( $this, 'ajax_verify_connection_to_remote_site' ) );
 		add_action( 'wp_ajax_wpmdb_fire_migration_complete', array( $this, 'fire_migration_complete' ) );
@@ -76,6 +73,9 @@ class WPMDBPro extends WPMDB {
 
 		// Check if WP Engine is filtering the buffer and prevent it. Added here for ajax pull requests
 		$this->maybe_disable_wp_engine_filtering();
+
+		// Init WPMDB_Event_Logger class
+		$this->init_event_logger();
 
 		new WPMDBPro_Import( $this );
 
@@ -279,10 +279,6 @@ class WPMDBPro extends WPMDB {
 		$this->template( 'licence-info', 'pro', $args );
 	}
 
-	function template_toggle_usage_tracking() {
-		$this->template( 'toggle-usage-tracking', 'pro' );
-	}
-
 	/**
 	 * Shows all the videos on the Help tab.
 	 *
@@ -310,13 +306,6 @@ class WPMDBPro extends WPMDB {
 			),
 		);
 		$this->template( 'videos', 'pro', $args );
-	}
-
-	function template_notice_enable_usage_tracking() {
-		if ( 'boolean' !== gettype( $this->settings['allow_tracking'] ) ) {
-			$this->template( 'notice-enable-usage-tracking', 'pro' );
-		}
-		return;
 	}
 
 	function template_outdated_addons_warning() {
@@ -1800,5 +1789,17 @@ class WPMDBPro extends WPMDB {
 		}
 
 		exit;
+	}
+
+	/*
+	 * Initializes WPMDB_Event_Logger class if it exists and the setting isn't disabled
+	 */
+	protected function init_event_logger() {
+		$logger_class_file = dirname( __FILE__ ) . '/wpmdb-event-logger.php';
+		if ( file_exists( $logger_class_file ) ) {
+			require_once( $logger_class_file );
+			$logger = new WPMDB_Event_Logger();
+			$logger->register( $this );
+		}
 	}
 }

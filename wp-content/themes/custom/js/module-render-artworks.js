@@ -61,15 +61,22 @@ import { Artwork } from './module-zoho-artwork.js';
 
     if( typeof artwork.featured_media.image !== 'undefined' ) {
 
-        return artwork.featured_media.image.src;
+        //console.log('featured image');
+        if ( artwork.featured_media.image.has_low_quality_versions === false ){
+            console.log(artwork.featured_media.image);
+        }
+
+        return artwork.featured_media.image.low;
 
     } else {
+
+        console.log('no featured image');
 
         var image_media = artwork.media.filter( function( m ) { return m.type === 'image'; });
 
         if ( image_media.length > 0 ) {
 
-            return image_media[0].image.src;
+            return image_media[0].image.low;
 
         } else {
             // handle default case.

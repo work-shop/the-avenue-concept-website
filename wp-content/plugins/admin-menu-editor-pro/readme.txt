@@ -3,7 +3,7 @@ Contributors: whiteshadow
 Tags: admin, dashboard, menu, security, wpmu
 Requires at least: 4.1
 Tested up to: 4.9.8
-Stable tag: 2.6.6
+Stable tag: 2.7
 
 Lets you directly edit the WordPress admin menu. You can re-order, hide or rename existing menus, add custom menus and more.
 
@@ -82,6 +82,10 @@ Here are some usage tips and other things that can be good to know when using th
 == Changelog ==
 
 [Get the latest version here.](http://adminmenueditor.com/updates/)
+
+= 2.7 (2018-10-01) =
+##### Added
+* Added new "Import" and "Export" tabs. Now you can import and export most of the plugin settings, not just the admin menu and widgets.
 
 = 2.6.6 (2018-08-14) =
 ##### Fixed

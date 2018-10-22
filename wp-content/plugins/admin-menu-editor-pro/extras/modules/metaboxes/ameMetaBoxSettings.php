@@ -24,23 +24,7 @@ class ameMetaBoxSettings implements ArrayAccess {
 		);
 	}
 
-	public function toJSON() {
-		return json_encode($this->toArray());
-	}
-
-	public static function fromJSON($json) {
-		$input = json_decode($json, true);
-
-		if ($input === null) {
-			throw new ameInvalidJsonException('Cannot parse meta box data. The input is not valid JSON.');
-		}
-
-		if (!is_array($input)) {
-			throw new ameInvalidMetaBoxDataException(sprintf(
-				'Failed to decode meta box data. Expected type: array, actual type: %s',
-				gettype($input)
-			));
-		}
+	public static function fromArray($input) {
 		if (
 			!isset($input['format']['name'], $input['format']['version'])
 			|| ($input['format']['name'] !== self::FORMAT_NAME)
@@ -65,6 +49,27 @@ class ameMetaBoxSettings implements ArrayAccess {
 		}
 
 		return $settings;
+	}
+
+	public function toJSON() {
+		return json_encode($this->toArray());
+	}
+
+	public static function fromJSON($json) {
+		$input = json_decode($json, true);
+
+		if ($input === null) {
+			throw new ameInvalidJsonException('Cannot parse meta box data. The input is not valid JSON.');
+		}
+
+		if (!is_array($input)) {
+			throw new ameInvalidMetaBoxDataException(sprintf(
+				'Failed to decode meta box data. Expected type: array, actual type: %s',
+				gettype($input)
+			));
+		}
+
+		return self::fromArray($input);
 	}
 
 	/**

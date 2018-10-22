@@ -100,7 +100,7 @@ class ITSEC_File_Change_Scanner {
 
 		$scheduler = $scheduler ? $scheduler : ITSEC_Core::get_scheduler();
 
-		if ( self::is_running( $scheduler ) ) {
+		if ( self::is_running( $scheduler, $user_initiated ) ) {
 			return new WP_Error( 'itsec-file-change-scan-already-running', __( 'A File Change scan is currently in progress.', 'better-wp-security' ) );
 		}
 
@@ -124,15 +124,24 @@ class ITSEC_File_Change_Scanner {
 	 * Check if a scan is running.
 	 *
 	 * @param ITSEC_Scheduler
+	 * @param bool $user_initiated Whether the user initiated run is running for the scheduled loop scan.
 	 *
 	 * @return bool
 	 */
-	public static function is_running( $scheduler = null ) {
+	public static function is_running( $scheduler = null, $user_initiated = null ) {
 
 		$scheduler = $scheduler ? $scheduler : ITSEC_Core::get_scheduler();
 
-		if ( $scheduler->is_single_scheduled( 'file-change-fast', null ) ) {
-			return true;
+		if ( true === $user_initiated ) {
+			if ( $scheduler->is_single_scheduled( 'file-change-fast' ) ) {
+				return true;
+			}
+		} elseif ( false === $user_initiated ) {
+			if ( $scheduler->is_single_scheduled( 'file-change' ) ) {
+				return true;
+			}
+		} elseif ( null === $user_initiated ) {
+			return $scheduler->is_single_scheduled( 'file-change' ) || $scheduler->is_single_scheduled( 'file-change-fast' );
 		}
 
 		return ! ITSEC_File_Change::make_progress_storage()->is_empty();

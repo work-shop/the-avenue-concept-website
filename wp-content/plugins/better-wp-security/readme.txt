@@ -3,7 +3,7 @@ Contributors: ithemes, chrisjean, gerroald, mattdanner, timothyblynjacobs
 Tags: security, security plugin, malware, hack, secure, block, SSL, admin, htaccess, lockdown, login, protect, protection, anti virus, attack, injection, login security, maintenance, permissions, prevention, authentication, administration, password, brute force, ban, permissions, bots, user agents, xml rpc, security log
 Requires at least: 4.7
 Tested up to: 4.9.8
-Stable tag: 7.1.0
+Stable tag: 7.2.0
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -188,6 +188,13 @@ Free support may be available with the help of the community in the <a href="htt
 5. Free malware scan powered by Sucuri SiteCheck.
 
 == Changelog ==
+
+= 7.2.0 =
+* Enhancement: Allow for selecting the particular Proxy header a server is configured to use. Improve the language to indicate the importance of configuring this setting. H/t Filippo Cavallarin CEO at wearesegment.com
+* Enhancement: Block access to git and svn repositories when System Tweaks -> Protect System Files is enabled.
+* Tweak: Update jQuery Validation library to 1.17.0
+* Bug Fix: Improve detection of blocking the File Change Scan from being scheduled if one is already being run.
+* Bug Fix: Prevent infinite recursion error when trying to access directories outside of the allowed file tree.
 
 = 7.1.0 =
 * New Feature: Allow for globally setting recipients for admin-targeted notifications. All new notifications will default to the recipients in this list. Notifications can be set to use the default list or switch to a custom list.
@@ -496,5 +503,5 @@ Free support may be available with the help of the community in the <a href="htt
 
 == Upgrade Notice ==
 
-= 7.1.0 =
-Version 7.1.0 contains important bug fixes and improvements. It is recommended for all users.
+= 7.2.0 =
+Version 7.2.0 contains important bug fixes and improvements. It is recommended for all users.

@@ -116,6 +116,11 @@ class WPMenuEditor extends MenuEd_ShadowPluginFramework {
 	private $current_tab = '';
 
 	/**
+	 * @var ameModule[] List of modules that were loaded for the current request.
+	 */
+	private $loaded_modules = array();
+
+	/**
 	 * @var array List of capabilities that are used in the default admin menu. Used to detect meta capabilities.
 	 */
 	private $caps_used_in_menu = array();
@@ -375,7 +380,8 @@ class WPMenuEditor extends MenuEd_ShadowPluginFramework {
 			/** @noinspection PhpIncludeInspection */
 			include ($module['path']);
 			if ( !empty($module['className']) ) {
-				new $module['className']($this);
+				$instance = new $module['className']($this);
+				$this->loaded_modules[] = $instance;
 			}
 		}
 
@@ -388,6 +394,13 @@ class WPMenuEditor extends MenuEd_ShadowPluginFramework {
 		$this->tabs = apply_filters('admin_menu_editor-tabs', $firstTabs);
 		//The "Settings" tab is always last.
 		$this->tabs['settings'] = 'Settings';
+	}
+
+	/**
+	 * @return ameModule[]
+	 */
+	public function get_loaded_modules() {
+		return $this->loaded_modules;
 	}
 
   /**
@@ -1216,6 +1229,7 @@ class WPMenuEditor extends MenuEd_ShadowPluginFramework {
 	 *
 	 * @param array|null $custom_menu
 	 * @param string|null $config_id Supported values: 'network-admin', 'global' or 'site'
+	 * @throws InvalidMenuException
 	 */
 	function set_custom_menu($custom_menu, $config_id = null) {
 		if ( $config_id === null ) {
@@ -3494,6 +3508,18 @@ class WPMenuEditor extends MenuEd_ShadowPluginFramework {
 	 */
 	public function set_plugin_option($name, $value) {
 		$this->options[$name] = $value;
+		$this->save_options();
+	}
+
+	/**
+	 * Update multiple plugin configuration values. Saves immediately.
+	 *
+	 * @param array $options An dictionary of key => value pairs.
+	 */
+	public function set_many_plugin_options($options) {
+		foreach($options as $key => $value) {
+			$this->options[$key] = $value;
+		}
 		$this->save_options();
 	}
 

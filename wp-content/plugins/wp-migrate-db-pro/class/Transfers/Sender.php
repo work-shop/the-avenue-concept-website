@@ -61,7 +61,7 @@ class Sender {
 		}
 
 		$batch = filter_var( $_POST['batch'], FILTER_SANITIZE_STRING );
-		$batch = unserialize( base64_decode( $batch ) );
+		$batch = unserialize( str_rot13( base64_decode( $batch ) ) );
 
 		if ( ! $batch || ! \is_array( $batch ) ) {
 			throw new \Exception( __( 'Request for batch of files failed.', 'wp-migrate-db' ) );

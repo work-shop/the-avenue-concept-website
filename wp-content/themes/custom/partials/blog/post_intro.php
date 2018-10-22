@@ -3,9 +3,9 @@
 		<div class="row">
 			<div class="col-sm-12 col-md-6 col-lg-6 mb2 post-excerpt-container">
 				<?php if( get_field('post_excerpt') ): ?>
-					<p class="post-excerpt">
+					<h3 class="post-excerpt brand">
 						<?php the_field('post_excerpt'); ?>
-					</p>
+					</h3>
 				<?php endif; ?>
 			</div>
 			<div class="col-sm-12 col-md-6 col-lg-5 offset-lg-1 post-metadata">

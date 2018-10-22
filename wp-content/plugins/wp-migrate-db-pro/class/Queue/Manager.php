@@ -41,6 +41,17 @@ class Manager {
 	}
 
 	function ensure_tables_exist() {
+		$state_data = $this->wpmdb->wpmdbpro->get( 'state_data' );
+		$form_data  = $this->wpmdb->parse_migration_form_data( $state_data['form_data'] );
+
+		if ( ! \in_array( $state_data['intent'], [ 'push', 'pull' ] ) ) {
+			return;
+		}
+
+		if ( ! isset( $form_data['migrate_themes']) && ! isset( $form_data['migrate_plugins'] ) ) {
+			return;
+		}
+
 		$this->create_tables( true );
 	}
 

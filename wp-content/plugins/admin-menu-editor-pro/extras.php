@@ -15,6 +15,9 @@ define('AME_RC_ONLY_CUSTOM', 1);
  */
 define('AME_RC_USE_DEFAULT_ACCESS', 2);
 
+require_once AME_ROOT_DIR . '/extras/exportable-module.php';
+require_once AME_ROOT_DIR . '/extras/persistent-pro-module.php';
+require_once AME_ROOT_DIR . '/extras/import-export/import-export.php';
 
 class wsMenuEditorExtras {
 	/** @var WPMenuEditor */
@@ -51,6 +54,8 @@ class wsMenuEditorExtras {
 		$this->wp_menu_editor = $wp_menu_editor;
 
 		$this->virtual_cap_mode = WPMenuEditor::ALL_VIRTUAL_CAPS;
+
+		add_filter('admin_menu_editor-available_modules', array($this, 'filter_available_modules'), 10, 1);
 
 		//Clear per-user caches when their roles or capabilities change.
 		add_action('updated_user_meta', array($this, 'clear_user_cap_cache'), 10, 0);
@@ -99,6 +104,9 @@ class wsMenuEditorExtras {
 		add_action( 'wp_ajax_export_custom_menu', array($this,'ajax_export_custom_menu') );
 		//Add the "Import" and "Export" buttons
 		add_action('admin_menu_editor-sidebar', array($this, 'add_extra_buttons'));
+
+		//Initialise the universal import/export handler.
+		wsAmeImportExportFeature::get_instance($this->wp_menu_editor);
 		
 		add_filter('admin_menu_editor-self_page_title', array($this, 'pro_page_title'), 10, 0);
 		add_filter('admin_menu_editor-self_menu_title', array($this, 'pro_menu_title'), 10, 0);
@@ -764,20 +772,21 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 </script>
 		<?php
 	}
-	
-    /**
-     * Prepare a custom menu for export. 
-     *
-     * Expects menu data to be in $_POST['data'].
-     * Outputs a JSON-encoded object with three fields : 
-     * 	download_url - the URL that can be used to download the exported menu.
-     *	filename - export file name.
-     *	filesize - export file size (in bytes).
-     *
-     * If something goes wrong, the response object will contain an 'error' field with an error message.
-     *
-     * @return void
-     */
+
+	/**
+	 * Prepare a custom menu for export.
+	 *
+	 * Expects menu data to be in $_POST['data'].
+	 * Outputs a JSON-encoded object with three fields :
+	 *    download_url - the URL that can be used to download the exported menu.
+	 *    filename - export file name.
+	 *    filesize - export file size (in bytes).
+	 *
+	 * If something goes wrong, the response object will contain an 'error' field with an error message.
+	 *
+	 * @return void
+	 * @throws InvalidMenuException
+	 */
 	function ajax_export_custom_menu(){
 		$wp_menu_editor = $this->wp_menu_editor;
 		if (!$wp_menu_editor->current_user_can_edit_menu() || !check_ajax_referer('export_custom_menu', false, false)){
@@ -916,36 +925,7 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 
 			//Check for general upload errors.
 			if ($file_data['error'] != UPLOAD_ERR_OK) {
-				switch($file_data['error']) {
-					case UPLOAD_ERR_INI_SIZE:
-						$message = sprintf(
-							'The uploaded file exceeds the upload_max_filesize directive in php.ini. Limit: %s',
-							strval(ini_get('upload_max_filesize'))
-						);
-						break;
-					case UPLOAD_ERR_FORM_SIZE:
-						$message = "The uploaded file exceeds the internal file size limit. Please contact the developer.";
-						break;
-					case UPLOAD_ERR_PARTIAL:
-						$message = "The file was only partially uploaded";
-						break;
-					case UPLOAD_ERR_NO_FILE:
-						$message = "No file was uploaded";
-						break;
-					case UPLOAD_ERR_NO_TMP_DIR:
-						$message = "Missing a temporary folder";
-						break;
-					case UPLOAD_ERR_CANT_WRITE:
-						$message = "Failed to write file to disk";
-						break;
-					case UPLOAD_ERR_EXTENSION:
-						$message = "File upload stopped by a PHP extension";
-						break;
-
-					default:
-						$message = 'Unknown upload error #' . $file_data['error'];
-						break;
-				}
+				$message = self::get_upload_error_message($file_data['error']);
 				$this->output_for_jquery_form( $wp_menu_editor->json_encode(array('error' => $message)) );
 				die();
 			}
@@ -998,6 +978,40 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 		}
 	}
 
+	public static function get_upload_error_message($errorCode) {
+		switch($errorCode) {
+			case UPLOAD_ERR_INI_SIZE:
+				$message = sprintf(
+					'The uploaded file exceeds the upload_max_filesize directive in php.ini. Limit: %s',
+					strval(ini_get('upload_max_filesize'))
+				);
+				break;
+			case UPLOAD_ERR_FORM_SIZE:
+				$message = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.";
+				break;
+			case UPLOAD_ERR_PARTIAL:
+				$message = "The file was only partially uploaded.";
+				break;
+			case UPLOAD_ERR_NO_FILE:
+				$message = "No file was uploaded.";
+				break;
+			case UPLOAD_ERR_NO_TMP_DIR:
+				$message = "Missing a temporary folder.";
+				break;
+			case UPLOAD_ERR_CANT_WRITE:
+				$message = "Failed to write file to disk.";
+				break;
+			case UPLOAD_ERR_EXTENSION:
+				$message = "File upload stopped by a PHP extension.";
+				break;
+
+			default:
+				$message = 'Unknown upload error #' . $errorCode;
+				break;
+		}
+		return $message;
+	}
+
 	/**
 	 * Utility method that outputs data in a format suitable to the jQuery Form plugin.
 	 *
@@ -1033,7 +1047,7 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 		<input type="button" id='ws_import_menu' value="Import" class="button ws_main_button" />
 		<?php
 	}
-	
+
 	function hook_user_has_cap($allcaps, /** @noinspection PhpUnusedParameterInspection */ $caps, $args){
 		//Add "user:user_login" to the user's capabilities. This makes it possible to restrict
 		//menu access on a per-user basis.
@@ -2201,6 +2215,18 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 
 	public function enable_virtual_caps() {
 		$this->disable_virtual_caps = false;
+	}
+
+	public function filter_available_modules($modules) {
+		$modules['plugin-visibility'] = array_merge(
+			$modules['plugin-visibility'],
+			array(
+				'path' => AME_ROOT_DIR . '/extras/modules/plugin-visibility/plugin-visibility.php',
+				'className' => 'amePluginVisibilityPro',
+				'title' => 'Plugins',
+			)
+		);
+		return $modules;
 	}
 }
 

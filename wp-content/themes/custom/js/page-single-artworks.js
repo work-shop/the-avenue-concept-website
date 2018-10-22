@@ -100,7 +100,8 @@ function nl2br (str, is_xhtml) {
 
     //var thumbnail = artwork.featured_media;
     var featured_images = artwork.media.filter( function( media ) { return media.type === 'image' && media.featured; });
-    var regular_images = artwork.media.filter( function( media ) { return media.type === 'image' && !media.featured; });
+    // var regular_images = artwork.media.filter( function( media ) { return media.type === 'image' && !media.featured; });
+    var regular_images = artwork.media.filter( function( media ) { return media.type === 'image'; });
     //var featured_videos = artwork.media.filter( function( media ) { return media.type === 'video' && media.featured; });
     var regular_videos = artwork.media.filter( function( media ) { return media.type === 'video' && !media.featured; });
 

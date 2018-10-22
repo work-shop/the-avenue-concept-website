@@ -183,6 +183,16 @@ final class ITSEC_Notification_Center {
 			$args['schedule'] = wp_parse_args( $args['schedule'], $schedule );
 		}
 
+		$optional = array(
+			'default' => true,
+		);
+
+		if ( $args['optional'] === true ) {
+			$args['optional'] = $optional;
+		} elseif ( is_array( $args['optional'] ) ) {
+			$args['optional'] = wp_parse_args( $args['optional'], $optional );
+		}
+
 		return $args;
 	}
 

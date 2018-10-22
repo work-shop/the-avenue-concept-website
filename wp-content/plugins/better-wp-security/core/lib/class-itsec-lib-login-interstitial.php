@@ -37,7 +37,7 @@ class ITSEC_Lib_Login_Interstitial {
 
 		$this->registered = wp_list_sort( $this->registered, 'priority', 'ASC', true );
 
-		add_action( 'wp_login', array( $this, 'wp_login' ), 10, 2 );
+		add_action( 'wp_login', array( $this, 'wp_login' ), -1000, 2 );
 		add_action( 'wp_login_errors', array( $this, 'handle_token_expired' ) );
 		add_action( 'login_init', array( $this, 'force_interstitial' ) );
 		add_action( 'login_form', array( $this, 'ferry_after_login' ) );
@@ -274,6 +274,9 @@ class ITSEC_Lib_Login_Interstitial {
 		if ( ! get_user_meta( $user->ID, '_itsec_has_logged_in', true ) ) {
 			update_user_meta( $user->ID, '_itsec_has_logged_in', ITSEC_Core::get_current_time_gmt() );
 		}
+
+		remove_action( 'wp_login', array( $this, 'wp_login' ), - 1000 );
+		do_action( 'wp_login', $user->user_login, $user );
 
 		/**
 		 * Fires when a user is re-logged back in after submitting an interstitial.

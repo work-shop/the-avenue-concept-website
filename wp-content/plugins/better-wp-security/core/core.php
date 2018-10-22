@@ -24,7 +24,7 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 		 *
 		 * @access private
 		 */
-		private $plugin_build = 4106;
+		private $plugin_build = 4108;
 
 		/**
 		 * Used to distinguish between a user modifying settings and the API modifying settings (such as from Sync
@@ -50,8 +50,7 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 			$current_time_gmt,
 			$is_iwp_call,
 			$request_type,
-			$wp_upload_dir,
-			$storage_dir;
+			$wp_upload_dir;
 
 
 		/**
@@ -751,26 +750,56 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 		 * Retrieve and/or create a directory for ITSEC to store data.
 		 *
 		 * @param string $dir Optionally specify an additional sub-directory.
+		 * @param bool   $public Whether to get the public version of the directory.
 		 *
 		 * @return string
 		 */
-		public static function get_storage_dir( $dir = '' ) {
-			$self = self::get_instance();
+		public static function get_storage_dir( $dir = '', $public = false ) {
 
 			require_once( self::get_core_dir() . '/lib/class-itsec-lib-directory.php' );
 
-			if ( ! isset( $self->storage_dir ) ) {
-				$wp_upload_dir = self::get_wp_upload_dir();
+			$wp_upload_dir = self::get_wp_upload_dir();
 
-				$self->storage_dir = $wp_upload_dir['basedir'] . '/ithemes-security/';
+			$storage_dir = $wp_upload_dir['basedir'];
+
+			if ( $public ) {
+				$storage_dir .= '/ithemes-security-public/';
+			} else {
+				$storage_dir .= '/ithemes-security/';
 			}
 
-			$dir = $self->storage_dir . $dir;
+			$dir = $storage_dir . $dir;
 			$dir = rtrim( $dir, '/' );
 
 			ITSEC_Lib_Directory::create( $dir );
 
 			return $dir;
+		}
+
+		/**
+		 * Get the URL to the directory that ITSEC stores data in.
+		 *
+		 * @param string $dir
+		 * @param bool   $public Whether to get the public version of the directory.
+		 *
+		 * @return string
+		 */
+		public static function get_storage_url( $dir = '', $public = false ) {
+
+			self::get_storage_dir( $dir );
+
+			$upload_dir = self::get_wp_upload_dir();
+			$base       = untrailingslashit( $upload_dir['baseurl'] );
+
+			$url = $base;
+
+			if ( $public ) {
+				$url .= '/ithemes-security-public/';
+			} else {
+				$url .= '/ithemes-security/';
+			}
+
+			return $url . $dir;
 		}
 
 		public static function doing_data_upgrade() {

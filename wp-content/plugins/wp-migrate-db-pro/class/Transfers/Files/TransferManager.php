@@ -141,7 +141,7 @@ class TransferManager extends \WPMDB\Transfers\Abstracts\TransferManagerAbstract
 		}
 
 		try {
-			list( $resp, $meta ) = $this->request_batch( base64_encode( serialize( $batch ) ), $state_data, 'wpmdb_transfers_send_file', $remote_url );
+			list( $resp, $meta ) = $this->request_batch( base64_encode( str_rot13( serialize( $batch ) ) ), $state_data, 'wpmdb_transfers_send_file', $remote_url );
 		} catch ( \Exception $e ) {
 			$this->util->catch_general_error( $e->getMessage() );
 		}
