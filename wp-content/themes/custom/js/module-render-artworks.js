@@ -185,7 +185,7 @@ import { Artwork } from './module-zoho-artwork.js';
 
     var location = $('<h4>')
     .addClass('artwork-item-location')
-    .text( artwork.location.name );
+    .text( artwork.location );
 
     var img = $('<img class="artwork-item-image">')
     .attr('src', getFeaturedImageSrc( artwork ) );
@@ -219,7 +219,8 @@ import { Artwork } from './module-zoho-artwork.js';
     feature.marker.icon = { 
         fillColor: renderFillColor( artwork ),
         strokeColor: '#eee',
-        path: 'M12.7,60c-0.9,0-1.7-4.3-1.7-9.6c0,0,0,0-0.7-0.6c-2-1.7-4.9-1.9-6.7-5.2c-1.8-3.4,0.6-6,0.2-9c-0.6-4.6-3.4-7.3-3.7-10.9c-0.5-5.5,2.1-6.8,4.2-11.3C6.7,8.4,7.7,1.8,10.4,0.4c5.2-2.6,8.7,6.8,10.6,16c1.1,5.2,4.3,7.4,4.3,12.6c0,3.4-2.9,5.3-2.1,12c0.8,6.9-6.8,7.1-7.7,8.3c-1.4,2-1.4,2-1.4,2C14.2,56.1,13.6,60,12.7,60z' 
+        path: 'M12.7,60c-0.9,0-1.7-4.3-1.7-9.6c0,0,0,0-0.7-0.6c-2-1.7-4.9-1.9-6.7-5.2c-1.8-3.4,0.6-6,0.2-9c-0.6-4.6-3.4-7.3-3.7-10.9c-0.5-5.5,2.1-6.8,4.2-11.3C6.7,8.4,7.7,1.8,10.4,0.4c5.2-2.6,8.7,6.8,10.6,16c1.1,5.2,4.3,7.4,4.3,12.6c0,3.4-2.9,5.3-2.1,12c0.8,6.9-6.8,7.1-7.7,8.3c-1.4,2-1.4,2-1.4,2C14.2,56.1,13.6,60,12.7,60z',
+        '-webkit-filter': 'drop-shadow(12px 12px 7px rgba(0,0,0,0.5))'  
     };
 
     var popup = { content: renderThumbnail( artwork ).prop('outerHTML') };

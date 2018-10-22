@@ -6,15 +6,11 @@
 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6ba442', endColorstr='#006ba442',GradientType=0 );
 }
 
-$hero-offset: 20px;
+$hero-offset: 60px;
 
 .single-artwork-hero{
 	background: none;
 	height: calc( 100vh - #{$hero-offset} );
-
-	.page-hero-text{
-		padding-top: 4vw;
-	}
 }
 
 

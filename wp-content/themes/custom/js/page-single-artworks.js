@@ -135,7 +135,7 @@ function nl2br (str, is_xhtml) {
         }
         medium = medium + artwork.medium[i];
     }
-    var location = artwork.location.name;
+    var location = artwork.location;
     var sponsors = artwork.partners_and_sponsors[0];
     var program = artwork.program;
     program = '<a href="/artworks/?program=' + program + '" class="sidebar-program-button sidebar-button">' + program + '</a>';
