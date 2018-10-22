@@ -42,6 +42,32 @@ function mapMediaType( media_type ) {
 
 }
 
+
+/**
+ * extract the name of the image from
+ * the internal ZOho image src string.
+ */
+function extractImageName( url ) {
+    return url.substring( url.indexOf( split_string ) + split_string.length );
+}
+
+
+/**
+ *
+ *
+ *
+ */
+function mapTrueImageSource( id, image_name ) {
+    return creator_export +
+           user_name + '/' +
+           database_name + '/' +
+           view_name + '/' +
+           id + '/' +
+           'Image/image-download/' +
+           media_encryption_key +
+           '?filepath=/' + image_name;
+}
+
 /**
  * Given a media object corresponding to an image,
  * this routine parses out the image URLs that
@@ -54,31 +80,32 @@ function createImageSources( image_html, media ) {
     var image = $('img');
 
     var src = image.attr('src');
+    var low = image.attr( 'lowqual');
+    var med = image.attr( 'medqual');
 
     if ( src.indexOf( '://' ) === -1 ) {
 
-        var image_name = src.substring( src.indexOf( split_string ) + split_string.length );
+        var true_image_src = mapTrueImageSource( media.ID, extractImageName( src ) );
 
-        var true_image_src =
-            creator_export +
-            user_name + '/' +
-            database_name + '/' +
-            view_name + '/' +
-            media.ID + '/' +
-            'Image/image-download/' +
-            media_encryption_key +
-            '?filepath=/' + image_name;
+        var true_image_low = (typeof low === 'undefined') ? true_image_src : mapTrueImageSource( media.ID, extractImageName( low ) );
+        var true_image_med = (typeof med === 'undefined') ? true_image_src : mapTrueImageSource( media.ID, extractImageName( med ) );
+
+        console.log( true_image_low );
 
         return {
             type: 'zoho',
-            src: true_image_src
+            src: true_image_src,
+            med: true_image_med,
+            low: true_image_low
         };
 
     } else {
 
         return {
             type: 'other',
-            src: src
+            src: src,
+            med: src,
+            low: src
         };
 
     }
