@@ -22,7 +22,7 @@ $dot-padding-combined: $dot-padding*2;
 	position: fixed;
 	z-index: 6;
 	bottom: 100px;
-	right: 30px;
+	right: 10px;
 
 	@media screen and (max-width: $sm) {
 		display: none;

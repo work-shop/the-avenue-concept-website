@@ -11,8 +11,16 @@
 }
 
 .card-event{
+	background: lighten( $light, 6% );	
+	padding: 1em;
+
 	*{
 		color: $dark;
+	}
+
+	.event-title{
+		max-width: 15em;
+		margin-bottom: 1em;
 	}
 
 	.card-event-link{
