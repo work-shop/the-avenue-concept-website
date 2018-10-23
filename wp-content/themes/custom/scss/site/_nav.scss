@@ -13,13 +13,13 @@ $text-nav: (
 	left: 0;
 	width: 100%;
 	height: $nav-height;
-	overflow: hidden;
+	//overflow: hidden;
 	padding-left: 15px;
 	z-index: 7;
 	//transition: all 1s;
 
 	&.fixed{
-		position: fixed;
+		position: fixed; 
 	}
 
 	@media screen and (max-width: $md) {
@@ -30,6 +30,7 @@ $text-nav: (
 		height: $nav-height-mobile;
 		padding-left: 10px;
 		padding-right: 10px;
+		overflow: hidden;
 	}
 
 	#nav-background{
@@ -39,9 +40,11 @@ $text-nav: (
 		width: 100%;
 		z-index: -1;
 		height: $nav-height-after;
+		background: $brand;
 		display: none;
 
 		svg{
+			display: none;
 			height: $nav-height-after;
 			width: auto;
 		}
@@ -246,6 +249,11 @@ $text-nav: (
 			padding: 10px;
 			transition: all .2s;
 
+			@media screen and (min-width: $sm+1) {
+				text-shadow: 1px 1px 1px black;
+			}
+			
+
 			@media screen and (max-width: $md) {
 				font-size: 16px;
 			}
@@ -332,6 +340,10 @@ $text-nav: (
 								top: -5px;
 							}
 
+							a{
+								text-shadow: none;
+							}
+
 						}//li
 
 					}
@@ -373,10 +385,11 @@ $text-nav: (
 		}
 
 		#logo {
-			width: 140px;
+			width: 150px;
+			-webkit-filter: none;
 
 			a{
-				padding-top: 12px;
+				padding-top: 13px;
 				padding-bottom: 5px;
 			}
 
@@ -391,11 +404,11 @@ $text-nav: (
 		}
 
 		#nav-menus{
-			padding-top: 15px;
+			padding-top: 18px;
+		}
 
-			@media screen and (max-width: $lg) {
-				padding-top: 20px;
-			}
+		.nav-menu-primary-item a{
+			text-shadow: none;
 		}
 	}
 
@@ -427,6 +440,9 @@ $text-nav: (
 #logo{
 	width: 160px;
 	float: left;
+	@media screen and (min-width: $sm+1) {
+		filter: drop-shadow(0px 2px 3px transparentize($dark, .2));
+	}
 
 	@media screen and (max-width: $md) {
 		width: 130px;

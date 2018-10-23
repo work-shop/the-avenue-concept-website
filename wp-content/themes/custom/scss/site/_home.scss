@@ -1,121 +1,11 @@
 
-//override body padding for landing page, needs to be turned off when the nav goes back in the site
-body{
-	background-color: $body-background-color;
-	padding-top: 0;	
-	@media screen and (max-width: $md) {
-		padding-top: 0;
-	}
-	@media screen and (max-width: $sm) {
-		padding-top: 0;
-	}
-}
-
-
-//landing page spy nav
-
-$dot: 16px;
-$dot-padding: 8px;
-$dot-padding-combined: $dot-padding*2;
-
-#landing-page-nav{
-	position: fixed;
-	z-index: 6;
-	bottom: 100px;
-	right: 10px;
-
-	@media screen and (max-width: $sm) {
-		display: none;
-	}
-
-	li{
-		width: $dot + $dot-padding-combined + 4px;
-
-		a{
-			margin-bottom: 5px;
-			padding: $dot-padding;
-			text-align: center;
-			display: block;
-
-			&:hover{
-				width: 150px;
-
-				span{
-					text-indent: 0;
-					height: 85px;
-					width: 150px;
-					margin-left: -100px;
-					margin-top: 0px;
-					margin-bottom: 0px;
-					z-index: 7;
-					background-size: 150px 85px;
-					background-repeat: no-repeat;
-					background-position: center center;
-					background-color: transparent;
-					$svg: svg-fill($blob-a, $brand);
-					background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					border: none;
-					color: white;
-					transition: color .7s, height .15s;
-
-					&.link-a{
-						$svg: svg-fill-stroke($blob-a, $brand, $white, '8');
-						background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					}
-					&.link-b{
-						$svg: svg-fill-stroke($blob-b, $brand, $white, '8');
-						background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					}
-					&.link-c{
-						$svg: svg-fill-stroke($blob-c, $brand, $white, '8');
-						background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					}
-					&.link-d{
-						$svg: svg-fill-stroke($blob-d, $brand, $white, '8');
-						background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					}
-					&.link-e{
-						$svg: svg-fill-stroke($blob-e, $brand, $white, '8');
-						background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					}
-				}
-			}
-		}
-
-		span{
-			width: $dot;
-			height: $dot;
-			display: block;
-			border: 1px solid white;
-			background-color: $brand;
-			border-radius: 10px;
-			text-indent: -9999px;
-			font-size: 13px;
-			font-family: $font-secondary;
-			text-transform: uppercase;
-			text-align: center;
-			vertical-align: middle;
-			line-height: 100px;
-			position: relative;
-			color: transparent;
-			transition: color .7s, height .15s;
-		}
-
-	}
-}
-
-
-
 //home intro
 
 #home-intro{
-	background: -moz-linear-gradient(top, rgba(107,164,66,1) 5%, rgba(107,164,66,0) 85%);
-	background: -webkit-linear-gradient(top, rgba(107,164,66,1) 5%,rgba(107,164,66,0) 85%);
-	background: linear-gradient(to bottom, rgba(107,164,66,1) 5%,rgba(107,164,66,0) 85%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6ba442', endColorstr='#006ba442',GradientType=0 );
+	
 
 	@media screen and (max-width: $sm) {
-		max-height: 90vh;
+		//max-height: 90vh;
 		video{
 			width: 150%;
 			transform: translate(-25%,0);
@@ -130,6 +20,70 @@ $dot-padding-combined: $dot-padding*2;
 	}
 }
 
+.home-intro-top{
+	//height: calc( 100vh - #{$nav-height});
+	height: 100vh;
+	overflow: hidden;
+	// position: absolute;
+	// width: 100%;
+	// top: 0;
+	// left: 0;
+
+	video{
+		min-height: 100%;
+		min-width: 100%;
+		width: auto;
+		height: auto;
+		// height: 100%;
+		// width: auto;
+		// max-width: none;
+	}
+}
+
+$home-intro-bottom-height: 250px;
+
+.home-intro-bottom{
+	height: $home-intro-bottom-height;
+	margin-top: -$home-intro-bottom-height;
+	position: relative;
+	///border: 1px solid yellow;
+	@extend .d-flex;
+	@extend .align-items-center;
+}
+
+.home-intro-curve{
+	position: absolute;
+	bottom: -0px;
+	z-index: 2;
+	width: 100%;
+	height: 100%;
+	//background: red;
+
+	svg{
+		height: 100%;
+		//display: none;
+	}
+}
+
+#tagline{
+	//padding-top: 50px;
+	position: relative;
+	z-index: 3;
+	font-size: 2.5vw;
+	margin: 0;
+	//background: white;
+	//border-radius: 100px;
+	//padding: 100px;
+
+}
+
+.sitewide-alert-on,.announcement-on{
+	.home-intro-top{
+		height: calc( 100vh - #{$sitewide-alert-height});
+	}
+}
+
+
 
 #home-intro-video{
 	position: relative;
@@ -137,41 +91,36 @@ $dot-padding-combined: $dot-padding*2;
 }
 
 .tagline-container{
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: 3;
-	@extend .d-flex;
-	@extend .justify-content-center;
-	@extend .align-items-center;
+	// position: absolute;
+	// top: 150px;
+	// left: 20px;
+	// width: 100%;
+	// height: 100%;
+	// z-index: 3;
+	// @extend .d-flex;
+	//@extend .justify-content-center;
+	//@extend .align-items-center;
 }
 
-#tagline{
-	color: white;
-	text-shadow: 2px 2px 1px $dark;
-	//text-decoration: underline;
-	font-size: 7vw;
-	line-height: 1;
+// #tagline{
+// 	color: white;
+// 	text-shadow: 2px 2px 1px $dark;
+// 	//text-decoration: underline;
+// 	font-size: 3vw;
+// 	line-height: 1;
 
-	@media screen and (max-width: $lg) { font-size: 4vw; }
-	@media screen and (max-width: $sm) {
-		font-size: 4.5vw;
-		margin-top: 50px;
-		text-align: center;
-	}
-	@media screen and (max-width: $xs) {
-		font-size: 6vw;
-	}
-}
+// 	@media screen and (max-width: $lg) { font-size: 4vw; }
+// 	@media screen and (max-width: $sm) {
+// 		font-size: 4.5vw;
+// 		margin-top: 50px;
+// 		text-align: center;
+// 	}
+// 	@media screen and (max-width: $xs) {
+// 		font-size: 6vw;
+// 	}
+// }
 
-.home-intro-curve{
-	position: absolute;
-	bottom: -10px;
-	z-index: 2;
-	width: 100%;
-}
+
 
 
 
@@ -318,4 +267,108 @@ $modal-subtract-md: $modal-padding-md * 2;
 
 
 
+//override body padding for landing page, needs to be turned off when the nav goes back in the site
+body{
+	background-color: $body-background-color;
+	padding-top: 0;	
+	@media screen and (max-width: $md) {
+		padding-top: 0;
+	}
+	@media screen and (max-width: $sm) {
+		padding-top: 0;
+	}
+}
+
+
+//landing page spy nav
+
+$dot: 16px;
+$dot-padding: 8px;
+$dot-padding-combined: $dot-padding*2;
+
+#landing-page-nav{
+	position: fixed;
+	z-index: 6;
+	bottom: 100px;
+	right: 10px;
+
+	@media screen and (max-width: $sm) {
+		display: none;
+	}
+
+	li{
+		width: $dot + $dot-padding-combined + 4px;
+
+		a{
+			margin-bottom: 5px;
+			padding: $dot-padding;
+			text-align: center;
+			display: block;
+
+			&:hover{
+				width: 150px;
+
+				span{
+					text-indent: 0;
+					height: 85px;
+					width: 150px;
+					margin-left: -100px;
+					margin-top: 0px;
+					margin-bottom: 0px;
+					z-index: 7;
+					background-size: 150px 85px;
+					background-repeat: no-repeat;
+					background-position: center center;
+					background-color: transparent;
+					$svg: svg-fill($blob-a, $brand);
+					background-image: url('data:image/svg+xml;utf8,#{$svg}');
+					border: none;
+					color: white;
+					transition: color .7s, height .15s;
+
+					&.link-a{
+						$svg: svg-fill-stroke($blob-a, $brand, $white, '8');
+						background-image: url('data:image/svg+xml;utf8,#{$svg}');
+					}
+					&.link-b{
+						$svg: svg-fill-stroke($blob-b, $brand, $white, '8');
+						background-image: url('data:image/svg+xml;utf8,#{$svg}');
+					}
+					&.link-c{
+						$svg: svg-fill-stroke($blob-c, $brand, $white, '8');
+						background-image: url('data:image/svg+xml;utf8,#{$svg}');
+					}
+					&.link-d{
+						$svg: svg-fill-stroke($blob-d, $brand, $white, '8');
+						background-image: url('data:image/svg+xml;utf8,#{$svg}');
+					}
+					&.link-e{
+						$svg: svg-fill-stroke($blob-e, $brand, $white, '8');
+						background-image: url('data:image/svg+xml;utf8,#{$svg}');
+					}
+				}
+			}
+		}
+
+		span{
+			width: $dot;
+			height: $dot;
+			display: block;
+			border: 1px solid white;
+			background-color: $brand;
+			border-radius: 10px;
+			text-indent: -9999px;
+			font-size: 13px;
+			font-family: $font-secondary;
+			text-transform: uppercase;
+			text-align: center;
+			vertical-align: middle;
+			line-height: 100px;
+			position: relative;
+			color: transparent;
+			transition: color .7s, height .15s;
+		}
+
+	}
+}
 

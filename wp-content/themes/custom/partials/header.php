@@ -45,10 +45,28 @@
 
 	<?php wp_head(); ?>
 
-</head>
-<body <?php body_class('loading before-scroll modal-off menu-closed dropdown-off mobile-dropdown-off'); ?>>
+	<?php
+	$sitewide_alert_on = get_field('show_sitewide_alert', 'option');
+	if( $sitewide_alert_on === true ):
+		if( !isset($_COOKIE['tac_show_sitewide_alert']) || $_COOKIE['tac_show_sitewide_alert'] === false ):
+			$sitewide_alert_class = 'sitewide-alert-on';
+			$show_sitewide_alert = true;
+		endif;
+	endif;
+	$announcement_on = get_field('show_announcement', '6');
+	if( is_page(6) && $announcement_on === true ):
+		$announcement_class = 'announcement-on';
+		$show_announcement = true;
+		//if( !isset($_COOKIE['tac_show_announcement']) || $_COOKIE['tac_show_announcement'] === false ):
+		//endif;
+	endif;
+	?>
 
-	<?php get_template_part('partials/nav'); //when turning this back on, be sure to modify home.scss to turn back on body padding ?>
+</head>
+<body <?php body_class('loading before-scroll modal-off menu-closed dropdown-off mobile-dropdown-off ' . $sitewide_alert_class . ' ' . $announcement_class . ' '); ?>>
+
+	<?php get_template_part('partials/announcements'); ?>
+	<?php get_template_part('partials/nav'); ?>
 	<?php get_template_part('partials/menus'); ?>
 
 	<main id="content">

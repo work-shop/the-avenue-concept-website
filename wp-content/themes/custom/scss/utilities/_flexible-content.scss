@@ -1,4 +1,4 @@
-$fc-padding: 12vh 0;
+$fc-padding: 7vh 0 7vh 0;
 
 .fc{
 	padding: $fc-padding;
@@ -9,7 +9,12 @@ $fc-padding: 12vh 0;
 		margin-bottom: 2em;
 	}
 
+	&:last-child{
+		padding-bottom: 14vh;
+	}
+
 }
+
 
 .fc-button{
 

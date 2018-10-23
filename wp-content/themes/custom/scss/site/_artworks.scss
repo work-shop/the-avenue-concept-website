@@ -176,7 +176,7 @@ $sb-mobile-toggle-height: 80px;
 		padding: $sb-padding;
 		background: lighten( $light, 6% );
 		border-radius: 0px 0px 5px 5px;
-		box-shadow: 0px 1px 3px 0px $medium;
+		box-shadow: 0px 1px 2px 0px lighten( $medium, 10% );
 		position: relative;
 		top: -0px;
 		transition: background .05s;

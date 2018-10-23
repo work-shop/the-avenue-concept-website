@@ -15,11 +15,71 @@ ArtworksMap.prototype.init = function() {
     if ( typeof this.map === 'undefined' ) {
 
         this.map = makeMap({
-
             selector: this.selector,
-            map: { streetViewControl: false }
+            map: { streetViewControl: false,
+                styles: [
+                {
+                    'featureType': 'poi.business',
+                    'stylers': [
+                    {
+                        'visibility': 'off'
+                    }
+                    ]
+                },
+                {
+                    'featureType': 'poi.park',
+                    'stylers': [
+                    {
+                        'visibility': 'on'
+                    }
+                    ]
+                },
+                {
+                    'featureType': 'poi.park',
+                    'elementType': 'labels.text',
+                    'stylers': [
+                    {
+                        'visibility': 'off'
+                    }
+                    ]
+                },
+                {
+                    'featureType': 'poi.school',
+                    'stylers': [
+                    {
+                        'visibility': 'off'
+                    }
+                    ]
+                },
+                {
+                    'featureType': 'road.arterial',
+                    'elementType': 'labels.icon',
+                    'stylers': [
+                    {
+                        'visibility': 'off'
+                    }
+                    ]
+                },
+                {
+                    'featureType': 'road.highway',
+                    'stylers': [
+                    {
+                        'color': '#ffffff'
+                    }
+                    ]
+                },
+                {
+                    'featureType': 'road.highway',
+                    'elementType': 'geometry.stroke',
+                    'stylers': [
+                    {
+                        'color': '#e1e1e1'
+                    }
+                    ]
+                }
+                ] }
 
-        } )[0];
+            } )[0];
 
     }
 
@@ -30,7 +90,7 @@ ArtworksMap.prototype.init = function() {
  * Given a set of map-ready marker objects,
  * update the map module with the set of valid maerk
  */
-ArtworksMap.prototype.update = function( objects, options ) {
+ ArtworksMap.prototype.update = function( objects, options ) {
 
     var validated = this.validate( objects );
 
@@ -44,7 +104,7 @@ ArtworksMap.prototype.update = function( objects, options ) {
  *
  *
  */
-ArtworksMap.prototype.validate = function( objects ) {
+ ArtworksMap.prototype.validate = function( objects ) {
 
     var invalid = [];
 

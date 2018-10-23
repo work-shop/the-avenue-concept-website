@@ -1,0 +1,87 @@
+
+#sitewide-alert,#home-announcement{
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: $sitewide-alert-height;
+	z-index: 10;
+	background: $aqua;
+	overflow: hidden;
+
+	a{
+		display: block;
+		height:  $sitewide-alert-height;
+	}
+}
+
+#sitewide-alert-close, #announcement-close{
+	position: absolute;
+	top: 0px;
+	right: 0px;
+	display: block;
+	width: $sitewide-alert-height;
+	height: $sitewide-alert-height;
+	padding-top: 5px;
+	//outline: 1px solid red;
+
+	.icon:before{
+		color: white;
+		font-size: 42px;
+		top: 0px;
+		left: 10px;
+
+		@media screen and (max-width: $sm) {
+			font-size: 30px;
+			top: 6px;
+			left: 15px;
+		}
+	}
+}
+
+.sitewide-alert-message, .announcement-message{
+	color: white;
+	@extend .bold;
+	display: block;
+	height: $sitewide-alert-height;
+	text-align: center;
+	//text-shadow: 0px 1px 1px transparentize($dark, .5);
+	font-size: 16px;
+	@extend .d-flex;
+	@extend .align-items-center;
+	@extend .justify-content-center;
+	position: relative;
+	top: 2px;
+
+	@media screen and (max-width: $lg) {
+		font-size: 15px;
+	}
+
+	@media screen and (max-width: $md) {
+		font-size: 13px;
+	}
+
+	@media screen and (max-width: $sm) {
+		font-size: 12px;
+		line-height: 1.1;
+	}
+}
+
+.sitewide-alert-on, .announcement-on{
+
+	padding-top: $sitewide-alert-height;
+
+	#nav{
+			//border: 10px solid red;
+			top: $sitewide-alert-height;
+		}
+		&.nav-after{
+		//padding-top: 0;
+	}
+
+	.hamburger{
+		top: 50px;
+	}
+}
+
+

@@ -24,7 +24,7 @@ import { ArtworksMap } from './module-map.js';
  * This class manages getting and rendering artworks on the home page.
  */
  function HomePageArtworksManager() {
-    console.log('HomePageArtworksManager loaded');
+    //console.log('HomePageArtworksManager loaded');
     if ( !(this instanceof HomePageArtworksManager)) { return new HomePageArtworksManager(); }
 
 
@@ -34,7 +34,7 @@ import { ArtworksMap } from './module-map.js';
  * This method sets up the home page artworks logic.
  */
  HomePageArtworksManager.prototype.init = function() {
-    console.log('HomePageArtworksManager.init() called');
+    //console.log('HomePageArtworksManager.init() called');
 
     var filterer = new ArtworkFilterer();
     var renderer = new ArtworkRenderer();
@@ -50,9 +50,9 @@ import { ArtworksMap } from './module-map.js';
 
         map.update( renderer.renderMapObjects( filter() ) );
 
-        console.log('all artworks returned from Zoho:');
-        console.log( filter() );
-        console.log('\n');
+        //console.log('all artworks returned from Zoho:');
+        //console.log( filter() );
+        //console.log('\n');
 
         $('.slick-featured-artworks').append( featuredArtworkSlides );
 

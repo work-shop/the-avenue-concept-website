@@ -20,6 +20,7 @@ import { menuToggle } from './menu-toggle.js';
 import { slickSlideshows } from './slick-slideshows.js';
 import { filter } from './filter.js';
 import { singlePost } from './single-post.js';
+import { announcements } from './announcements.js';
 import { livereload } from './livereload-client.js';
 
 /**
@@ -46,6 +47,7 @@ menuToggle(config.menuToggle);
 slickSlideshows(config.slickSlideshows);
 filter();
 singlePost();
+announcements();
 
 
 $( document ).ready( function() {
