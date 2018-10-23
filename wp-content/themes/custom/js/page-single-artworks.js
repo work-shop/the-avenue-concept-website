@@ -44,7 +44,10 @@ import { extractArtworkNameFromURL } from './module-url-manager.js';
     this.filterer.init( function( error, filter ) {
 
         var artwork = filter( {slug: slug} );
-        var featured = filter( {featured: true} );
+        var featured = filter( {featured: true} ).filter(function( a ) { return a.slug !== slug; });
+
+        console.log( artwork );
+        console.log( featured );
 
         if ( error ) {
 
@@ -212,7 +215,7 @@ function nl2br (str, is_xhtml) {
         for (var i = 0; i < regular_images.length; i++) {
             var image = '<div class="single-artwork-image"><img src="' + regular_images[i].image.med + '" /></div>';
             $('.single-artwork-images-container').append( image );
-        } 
+        }
     } else {
         $('#single-artwork-images').hide();
     }
