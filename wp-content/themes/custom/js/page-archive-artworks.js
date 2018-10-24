@@ -57,32 +57,40 @@ import { URLManager } from './module-url-manager.js';
     manageClassesForLocation( parsed );
 
     self.filterer.init( function( error, filter, diff, getValues ) {
-        if ( error ) { throw error; }
+        if ( error ) {
 
-        var programs = getValues( 'program' );
-        var locations = getValues( 'location' );
-        self.buildLocations( locations, parsed );
-        self.buildPrograms( programs, parsed );
+            // something bad went wrong on the API.
+            self.handleExceptionError( 'Oops, something went wrong! Please try again later.');
 
-        self.filter = filter;
-        self.diff = diff;
-        self.map.init();
+        } else {
 
-        self.doInitialStateTransition( self.diff( parsed ) );
+            // All good! We got the artworks and we're ready to rock.
+            var programs = getValues( 'program' );
+            var locations = getValues( 'location' );
+            self.buildLocations( locations, parsed );
+            self.buildPrograms( programs, parsed );
 
-        self.handleViewClickStream();
+            self.filter = filter;
+            self.diff = diff;
+            self.map.init();
 
-        self.handleStatusClickStream();
+            self.doInitialStateTransition( self.diff( parsed ) );
 
-        self.handleProgramsClickStream();
+            self.handleViewClickStream();
 
-        self.handleYearClickStream();
+            self.handleStatusClickStream();
 
-        self.handleLocationClickStream();
+            self.handleProgramsClickStream();
 
-        self.handleResetClickStream();
+            self.handleYearClickStream();
 
-        self.handleMobileToggle();
+            self.handleLocationClickStream();
+
+            self.handleResetClickStream();
+
+            self.handleMobileToggle();
+
+        }
 
     });
 
@@ -105,6 +113,8 @@ import { URLManager } from './module-url-manager.js';
  */
  ArtworksArchiveManager.prototype.handleNewState = function( state ) {
 
+    this.clearErrors();
+
     var diffObject = this.diff( state );
 
     // console.log('handleNewState: ');
@@ -119,6 +129,12 @@ import { URLManager } from './module-url-manager.js';
         this.doStateTransitionByDiff( diffObject );
     } else if ( state.view === 'map' ) {
         this.map.update( this.renderer.renderMapObjects( this.filterer.getCurrentState() ) );
+    }
+
+    if ( this.filterer.getCurrentState().length === 0 ) {
+
+        this.handleEmptyResultsError( state );
+
     }
 
 };
@@ -491,6 +507,43 @@ ArtworksArchiveManager.prototype.buildLocations = function( locations, state ) {
             $('.artworks-sidebar').addClass('mobile-closed');
         }
     });
+
+};
+
+
+/**
+ * This method is called if we encounter a bad problem when we try to
+ * get the artworks from Zoho.
+ *
+ * @param message string the error message to display.
+ *
+ */
+ArtworksArchiveManager.prototype.handleExceptionError = function( message ) {
+
+    console.error( 'Bad Problem!', message );
+
+};
+
+/**
+ * This method is called if a certain combination of filters returns an empty result.
+ * In this case we want to report that filter set as being empty, and notify the user.
+ *
+ * @param params object the set of filtering parameters that caused the empty result.
+ *                      the error message should be constructed from this set of parameters.
+ */
+ArtworksArchiveManager.prototype.handleEmptyResultsError = function( params={} ) {
+
+    console.error( 'Encountered an empty result set!', params );
+
+};
+
+
+/**
+ * This method clears any errors that are currently rendered to the page.
+ */
+ArtworksArchiveManager.prototype.clearErrors = function() {
+
+    console.log( 'clearing pre-existing errors.' );
 
 };
 

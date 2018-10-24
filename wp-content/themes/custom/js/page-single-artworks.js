@@ -276,6 +276,7 @@ function getVideo( video ){
 }
 
 
+
 function openImageModal(src){
     var modalImage = $('<div>');
     modalImage.addClass('modal-image');
@@ -296,6 +297,20 @@ function closeImageModal(){
     }, 500);
 }
 
+
+
+/**
+ * This routine is responsible for rendering the error conditiaon in the
+ * case that we encountered an error on the single page. Errors are:
+ *
+ * - Zoho API error, or other non-specific JS error
+ * - 404 Error - user requested a slug that doesn't exist
+ * - Multiple Slug Error – user requested a slug that's related to multipe artworks (???)
+ *
+ * @param type string a big picture textual description of the error
+ * @param message string a descriptive message of the error.
+ *
+ */
 
 SingleArtworksManager.prototype.renderError = function( type, message ) {
 
