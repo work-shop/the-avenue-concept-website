@@ -17,6 +17,7 @@ ArtworksMap.prototype.init = function() {
         this.map = makeMap({
             selector: this.selector,
             map: { streetViewControl: false,
+                // gestureHandling: 'greedy',
                 styles: [
                 {
                     'featureType': 'poi.business',

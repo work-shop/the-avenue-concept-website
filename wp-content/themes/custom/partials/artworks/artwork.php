@@ -137,4 +137,5 @@
 		</div>
 	</div>
 </section>
+<div id="single-artwork-modal" class="modal off single-artwork-modal-close"><span class="single-artwork-modal-close" id="single-artwork-modal-close"><span class="icon" data-icon="’"></span></a></div>
 

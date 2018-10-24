@@ -33,13 +33,14 @@
 	}
 
 	.person-email{
+
 		a{
 			color: $dark;
 			border-bottom: 2px solid $aqua;
 			font-size: 18px;
 
-			@media screen and (max-width: $md) {
-				font-size: 16px;
+			@media screen and (max-width: $lg) {
+				
 			}
 			@media screen and (max-width: $sm) {
 				font-size: 15px;
@@ -51,6 +52,7 @@
 
 #about-board{
 	.person{
+
 		*{
 			color: white;
 		}
@@ -62,6 +64,7 @@
 
 	.person-title{
 		font-size: 18px;
+		max-width: 15em;
 
 		@media screen and (max-width: $md) {
 			font-size: 16px;
@@ -69,6 +72,50 @@
 		@media screen and (max-width: $sm) {
 			font-size: 15px;
 			// border-bottom: 1px solid $aqua;
+		}
+	}
+}
+
+#about-partners{
+
+}
+
+.partner{
+
+	.partner-link{
+		display: block;
+	}
+
+	.partner-image{
+		height: 0;
+		overflow: hidden;
+		padding-top: 50%;
+		position: relative;
+		display: inline-block;
+		width: 100%;
+		margin-bottom: .5em;
+		//border: 1px solid $light;
+		
+	}
+	.partner-logo{
+		position: absolute;
+		width: 80%;
+		height: 80%;
+		top: 10%;
+		left: 10%;
+		background-size: contain;
+		background-repeat: no-repeat;
+		background-position: center;
+	}
+
+	.partner-title{
+		margin-bottom: 0;
+	}
+
+	.partner-text{
+		*{
+			text-align: center;
+			color: $dark;
 		}
 	}
 }

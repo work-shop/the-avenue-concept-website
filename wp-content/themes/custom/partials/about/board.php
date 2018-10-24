@@ -2,7 +2,7 @@
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row section-header-row">
 			<div class="col-xl-8">
-				<h3 class="section-header white">
+				<h3 class="mb1 white">
 					Board
 				</h3>
 			</div>
@@ -11,7 +11,7 @@
 			<?php $count = 1; ?>
 			<div class="row section-content-row staff-list">
 				<?php while ( have_rows('board') ) : the_row(); ?>
-					<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb3 board-person person">
+					<div class="col-6 col-sm-6 col-md-6 col-lg-3 mb2 board-person person">
 						<div class="person-image">
 							<?php $image = get_sub_field('person_image');
 							$image = $image['sizes']['person']; ?>

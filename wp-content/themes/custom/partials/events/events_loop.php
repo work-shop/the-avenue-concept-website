@@ -1,5 +1,5 @@
 <?php  while ( have_rows('events','185') ) : the_row(); ?>
-	<div class="col-6 mb5">
+	<div class="col-6 mb3 d-flex">
 		<div class="event card card-event">
 			<?php 
 			$link = get_sub_field('event_link'); 

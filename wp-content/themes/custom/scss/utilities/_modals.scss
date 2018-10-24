@@ -6,27 +6,26 @@
 	height: 100%;
 	top: 0;
 	left: 0;
-	z-index: 9;
+	z-index: 11;
 	opacity: 0;
-	transition: transform $modal-transition;
+	transition: all $modal-transition;
 
-	@media only screen and (min-width: 1025px){
-		@include transition(transform $modal-transition);
-		@include transform(translate(150%, 0%));
-	}
-	@media only screen and (max-width: 1024px){
-		left: 150%;
-	}
+	//@media only screen and (min-width: 1025px){
+		transform: scale(0);
+	//}
+	//@media only screen and (max-width: 1024px){
+		//left: 150%;
+	//}
 
 	&.on{
+		transition: all $modal-transition;
 		opacity: 1;
-		@media only screen and (min-width: 1025px){
-			@include transition(transform $modal-transition);
-			@include transform(translate(0%, 0%));
-		}
-		@media only screen and (max-width: 1024px){
-			left: 0%;
-		}
+		//@media only screen and (min-width: 1025px){
+			transform: scale(1);
+		//}
+		//@media only screen and (max-width: 1024px){
+			//left: 0%;
+		//}
 	}
 
 	&.scroll{
@@ -40,7 +39,7 @@
 	right: 20px;
 	height: 40px;
 	width: 40px;
-	z-index: 10;
+	z-index: 12;
 	text-align: center;
 
 	@include transition(transform $modal-transition);

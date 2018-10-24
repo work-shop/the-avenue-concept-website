@@ -380,6 +380,13 @@ $fc-padding: 7vh 0 7vh 0;
 //GALLERY
 
 .fc-gallery{
+
+	.slick-arrow{
+		&:after{
+			text-shadow: 0px 0px 6px black;
+			text-align: center;		
+		}
+	}
 }
 
 .fc-gallery-slide-image-container{

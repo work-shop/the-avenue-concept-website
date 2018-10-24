@@ -10,9 +10,9 @@ if ( $post->post_parent === 189 ) { ?>
 
 	<?php get_template_part('partials/donate/donation' ); ?>
 
-	<?php get_template_part('partials/donate/donors' ); ?>
-
 	<?php get_template_part('partials/donate/ways' ); ?>
+
+	<?php get_template_part('partials/donate/donors' ); ?>
 
 	<?php // else if a programs sub page ?>
 <?php } else if ( $post->post_parent === 161 ) { ?>

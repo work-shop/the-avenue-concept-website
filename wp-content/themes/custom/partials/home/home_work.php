@@ -2,16 +2,17 @@
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row section-header-row">
 			<div class="col-lg-12 col-xl-8">
-				<h3 class="section-header">
+				<h3 class=" mb2">
 					Featured Artworks
 				</h3>
 			</div>
 		</div>
-		<div class="row section-content-row">
+<!-- 		<div class="row section-content-row">
 			<div class="col">
-				<div class="slick-featured-artworks">
-				</div>
+
 			</div>
-		</div>	
+		</div>	 -->
+	</div>
+	<div class="slick-featured-artworks">
 	</div>
 </section>

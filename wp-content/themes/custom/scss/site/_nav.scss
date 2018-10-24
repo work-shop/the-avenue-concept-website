@@ -268,6 +268,7 @@ $text-nav: (
 				@media screen and (min-width: $sm+1) {
 					transition: all .2s;
 					transform: scale(1.1);
+
 				}
 			}
 		}
@@ -441,7 +442,7 @@ $text-nav: (
 	width: 160px;
 	float: left;
 	@media screen and (min-width: $sm+1) {
-		filter: drop-shadow(0px 2px 3px transparentize($dark, .2));
+		filter: drop-shadow(0px 1px 1px transparentize(black, .2));
 	}
 
 	@media screen and (max-width: $md) {

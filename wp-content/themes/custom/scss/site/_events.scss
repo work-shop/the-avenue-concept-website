@@ -11,8 +11,9 @@
 }
 
 .card-event{
-	background: lighten( $light, 6% );	
+	background: lighten( $light, 3% );	
 	padding: 1em;
+	width: 100%;
 
 	*{
 		color: $dark;

@@ -72,18 +72,18 @@
 								</a>
 							</li>
 							<li>
-								<a href="/artworks/on-view-now">
+								<a href="/artworks">
 									On View Now
 								</a>
 							</li>
 							<li>
-								<a href="/artworks/sculptures">
-									Sculptures
+								<a href="/artworks?on-view=true&program=3-D&view=map">
+									3-D Artworks
 								</a>
 							</li>
 							<li>
-								<a href="/artworks/murals">
-									Murals
+								<a href="/artworks?on-view=true&program=2-D&view=map">
+									2-D Artworks
 								</a>
 							</li>
 						</ul>

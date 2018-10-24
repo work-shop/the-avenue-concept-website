@@ -2,23 +2,23 @@
 
 body{
 	background-color: $body-background-color;
-	padding-top: $nav-height;	
+	// padding-top: 0;	
 
-	@media screen and (max-width: $md) {
-		padding-top: $nav-height-md;
-	}
+	// @media screen and (max-width: $md) {
+	// 	padding-top: $nav-height-md;
+	// }
 
-	@media screen and (max-width: $sm) {
-		padding-top: $nav-height-mobile;
-	}
+	// @media screen and (max-width: $sm) {
+	// 	padding-top: $nav-height-mobile;
+	// }
 
-	&.sitewide-alert-on{
-		padding-top: $nav-height + $sitewide-alert-height;	
-	}
+	// &.sitewide-alert-on{
+	// 	padding-top: $nav-height + $sitewide-alert-height;	
+	// }
 
-	&.home.sitewide-alert-on{
-		padding-top: + $sitewide-alert-height;
-	}
+	// &.home.sitewide-alert-on{
+	// 	padding-top: + $sitewide-alert-height;
+	// }
 }
 
 *{

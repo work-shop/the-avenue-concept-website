@@ -2,62 +2,50 @@
 //home intro
 
 #home-intro{
-	
-
-	@media screen and (max-width: $sm) {
-		//max-height: 90vh;
-		video{
-			width: 150%;
-			transform: translate(-25%,0);
-			max-width: none;
-		}
-	}
-
-	@media screen and (max-width: $xs) {
-		video{
-			width: 200%;
-		}
-	}
+	overflow: hidden;
 }
 
 .home-intro-top{
-	//height: calc( 100vh - #{$nav-height});
 	height: 100vh;
 	overflow: hidden;
-	// position: absolute;
-	// width: 100%;
-	// top: 0;
-	// left: 0;
 
 	video{
 		min-height: 100%;
 		min-width: 100%;
 		width: auto;
 		height: auto;
-		// height: 100%;
-		// width: auto;
-		// max-width: none;
+		max-width: none;
+		max-height: none;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%,-50%);
 	}
 }
 
 $home-intro-bottom-height: 250px;
+$speed: 2.5s;
+$delay: 1.5s;
+
+@keyframes home-slide-up { from { margin-top: 0; } to { margin-top: -$home-intro-bottom-height; } }
 
 .home-intro-bottom{
 	height: $home-intro-bottom-height;
-	margin-top: -$home-intro-bottom-height;
+	//margin-top: -$home-intro-bottom-height;
 	position: relative;
-	///border: 1px solid yellow;
 	@extend .d-flex;
 	@extend .align-items-center;
+	animation-fill-mode: forwards;
+	animation: home-slide-up $speed ease $delay alternate 1 forwards running;
 }
 
 .home-intro-curve{
 	position: absolute;
-	bottom: -0px;
+	bottom: -2px;
 	z-index: 2;
 	width: 100%;
 	height: 100%;
-	//background: red;
+	// background: red;
 
 	svg{
 		height: 100%;
@@ -81,12 +69,17 @@ $home-intro-bottom-height: 250px;
 	.home-intro-top{
 		height: calc( 100vh - #{$sitewide-alert-height});
 	}
+
+	.home-intro-bottom{
+		$temp: $home-intro-bottom-height - 50px;
+		margin-top: -$temp;
+	}
 }
 
 
 
 #home-intro-video{
-	position: relative;
+	//position: relative;
 	z-index: -1;
 }
 
@@ -166,6 +159,36 @@ $home-intro-bottom-height: 250px;
 }
 
 
+// what we do
+
+.wwd-col{
+	//@extend .d-flex;
+	@extend .justify-content-center;
+}
+
+.wwd-image{
+	margin-bottom: 1em;
+
+	svg{
+		display: block;
+		width: 100px;
+		margin: 0 auto;
+		path{
+			fill: $brand;
+		}
+	}
+}
+
+.wwd-title{
+	text-align: center;
+	//padding: 1em;
+	//background: $brand;
+	//color: white;
+	border-radius: 10px;
+	font-size: 30px;
+
+}
+
 //about
 
 #home-about{
@@ -174,199 +197,145 @@ $home-intro-bottom-height: 250px;
 	}
 }
 
-
-
-//staff and board modals
-
-$modal-padding: 100px;
-$modal-subtract: $modal-padding * 2;
-$modal-padding-md: 40px;
-$modal-subtract-md: $modal-padding-md * 2;
-
-.modal{
-	width: calc( 100vw - #{$modal-subtract} );
-	height: calc( 100vh - #{$modal-subtract} );
-	//overflow: scroll;
-	overflow-y: scroll;
-	-webkit-overflow-scrolling: touch;
-	top: $modal-padding;
-	border-radius: 10px;
-
-	&.on{
-		left: $modal-padding;
-	}
-
-	@media screen and (max-width: $md) {
-		width: calc( 100vw - #{$modal-subtract-md} );
-		height: calc( 100vh - #{$modal-subtract-md} );
-		top: $modal-padding-md;
-
-		&.on{
-			left: $modal-padding-md;
-		}
-	}
-
+#home-map{
+	height: calc(70vh - #{$nav-height})
 }
 
-#modal-close{
-	top: $modal-padding - 7px;
-	right: $modal-padding / 3.5;
+#home-map-container{
+	width: 100%;
+	height: 0;
+	overflow: hidden;
+	padding-top: 56.25%;
+	position: relative;
+	//opacity: .75;
 
-	@media screen and (max-width: $md) {
-		top: $modal-padding-md - 7px;
-		right: 0px;
+	iframe{
+		@extend .background;
 	}
 }
 
-.modal-person-email-link:hover{
-	color: $dark;
-}
+#home-map-text{
+	@extend .background;
 
-#blanket{
-	background: transparentize($dark, .1);
-}
+	//box-shadow: 0px 0px 9px $dark;
 
-.modal-container{
-	padding: 4vw;
-}
+	.home-map-text-inner{
+		width: 380px;
+		height: auto;
+		//background: transparentize($medium, .25);
+		//background: lighten( $tan, 10% );
+		background: rgba(250,250,250,.5);
+		background: $aqua;
+		background: $brand;
+		padding: 1.2em;
+		margin-top: 60px;
+		margin-left: 60px;
+		border-radius: 20px;
+	}
 
-.modal-swap-link{
-	border-bottom: 2px solid transparent;
-
-	&:hover{
+	h3{
+		line-height: 1.2;
+		margin-bottom: 1em;
+		@extend .h2;
+		text-shadow: 0px 0px 3px 3px white;
+		color: black;
 		color: white;
-		border-bottom: 2px solid white;
 	}
 }
 
-.modal-swap-active{
-	border-bottom: 2px solid white;
-}
 
+//home featured artworks
 
-//home contact
-
-.home #contact{
-	padding-top: 2em;
-}
-
-
-//HOME ARTWORKS
+$spacing: 20px;
 
 .slick-featured-artworks{
-	column-count: 3;
-	column-gap: 2vw;
+	column-count: 2;
+	column-gap: $spacing;
+	margin-left: $spacing;
+	margin-right: $spacing;
 
-	.artwork-item{
-		width: 100%;
+	@media screen and (max-width: $sm) {
+		//column-gap: 10px;
+	}
+
+	div{
 		display: inline-block;
-		margin-bottom: 20px;
-	}
-}
+		margin-bottom: $spacing;
+		width: 100%;
 
 
-
-
-//override body padding for landing page, needs to be turned off when the nav goes back in the site
-body{
-	background-color: $body-background-color;
-	padding-top: 0;	
-	@media screen and (max-width: $md) {
-		padding-top: 0;
-	}
-	@media screen and (max-width: $sm) {
-		padding-top: 0;
-	}
-}
-
-
-//landing page spy nav
-
-$dot: 16px;
-$dot-padding: 8px;
-$dot-padding-combined: $dot-padding*2;
-
-#landing-page-nav{
-	position: fixed;
-	z-index: 6;
-	bottom: 100px;
-	right: 10px;
-
-	@media screen and (max-width: $sm) {
-		display: none;
-	}
-
-	li{
-		width: $dot + $dot-padding-combined + 4px;
-
-		a{
-			margin-bottom: 5px;
-			padding: $dot-padding;
-			text-align: center;
-			display: block;
-
+		.artwork-item-link{
+			position: relative;
+			height: 100%;
+			overflow: hidden;
 			&:hover{
-				width: 150px;
 
-				span{
-					text-indent: 0;
-					height: 85px;
-					width: 150px;
-					margin-left: -100px;
-					margin-top: 0px;
-					margin-bottom: 0px;
-					z-index: 7;
-					background-size: 150px 85px;
-					background-repeat: no-repeat;
-					background-position: center center;
-					background-color: transparent;
-					$svg: svg-fill($blob-a, $brand);
-					background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					border: none;
-					color: white;
-					transition: color .7s, height .15s;
-
-					&.link-a{
-						$svg: svg-fill-stroke($blob-a, $brand, $white, '8');
-						background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					}
-					&.link-b{
-						$svg: svg-fill-stroke($blob-b, $brand, $white, '8');
-						background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					}
-					&.link-c{
-						$svg: svg-fill-stroke($blob-c, $brand, $white, '8');
-						background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					}
-					&.link-d{
-						$svg: svg-fill-stroke($blob-d, $brand, $white, '8');
-						background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					}
-					&.link-e{
-						$svg: svg-fill-stroke($blob-e, $brand, $white, '8');
-						background-image: url('data:image/svg+xml;utf8,#{$svg}');
-					}
+				.artwork-item-image{
+					transition: transform .25s;
+					transform: scale(1.1);
 				}
+
+				.artwork-item-text{
+					background: transparentize($dark, .5) !important;
+					background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.75) 60%) !important;
+					background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.75) 60%) !important;
+					background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.75) 60%) !important;
+					filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 ) !important;
+				}
+
 			}
 		}
 
-		span{
-			width: $dot;
-			height: $dot;
+		.artwork-item-image{
+			border-radius: 0;
+			margin: 0;
+			box-shadow: none;
 			display: block;
-			border: 1px solid white;
-			background-color: $brand;
-			border-radius: 10px;
-			text-indent: -9999px;
-			font-size: 13px;
-			font-family: $font-secondary;
-			text-transform: uppercase;
-			text-align: center;
-			vertical-align: middle;
-			line-height: 100px;
-			position: relative;
-			color: transparent;
-			transition: color .7s, height .15s;
+			transition: transform .25s;
+			transform: scale(1);
+
+		}
+		
+		.artwork-item-text{
+			// @extend .d-flex;
+			// @extend .align-items-end;
+			padding: 15px;
+			background: none;
+			box-shadow: none;
+			position: absolute;
+			top: auto;
+			bottom: -$spacing;
+			border-radius: 0;
+			left: 0;
+			width: 100%;
+			height: auto;
+			background: transparentize($dark, .5);
+			background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0.75) 70%);
+			background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%,rgba(0,0,0,0.75) 70%);
+			background: linear-gradient(to bottom, rgba(0,0,0,0) 0%,rgba(0,0,0,0.75) 70%);
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00000000', endColorstr='#a6000000',GradientType=0 );
+
+
+			*{
+				color: white;
+				text-shadow: 0px 0px 2px black;
+			}
+
+		}
+
+		.artwork-item-title{
+			margin-bottom: 0em;
+			width: 100%;
+			display: block;
+		}
+
+		// .artwork-item-artist,.artwork-item-year,.artwork-item-location{
+		// 	display: none;
+		// 	width: 100%;
+		// }
+
+		.artwork-item{
+
 		}
 
 	}

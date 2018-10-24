@@ -1,8 +1,8 @@
-<section class="block padded bg-white" id="social-media">
+<section class="block pt3 pb2 bg-white" id="social-media">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row section-header-row">
 			<div class="col-xl-8">
-				<h3 class="section-header">
+				<h3 class="mb2">
 					<?php the_field('social_media_links_heading'); ?>
 				</h3>
 			</div>

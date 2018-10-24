@@ -68,6 +68,11 @@
 
 	.program-image{
 		position: relative;
+
+		img{
+			border: 2px solid white;
+		}
+		
 		&:after{
 			content: '';
 			display: block;

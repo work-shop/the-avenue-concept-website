@@ -18,13 +18,20 @@ $svg-height: 100px;
 $svg-padding: 50px;
 $svg-height-md: 50px;
 $svg-padding-md: 50px;
+$speed: 1.5s;
+$delay: 1.9s;
+
+@keyframes slide-up { from { margin-top: 0; } to { margin-top: -$svg-height; } }
 
 .page-title-container{
 	position: relative;
 	z-index: 1;
-	margin-top: -$svg-height;
 	padding-top: $svg-padding;
-	//border: 1px solid black;
+
+	@media screen and (min-width: $md+1) {
+		animation-fill-mode: forwards;
+		animation: slide-up $speed ease $delay alternate 1 forwards running;	
+	}
 
 	@media screen and (max-width: $md) {
 		margin-top: -$svg-height-md;
@@ -62,7 +69,6 @@ $svg-padding-md: 50px;
 
 .page-nav{
 	padding: 20px 0 10px 0;
-	background: white;
 	z-index: 6;
 	min-height: 70px;
 	width: 100%;
@@ -114,7 +120,8 @@ $svg-padding-md: 50px;
 	&.after{
 		position: fixed;
 		top: $nav-height - 10px;
-		border-bottom: 1px solid rgb(247,247,247);
+		background: rgb(247,247,247);
+		border-bottom: 1px solid rgb(245,245,245);
 
 		@media screen and (max-width: $sm) {
 			top: $nav-height-mobile - 10px;

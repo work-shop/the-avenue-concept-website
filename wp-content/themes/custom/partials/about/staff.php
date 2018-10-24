@@ -2,7 +2,7 @@
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row section-header-row">
 			<div class="col-xl-8">
-				<h3 class="section-header ">
+				<h3 class="section-header">
 					Staff
 				</h3>
 			</div>
@@ -21,14 +21,17 @@
 							<h4 class="bold font-main person-name mb0">
 								<?php the_sub_field('person_name'); ?>
 							</h4>
-							<h4 class="font-main person-title mb1">
+							<h4 class="font-main person-title">
 								<?php the_sub_field('person_title'); ?>
 							</h4>
-							<h4 class="font-main person-email">
-								<a href="mailto:<?php the_sub_field('person_email'); ?>">
-									<?php the_sub_field('person_email'); ?>
-								</a>
-							</h4>
+							<?php if( get_sub_field('person_email') ): ?>
+								<h4 class="font-main person-email">
+									<a href="mailto:<?php the_sub_field('person_email'); ?>">
+										<?php $first_name = explode(' ', get_sub_field('person_name'), 2); ?>
+										Email <?php echo $first_name[0]; ?>
+									</a>
+								</h4>
+							<?php endif; ?>
 						</div>
 					</div>
 					<?php $count++; ?>

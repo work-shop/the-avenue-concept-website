@@ -160,6 +160,10 @@ $sb-mobile-toggle-height: 80px;
 	// 	border: 1px solid red;
 	// }
 
+	.artwork-item-link{
+		display: block;
+	}
+
 	&.artwork-hidden{
 		display: none !important;
 	}

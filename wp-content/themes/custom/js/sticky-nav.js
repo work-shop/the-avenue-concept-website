@@ -39,6 +39,10 @@ function stickyNav( config ) {
 				window.requestAnimationFrame(checkNavPosition); 
 			}, 200);
 
+			setTimeout(function() {
+				window.requestAnimationFrame(calculatePositions); 
+			}, 3000);
+
 		}
 
 	});
