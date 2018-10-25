@@ -49,6 +49,10 @@
 		padding: 1em;
 	}
 
+	.card-post-title a{
+		font-weight: bold;
+	}
+
 	.post-categories{
 		line-height: 1;
 
@@ -150,8 +154,20 @@
 //single
 
 
-
 .single-post{
+
+	.hero-back{
+		@extend .justify-content-start;
+	}
+
+	.hero-back-link{
+		top: 0;
+
+		@media screen and (max-width: $sm) {
+			margin-bottom: 1em;
+		}
+	}
+
 	.page-hero-title{
 		padding-top: 25px;
 		&.characters-low{

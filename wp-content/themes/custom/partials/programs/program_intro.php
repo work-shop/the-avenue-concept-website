@@ -1,4 +1,4 @@
-<section class="block bg-white padded" id="program-intro">
+<section class="block bg-white pt4 pb4" id="program-intro">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row">
 			<div class="col col-lg-7">

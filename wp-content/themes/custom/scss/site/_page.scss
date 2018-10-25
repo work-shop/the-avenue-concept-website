@@ -59,6 +59,37 @@ $delay: 1.9s;
 	}
 }
 
+.hero-back{
+	@media screen and (max-width: $sm) {
+		width: 100%;
+		order: 2;
+	}
+}
+
+.hero-back-link{
+	position: relative;
+	top: 15px;
+	font-size: 16px;
+	text-transform: uppercase;
+	@extend .tracked-less;
+	font-weight: bold;
+
+	@media screen and (max-width: $lg) {
+		font-size: 14px;
+	}
+
+	@media screen and (max-width: $md) {
+		font-size: 13px;
+		top: 45px;
+	}
+
+	@media screen and (max-width: $sm) {
+		top: 0;
+		font-size: 12px;
+	}
+}
+
+
 
 .sticky-nav-after{
 	.page-content{

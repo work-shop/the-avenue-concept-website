@@ -13,10 +13,15 @@ $text-nav: (
 	left: 0;
 	width: 100%;
 	height: $nav-height;
-	//overflow: hidden;
 	padding-left: 15px;
 	z-index: 7;
-	//transition: all 1s;
+	transition: all 1s;
+	//overflow: hidden;
+
+
+	&:hover{
+		@extend .after;
+	}
 
 	&.fixed{
 		position: fixed; 
@@ -41,7 +46,9 @@ $text-nav: (
 		z-index: -1;
 		height: $nav-height-after;
 		background: $brand;
-		display: none;
+		opacity: 0;
+		transition: all .2s;
+		//display: none;
 
 		svg{
 			display: none;
@@ -51,16 +58,18 @@ $text-nav: (
 	}
 
 	#nav-menus{
-		padding-top: 27px;
+		padding-top: 18px;
 		float: left;
 		margin-left: 30px;
+		position: relative;
+		z-index: 1;
 
 		@media screen and (max-width: $lg) {
-			padding-top: 31px;
+			padding-top: 21px;
 		}
 
 		@media screen and (max-width: $md) {
-			padding-top: 23px;
+			padding-top: 18px;
 			margin-left: 10px;
 		}
 
@@ -75,11 +84,14 @@ $text-nav: (
 	//dropdown default state
 	.sub-menu{
 		position: absolute;
-		top: 35px;
-		padding-top: 35px;
-		width: 400px;
+		top: $nav-height/2;
+		padding-top: 20px;
+		left: 0;
+		width: 300px;
 		transform: translate(-50%,-0%);
+		//background: $aqua;
 		margin-left: 50%;
+		z-index: 1;
 		display: none;
 
 		@media screen and (max-width: $sm) {
@@ -93,106 +105,14 @@ $text-nav: (
 		}
 
 		li{
-			width: 50%;
-			float: left;
-			padding: 25px 0;
-			@extend .flex-center;
-			position: relative;
-
-			&:first-child{
-				width: auto;
-				float: none;
-				margin-left: auto;
-				margin-right: auto;
-				padding-top: 10px;
-				padding-bottom: 10px;
-			}
-
-			&:nth-child(1),&:nth-child(6),&:nth-child(11){
-				a{
-					@extend .blob-a;
-				}
-			}
-			&:nth-child(2),&:nth-child(7),&:nth-child(12){
-				a{
-					@extend .blob-b;
-				}
-			}
-			&:nth-child(3),&:nth-child(8),&:nth-child(13){
-				a{
-					@extend .blob-c;
-				}
-			}
-			&:nth-child(4),&:nth-child(9),&:nth-child(14){
-				a{
-					@extend .blob-d;
-				}
-			}
-			&:nth-child(5),&:nth-child(10),&:nth-child(15){
-				a{
-					@extend .blob-e;
-				}
-			}
-
-			&:nth-child(2),&:nth-child(3),&:nth-child(4){
-				width: 33%;
-			}
-
-			&:nth-child(2){
-				transform: translate(0,-40%);
-			}
-
-			&:nth-child(3){
-
-			}
-
-			&:nth-child(4){
-				transform: translate(0,-30%);
-			}
-
-			&:nth-child(5){
-				width: 50%;
-				transform: translate(0,-30%);
-			}
-
-			&:nth-child(6){
-				width: 50%;
-				transform: translate(0,-37%);
-			}
-
-			&:nth-child(7){
-				width: 50%;
-				float: none;
-				margin-left: auto;
-				margin-right: auto;
-				transform: translate(0,-70%);
-			}
-
-			&:nth-child(8){
-				transform: translate(0,-100%);
-			}
-
-			&:nth-child(9){
-				transform: translate(0,-110%);
-			}
-
-			&:nth-child(10){
-				transform: translate(0,-130%);
-				width: 50%;
-				float: none;
-				margin-left: auto;
-				margin-right: auto;
-			}
+			text-align: center;
 
 			a{
-				text-transform: none;
-				font-size: 20px;
+				font-size: 17px;
+				text-shadow: none;
+				background: none;
+				//outline: 1px solid black;
 				display: block;
-				width: 100%;
-				text-align: center;
-				letter-spacing: 0.03em;
-				padding: 30px 0;
-				filter: drop-shadow(0px 2px 3px transparentize($dark, .2));
 			}
 
 			@media screen and (max-width: $sm) {
@@ -221,6 +141,8 @@ $text-nav: (
 	.nav-menu-primary-item{
 		display: inline-block;
 		margin-right: 50px;
+		position: relative;
+		z-index: 2;
 
 		@media screen and (max-width: $lg) {
 			margin-right: 30px;
@@ -252,7 +174,7 @@ $text-nav: (
 			@media screen and (min-width: $sm+1) {
 				text-shadow: 1px 1px 1px black;
 			}
-			
+
 
 			@media screen and (max-width: $md) {
 				font-size: 16px;
@@ -273,150 +195,108 @@ $text-nav: (
 			}
 		}
 
-		//dropdown and mobile nav open states
-		&.has-sub-menu{
-			position: relative;
-			z-index: 8;
+	//dropdown and mobile nav open states
+	&.has-sub-menu{
+		position: relative;
+		z-index: 8;
 
-			$as: .9s;
-			$as2: .3s;
-			@keyframes fade-in { from { opacity: 0; } to { opacity: 1; top: 0px; } }
-			@keyframes slide-down { from { } to { top: 0px; } }
+		&.open{
 
+			@media screen and (min-width: $sm+1) {
 
-			&.open{
-				@media screen and (min-width: $sm+1) {
-					.sub-menu{
-						display: block;
-
-						li{
-							opacity: 0;
-							animation-fill-mode: forwards;
-							animation: fade-in $as ease .04s alternate 1 forwards running, slide-down $as2 ease .04s alternate 1 forwards running;
-							top: -10px;
-							
-
-							&:nth-child(4){
-								animation: fade-in $as ease .0s alternate 1 forwards running, slide-down $as2 ease  .0s alternate 1 forwards running;
-								top: -10px;
-							}
-
-							&:nth-child(2){
-								animation: fade-in $as ease .08s alternate 1 forwards running, slide-down $as2 ease .08s alternate 1 forwards running;
-								top: -8px;
-							}
-
-							&:nth-child(6){
-								animation: fade-in $as ease .06s alternate 1 forwards running, slide-down $as2 ease .06s alternate 1 forwards running;
-								top: -4px;
-							}
-
-							&:nth-child(5){
-								animation: fade-in $as ease .02s alternate 1 forwards running, slide-down $as2 ease .02s alternate 1 forwards running;
-								top: -0px;
-							}
-
-							&:nth-child(8){
-								animation: fade-in $as ease .1s alternate 1 forwards running, slide-down $as2 ease  .1s alternate 1 forwards running;
-								top: -2px;
-							}
-
-							&:nth-child(9){
-								animation: fade-in $as ease .12s alternate 1 forwards running, slide-down $as2 ease .12s alternate 1 forwards running;
-								top: -6px;
-							}
-
-							&:nth-child(7){
-								animation: fade-in $as ease .14s alternate 1 forwards running, slide-down $as2 ease .14s alternate 1 forwards running;
-								top: -8px;
-							}
-
-							&:nth-child(3){
-								animation: fade-in $as ease .16s alternate 1 forwards running, slide-down $as2 ease .16s alternate 1 forwards running;
-								top: -4px;
-							}
-
-							&:nth-child(10){
-								animation: fade-in $as ease .18s alternate 1 forwards running, slide-down $as2 ease .18s alternate 1 forwards running;
-								top: -5px;
-							}
-
-							a{
-								text-shadow: none;
-							}
-
-						}//li
-
-					}
+				.nav-curve{
+					visibility: visible;
+					transition: all .5s;
+					transform: translate(0);
 				}
 
+				.sub-menu{
+					display: block;
 
-				@media screen and (max-width: $sm) {
-					.icon:before{
-						transform: rotate(180deg);
-						top: -2px;
+					li{
+
+						a{
+							text-shadow: none;
+						}
+
 					}
-					.sub-menu{
-						display: block;
-					}
+
 				}
-
 			}
-		}
 
+
+			@media screen and (max-width: $sm) {
+				.icon:before{
+					transform: rotate(180deg);
+					top: -2px;
+				}
+				.sub-menu{
+					display: block;
+				}
+			}
+
+		}
 	}
 
+}
 
 
 
-	&.after{
-		height: $nav-height-after;
+&.after{
+	height: $nav-height-after;
+
+	#nav-background{
+		opacity: 1;
+		transition: all .2s;
+	}
+
+	@media screen and (max-width: $sm) {
+		height: $nav-height-mobile;
+		background: $brand;
 
 		#nav-background{
-			display: block;
+			display: none;
+		}
+	}
+
+	#logo {
+		width: 150px;
+		-webkit-filter: none;
+
+		@media screen and (max-width: $md) {
+			width: 130px;
+			a{
+				padding-top: 12px;
+			}
 		}
 
 		@media screen and (max-width: $sm) {
-			height: $nav-height-mobile;
-			background: $brand;
-
-			#nav-background{
-				display: none;
-			}
-		}
-
-		#logo {
-			width: 150px;
-			-webkit-filter: none;
+			width: 110px;
 
 			a{
-				padding-top: 13px;
-				padding-bottom: 5px;
+				padding-top: 12px;
 			}
-
-			@media screen and (max-width: $sm) {
-				width: 110px;
-
-				a{
-					padding-top: 12px;
-				}
-			}
-
 		}
 
-		#nav-menus{
-			padding-top: 18px;
-		}
+	}
 
-		.nav-menu-primary-item a{
-			text-shadow: none;
+	#nav-menus{
+		padding-top: 18px;
+
+		@media screen and (max-width: $lg) {
+			padding-top: 21px;
 		}
 	}
 
-	&.open{
-		height: 100vh;
-		overflow: scroll;
+	.nav-menu-primary-item a{
+		text-shadow: none;
 	}
+}
+
+&.open{
+	height: auto;
+	overflow: scroll;
+}
 
 }
 
@@ -425,22 +305,27 @@ $text-nav: (
 	#nav{
 		height: 100vh;
 		overflow: scroll;
-	}
-
-	#nav-background{
-		display: block;
-		@media screen and (max-width: $sm) {
-			display: none;
+		#nav-background{
+			display: block;
+			@media screen and (max-width: $sm) {
+				display: none;
+			}
 		}
 	}
+
+
 }
 
 
 //LOGOS
 
+
+
 #logo{
-	width: 160px;
+	width: 150px;
 	float: left;
+	position: relative;
+	z-index: 2;
 	@media screen and (min-width: $sm+1) {
 		filter: drop-shadow(0px 1px 1px transparentize(black, .2));
 	}
@@ -454,7 +339,8 @@ $text-nav: (
 	}
 
 	a{
-		padding: 20px;
+		padding: 13px;
+		padding-bottom: 5px;
 		padding-left: 0px;
 
 		@media screen and (max-width: $sm) {
@@ -526,5 +412,31 @@ $text-nav: (
 		top: -10px;
 	}
 }
+
+.nav-curve{
+	position: fixed;
+	width: 100vw;
+	height: auto;
+	top: ($nav-height - 1px);
+	left: 0;
+	visibility: hidden;
+	transition: all .5s;
+	transform: translate(-25%,-150%);
+	z-index: -2;
+	filter: drop-shadow(0px 1px 4px transparentize($medium, .7));
+
+	//border: 1px solid red;
+
+	svg{
+		width: 100%;
+		height: 100%;
+		path{
+			fill: $brand;
+		}
+	}
+}
+
+
+
 
 

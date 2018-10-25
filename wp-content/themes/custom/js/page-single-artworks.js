@@ -126,6 +126,7 @@ function nl2br (str, is_xhtml) {
 
     for (var i = 0; i < regular_images.length; i++) {
         var image = '<div class="single-artwork-slide" style="background-image: url(' + regular_images[i].image.src + ')";></div>';
+
         $('.slick-single-artwork').append( image );
 
         if( i === ( regular_images.length - 1 )){
@@ -312,7 +313,7 @@ function closeImageModal(){
  *
  */
 
-SingleArtworksManager.prototype.renderError = function( type, message ) {
+ SingleArtworksManager.prototype.renderError = function( type, message ) {
 
     console.log( type );
     console.log( message );

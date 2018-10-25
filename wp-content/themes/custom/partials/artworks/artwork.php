@@ -4,7 +4,7 @@
 		</div>
 	</div>
 </section>
-<section class="page-title-container">
+<section class="page-title-container page-title-container-artwork">
 	<div class="page-hero-intro">
 		<div class="page-hero-curve">
 			<?php include get_template_directory() . '/images/page-hero-curve-02.svg'; ?>
@@ -12,7 +12,13 @@
 		<div class="page-hero-text">
 			<div class="container-fluid container-fluid-stretch">
 				<div class="row">
-					<div class="col-md-5 offset-md-7">
+					<div class="col-md-7 hero-back hero-back d-flex align-items-end justify-content-end justify-content-md-start">
+						<a href="/artworks" class="hero-back-link">
+							<span class="icon mr1" data-icon="‰"></span>
+							Back to All Artworks
+						</a>
+					</div>
+					<div class="col-md-5">
 						<h1 class="page-hero-title single-artwork-title d-flex justify-content-end">
 						</h1>
 					</div>
@@ -22,7 +28,7 @@
 	</div>
 </section>
 
-<section class="block single-artwork-intro pt3 pb1" id="single-artwork-intro">
+<section class="block single-artwork-intro pt4 pb1" id="single-artwork-intro">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row">
 			<div class="col-lg-5 single-artwork-description-container">

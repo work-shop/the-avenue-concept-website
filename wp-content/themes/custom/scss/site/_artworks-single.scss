@@ -70,6 +70,33 @@ $hero-offset: 60px;
 }
 
 
+.page-title-container-artwork{
+	.hero-back-link{
+		top: 0px;
+
+		@media screen and (max-width: $lg) {
+			top: -3px;
+		}
+
+		@media screen and (max-width: $md) {
+			top: -5px;
+		}
+
+		@media screen and (max-width: $sm) {
+			top: 0;
+		}
+	}	
+}
+
+.single-artwork-title{
+	padding-top: 15px;
+
+	@media screen and (max-width: $lg) {
+		padding-top: 20px;
+	}
+}
+
+
 
 //METADATA 
 
@@ -138,7 +165,6 @@ $spacing: 12px;
 .single-artwork-images-container{
 	column-count: 2;
 	column-gap: $spacing;
-	//column-gap: 2vw;
 
 	@media screen and (max-width: $sm) {
 		column-count: 1;
@@ -191,7 +217,7 @@ $spacing: 12px;
 	div{
 		display: inline-block;
 		width: 100%;
-		margin-bottom: 2vw;
+		margin-bottom: 1vw;
 
 		@media screen and (max-width: $sm) {
 			margin-bottom: 20px;

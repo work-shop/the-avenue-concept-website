@@ -51,5 +51,40 @@ add_filter( 'template_include', function( $template ) {
     return $template;
 });
 
+// if ( ! function_exists('rid_remove_jqmigrate_console_log') ) {
+//     function rid_remove_jqmigrate_console_log( $scripts ) {
+//         if ( ! empty( $scripts->registered['jquery'] ) ) {
+//             $scripts->registered['jquery']->deps = array_diff( $scripts->registered['jquery']->deps, array( 'jquery-migrate' ) );
+//         }
+//     }
+//     add_action( 'wp_default_scripts', 'rid_remove_jqmigrate_console_log' );
+// }
+
+// function check_for_rest( $content ){
+//     if ( REST_REQUEST ){
+//         return $content;
+//         //return $content;
+//     }else {
+//             return $content;
+
+//     }
+// }
+
+// add_filter('the_content','check_for_rest');
+
+// var_dump($wp_filter["the_content"]);
+
+
+// remove_filter( 'the_content', 'wptexturize'        );
+// remove_filter( 'the_content', 'convert_smilies'    );
+// remove_filter( 'the_content', 'convert_chars'      );
+// remove_filter( 'the_content', 'wpautop'            );
+// remove_filter( 'the_content', 'shortcode_unautop'  );
+// remove_filter( 'the_content', 'prepend_attachment' );
+
+register_rest_route( 'zoho', '/zoho', array(
+    'methods'         => WP_REST_Server::ALLMETHODS,
+) );
+
 
 ?>

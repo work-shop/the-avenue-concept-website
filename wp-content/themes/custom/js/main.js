@@ -49,6 +49,16 @@ filter();
 singlePost();
 announcements();
 
+$.ajax({
+	url : 'http://localhost:8080/wp-json/wp/v2/pages/821',
+	method: 'GET',
+	success : function( data ) {
+		console.log( data.content.rendered );
+	},
+	error: function( e ) {
+		console.error( e );
+	}
+});
 
 $( document ).ready( function() {
 

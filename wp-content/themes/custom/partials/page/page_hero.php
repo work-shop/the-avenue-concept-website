@@ -13,13 +13,28 @@
 		<div class="page-hero-text">
 			<div class="container-fluid container-fluid-stretch">
 				<div class="row">
-					<div class="col-lg-5 offset-lg-7">
-						<h1 class="page-hero-title d-flex justify-content-end">
-							<?php the_title(); ?>
-						</h1>
-					</div>
+					<div class="col-lg-7 col-md-5 hero-back d-flex align-items-end justify-content-end justify-content-md-start">
+						<?php 
+						if ( Helpers::is_tree(161) && is_page(161) === false ): 
+							$link = '/programs';
+							$title = 'All Programs';
+						elseif ( is_single() ):
+							$link = '/blog';
+							$title = 'Blog';
+						?>
+						<a href="<?php echo $link; ?>" class="hero-back-link">
+							<span class="icon mr1" data-icon="‰"></span>
+							Back to <?php echo $title; ?>
+						</a>
+					<?php endif; ?>
 				</div>
-			</div>		
-		</div>
-	</section>
-	<?php endif; ?>
+				<div class="col-lg-5 col-md-7">
+					<h1 class="page-hero-title d-flex justify-content-end">
+						<?php the_title(); ?>
+					</h1>
+				</div>
+			</div>
+		</div>		
+	</div>
+</section>
+<?php endif; ?>
