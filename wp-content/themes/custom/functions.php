@@ -64,7 +64,7 @@ add_filter( 'template_include', function( $template ) {
 
 
 function get_artwork_meta_field( $data ) {
-  $artworks = get_post_meta( 821, 'zoho');
+  $artworks = get_post_meta( 821, 'zoho',true);
  
   if ( empty( $artworks ) ) {
     return null;
