@@ -49,22 +49,6 @@ filter();
 singlePost();
 announcements();
 
-$.ajax({
-	crossDomain: true,
-	url : 'http://staging-theavenueconcept.kinsta.com/wp-json/zoho/v1/artworks',
-	method: 'GET',
-	success : function( data ) {
-		console.log(data);
-		// var temp = data[1].split('var zohothe_avenue_conceptview45 = ');
-		// temp = temp[1].slice(0,-1);
-		// temp = JSON.parse(temp);
-		// console.log(temp);
-	},
-	error: function( e ) {
-		console.error( e );
-	}
-});
-
 $( document ).ready( function() {
 
 	if ( isHomePage() ) {
