@@ -1,7 +1,7 @@
 {
-  "name": "newport-art-museum-site",
+  "name": "the-avenue-concept-site",
   "version": "1.0.0",
-  "description": "Newport Art Museum Site",
+  "description": "The Avenue Concept Site",
   "author": "Work-Shop (http://workshop.co)",
   "license": "ISC",
   "paths": {
@@ -10,12 +10,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/work-shop/newport-art-museum-site.git"
+    "url": "git+https://github.com/work-shop/the-avenue-concept-site.git"
   },
   "bugs": {
-    "url": "https://github.com/work-shop/newport-art-museum-site/issues"
+    "url": "https://github.com/work-shop/the-avenue-concept-site/issues"
   },
-  "homepage": "https://github.com/work-shop/newport-art-museum-site#readme",
+  "homepage": "https://github.com/work-shop/the-avenue-concept-site#readme",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "grunt",
@@ -46,7 +46,7 @@
     "vinyl-source-stream": "^2.0.0"
   },
   "dependencies": {
-    "@work-shop/map-module": "^1.0.7",
+    "@work-shop/map-module": "^1.1.1",
     "async": "^2.6.1",
     "bootstrap": "^3.3.7",
     "bootstrap-sass": "^3.3.7",
