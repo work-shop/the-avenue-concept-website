@@ -82,9 +82,25 @@ add_filter( 'template_include', function( $template ) {
 // remove_filter( 'the_content', 'shortcode_unautop'  );
 // remove_filter( 'the_content', 'prepend_attachment' );
 
-register_rest_route( 'zoho', '/zoho', array(
-    'methods'         => WP_REST_Server::ALLMETHODS,
-) );
+
+function my_awesome_func( $data ) {
+  $artworks = get_post_meta( 821, 'zoho');
+ 
+  if ( empty( $artworks ) ) {
+    return null;
+  }
+ 
+  return $artworks;
+}
+
+
+
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'zoho/v1', '/artworks', array(
+    'methods' => WP_REST_Server::ALLMETHODS,
+    'callback' => 'my_awesome_func',
+  ) );
+} );
 
 
 ?>
