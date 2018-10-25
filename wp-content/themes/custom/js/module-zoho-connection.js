@@ -127,11 +127,8 @@ function ZohoConnection() {
             type: 'GET',
             success: function( d ) {
 
-        		var temp = d[0].split('var zohothe_avenue_conceptview45 = ')[1].slice(0,-1);
+        		var temp = d.split('var zohothe_avenue_conceptview45 = ')[1].slice(0,-1);
                 d = JSON.parse( temp );
-
-        		// temp = temp[1].slice(0,-1);
-        		// d = JSON.parse( temp[1].slice(0,-1)) ;
 
                 var artworks = d.Add_Artwork.map( function( artwork ) {
 
