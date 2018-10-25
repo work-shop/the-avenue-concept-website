@@ -60,30 +60,10 @@ add_filter( 'template_include', function( $template ) {
 //     add_action( 'wp_default_scripts', 'rid_remove_jqmigrate_console_log' );
 // }
 
-// function check_for_rest( $content ){
-//     if ( REST_REQUEST ){
-//         return $content;
-//         //return $content;
-//     }else {
-//             return $content;
-
-//     }
-// }
-
-// add_filter('the_content','check_for_rest');
-
-// var_dump($wp_filter["the_content"]);
 
 
-// remove_filter( 'the_content', 'wptexturize'        );
-// remove_filter( 'the_content', 'convert_smilies'    );
-// remove_filter( 'the_content', 'convert_chars'      );
-// remove_filter( 'the_content', 'wpautop'            );
-// remove_filter( 'the_content', 'shortcode_unautop'  );
-// remove_filter( 'the_content', 'prepend_attachment' );
 
-
-function my_awesome_func( $data ) {
+function get_artwork_meta_field( $data ) {
   $artworks = get_post_meta( 821, 'zoho');
  
   if ( empty( $artworks ) ) {
@@ -98,7 +78,7 @@ function my_awesome_func( $data ) {
 add_action( 'rest_api_init', function () {
   register_rest_route( 'zoho/v1', '/artworks', array(
     'methods' => WP_REST_Server::ALLMETHODS,
-    'callback' => 'my_awesome_func',
+    'callback' => 'get_artwork_meta_field',
   ) );
 } );
 

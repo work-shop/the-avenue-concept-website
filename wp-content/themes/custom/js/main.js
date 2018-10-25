@@ -26,14 +26,14 @@ import { livereload } from './livereload-client.js';
 /**
  * Artwork related imports
  */
-import { isHomePage, homePage } from './page-home-artworks.js';
-import { isArtworksSingle, singleArtwork } from './page-single-artworks.js';
-import { isArtworksArchive, artworksArchive } from './page-archive-artworks.js';
+ import { isHomePage, homePage } from './page-home-artworks.js';
+ import { isArtworksSingle, singleArtwork } from './page-single-artworks.js';
+ import { isArtworksArchive, artworksArchive } from './page-archive-artworks.js';
 
-livereload();
+ livereload();
 
-loading(config.loading);
-linksNewtab(config.linksNewtab);
+ loading(config.loading);
+ linksNewtab(config.linksNewtab);
 //viewportLabel(config.viewportLabel);
 dropdowns(config.dropdowns);
 jqueryAccordian();
@@ -50,10 +50,16 @@ singlePost();
 announcements();
 
 $.ajax({
-	url : 'http://localhost:8080/wp-json/wp/v2/pages/821',
+	crossDomain: true,
+	url : 'http://staging-theavenueconcept.kinsta.com/wp-json/zoho/v1/artworks',
 	method: 'GET',
 	success : function( data ) {
-		console.log( data.content.rendered );
+		console.log(data);
+		// var temp = data[1].split('var zohothe_avenue_conceptview45 = ');
+		// temp = temp[1].slice(0,-1);
+		// temp = JSON.parse(temp);
+		// console.log(temp);
+		//console.log( data[1] );
 	},
 	error: function( e ) {
 		console.error( e );
@@ -62,18 +68,18 @@ $.ajax({
 
 $( document ).ready( function() {
 
-    if ( isHomePage() ) {
+	if ( isHomePage() ) {
 
-        homePage();
+		homePage();
 
-    } else if ( isArtworksArchive() ) {
+	} else if ( isArtworksArchive() ) {
 
-        artworksArchive();
+		artworksArchive();
 
-    } else if ( isArtworksSingle() ) {
+	} else if ( isArtworksSingle() ) {
 
-        singleArtwork();
+		singleArtwork();
 
-    }
+	}
 
 });
