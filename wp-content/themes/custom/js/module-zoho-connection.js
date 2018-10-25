@@ -40,26 +40,10 @@ function makeZohoUri( viewname, condition = false, fieldname = false ) {
 }
 
 /**
- * Given a viewname, filtering criterion, and optional selector function, return
- * a function that can be invoked with a callback to get a set of resources from zoho.
- *
+ *  request cached Zoho results from the local server.
  */
-function get_resource( view_name, criterion, fieldname, selector = function( x ) { return x; } ) {
-
-    var uri = makeZohoUri( view_name, criterion, fieldname );
-
-    //console.log( uri );
-
-    return function( done ) {
-        $.ajax({
-            crossDomain: true,
-            url: uri,
-            dataType: 'jsonp',
-            type: 'GET',
-            success: function( v ) { done( null, selector( v ) ); },
-            error: done
-        });
-    };
+function makeLocalUri( ) {
+    return 'http://staging-theavenueconcept.kinsta.com/wp-json/zoho/v1/artworks';
 }
 
 
@@ -139,10 +123,15 @@ function ZohoConnection() {
 
         $.ajax({
             crossDomain: true,
-            url: makeZohoUri( view_name, ( slug ) ? 'Slug == \"'+ slug +'\"' : undefined ),
-            dataType: 'jsonp',
+            url: makeLocalUri(),
             type: 'GET',
             success: function( d ) {
+
+        		var temp = d[0].split('var zohothe_avenue_conceptview45 = ')[1].slice(0,-1);
+                d = JSON.parse( temp );
+
+        		// temp = temp[1].slice(0,-1);
+        		// d = JSON.parse( temp[1].slice(0,-1)) ;
 
                 var artworks = d.Add_Artwork.map( function( artwork ) {
 

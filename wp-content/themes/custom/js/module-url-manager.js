@@ -16,12 +16,10 @@ var currentState = [];
  * This file manages URL state with history push state.
  */
 
-function URLManager( defaultState = { view: 'map' } ) {
+function URLManager( defaultState = { view: 'map', 'on-view': true } ) {
     //console.log('creating new URLManager instance.');
     if ( !(this instanceof URLManager)) { return new URLManager( defaultState ); }
     var self = this;
-
-    defaultState['on-view'] = true;
 
     self.defaultState = objectAssign( {}, defaultState );
 
