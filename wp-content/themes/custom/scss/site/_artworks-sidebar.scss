@@ -156,18 +156,22 @@
 #sidebar-program{
 	.sidebar-row-heading{
 		margin-bottom: 17px;
+		margin-top: 10px;
 	}
 }
 
 .sidebar-view-row{
 	@extend .row;
 	margin: 0;
+	//border-bottom: 1px solid $medium;
 }
 
 .sidebar-view-heading{
-	margin-top: 14px;
+	margin-top: 16px;
 	margin-left: $sb-padding;
 	margin-bottom: 12px;
+	color: darken( $medium, 10% );
+	//text-align: center;
 
 	@media screen and (max-width: $sm) {
 		display: none;
@@ -180,20 +184,31 @@
 	@extend .uppercase;
 	@extend .tracked-less;
 	@extend .flex-center;
-	@extend .col-4;
+	width: 33.33%;
 	border: 1px solid lighten( $medium, 15% );
 	font-weight: 700;
 
+	.icon:before{
+		margin-right: 5px;
+		text-transform: none;
+	}
+
 	&:nth-child(1){
+		width: 30%;
 		border-left: none;
+		.icon:before{
+			top: 1px;
+		}
 	}
 
 	&:nth-child(2){
+		width: 40%;
 		border-left: none;
 		border-right: none;
 	}
 
 	&:nth-child(3){
+		width: 30%;
 		border-right: none;
 	}
 

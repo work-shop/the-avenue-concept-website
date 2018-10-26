@@ -1,4 +1,7 @@
 
+<div id="nav-curve-outer" class="nav-curve">
+	<?php include get_template_directory() . '/images/nav-curve-1.svg'; ?>
+</div>
 <nav id="nav" class="fixed before">
 	<div id="nav-background">
 		<?php //include get_template_directory() . '/images/nav-background.svg'; ?>
@@ -37,9 +40,6 @@
 					<?php endwhile; ?>
 					<?php wp_reset_postdata(); ?>
 				</ul>
-				<div id="nav-curve-1" class="nav-curve">
-					<?php include get_template_directory() . '/images/nav-curve-1.svg'; ?>
-				</div>
 			</li>
 			<li class="has-sub-menu closed nav-menu-primary-item">
 				<a href="/artworks" class="dropdown-link mobile-closed <?php if( Helpers::is_tree(187) ): echo ' nav-current '; endif; ?>" id="nav-link-artworks" data-dropdown-target="artworks">
@@ -68,12 +68,9 @@
 						</a>
 					</li>
 				</ul>
-				<div id="nav-curve-2" class="nav-curve">
-					<?php include get_template_directory() . '/images/nav-curve-1.svg'; ?>
-				</div>
 			</li>
 			<li class="has-sub-menu closed nav-menu-primary-item">
-				<a href="/about" class="dropdown-link mobile-closed <?php if( is_page(159) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="about">
+				<a href="/about" class="dropdown-link mobile-closed <?php if( is_page(159) ): echo ' nav-current '; else: ' not-current'; endif; ?>" id="nav-link-about" data-dropdown-target="about">
 					About
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
@@ -93,7 +90,7 @@
 							Upcoming Events
 						</a>
 					</li>
-<!-- 					<li>
+					<!--<li>
 						<a href="/get-involved" class="">
 							Get Involved
 						</a>
@@ -106,7 +103,7 @@
 				</ul>
 			</li>
 			<li class="nav-menu-primary-item">
-				<a href="/blog" class="<?php if( is_single() || is_category() || is_front_page() ): echo ' nav-current '; endif; ?>" id="nav-link-blog" >Blog</a>
+				<a href="/blog" class="<?php if( is_single() || is_category() || is_page(193) ): echo ' nav-current '; endif; ?>" id="nav-link-blog" >Blog</a>
 			</li>
 			<li class="nav-menu-primary-item">
 				<a href="/donate" class="<?php if( Helpers::is_tree(189) ): echo ' nav-current '; endif; ?>" id="nav-link-donate" >Donate</a>

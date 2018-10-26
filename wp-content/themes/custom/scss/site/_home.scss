@@ -179,9 +179,11 @@ $delay: 1.5s;
 .wwd-col{
 	//@extend .d-flex;
 	@extend .justify-content-center;
+	margin-bottom: 1.5em;
 }
 
 .wwd-image{
+	display: none;
 	margin-bottom: 1em;
 
 	svg{
@@ -196,11 +198,17 @@ $delay: 1.5s;
 
 .wwd-title{
 	text-align: center;
-	//padding: 1em;
-	//background: $brand;
-	//color: white;
-	border-radius: 10px;
 	font-size: 30px;
+
+	@media screen and (max-width: $lg) {
+		font-size: 24px;
+	}
+	@media screen and (max-width: $md) {
+		font-size: 21px;
+	}
+	@media screen and (max-width: $sm) {
+		font-size: 15px;
+	}
 
 }
 
@@ -222,30 +230,36 @@ $delay: 1.5s;
 	overflow: hidden;
 	padding-top: 56.25%;
 	position: relative;
-	//opacity: .75;
 
 	iframe{
 		@extend .background;
 	}
+
 }
 
 #home-map-text{
-	@extend .background;
+	@media screen and (min-width: $md+1) {
+		position: absolute;	
+		top: 0;
+		left: 0;
+		z-index: 2;
+	}	
 
 	//box-shadow: 0px 0px 9px $dark;
 
 	.home-map-text-inner{
-		width: 380px;
 		height: auto;
-		//background: transparentize($medium, .25);
-		//background: lighten( $tan, 10% );
-		background: rgba(250,250,250,.5);
-		background: $aqua;
-		background: $brand;
+		background: transparentize($brand,.1);
 		padding: 1.2em;
-		margin-top: 60px;
-		margin-left: 60px;
-		border-radius: 20px;
+
+		z-index: 2;
+
+		@media screen and (min-width: $md+1) {
+			margin-top: 60px;
+			margin-left: 60px;
+			border-radius: 10px;
+			width: 380px;
+		}
 	}
 
 	h3{
@@ -253,7 +267,6 @@ $delay: 1.5s;
 		margin-bottom: 1em;
 		@extend .h2;
 		text-shadow: 0px 0px 3px 3px white;
-		color: black;
 		color: white;
 	}
 }
@@ -270,7 +283,7 @@ $spacing: 20px;
 	margin-right: $spacing;
 
 	@media screen and (max-width: $sm) {
-		//column-gap: 10px;
+		column-count: 1;
 	}
 
 	div{

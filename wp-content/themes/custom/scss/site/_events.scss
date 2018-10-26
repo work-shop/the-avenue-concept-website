@@ -22,6 +22,7 @@
 	.event-title{
 		max-width: 15em;
 		margin-bottom: 1em;
+		@extend .bold;
 	}
 
 	.card-event-link{
