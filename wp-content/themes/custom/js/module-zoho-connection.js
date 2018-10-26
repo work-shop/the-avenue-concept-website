@@ -122,7 +122,7 @@ function ZohoConnection() {
         //console.log( makeZohoUri( view_name, ( slug ) ? 'Slug == \"'+ slug +'\"' : undefined ) );
 
         $.ajax({
-            crossDomain: true,
+            // crossDomain: true,
             url: makeLocalUri(),
             type: 'GET',
             success: function( d ) {
