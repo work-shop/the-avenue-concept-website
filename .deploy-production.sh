@@ -1,6 +1,6 @@
 #!/bin/bash
 
-npm run build-production
+#npm run build-production
 
 source ./.env
 
