@@ -494,6 +494,18 @@ $text-nav: (
 	}
 }
 
+#nav-menu-donate-item{
+	display: none !important;
+	width: 100px;
+	border: 1px solid red;
+	form{
+		position: absolute;
+	}
+	input{
+		border: none;
+	}
+}
+
 
 
 
