@@ -62,7 +62,6 @@ add_filter( 'template_include', function( $template ) {
 
 
 
-
 function get_artwork_meta_field( $data ) {
   $artworks = get_post_meta( 821, 'zoho', true);
  
@@ -74,13 +73,21 @@ function get_artwork_meta_field( $data ) {
 }
 
 
-
 add_action( 'rest_api_init', function () {
   register_rest_route( 'zoho/v1', '/artworks', array(
     'methods' => WP_REST_Server::ALLMETHODS,
     'callback' => 'get_artwork_meta_field',
   ) );
 } );
+
+
+add_filter( 'parse_query', 'ts_hide_pages_in_wp_admin' );
+function ts_hide_pages_in_wp_admin($query) {
+    global $pagenow,$post_type;
+    if (is_admin() && $pagenow=='edit.php' && $post_type =='page') {
+        $query->query_vars['post__not_in'] = array('821');
+    }
+}
 
 
 ?>
