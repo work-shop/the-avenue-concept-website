@@ -134,9 +134,9 @@ function createResizedImages( resize_url ) {
         type: 'zoho',
         has_low_quality_versions: true,
         src: resize_url,
-        high: resize_url + '=s1920',
-        med: resize_url + '=s1200',
-        low: resize_url + '=s768'
+        high: resize_url + '=s1920-rj-l85',
+        med: resize_url + '=s1200-rj-l85',
+        low: resize_url + '=s768-rj-l85'
     };
 
 }

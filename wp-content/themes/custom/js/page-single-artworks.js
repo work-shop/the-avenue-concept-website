@@ -126,8 +126,7 @@ function nl2br (str, is_xhtml) {
 
     for (var i = 0; i < regular_images.length; i++) {
 
-        //get the high size here
-        var image = '<div class="single-artwork-slide" style="background-image: url(' + regular_images[i].image.src + ')";></div>';
+        var image = '<div class="single-artwork-slide" style="background-image: url(' + regular_images[i].image.high + ')";></div>';
 
         $('.slick-single-artwork').append( image );
 
@@ -144,7 +143,6 @@ function nl2br (str, is_xhtml) {
 
         }
     }
-
 
     var artists = '';
     for (var i = 0; i < artwork.artist.length; i++) {
@@ -232,8 +230,7 @@ function nl2br (str, is_xhtml) {
 
     if ( typeof regular_images !== 'undefined' && regular_images.length > 0 ) {
         for (var i = 0; i < regular_images.length; i++) {
-            //get the high size here for the data attribute, and the med size for the image itself
-            var image = '<div class="single-artwork-image" data-src="' + regular_images[i].image.src + '"><img src="' + regular_images[i].image.src + '" /></div>';
+            var image = '<div class="single-artwork-image" data-src="' + regular_images[i].image.high + '"><img src="' + regular_images[i].image.med + '" /></div>';
             $('.single-artwork-images-container').append( image );
         }
     } else {
@@ -243,7 +240,6 @@ function nl2br (str, is_xhtml) {
     if ( typeof regular_videos !== 'undefined' && regular_videos.length > 0 ) {
         for (var i = 0; i < regular_videos.length; i++) {
             var video = getVideo( regular_videos[i] );
-            //console.log(video);
             $('.single-artwork-videos-container').append( video );
         }
     } else {
