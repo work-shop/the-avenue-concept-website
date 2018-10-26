@@ -127,7 +127,7 @@
 							</li>
 						</ul>
 					</div>
-					<div class="col-xl col-lg col-md-12 col-sm-12 col-xs-12 footer-nav-col hidden">
+					<div class="col-xl col-lg col-md-12 col-sm-12 col-xs-12 footer-nav-col footer-donate-col">
 <!-- 						<div class="mb2 footer-donate-button hidden">
 							<a href="/donate" class="font-secondary uppercase footer-nav-heading d-flex align-items-center justify-content-center">
 								Donate
