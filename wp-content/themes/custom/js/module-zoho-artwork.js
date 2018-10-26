@@ -24,7 +24,7 @@ const media_encryption_key = 'rOrBktNV54sebRgAnUCpp6TGghu26QsJJG2u5feg6CMKT0mmyh
  * This routine determines the goverining media class for a given
  * piece of attached media.
  */
-function mapMediaType( media_type ) {
+ function mapMediaType( media_type ) {
 
     if ( media_type.toLowerCase().indexOf('image') !== -1 ) {
 
@@ -47,7 +47,7 @@ function mapMediaType( media_type ) {
  * extract the name of the image from
  * the internal ZOho image src string.
  */
-function extractImageName( url ) {
+ function extractImageName( url ) {
     return url.substring( url.indexOf( split_string ) + split_string.length );
 }
 
@@ -57,15 +57,15 @@ function extractImageName( url ) {
  *
  *
  */
-function mapTrueImageSource( id, image_name ) {
+ function mapTrueImageSource( id, image_name ) {
     return creator_export +
-           user_name + '/' +
-           database_name + '/' +
-           view_name + '/' +
-           id + '/' +
-           'Image/image-download/' +
-           media_encryption_key +
-           '?filepath=/' + image_name;
+    user_name + '/' +
+    database_name + '/' +
+    view_name + '/' +
+    id + '/' +
+    'Image/image-download/' +
+    media_encryption_key +
+    '?filepath=/' + image_name;
 }
 
 /**
@@ -74,7 +74,7 @@ function mapTrueImageSource( id, image_name ) {
  * grab that image either from zoho or whatever
  * remote location the image is being hosted at.
  */
-function createImageSources( image_html, media ) {
+ function createImageSources( image_html, media ) {
 
     var $ = cheerio.load( image_html );
     var image = $('img');
@@ -105,6 +105,7 @@ function createImageSources( image_html, media ) {
             type: 'zoho',
             has_low_quality_versions: (typeof low !== 'undefined') || (typeof med !== 'undefined'),
             src: true_image_src,
+            high: true_image_src,
             med: true_image_med,
             low: true_image_low
         };
@@ -115,6 +116,7 @@ function createImageSources( image_html, media ) {
             type: 'other',
             has_low_quality_versions: false,
             src: src,
+            high: src,
             med: src,
             low: src
         };
@@ -128,7 +130,7 @@ function createImageSources( image_html, media ) {
  * This function builds preformatted resize urls
  * from Google Cloud Storage urls.
  */
-function createResizedImages( resize_url ) {
+ function createResizedImages( resize_url ) {
 
     return {
         type: 'zoho',
@@ -149,7 +151,7 @@ function createResizedImages( resize_url ) {
  * @param string video url field
  * @return string the video's url
  */
-function createVideoSource( video_url, vimeo_or_youtube ) {
+ function createVideoSource( video_url, vimeo_or_youtube ) {
     var $ = cheerio.load( video_url );
     var image = $('a');
 
@@ -173,7 +175,7 @@ function createFileSource( media_file ) {
  * parse the repsonse into a simpler represetation
  * for further processing.
  */
-function createMediaObject( media ) {
+ function createMediaObject( media ) {
 
     var featured_results = [];
 
@@ -229,7 +231,7 @@ function createMediaObject( media ) {
  * parse the repsonse into a simpler represetation
  * for further processing.
  */
-function createArtistObject( artists ) {
+ function createArtistObject( artists ) {
 
     return artists.map( function( artist ) {
 
@@ -252,7 +254,7 @@ function createArtistObject( artists ) {
  * parse the repsonse into a simpler represetation
  * for further processing.
  */
-function createLocationObject( location ) {
+ function createLocationObject( location ) {
     if ( location.length === 1 ) {
 
         return location[0].Location_Name;
@@ -272,7 +274,7 @@ function createLocationObject( location ) {
  *
  *
  */
-function Artwork( data ) {
+ function Artwork( data ) {
     if (!(this instanceof Artwork)) { return new Artwork( data ); }
     var self = this;
 
@@ -325,7 +327,7 @@ function Artwork( data ) {
  *
  * @return bool true if this artwork has a valid coordinate pair, false otherwise.
  */
-Artwork.prototype.hasLatLng = function() {
+ Artwork.prototype.hasLatLng = function() {
     return (typeof this.position !== 'undefined') && (typeof this.position.lat === 'number') && (typeof this.position.lng === 'number');
 };
 
@@ -337,7 +339,7 @@ Artwork.prototype.hasLatLng = function() {
  * @param object other test object to check equality against
  * @return true if other is equal to this
  */
-Artwork.prototype.equals = function( other ) {
+ Artwork.prototype.equals = function( other ) {
     return other instanceof Artwork && other.id === this.id;
 };
 
