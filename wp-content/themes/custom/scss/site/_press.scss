@@ -39,3 +39,23 @@
 	width: 100%;
 	height: 100%;
 }
+
+#press-coverage{
+	.wysiwyg{
+		p{
+			margin-bottom: .5em;
+
+			a{
+				font-size: 17px;
+
+				@media screen and (max-width: $md) {
+					font-size: 14px;
+				}
+
+				@media screen and (max-width: $sm) {
+					font-size: 12px;
+				}
+			}
+		}
+	}
+}
