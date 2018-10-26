@@ -89,5 +89,18 @@ function ts_hide_pages_in_wp_admin($query) {
     }
 }
 
+/**
+ * Use * for origin
+ */
+add_action( 'rest_api_init', function() {
+    
+    remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
+    add_filter( 'rest_pre_serve_request', function( $value ) {
+        header( 'Access-Control-Allow-Origin: *' );
+        return $value;
+        
+    });
+}, 15 );
+
 
 ?>
