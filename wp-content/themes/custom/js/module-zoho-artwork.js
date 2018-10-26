@@ -80,7 +80,7 @@ function createImageSources( image_html, media ) {
     var image = $('img');
 
     //if ( media.Website_Featured_Image ) {
-        //console.log( image_html );       
+        //console.log( image_html );
     //}
 
 
@@ -100,7 +100,7 @@ function createImageSources( image_html, media ) {
         // console.log( true_image_src );
         // console.log( true_image_med );
         // console.log('');
-        
+
         return {
             type: 'zoho',
             has_low_quality_versions: (typeof low !== 'undefined') || (typeof med !== 'undefined'),
@@ -120,6 +120,24 @@ function createImageSources( image_html, media ) {
         };
 
     }
+
+}
+
+
+/**
+ * This function builds preformatted resize urls
+ * from Google Cloud Storage urls.
+ */
+function createResizedImages( resize_url ) {
+
+    return {
+        type: 'zoho',
+        has_low_quality_versions: true,
+        src: resize_url,
+        high: resize_url + '=s1920',
+        med: resize_url + '=s1200',
+        low: resize_url + '=s768'
+    };
 
 }
 
@@ -167,12 +185,21 @@ function createMediaObject( media ) {
             photographer: media_object.Photographer_Author,
             id: media_object.ID,
             title: media_object.Media_Title,
-            featured: media_object.Website_Featured_Image
+            featured: media_object.Website_Featured_Image,
+            resize_url: media_object.Resize_URL
         };
 
         if ( media_result.type === 'image' ) {
 
-            media_result.image = createImageSources( media_object.Image, media_object );
+            if ( media_result.resize_url !== '' ) {
+
+                media_result.image = createResizedImages( media_result.resize_url );
+
+            } else {
+
+                media_result.image = createImageSources( media_object.Image, media_object );
+
+            }
 
         } else if ( media_result.type === 'video' ) {
 
