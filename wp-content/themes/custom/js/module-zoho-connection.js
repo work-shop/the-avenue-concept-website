@@ -95,7 +95,8 @@ function processMediaObjects( media ) {
             Image: media.Image[ type_i ],
             Video_URL: media.Video_URL[ type_i ],
             Media_File: media.Media_File[ type_i ],
-            Vimeo_or_Youtube: media.Vimeo_or_Youtube[ type_i ]
+            Vimeo_or_Youtube: media.Vimeo_or_Youtube[ type_i ],
+            Resize_URL: media.Resize_URL[ type_i ]
         };
 
         result.push( media_item );
@@ -158,7 +159,8 @@ function ZohoConnection() {
                         ID: unpackStringArray( artwork['Add_Media.ID'] ),
                         Photographer_Author: unpackStringArray( artwork['Add_Media.Photographer_Author'] ),
                         Website_Featured_Image: unpackStringArray( artwork['Add_Media.Website_Featured_Image'] ),
-                        Vimeo_or_Youtube: unpackStringArray( artwork['Add_Media.Vimeo_or_Youtube'] )
+                        Vimeo_or_Youtube: unpackStringArray( artwork['Add_Media.Vimeo_or_Youtube'] ),
+                        Resize_URL: unpackStringArray( artwork['Add_Media.Resize_URL'] )
                     });
 
                     artwork.Partners_Sponsors = unpackStringArray( artwork['Partners_Sponsors.Name'] );
