@@ -113,7 +113,7 @@
 					<input type="hidden" name="cmd" value="_s-xclick">
 					<input type="hidden" name="hosted_button_id" value="T3NSG4UVFRPMQ">
 					<span class="extra-text">Donate</span>
-					<input type="image" src="http://localhost:8080/wp-content/themes/custom/images/donate-button-new.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" class="paypal-button-image">
+					<input type="image" src="<?php bloginfo('template_directory'); ?>/images/donate-button-new.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" class="paypal-button-image">
 					<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" class="paypal-button-hidden-image">
 				</form>
 			</li>
