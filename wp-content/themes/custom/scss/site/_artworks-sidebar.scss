@@ -35,11 +35,13 @@
 		height: $sb-mobile-toggle-height;
 		background: white;
 		z-index: 5;
+		overflow: hidden;
 
 
 		&.mobile-open{
 			transition: height .25s;
 			height: calc( 100vh - #{$nav-height-mobile});
+			overflow: scroll;
 
 			.sidebar-mobile-toggle{
 				border-bottom: 1px solid lighten( $medium, 15% );

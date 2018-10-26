@@ -43,7 +43,7 @@ function makeZohoUri( viewname, condition = false, fieldname = false ) {
  *  request cached Zoho results from the local server.
  */
 function makeLocalUri( ) {
-    return 'http://staging-theavenueconcept.kinsta.com/wp-json/zoho/v1/artworks';
+    return 'https://theavenueconcept.org/wp-json/zoho/v1/artworks';
 }
 
 

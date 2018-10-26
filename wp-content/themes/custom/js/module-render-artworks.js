@@ -66,6 +66,9 @@ import { Artwork } from './module-zoho-artwork.js';
         //     console.log(artwork.featured_media.image);
         // }
 
+
+        //get the med attribute here
+
         return artwork.featured_media.image.low;
 
     } else {
@@ -97,30 +100,30 @@ import { Artwork } from './module-zoho-artwork.js';
  function renderSlide( artwork = {}, index = 0 ) {
 
     // build consitiuent HTML elements.
-    var root = $('<div>')
-    .addClass('artwork-slide')
-    .addClass('slide-' + index )
-    .addClass('featured-artwork')
-    .addClass('col-sm-6')
-    .addClass('artwork-' + artwork.slug );
+    // var root = $('<div>')
+    // .addClass('artwork-slide')
+    // .addClass('slide-' + index )
+    // .addClass('featured-artwork')
+    // .addClass('col-sm-6')
+    // .addClass('artwork-' + artwork.slug );
 
-    var a = $('<a>')
-    .addClass('artwork-link')
-    .attr('href', artwork.url );
+    // var a = $('<a>')
+    // .addClass('artwork-link')
+    // .attr('href', artwork.url );
 
-    var title = $('<h1>')
-    .addClass('artwork-title')
-    .text( artwork.name );
+    // var title = $('<h1>')
+    // .addClass('artwork-title')
+    // .text( artwork.name );
 
-    var img = createAsynchrounousImage( getFeaturedImageSrc( artwork ) );
+    // var img = createAsynchrounousImage( getFeaturedImageSrc( artwork ) );
 
-    //assemble elements into single structure.
-    a.append( title );
-    a.append( img );
-    root.append( a );
+    // //assemble elements into single structure.
+    // a.append( title );
+    // a.append( img );
+    // root.append( a );
 
-    // return jQuery html.
-    return root;
+    // // return jQuery html.
+    // return root;
 }
 
 
@@ -133,14 +136,14 @@ import { Artwork } from './module-zoho-artwork.js';
  */
  function renderListRow( artwork = {}, index = 0 ) {
 
-    var artworkWrapper = $('<div>').addClass('artwork-list-row').addClass('artwork-' + artwork.slug );
+    // var artworkWrapper = $('<div>').addClass('artwork-list-row').addClass('artwork-' + artwork.slug );
 
-    // var linkTag = $('<a>').attr('href', artwork.getURL() );
-    // var title = $('<h1>').text( artwork.name );
+    // // var linkTag = $('<a>').attr('href', artwork.getURL() );
+    // // var title = $('<h1>').text( artwork.name );
 
-    // artworkWrapper.append( linkTag ).append( title );
+    // // artworkWrapper.append( linkTag ).append( title );
 
-    return artworkWrapper;
+    // return artworkWrapper;
 }
 
 /**

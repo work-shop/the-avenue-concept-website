@@ -125,6 +125,8 @@ function nl2br (str, is_xhtml) {
     var regular_videos = artwork.media.filter( function( media ) { return media.type === 'video' && !media.featured; });
 
     for (var i = 0; i < regular_images.length; i++) {
+
+        //get the high size here
         var image = '<div class="single-artwork-slide" style="background-image: url(' + regular_images[i].image.src + ')";></div>';
 
         $('.slick-single-artwork').append( image );
@@ -230,6 +232,7 @@ function nl2br (str, is_xhtml) {
 
     if ( typeof regular_images !== 'undefined' && regular_images.length > 0 ) {
         for (var i = 0; i < regular_images.length; i++) {
+            //get the high size here for the data attribute, and the med size for the image itself
             var image = '<div class="single-artwork-image" data-src="' + regular_images[i].image.src + '"><img src="' + regular_images[i].image.src + '" /></div>';
             $('.single-artwork-images-container').append( image );
         }
@@ -253,8 +256,6 @@ function nl2br (str, is_xhtml) {
     } else {
         $('#single-artwork-related').hide();
     }
-
-
 
     this.map.update( [this.renderer.renderMapObjects( artwork )], {zoom: 17, center: artwork.position } );
 
