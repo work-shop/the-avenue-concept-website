@@ -16,69 +16,69 @@ ArtworksMap.prototype.init = function() {
 
         this.map = makeMap({
             selector: this.selector,
-            map: { streetViewControl: false,
-                // gestureHandling: 'greedy',
-                styles: [
+            streetViewControl: false,
+            // gestureHandling: 'greedy',
+            styles: [
                 {
                     'featureType': 'poi.business',
                     'stylers': [
-                    {
-                        'visibility': 'off'
-                    }
+                        {
+                            'visibility': 'off'
+                        }
                     ]
                 },
                 {
                     'featureType': 'poi.park',
                     'stylers': [
-                    {
-                        'visibility': 'on'
-                    }
+                        {
+                            'visibility': 'on'
+                        }
                     ]
                 },
                 {
                     'featureType': 'poi.park',
                     'elementType': 'labels.text',
                     'stylers': [
-                    {
-                        'visibility': 'off'
-                    }
+                        {
+                            'visibility': 'off'
+                        }
                     ]
                 },
                 {
                     'featureType': 'poi.school',
                     'stylers': [
-                    {
-                        'visibility': 'off'
-                    }
+                        {
+                            'visibility': 'off'
+                        }
                     ]
                 },
                 {
                     'featureType': 'road.arterial',
                     'elementType': 'labels.icon',
                     'stylers': [
-                    {
-                        'visibility': 'off'
-                    }
+                        {
+                            'visibility': 'off'
+                        }
                     ]
                 },
                 {
                     'featureType': 'road.highway',
                     'stylers': [
-                    {
-                        'color': '#ffffff'
-                    }
+                        {
+                            'color': '#ffffff'
+                        }
                     ]
                 },
                 {
                     'featureType': 'road.highway',
                     'elementType': 'geometry.stroke',
                     'stylers': [
-                    {
-                        'color': '#e1e1e1'
-                    }
+                        {
+                            'color': '#e1e1e1'
+                        }
                     ]
                 }
-                ] }
+                ]
 
             } )[0];
 
