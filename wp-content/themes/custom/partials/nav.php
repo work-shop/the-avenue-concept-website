@@ -105,7 +105,7 @@
 			<li class="nav-menu-primary-item">
 				<a href="/blog" class="<?php if( is_single() || is_category() || is_page(193) ): echo ' nav-current '; endif; ?>" id="nav-link-blog" >Blog</a>
 			</li>
-			<li class="nav-menu-primary-item">
+			<li class="nav-menu-primary-item hidden">
 				<a href="/donate" class="<?php if( Helpers::is_tree(189) ): echo ' nav-current '; endif; ?>" id="nav-link-donate" >Donate</a>
 			</li>
 		</ul>
