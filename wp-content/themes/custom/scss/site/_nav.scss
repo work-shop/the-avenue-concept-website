@@ -331,6 +331,14 @@ $text-nav: (
 			text-shadow: none;
 		}
 
+		#nav-menu-donate-item{
+
+			.extra-text{
+				text-shadow: none;
+			}
+
+		}
+
 		&.open{
 			height: auto;
 			overflow: scroll;
@@ -494,15 +502,71 @@ $text-nav: (
 	}
 }
 
+#nav-menus{
+	//border: 3px solid black;
+}
+
 #nav-menu-donate-item{
-	display: none !important;
-	width: 100px;
-	border: 1px solid red;
+	width: 120px;
+	height: 28px;
+	//border: 1px solid red;
+	//background: yellow;
+	margin: 0;
+	padding: 0;
+	//display: none !important;
+
+	@media screen and (max-width: $sm) {
+		width: 100%;
+	}
+
 	form{
+		margin: 0;
+		padding: 0;
 		position: absolute;
+		height: 28px;
+		top: 0px;
+		left: 0px;
+		// background: orange;
+		//float: left;
+		//height: 1px;
+
+		@media screen and (max-width: $sm) {
+			width: 100%;
+		}
 	}
 	input{
 		border: none;
+		margin: 0;
+		padding: 0;
+	}
+
+	.paypal-button-image{
+		width: 121px;
+		height: 28px;
+		//border: 1px solid black;
+	}
+
+	.extra-text{
+		position: absolute;
+		//top: 2px;
+		padding-top: 6px;
+		color: white;
+		@extend .font-secondary;
+		text-transform: uppercase;
+		@extend .tracked-less;
+		@media screen and (min-width: $sm+1) {
+			text-shadow: 1px 1px 1px black;
+		}
+
+		@media screen and (max-width: $sm) {
+			width: 100%;
+			text-align: center;
+			font-size: 17px;
+		}
+	}
+
+	.paypal-button-hidden-image{
+		display: none;
 	}
 }
 

@@ -105,14 +105,15 @@
 			<li class="nav-menu-primary-item">
 				<a href="/blog" class="<?php if( is_single() || is_category() || is_page(193) ): echo ' nav-current '; endif; ?>" id="nav-link-blog" >Blog</a>
 			</li>
-			<li class="nav-menu-primary-item hidden">
+<!-- 			<li class="nav-menu-primary-item">
 				<a href="/donate" class="<?php if( Helpers::is_tree(189) ): echo ' nav-current '; endif; ?>" id="nav-link-donate" >Donate</a>
-			</li>
+			</li> -->
 			<li class="nav-menu-primary-item" id="nav-menu-donate-item">
 				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="paypal-button-form">
 					<input type="hidden" name="cmd" value="_s-xclick">
 					<input type="hidden" name="hosted_button_id" value="T3NSG4UVFRPMQ">
-					<input type="image" src="http://d3w0jg1q5ypcyu.cloudfront.net/2018/07/donate-button-brand.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" class="paypal-button-image">
+					<span class="extra-text">Donate</span>
+					<input type="image" src="http://localhost:8080/wp-content/themes/custom/images/donate-button-new.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" class="paypal-button-image">
 					<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" class="paypal-button-hidden-image">
 				</form>
 			</li>
