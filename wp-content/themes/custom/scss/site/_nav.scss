@@ -557,6 +557,7 @@ $text-nav: (
 		@media screen and (min-width: $sm+1) {
 			text-shadow: 1px 1px 1px black;
 		}
+		z-index: -1;
 
 		@media screen and (max-width: $sm) {
 			width: 100%;
