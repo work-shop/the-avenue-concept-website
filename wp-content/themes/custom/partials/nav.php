@@ -59,12 +59,12 @@
 					</li>
 					<li>
 						<a href="/artworks/?program=3-D" class="">
-							3-D
+							3-D Artworks
 						</a>
 					</li>
 					<li>
 						<a href="/artworks/?program=2-D" class="">
-							2-D
+							2-D Artworks
 						</a>
 					</li>
 				</ul>
@@ -81,8 +81,8 @@
 						</a>
 					</li>
 					<li>
-						<a href="/media" class="">
-							Media
+						<a href="/press" class="">
+							Press
 						</a>
 					</li>
 					<li>

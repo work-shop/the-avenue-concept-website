@@ -101,8 +101,8 @@
 								</a>
 							</li>
 							<li>
-								<a href="/media">
-									Media
+								<a href="/press">
+									Press
 								</a>
 							</li>
 							<li>
@@ -110,11 +110,11 @@
 									Upcoming Events
 								</a>
 							</li>
-							<li>
+<!-- 							<li>
 								<a href="/get-involved">
 									Get Involved
 								</a>
-							</li>
+							</li> -->
 							<li>
 								<a href="/blog">
 									Blog
