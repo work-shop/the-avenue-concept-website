@@ -221,7 +221,10 @@ $delay: 1.5s;
 }
 
 #home-map{
-	height: calc(70vh - #{$nav-height})
+	height: calc(70vh - #{$nav-height});
+	@media screen and (max-width: $sm) {
+		height: auto;
+	}
 }
 
 #home-map-container{
@@ -233,6 +236,11 @@ $delay: 1.5s;
 
 	iframe{
 		@extend .background;
+	}
+
+	@media screen and (max-width: $sm) {
+		padding-top: 0;
+		height: 65vh;
 	}
 
 }
@@ -251,8 +259,11 @@ $delay: 1.5s;
 		height: auto;
 		background: transparentize($brand,.1);
 		padding: 1.2em;
-
 		z-index: 2;
+
+		@media screen and (max-width: $sm) {
+			padding-top: 2em;
+		}
 
 		@media screen and (min-width: $md+1) {
 			margin-top: 60px;
@@ -266,7 +277,6 @@ $delay: 1.5s;
 		line-height: 1.2;
 		margin-bottom: 1em;
 		@extend .h2;
-		text-shadow: 0px 0px 3px 3px white;
 		color: white;
 	}
 }

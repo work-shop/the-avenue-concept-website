@@ -425,7 +425,8 @@ $text-button: (
 	font-size: 15px;
 
 	@media screen and (max-width: $sm) {
-		font-size: 12px;
+		font-size: 13px;
+		margin-left: 10px;
 	}
 }
 
