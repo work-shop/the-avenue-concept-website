@@ -9,14 +9,15 @@ function dropdowns( config ) {
 
 		$( config.linkSelector ).hover(
 			function() {
-				if( $(window).width() > 767 ){
+				if( window.innerWidth > 767 ){
 					var currentLink = $(this);
+					console.log($(this));
 					timer = setTimeout(function() {
 						openDropdown( currentLink );
 					}, dropdownDelay);
 				}
 			}, function() {
-				if( $(window).width() > 767 ){
+				if( window.innerWidth > 767 ){
 					var currentLink = $(this);
 					clearTimeout(timer);
 					closeDropdown(currentLink);
@@ -25,7 +26,7 @@ function dropdowns( config ) {
 			);
 
 		$( '.dropdown-link' ).click(function(e) {
-			if( $(window).width() <= 767 ){
+			if( window.innerWidth <= 767 ){
 				e.preventDefault();
 				var currentLink = $(this);
 				if( currentLink.hasClass('mobile-closed') ){
@@ -45,11 +46,10 @@ function dropdowns( config ) {
 	//open the dropdown
 	function openDropdown( link ){
 		//console.log(link);
-		//console.log('openDropdown');
 
 		if( $(link).hasClass('closed') ){
 			$(link).removeClass('closed').addClass('open');
-			if( $(window).width() > 767 ){
+			if( window.innerWidth > 767 ){
 				$('body').removeClass(config.bodyOffClass).addClass(config.bodyOnClass);
 			} else{
 				$('body').removeClass('mobile-dropdown-off').addClass('mobile-dropdown-on');
@@ -61,11 +61,10 @@ function dropdowns( config ) {
 	//close the dropdown
 	function closeDropdown(link){
 		//console.log(link);
-		//console.log('closeDropdown');
 
 		if( $(link).hasClass('open') ){
 			$(link).removeClass('open').addClass('closed');	
-			if( $(window).width() > 767 ){
+			if( window.innerWidth > 767 ){
 				$('body').removeClass(config.bodyOnClass).addClass(config.bodyOffClass);
 			}	
 		}

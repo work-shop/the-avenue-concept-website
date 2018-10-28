@@ -122,18 +122,16 @@
 		}
 	}
 
-
-
 }
 
 .footer-donate-col{
-
+	
 	input{
 		border: none;
 	}
 
 	.paypal-button-image{
-		@media screen and (max-width: $sm) {
+		@media screen and (max-width: $md) {
 			width: 200px;
 			margin: 0 auto;
 			display: block;
@@ -143,6 +141,4 @@
 
 .paypal-button-hidden-image{
 	display: none;
-
-
 }

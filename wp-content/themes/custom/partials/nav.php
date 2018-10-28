@@ -14,7 +14,7 @@
 	<div id="nav-menus">
 		<ul class="nav-menus-list">
 			<li class="has-sub-menu closed nav-menu-primary-item">
-				<a href="/programs" class="dropdown-link mobile-closed <?php if( Helpers::is_tree(161) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="programs">
+				<a href="/programs" class="dropdown-link closed mobile-closed <?php if( Helpers::is_tree(161) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="programs">
 					Programs
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
@@ -42,7 +42,7 @@
 				</ul>
 			</li>
 			<li class="has-sub-menu closed nav-menu-primary-item">
-				<a href="/artworks" class="dropdown-link mobile-closed <?php if( Helpers::is_tree(187) ): echo ' nav-current '; endif; ?>" id="nav-link-artworks" data-dropdown-target="artworks">
+				<a href="/artworks" class="dropdown-link closed mobile-closed <?php if( Helpers::is_tree(187) ): echo ' nav-current '; endif; ?>" id="nav-link-artworks" data-dropdown-target="artworks">
 					Artworks
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
@@ -70,7 +70,7 @@
 				</ul>
 			</li>
 			<li class="has-sub-menu closed nav-menu-primary-item">
-				<a href="/about" class="dropdown-link mobile-closed <?php if( is_page(159) ): echo ' nav-current '; else: ' not-current'; endif; ?>" id="nav-link-about" data-dropdown-target="about">
+				<a href="/about" class="dropdown-link closed mobile-closed <?php if( is_page(159) ): echo ' nav-current '; else: ' not-current'; endif; ?>" id="nav-link-about" data-dropdown-target="about">
 					About
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>

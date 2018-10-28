@@ -1,7 +1,7 @@
 	<div class="artworks-sidebar mobile-closed">
 		<div class="" id="sidebar-view">
 			<h5 class="sidebar-row-heading sidebar-view-heading">
-				View As:
+				View Artworks As:
 			</h5>
 			<div class="sidebar-view-row">
 				<a href="#" class="sidebar-view-button active" data-artworks-view="map">
