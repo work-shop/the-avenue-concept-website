@@ -80,35 +80,50 @@ const media_encryption_key = 'rOrBktNV54sebRgAnUCpp6TGghu26QsJJG2u5feg6CMKT0mmyh
     var image = $('img');
 
     //if ( media.Website_Featured_Image ) {
-        //console.log( image_html );
+        console.log( image_html );
     //}
-
-
 
     var src = image.attr('src');
     var low = image.attr( 'lowqual');
     var med = image.attr( 'medqual');
 
-    if ( src.indexOf( '://' ) === -1 ) {
+    console.log(src);
 
-        var true_image_src = mapTrueImageSource( media.ID, extractImageName( src ) );
+    if( typeof src !== 'undefined' ){
 
-        var true_image_low = (typeof low === 'undefined') ? true_image_src : mapTrueImageSource( media.ID, extractImageName( low ) );
-        var true_image_med = (typeof med === 'undefined') ? true_image_src : mapTrueImageSource( media.ID, extractImageName( med ) );
+        if ( src.indexOf( '://' ) === -1 ) {
 
-        // console.log('qualities:');
-        // console.log( true_image_src );
-        // console.log( true_image_med );
-        // console.log('');
+            var true_image_src = mapTrueImageSource( media.ID, extractImageName( src ) );
 
-        return {
-            type: 'zoho',
-            has_low_quality_versions: (typeof low !== 'undefined') || (typeof med !== 'undefined'),
-            src: true_image_src,
-            high: true_image_src,
-            med: true_image_med,
-            low: true_image_low
-        };
+            var true_image_low = (typeof low === 'undefined') ? true_image_src : mapTrueImageSource( media.ID, extractImageName( low ) );
+            var true_image_med = (typeof med === 'undefined') ? true_image_src : mapTrueImageSource( media.ID, extractImageName( med ) );
+
+            // console.log('qualities:');
+            // console.log( true_image_src );
+            // console.log( true_image_med );
+            // console.log('');
+
+            return {
+                type: 'zoho',
+                has_low_quality_versions: (typeof low !== 'undefined') || (typeof med !== 'undefined'),
+                src: true_image_src,
+                high: true_image_src,
+                med: true_image_med,
+                low: true_image_low
+            };
+
+        } else {
+
+            return {
+                type: 'other',
+                has_low_quality_versions: false,
+                src: src,
+                high: src,
+                med: src,
+                low: src
+            };
+
+        }
 
     } else {
 
@@ -198,7 +213,8 @@ function createFileSource( media_file ) {
                 media_result.image = createResizedImages( media_result.resize_url );
 
             } else {
-
+                console.log('no resize url');
+                console.log(media_object);
                 media_result.image = createImageSources( media_object.Image, media_object );
 
             }
@@ -278,7 +294,7 @@ function createFileSource( media_file ) {
     if (!(this instanceof Artwork)) { return new Artwork( data ); }
     var self = this;
 
-    //console.log( data );
+    console.log( data );
 
     self.name = data.Artwork_Title;
     self.description = data.Artwork_Description;
