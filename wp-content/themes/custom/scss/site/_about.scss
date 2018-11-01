@@ -20,6 +20,34 @@
 	}
 }
 
+#about-impact{
+
+	.impact-col{
+		margin-bottom: 60px;
+		@media screen and (max-width: $sm) {
+			margin-bottom: 35px;
+		}
+	}
+
+	.impact-title{
+		text-align: center;
+
+		@media screen and (max-width: $sm) {
+			margin-bottom: 10px;
+		}
+	}
+
+	.impact-label{
+		text-align: center;
+		max-width: 12em;
+		margin: 0 auto;
+	}
+
+	*{
+		color: white;
+	}
+}
+
 .person{
 	margin-bottom: 3em;
 

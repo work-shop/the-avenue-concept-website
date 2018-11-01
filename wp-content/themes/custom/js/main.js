@@ -9,6 +9,7 @@ import { loading } from './loading.js';
 //import { viewportLabel } from './viewport-label.js';
 import { linksNewtab } from './links-newtab.js';
 import { dropdowns } from './dropdowns.js';
+import { navCurve } from './nav-curve.js';
 import { jqueryAccordian } from './jquery-accordian.js';
 import { accordian } from './accordian.js';
 import { clickyNav } from './clicky-nav.js';
@@ -32,10 +33,11 @@ import { livereload } from './livereload-client.js';
 
  livereload();
 
- loading(config.loading);
- linksNewtab(config.linksNewtab);
+loading(config.loading);
+linksNewtab(config.linksNewtab);
 //viewportLabel(config.viewportLabel);
 dropdowns(config.dropdowns);
+navCurve();
 jqueryAccordian();
 accordian();
 clickyNav(config.clickyNav);

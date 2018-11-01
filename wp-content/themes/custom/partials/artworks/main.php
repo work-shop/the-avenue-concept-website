@@ -1,7 +1,7 @@
 <section class="block artworks-loading" id="artworks">
 	<div id="artworks-messages">
 		<div class="artworks-messages-container">
-			<div class="artworks-message">
+			<div class="artworks-message" id="artworks-message">
 				We couldn't find any artworks with those parameters. 
 			</div>
 			<a href="#" class="artworks-messages-close">

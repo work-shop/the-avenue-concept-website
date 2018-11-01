@@ -3,6 +3,7 @@
 	<?php include get_template_directory() . '/images/nav-curve-1.svg'; ?>
 </div>
 <nav id="nav" class="fixed before">
+
 	<div id="nav-background">
 		<?php //include get_template_directory() . '/images/nav-background.svg'; ?>
 	</div>
@@ -102,11 +103,36 @@
 					</li>
 				</ul>
 			</li>
-			<li class="nav-menu-primary-item">
-				<a href="/blog" class="<?php if( is_single() || is_category() || is_page(193) ): echo ' nav-current '; endif; ?>" id="nav-link-blog" >Blog</a>
+			<li class="has-sub-menu closed nav-menu-primary-item">
+				<a href="/blog" class="dropdown-link closed mobile-closed <?php if( is_single() || is_category() || is_page(193) ): echo ' nav-current '; endif; ?>" id="nav-link-blog" data-dropdown-target="blog">
+					Blog
+					<span class="icon" data-icon="ﬁ"></span>
+				</a>
+				<ul class="sub-menu" id="sub-menu-blog">
+					<li>
+						<a href="/blog" class="">
+							Recent Posts
+						</a>
+					</li>
+				</ul>
 			</li>
-<!-- 			<li class="nav-menu-primary-item">
-				<a href="/donate" class="<?php if( Helpers::is_tree(189) ): echo ' nav-current '; endif; ?>" id="nav-link-donate" >Donate</a>
+<!-- 			<li class="has-sub-menu closed nav-menu-primary-item">
+				<a href="/donate" class="dropdown-link closed mobile-closed <?php if( is_page(189) ): echo ' nav-current '; endif; ?>" id="nav-link-donate" data-dropdown-target="donate">
+					Donate
+					<span class="icon" data-icon="ﬁ"></span>
+				</a>
+				<ul class="sub-menu" id="sub-menu-donate">
+					<li>
+						<a href="/donate" class="">
+							Donate Now
+						</a>
+					</li>
+					<li>
+						<a href="/donate#ways-to-donate" class="">
+							Ways to Donate
+						</a>
+					</li>
+				</ul>
 			</li> -->
 			<li class="nav-menu-primary-item" id="nav-menu-donate-item">
 				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="paypal-button-form">
@@ -116,7 +142,7 @@
 					<input type="image" src="<?php bloginfo('template_directory'); ?>/images/donate-button-new.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" class="paypal-button-image">
 					<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" class="paypal-button-hidden-image">
 				</form>
-			</li>
+			</li> 
 		</ul>
 	</div>
 

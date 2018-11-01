@@ -94,6 +94,7 @@ import { URLManager } from './module-url-manager.js';
 
     });
 
+
     // manageClassesForView( parsed );
     // manageClassesForProgram( parsed );
     // manageClassesForYear( parsed );
@@ -115,6 +116,7 @@ import { URLManager } from './module-url-manager.js';
 
     this.clearErrors();
 
+
     var diffObject = this.diff( state );
 
     // console.log('handleNewState: ');
@@ -132,9 +134,8 @@ import { URLManager } from './module-url-manager.js';
     }
 
     if ( this.filterer.getCurrentState().length === 0 ) {
-
-        this.handleEmptyResultsError( state );
-
+        console.log('calling empty');
+        this.handleEmptyResultsError();
     }
 
 };
@@ -148,6 +149,11 @@ ArtworksArchiveManager.prototype.doInitialStateTransition = function( diff ) {
     thumbs.append( this.renderer.renderThumbnails( this.filterer.artworks ) );
     list.append( this.renderer.renderThumbnails( this.filterer.artworks ) );
     map_list.append( this.renderer.renderThumbnails( this.filterer.artworks ) );
+
+    if ( this.filterer.getCurrentState().length === 0 ) {
+        console.log('calling empty');
+        this.handleEmptyResultsError();
+    }
 
     this.doStateTransitionByDiff( diff );
 
@@ -426,7 +432,7 @@ ArtworksArchiveManager.prototype.buildLocations = function( locations, state ) {
         } else {
 
             newState = self.urlmanager.updateURL( { from: '01-01-' + from, to: '12-31-' + to } );
-            console.log(newState);
+            //console.log(newState);
         }
 
         self.handleNewState( newState );
@@ -518,9 +524,12 @@ ArtworksArchiveManager.prototype.buildLocations = function( locations, state ) {
  * @param message string the error message to display.
  *
  */
-ArtworksArchiveManager.prototype.handleExceptionError = function( message ) {
+ ArtworksArchiveManager.prototype.handleExceptionError = function( message ) {
 
-    console.error( 'Bad Problem!', message );
+   // console.error( 'Oops, we ran into a problem. Please try reloading the page or clearing your filter settings on this page.', message );
+   var errorText = "Oops, we ran into a problem. Please try reloading the page or try again later. ";
+   errorText += '<a href="/artworks" class="messages-link">Reload Page </a>';
+   this.showError( errorText );
 
 };
 
@@ -531,9 +540,34 @@ ArtworksArchiveManager.prototype.handleExceptionError = function( message ) {
  * @param params object the set of filtering parameters that caused the empty result.
  *                      the error message should be constructed from this set of parameters.
  */
-ArtworksArchiveManager.prototype.handleEmptyResultsError = function( params={} ) {
+ ArtworksArchiveManager.prototype.handleEmptyResultsError = function() {
 
-    console.error( 'Encountered an empty result set!', params );
+    var self = this;
+
+    var errorText = "We couldn't find any artworks with those filters. ";
+    errorText += '<a href="#" class="sidebar-button-reset messages-link">Reset Filters </a>';
+    this.showError( errorText );
+
+    $('.sidebar-button-reset').on( 'click', function() {
+        var newState;
+        newState = self.urlmanager.updateURL( { program: undefined, from: undefined, to: undefined, location: undefined } );
+        self.handleNewState( newState );
+    });
+
+    console.error( 'Encountered an empty result set' );
+
+};
+
+
+
+
+ArtworksArchiveManager.prototype.showError = function( errorText ) {
+    console.log( 'showing errors.' );
+
+    if( $('body').hasClass('artworks-error-off') ){
+        $('body').removeClass('artworks-error-off').addClass('artworks-error-on');
+        $('#artworks-message').html( errorText );
+    }
 
 };
 
@@ -541,11 +575,16 @@ ArtworksArchiveManager.prototype.handleEmptyResultsError = function( params={} )
 /**
  * This method clears any errors that are currently rendered to the page.
  */
-ArtworksArchiveManager.prototype.clearErrors = function() {
-
+ ArtworksArchiveManager.prototype.clearErrors = function() {
     console.log( 'clearing pre-existing errors.' );
 
+    if( $('body').hasClass('artworks-error-on') ){
+        $('body').removeClass('artworks-error-on').addClass('artworks-error-off');
+        $('#artworks-message').html( '' );
+    }
+
 };
+
 
 
 

@@ -13,6 +13,13 @@
 							Values
 						</a>
 					</li>
+					<?php if( have_rows('impact') ): ?>
+						<li>
+							<a href="#about-impact" class="jump">
+								Impact
+							</a>
+						</li>
+					<?php endif; ?>
 					<li>
 						<a href="#about-staff" class="jump">
 							Staff

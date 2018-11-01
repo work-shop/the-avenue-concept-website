@@ -112,10 +112,9 @@ function nl2br (str, is_xhtml) {
     this.map.init();
 
     var title = artwork.name;
-
     var description = artwork.description;
-
     description = nl2br( description );
+    var blogLink = artwork.artwork_blog_post_link;
 
     //var thumbnail = artwork.featured_media;
     var featured_images = artwork.media.filter( function( media ) { return media.type === 'image' && media.featured; });
@@ -163,10 +162,22 @@ function nl2br (str, is_xhtml) {
     var sponsors = artwork.partners_and_sponsors[0];
     var program = artwork.program;
     program = '<a href="/artworks/?program=' + program + '" class="sidebar-program-button sidebar-button">' + program + '</a>';
+    var pressCoverage = artwork.press_coverage;
+    //console.log(pressCoverage);
 
     $('title').text( title  + ' | The Avenue Concept' );
     $('.single-artwork-title').html( title );
     $('.single-artwork-description').html( description );
+
+    if ( typeof blogLink !== 'undefined' ) {
+        if ( blogLink.trim() ) {
+            $('.single-artwork-blog-link-container').html( blogLink );
+        } else{
+            $('.single-artwork-blog-link-container').hide();
+        }
+    } else{
+        $('.single-meta-artist').hide();
+    } 
 
     if ( typeof artists !== 'undefined' ) {
         if ( artists.trim() ) {
@@ -226,6 +237,15 @@ function nl2br (str, is_xhtml) {
         else{
             $('.single-meta-program').hide();
         }
+    } else{
+        $('.single-meta-program').hide();
+    }
+
+    if ( typeof pressCoverage[0] !== 'undefined' ) {
+        pressCoverage = pressCoverage[0].split(',').join(', ');
+        $('#single-artwork-meta-press-coverage').html( pressCoverage );
+    } else{
+        $('.single-meta-press-coverage').hide();
     }
 
     if ( typeof regular_images !== 'undefined' && regular_images.length > 0 ) {

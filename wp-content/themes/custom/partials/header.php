@@ -63,7 +63,7 @@
 	?>
 
 </head>
-<body <?php body_class('loading before-scroll modal-off menu-closed dropdown-off mobile-dropdown-off ' . $sitewide_alert_class . ' ' . $announcement_class . ' '); ?>>
+<body <?php body_class('loading before-scroll modal-off menu-closed dropdown-off mobile-dropdown-off curve-off artworks-error-off' . $sitewide_alert_class . ' ' . $announcement_class . ' '); ?>>
 
 	<?php get_template_part('partials/announcements'); ?>
 	<?php get_template_part('partials/nav'); ?>

@@ -110,6 +110,15 @@ $hero-offset: 60px;
 		display: block;
 	}
 }
+
+.single-artwork-blog-link-container{
+	margin-bottom: .5em;
+
+	a{
+		text-decoration: underline;
+	}
+}
+
 .single-artwork-metadata-container{
 	@media screen and (max-width: $md) {
 		//display: flex;

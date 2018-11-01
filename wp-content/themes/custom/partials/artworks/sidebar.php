@@ -110,7 +110,7 @@
 			</div>
 		</div>
 		<div class="sidebar-reset flex-center">
-			<a href="#" class="sidebar-button-reset">
+			<a href="#" class="sidebar-button-reset sidebar-reset-button">
 				<span class="icon" data-icon="ﬂ"></span>
 				Clear All Filters
 			</a>

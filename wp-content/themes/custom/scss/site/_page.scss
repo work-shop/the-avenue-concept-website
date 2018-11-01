@@ -1,16 +1,15 @@
 
 /* page template */
 
-.hero-gradient{
-	background: -moz-linear-gradient(top, rgba(107,164,66,1) 2%, rgba(107,164,66,0) 30%);
-	background: -webkit-linear-gradient(top, rgba(107,164,66,1) 2%,rgba(107,164,66,0) 30%);
-	background: linear-gradient(to bottom, rgba(107,164,66,1) 2%,rgba(107,164,66,0) 30%);
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6ba442', endColorstr='#006ba442',GradientType=0 );
-}
+// .hero-gradient{
+// 	background: -moz-linear-gradient(top, rgba(107,164,66,1) 2%, rgba(107,164,66,0) 30%);
+// 	background: -webkit-linear-gradient(top, rgba(107,164,66,1) 2%,rgba(107,164,66,0) 30%);
+// 	background: linear-gradient(to bottom, rgba(107,164,66,1) 2%,rgba(107,164,66,0) 30%);
+// 	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#6ba442', endColorstr='#006ba442',GradientType=0 );
+// }
 
 .page-hero{
 	height: calc(85vh - #{$nav-height});
-	//@extend .hero-gradient;
 	position: relative;
 }
 
@@ -100,7 +99,7 @@ $delay: 1.9s;
 
 .page-nav{
 	padding: 20px 0 10px 0;
-	z-index: 6;
+	z-index: 5;
 	min-height: 70px;
 	width: 100%;
 	left: 0;
@@ -111,8 +110,7 @@ $delay: 1.9s;
 
 	li{
 		display: inline-block;
-		margin-left: 5px;
-
+		margin-left: 20px;
 
 		&:last-child{
 			a{
@@ -122,11 +120,12 @@ $delay: 1.9s;
 
 		a{
 			display: block;
-			font-size: 17px;
-			color: $dark;
+			font-size: 16px;
+			color: lighten( $dark, 10% );
 			@extend .tracked-less;
 			@extend .uppercase;
-			padding: 10px;
+			padding: 12px 10px 8px 10px;
+			font-weight: 700;
 
 			@media screen and (min-width: $sm) {
 				transition: transform .05s;

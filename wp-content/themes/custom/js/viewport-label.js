@@ -25,7 +25,7 @@ function viewportLabel( config ) {
 
 	//update the viewport label
 	function viewportLabelUpdate(){
-		w = $(window).width();
+		w = window.innerWidth;
 		$(config.viewportLabelPxSelector).text(w);
 	}
 

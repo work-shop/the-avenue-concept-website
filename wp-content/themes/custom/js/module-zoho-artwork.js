@@ -304,6 +304,10 @@ function createFileSource( media_file ) {
     self.medium = data.Medium_field1;
     self.partners_and_sponsors = data.Partners_Sponsors;
 
+    self.artwork_blog_post_link = data.Artwork_Blog_Post_Link;
+    self.press_coverage = data.Press_Coverage;
+    //console.log( data.Press_Coverage );
+
     if ( data.Latitude.length !== 0 && data.Longitude.length !== 0 ) {
 
         self.position = {

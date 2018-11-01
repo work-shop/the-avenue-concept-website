@@ -9,6 +9,8 @@
 
 <?php get_template_part('partials/about/values' ); ?>
 
+<?php get_template_part('partials/about/impact' ); ?>
+
 <?php get_template_part('partials/about/staff' ); ?>
 
 <?php get_template_part('partials/about/board' ); ?>

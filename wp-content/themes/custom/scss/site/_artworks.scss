@@ -16,14 +16,19 @@ $sb-mobile-toggle-height: 80px;
 #artworks-messages{
 	padding: 50px $sb-padding*2 0px $sb-padding*2;
 	margin-top: $nav-height;
-	width: calc( 100vw - #{$sb-width} );
+	width: calc( ( 100vw - (100vw - 100%) ) - #{$sb-width} );
 	position: relative;
-	z-index: 7;
+	z-index: 5;
 	display: none;
 
 	@media screen and (max-width: $lg) {
 		padding: $sb-padding;
+	}
+
+	@media screen and (max-width: $sm) {
 		width: 100%;
+		padding: 30px $sb-padding/2 10px $sb-padding/2;
+		margin-top: $nav-height-mobile + $sb-mobile-toggle-height;
 	}
 
 	*{
@@ -37,6 +42,12 @@ $sb-mobile-toggle-height: 80px;
 		position: relative;
 	}
 
+	.messages-link{
+		display: inline;
+		text-decoration: underline;
+
+	}
+
 	.artworks-messages-close{
 		position: absolute;
 		top: 50%;
@@ -45,6 +56,7 @@ $sb-mobile-toggle-height: 80px;
 		margin-right: -15px;
 		height: 30px;
 		width: 30px;
+		display: none;
 
 		@media screen and (max-width: $sm) {
 			height: 20px;
@@ -55,7 +67,7 @@ $sb-mobile-toggle-height: 80px;
 	}
 }
 
-.artworks-error{
+.artworks-error-on{
 	#artworks-messages{
 		display: block;
 	}
@@ -71,7 +83,8 @@ $sb-mobile-toggle-height: 80px;
 }
 
 #artworks-track{
-	width: calc( 300vw - #{$sb-width*3} );
+	width: calc( ( 300vw - (300vw - 300%) ) - #{$sb-width*3} );
+	//width: calc( 300vw - #{$sb-width*3} );
 	display: flex;
 	@extend .align-items-start;
 
@@ -146,7 +159,8 @@ $sb-mobile-toggle-height: 80px;
 	border: 2px solid $medium;
 
 	@media screen and (max-width: $sm) {
-		height: calc( 100vh - #{$nav-height} - #{$sb-mobile-toggle-height} - 20px);
+		height: calc( 100vh - #{$nav-height} - #{$sb-mobile-toggle-height} - 80px);
+		margin-bottom: $sb-padding;
 	}
 }
 
@@ -439,7 +453,7 @@ $sb-mobile-toggle-height: 80px;
 			@media screen and (max-width: $sm) {
 				width: 100%;
 				display: block;
-				margin-bottom: 10px;
+				margin-bottom: 2px;
 
 			}
 		}

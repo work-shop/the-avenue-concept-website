@@ -15,13 +15,23 @@ $text-nav: (
 	height: $nav-height;
 	padding-left: 15px;
 	z-index: 7;
-	transition: all 1s;
-	//overflow: hidden;
+	transition: background 1s;
 
 	&:hover{
 		@extend .after;
-		//background: $brand;
+
+		@media screen and (min-width: $sm+1) {
+			.nav-menu-primary-item .nav-current{
+				border-bottom-color: rgba(255,255,255,.5);
+
+				&:hover{
+					border-bottom-color: white;
+				}
+			}
+		}
+
 	}
+
 
 	&.fixed{
 		position: fixed; 
@@ -48,7 +58,6 @@ $text-nav: (
 		background: $brand;
 		opacity: 0;
 		transition: all .2s;
-		//display: none;
 
 		svg{
 			display: none;
@@ -58,7 +67,6 @@ $text-nav: (
 	}
 
 	#nav-menus{
-		//padding-top: 19px;
 		float: left;
 		margin-left: 30px;
 		position: relative;
@@ -66,12 +74,10 @@ $text-nav: (
 		@extend .clearfix;
 
 		@media screen and (max-width: $lg) {
-			//padding-top: 18px;
 		}
 
 		@media screen and (max-width: $md) {
-			//padding-top: 26px;
-			//margin-left: 10px;
+			margin-left: 10px;
 		}
 
 		@media screen and (max-width: $sm) {
@@ -84,35 +90,38 @@ $text-nav: (
 
 	//dropdown default state
 	.sub-menu{
-		position: absolute;
-		top: $nav-height;
-		left: 0;
-		width: 200px;
-		z-index: 1;
-		display: none;
-
-		@media screen and (max-width: $lg) {
-			//top: 58px;
-		}
-
-		@media screen and (max-width: $lg) {
-			//top: 54px;
-		}
+		
 
 		@media screen and (min-width: $sm+1) {
-			background: $brand;
-			padding: 30px 20px 10px 20px;
-			border-top: 2px solid white;
-			border-radius: 0 0px 10px 10px;
+			padding: 30px 0 0 0;
+			width: 200px;
+			z-index: 1;
+			opacity: 0;
+			transition: all .2s .1s;//out
+			position: absolute;
+			top: $nav-height;
+			left: 0;
+			visibility: hidden;
 		}
 
 		&#sub-menu-programs{
 			@media screen and (min-width: $sm+1) {
-				width: 400px;
+				width: 330px;
 				column-count: 2;
-				column-gap: 30px;
+				column-gap: 20px;
 			}
 
+		}
+
+		&#sub-menu-donate{
+			@media screen and (min-width: $sm+1) {
+				left: -110px;
+				text-align: right;
+			}
+
+			@media screen and (min-width: $lg+1) {
+				left: -85px;
+			}
 		}
 
 		@media screen and (max-width: $sm) {
@@ -123,6 +132,7 @@ $text-nav: (
 			padding-top: 5px;
 			width: 100%;
 			padding-bottom: 20px;
+			display: none;
 		}
 
 		li{
@@ -139,8 +149,9 @@ $text-nav: (
 				height: auto;
 				@extend .font-secondary;
 				border: none;
+				
 				&:hover{
-					color: $aqua;
+					text-decoration: underline;
 				}
 			}
 
@@ -155,7 +166,7 @@ $text-nav: (
 				a{
 					padding: 0;
 					filter: none;
-					font-size: 17px;
+					font-size: 15px;
 
 					&:after{
 						display: none;
@@ -178,7 +189,7 @@ $text-nav: (
 			&>a{
 
 				@media screen and (min-width: $sm+1) {
-					//border-bottom: 2px solid white;
+					border-bottom: 2px solid white;
 				}
 				.icon:before{
 					transition: transform .5s;
@@ -213,11 +224,16 @@ $text-nav: (
 			transition: all .2s;
 			border-bottom: 2px solid transparent;
 
+			@media screen and (max-width: $lg) {
+				font-size: 17px;
+			}
+
 			@media screen and (max-width: $md) {
-				//padding: 10px 0 20px 2px;
+				font-size: 16px;
 			}
 
 			@media screen and (max-width: $sm) {
+				font-size: 16px;
 				padding: 10px;
 				height: auto;
 			}
@@ -238,14 +254,10 @@ $text-nav: (
 				color: white;
 				transition: transform .5s;
 				transform: rotate(0deg);
-
-				//transform-origin: 0% 0%;
 			}
 
 			&:hover{
 				@media screen and (min-width: $sm+1) {
-					//transition: all .2s;
-					//transform: scale(1.1);
 
 				}
 			}
@@ -260,14 +272,12 @@ $text-nav: (
 
 				@media screen and (min-width: $sm+1) {
 
-					.nav-curve{
-						// visibility: visible;
-						// transition: all .5s;
-						// transform: translate(0);
-					}
-
 					.sub-menu{
-						display: block;
+						visibility: visible;
+						transition: all .3s .0s;//in
+						opacity: 1;
+						transform: translate(0);
+						//display: block;
 
 						li{
 
@@ -284,7 +294,7 @@ $text-nav: (
 
 				@media screen and (max-width: $sm) {
 					.icon:before{
-						transform: rotate(180deg);
+						transform: rotate(-180deg);
 						top: -2px;
 					}
 					.sub-menu{
@@ -360,12 +370,6 @@ $text-nav: (
 //nav open on desktop state
 .dropdown-on{
 
-	#nav-curve-outer{
-		visibility: visible;
-		transition: all .5s;
-		transform: translate(0);
-	}
-
 	#nav{
 		height: 100vh;
 		//overflow: scroll;
@@ -378,7 +382,7 @@ $text-nav: (
 		}
 
 		.nav-menu-primary-item a{
-			border-bottom: none !important;
+			//border-bottom: none !important;
 		}
 	}
 
@@ -488,27 +492,48 @@ $text-nav: (
 	}
 }
 
-.nav-curve{
+#nav-curve-outer{
 	position: fixed;
-	width: 100vw;
-	//height: auto;
-	top: ($nav-height - 1px);
+	width: 107vw;
+	height: 390px;
+	top: 0;
 	left: 0;
-	visibility: hidden;
-	transition: all .1s;
+	z-index: 6;
+	transition: all 1s; //out
 	transform: translate(-25%,-150%);
-	z-index: 3;
-	filter: drop-shadow(0px 1px 4px transparentize($medium, .7));
-	
-	display: none !important;
+	filter: drop-shadow(0px 2px 8px transparentize($dark, .5));
+	overflow: hidden;
 
-	//border: 1px solid red;
+	@media screen and (max-width: 1400px) {
+		width: 120vw;
+	}
+
+	@media screen and (max-width: $lg) {
+		width: 120vw;
+	}
+
+	@media screen and (max-width: $md) {
+		width: 140vw;
+	}
+
+	@media screen and (max-width: $sm) {
+		display: none;
+	}
 
 	svg{
 		width: 100%;
 		height: 100%;
 		path{
 			fill: $brand;
+		}
+	}
+}
+
+.curve-on{
+	@media screen and (min-width: $sm+1) {
+		#nav-curve-outer{
+			transition: all .3s; //in
+			transform: translate(0);
 		}
 	}
 }
@@ -523,9 +548,18 @@ $text-nav: (
 	font-size: 21px;
 	display: inline-block;
 
-	@media screen and (max-width: $md) {
+	@media screen and (max-width: $lg) {
 		font-size: 17px;
+	}
+
+	@media screen and (max-width: $md) {
 		padding-top: 35px;
+
+		font-size: 16px;
+	}
+
+	@media screen and (max-width: $sm) {
+		font-size: 16px;
 	}
 
 }
@@ -535,7 +569,7 @@ $text-nav: (
 	height: $nav-height;
 	margin: 0;
 	padding: 0;
-	
+
 	@media screen and (max-width: $md) {
 		width: 80px;
 	}
@@ -580,6 +614,8 @@ $text-nav: (
 		text-transform: uppercase;
 		@extend .tracked-less;
 		margin: 0;
+
+
 
 		@media screen and (min-width: $sm+1) {
 			text-shadow: 1px 1px 1px black;

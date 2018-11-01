@@ -11,7 +11,6 @@ function dropdowns( config ) {
 			function() {
 				if( window.innerWidth > 767 ){
 					var currentLink = $(this);
-					console.log($(this));
 					timer = setTimeout(function() {
 						openDropdown( currentLink );
 					}, dropdownDelay);
@@ -74,7 +73,6 @@ function dropdowns( config ) {
 	//open the mobile dropdown
 	function openMobileDropdown( link ){
 		//console.log(link);
-		console.log('openDMobileropdown');
 
 		var item = link.parent('.has-sub-menu');
 
@@ -89,7 +87,6 @@ function dropdowns( config ) {
 	//close the mobile dropdown
 	function closeMobileDropdown(link){
 		//console.log(link);
-		console.log('closeMobileDropdown');
 
 		var item = link.parent('.has-sub-menu');
 
@@ -99,6 +96,28 @@ function dropdowns( config ) {
 			$('body').removeClass('mobile-dropdown-on').addClass('mobile-dropdown-off');
 		}
 	}
+
+
+		//open the mobile dropdown
+	function showCurve(){
+		//console.log('showCurve');
+
+		if( $('body').hasClass('curve-off') ){
+			$('body').removeClass('curve-off').addClass('curve-on');
+		}
+
+	}	
+
+	//close the mobile dropdown
+	function hideCurve(){
+		//console.log('hideCurve');
+
+		if( $('body').hasClass('curve-on') ){
+			$('body').removeClass('curve-on').addClass('curve-off');
+		}
+	}
+
+
 
 }
 

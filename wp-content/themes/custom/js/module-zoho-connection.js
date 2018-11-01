@@ -164,7 +164,7 @@ function ZohoConnection() {
                     });
 
                     artwork.Partners_Sponsors = unpackStringArray( artwork['Partners_Sponsors.Name'] );
-
+                    artwork.Press_Coverage = unpackStringArray( artwork['Press_Coverage.Press_Coverage_Link'] );
                     artwork.Medium_field1 = unpackStringArray( artwork.Medium_field1 );
 
                     return new Artwork( artwork );
