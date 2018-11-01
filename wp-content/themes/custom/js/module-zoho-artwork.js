@@ -76,18 +76,20 @@ const media_encryption_key = 'rOrBktNV54sebRgAnUCpp6TGghu26QsJJG2u5feg6CMKT0mmyh
  */
  function createImageSources( image_html, media ) {
 
+    console.log('create image source');
+
     var $ = cheerio.load( image_html );
     var image = $('img');
 
     //if ( media.Website_Featured_Image ) {
-        console.log( image_html );
+        //console.log( image_html );
     //}
 
     var src = image.attr('src');
     var low = image.attr( 'lowqual');
     var med = image.attr( 'medqual');
 
-    console.log(src);
+    //console.log(src);
 
     if( typeof src !== 'undefined' ){
 
@@ -294,7 +296,7 @@ function createFileSource( media_file ) {
     if (!(this instanceof Artwork)) { return new Artwork( data ); }
     var self = this;
 
-    console.log( data );
+    //console.log( data );
 
     self.name = data.Artwork_Title;
     self.description = data.Artwork_Description;
