@@ -19,7 +19,7 @@ import { modals } from './modals.js';
 import { scrollSpy } from './scroll-spy.js';
 import { menuToggle } from './menu-toggle.js';
 import { slickSlideshows } from './slick-slideshows.js';
-import { filter } from './filter.js';
+import { filterBlog } from './filter-blog.js';
 import { singlePost } from './single-post.js';
 import { announcements } from './announcements.js';
 import { livereload } from './livereload-client.js';
@@ -47,7 +47,7 @@ modals(config.modals);
 scrollSpy(config.scrollSpy);
 menuToggle(config.menuToggle);
 slickSlideshows(config.slickSlideshows);
-filter();
+filterBlog();
 singlePost();
 announcements();
 

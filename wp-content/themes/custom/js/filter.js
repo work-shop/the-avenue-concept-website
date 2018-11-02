@@ -8,7 +8,7 @@ function filter() {
 
 	$(document).ready( function() {
 
-		if( $('.filters').length ){
+		//if( $('.filters').length ){
 
 			var filterClassStart = 'all';
 			var urlVars = getUrlVars();
@@ -18,7 +18,6 @@ function filter() {
 				var categoryButtonSelector = '.filter-button[data-target=filter-' + urlCategory + ']';
 				var categoryButtonCheck = $(categoryButtonSelector);
 				if( !isEmpty(categoryButtonCheck) ){
-					console.log('categoryButtonCheck true');
 					$(categoryButtonSelector).addClass('filter-active');
 					filterClassStart = 'filter-' + urlVars.category;
 				}
@@ -27,21 +26,20 @@ function filter() {
 
 			$('.filter-button-category').click(function(e) {
 				e.preventDefault();
-			//console.log('filter-button-category');
-			if( $(this).hasClass('filter-active') ){
-				categoryFiltered = false;
-				categoryFilteredCurrent = 'all';
-				filterCategories('all');
-				$(this).removeClass('filter-active');
-			} else{
-				scrollToFilter();
-				var filterClass = $(this).data('target');
-				filterCategories(filterClass);
-				filterButtonActivate( $(this), 'categories' );
-			}
-		});	
+				if( $(this).hasClass('filter-active') ){
+					categoryFiltered = false;
+					categoryFilteredCurrent = 'all';
+					filterCategories('all');
+					$(this).removeClass('filter-active');
+				} else{
+					scrollToFilter();
+					var filterClass = $(this).data('target');
+					filterCategories(filterClass);
+					filterButtonActivate( $(this), 'categories' );
+				}
+			});	
 
-		}
+		//}
 
 	});// end document.ready
 
@@ -63,6 +61,7 @@ function filter() {
 
 	}
 
+
 	function getElementsByCategory( elements, filterClass ){
 		//console.log('getElementsByCategory with filterClass: ' + filterClass);
 		var newElements = [];
@@ -77,6 +76,7 @@ function filter() {
 
 		return newElements;
 	}
+
 
 	function updateElements(newElements){
 		//console.log('updateElements');
@@ -94,6 +94,7 @@ function filter() {
 			$('#filter-messages').addClass('filter-show');
 		}
 	}
+
 
 	function hideElements(){
 		var elements = $('.filter-target');
@@ -124,19 +125,16 @@ function filter() {
 		return (val === undefined || val === null || val.length <= 0) ? true : false;
 	}
 
+
 	// Read a page's GET URL variables and return them as an associative array.
 	function getUrlVars(){
 		var vars = [], hash;
 		var url = stripTrailingSlash(window.location.href);
 		var hashes = url.slice(window.location.href.indexOf('?') + 1).split('&');
-		for(var i = 0; i < hashes.length; i++)
-		{
-
+		for(var i = 0; i < hashes.length; i++){
 			hash = hashes[i].split('=');
-			console.log(hash);
 			vars.push(hash[0]);
 			vars[hash[0]] = hash[1];
-
 		}
 		return vars;
 	}

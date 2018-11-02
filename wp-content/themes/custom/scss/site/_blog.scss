@@ -29,7 +29,7 @@
 	column-gap: 20px;
 	overflow: visible;
 
-	@media screen and (max-width: $md) {
+	@media screen and (max-width: $sm) {
 		column-count: 1;
 	}
 }

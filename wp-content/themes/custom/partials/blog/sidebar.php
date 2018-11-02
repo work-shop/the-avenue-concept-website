@@ -22,7 +22,7 @@
 				) );
 				foreach( $categories as $category ) : ?>
 					<li>
-						<a href="#" class="filter-button filter-button-category" data-target="filter-<?php echo $category->slug; ?>">
+						<a href="#" class="filter-button filter-button-category" data-target="<?php echo $category->slug; ?>">
 							<?php echo $category->name; ?>
 						</a>
 					</li>
