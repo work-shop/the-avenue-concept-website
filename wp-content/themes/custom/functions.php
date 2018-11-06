@@ -102,5 +102,13 @@ add_action( 'rest_api_init', function() {
     });
 }, 1 );
 
+function grant_gforms_editor_access() {
+  
+  $role = get_role( 'editor' );
+  $role->add_cap( 'gform_full_access' );
+}
+// Tie into the 'after_switch_theme' hook
+add_action( 'after_switch_theme', 'grant_gforms_editor_access' );
+
 
 ?>
