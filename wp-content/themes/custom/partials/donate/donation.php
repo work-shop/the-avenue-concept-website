@@ -8,6 +8,7 @@
 			</div>
 		</div>
 		<div class="row">
+			<h1>Please note - this page is not currently set up to take donations, and the form below is not active. Please check back soon.</h1>
 			<div class="col-lg-6 donation-appeal mb2">
 				<p class="donation-appeal-intro mb2">
 					<?php the_field('donate_section_intro_text'); ?>
