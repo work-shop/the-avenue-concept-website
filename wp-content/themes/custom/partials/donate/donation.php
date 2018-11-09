@@ -8,7 +8,6 @@
 			</div>
 		</div>
 		<div class="row">
-			<h1>Please note - this page is not currently set up to take donations, and the form below is not active. Please check back soon.</h1>
 			<div class="col-lg-6 donation-appeal mb2">
 				<p class="donation-appeal-intro mb2">
 					<?php the_field('donate_section_intro_text'); ?>
@@ -21,8 +20,14 @@
 				</h4>
 			</div>
 			<div class="col-lg-6 donation-form">
-				<?php $form_id = get_field('donate_page_form'); ?>
-				<?php gravity_form($form_id, false, false, false, '', true, 1); ?>
+				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="paypal-button-form">
+					<input type="hidden" name="cmd" value="_s-xclick">
+					<input type="hidden" name="hosted_button_id" value="T3NSG4UVFRPMQ">
+					<input type="image" src="http://d3w0jg1q5ypcyu.cloudfront.net/2018/07/donate-button-brand.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" class="paypal-button-image">
+					<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" class="paypal-button-hidden-image">
+				</form>
+				<?php //$form_id = get_field('donate_page_form'); ?>
+				<?php //gravity_form($form_id, false, false, false, '', true, 1); ?>
 			</div>
 		</div>
 	</div>

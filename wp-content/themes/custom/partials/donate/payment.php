@@ -4,12 +4,19 @@
 			<div class="col-12">
 
 				<?php 
-				var_dump($_GET);
+				//var_dump($_GET);
 				?>
 
 				<?php 
+				
+				$mode = 'TEST';
 				$endpoint = 'https://pilot-payflowpro.paypal.com';
+				$endpoint2 = 'https://pilot-payflowlink.paypal.com';
+
+				$mode = 'LIVE';
+				$endpoint = 'https://payflowpro.paypal.com';
 				$endpoint2 = 'https://payflowlink.paypal.com';
+
 				$partner = 'PayPal';
 				$vendor = 'avenuepvd';
 				$user = 'workshop';
@@ -17,7 +24,7 @@
 				$trxtype = 'S';
 				$createsecuretoken = 'Y';
 				$securetokenid = uniqid('', true);
-				$mode = 'TEST';
+
 
 				$amt = $_GET['amt'];
 				$email = $_GET['email'];
@@ -74,7 +81,7 @@
 
 				?>
 
-				<iframe src="https://payflowlink.paypal.com?MODE=TEST&SECURETOKENID=<?php echo $securetokenid ?>&SECURETOKEN=<?php echo $arr['SECURETOKEN']; ?>"
+				<iframe src="<?php echo $endpoint2; ?>?MODE=<?php $mode; ?>&SECURETOKENID=<?php echo $securetokenid ?>&SECURETOKEN=<?php echo $arr['SECURETOKEN']; ?>"
 					name="test_iframe" scrolling="no" width="100%" height="100%" id="paypal-iframe"></iframe>
 
 				</div>
