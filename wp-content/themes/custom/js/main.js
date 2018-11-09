@@ -22,6 +22,7 @@ import { slickSlideshows } from './slick-slideshows.js';
 import { filterBlog } from './filter-blog.js';
 import { singlePost } from './single-post.js';
 import { announcements } from './announcements.js';
+import { paypal } from './paypal.js';
 import { livereload } from './livereload-client.js';
 
 /**
@@ -50,6 +51,7 @@ slickSlideshows(config.slickSlideshows);
 filterBlog();
 singlePost();
 announcements();
+paypal();
 
 $( document ).ready( function() {
 

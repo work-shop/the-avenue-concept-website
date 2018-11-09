@@ -501,7 +501,7 @@ $text-nav: (
 	z-index: 6;
 	transition: all 1s; //out
 	transform: translate(-25%,-150%);
-	filter: drop-shadow(0px 2px 8px transparentize($dark, .5));
+	filter: drop-shadow(0px 2px 5px transparentize($medium, .5));
 	overflow: hidden;
 
 	@media screen and (max-width: 1400px) {

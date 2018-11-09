@@ -1,3 +1,14 @@
+.page-hero{
+	display: none;
+}
+
+#paypal-iframe{
+	height: 1000px;
+	border: none;
+	outline: none;
+	padding: 0;
+}
+
 
 #donors{
 
@@ -55,7 +66,7 @@
 
 #donation{
 
-	#field_3_3,#field_3_5{
+	#field_3_8,#field_3_5{
 		float: left;
 		width: 48%;
 
@@ -65,10 +76,15 @@
 		}
 	}
 
-	#field_3_3{
+	#field_3_8{
 		margin-right: 2%;
 		@media screen and (max-width: $sm) {
 			margin-right: 0;
+		}
+
+		.instruction{
+			@extend .small;
+			display: none;
 		}
 	}
 
