@@ -8,12 +8,10 @@
 			<div class="home-intro-curve">
 				<?php include get_template_directory() . '/images/home-intro-curve-02.svg'; ?>
 			</div>
-			<div class="tagline-container">
-				<div class="container-fluid container-fluid-stretch">
-					<h1 id="tagline">
-						<?php the_field('tagline','6'); ?>
-					</h1>
-				</div>
+			<div class="container-fluid container-fluid-stretch tagline-container">
+				<h1 id="tagline">
+					<?php the_field('tagline','6'); ?>
+				</h1>
 			</div>
 		</div>
 	</section>

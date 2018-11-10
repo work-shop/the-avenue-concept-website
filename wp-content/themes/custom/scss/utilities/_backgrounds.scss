@@ -63,7 +63,7 @@
 
 	&.mask-dark{
 		&:after{
-			background: transparentize( $dark, .75 );
+			background: transparentize( $dark, .6 );
 		}
 	}
 }

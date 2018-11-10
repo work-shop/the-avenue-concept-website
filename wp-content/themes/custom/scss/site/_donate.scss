@@ -68,7 +68,7 @@
 
 .donation-form{
 	position: relative;
-		z-index: 2;
+	z-index: 2;
 
 	.paypal-button-form{
 		width: 200px;
@@ -313,18 +313,56 @@
 
 //thank you
 
+.thank-you-hero{
+	height: 100vh;
+}
+
+.thank-you-intro-top{
+
+}
+
 .thank-you-text{
 	@extend .background;
+	z-index: 2;
 
 	h1{
 		font-size: 6vw;
 		text-shadow: 2px 2px 4px rgba(30,30,30,.65);
 		text-align: center;
+		max-width: 8em;
+		line-height: 1;
 
 		@media screen and (max-width: $md) {
 			font-size: 8vw;
 		}
 	}
 
+}
+
+.thank-you-share-button{
+	margin-top: 1em;
+	background: $brand;
+	color: white;
+	@extend .h3;
+	padding: 15px 30px;
+	border-radius: 50px;
+	transition: all .1s;
+
+	&:hover{
+		background: white;
+		color: $brand;
+	}
+}
+
+
+$speed: 1.8s;
+$delay: 1.5s;
+
+@keyframes thank-you { from { top: 30px; opacity: 0; transform: scale(.8); } to { top: 0; opacity: 1; transform: scale(1);} }
+
+.thank-you-text-inner{
+	position: relative;
+	animation-fill-mode: forwards;
+	animation: thank-you $speed ease $delay alternate 1 forwards running;	
 }
 
