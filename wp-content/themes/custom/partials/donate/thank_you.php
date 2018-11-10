@@ -27,7 +27,7 @@ $hero_image = $hero_image['sizes']['page_hero'];
 					<?php the_field('thank_you_heading'); ?>
 				</h1>
 				<div class="thank-you-share-button-container flex-center">
-					<a class="thank-you-share-button" href="http://www.facebook.com/sharer/sharer.php?u=[https://theavenueconcept.org/donate]&title=[I Just Donated To The Avenue Concept]" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=600,width=600');return false;">
+					<a class="thank-you-share-button" href="http://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftheavenueconcept.org%2Fdonate&title=I Just Donated To The Avenue Concept" onclick="javascript:window.open(this.href,'', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=630,width=630');return false;">
 						Tell Your Friends
 					</a>
 				</div>
