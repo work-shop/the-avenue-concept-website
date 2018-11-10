@@ -149,6 +149,8 @@ const media_encryption_key = 'rOrBktNV54sebRgAnUCpp6TGghu26QsJJG2u5feg6CMKT0mmyh
  */
  function createResizedImages( resize_url ) {
 
+    resize_url = resize_url.replace(/^http:\/\//i, 'https://');
+
     return {
         type: 'zoho',
         has_low_quality_versions: true,
