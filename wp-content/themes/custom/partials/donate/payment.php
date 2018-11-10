@@ -81,8 +81,8 @@
 
 				?>
 
-				<iframe src="<?php echo $endpoint2; ?>?MODE=<?php $mode; ?>&SECURETOKENID=<?php echo $securetokenid ?>&SECURETOKEN=<?php echo $arr['SECURETOKEN']; ?>"
-					name="test_iframe" scrolling="no" width="100%" height="100%" id="paypal-iframe"></iframe>
+				<iframe src="<?php echo $endpoint2; ?>?MODE=<?php $mode; ?>&SECURETOKENID=<?php echo $securetokenid ?>&SECURETOKEN=<?php echo $arr['SECURETOKEN']; ?>&TEMPLATE=MOBILE"
+					name="test_iframe" scrolling="no"  id="paypal-iframe"></iframe>
 
 				</div>
 			</div>

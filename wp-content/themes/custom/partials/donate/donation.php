@@ -1,6 +1,11 @@
 <section class="block padded bg-white page-content" id="donation">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row section-header-row">
+			<div class="col-12">
+				<h2 class="error">
+					Please note this page is not currently set up to take donations, and the below form is inactive. 
+				</h2>
+			</div>
 			<div class="col-xl-8">
 				<h3 class="mb2">
 					<?php the_field('donate_section_heading'); ?>
@@ -19,8 +24,9 @@
 					<?php the_field('donate_quote_person'); ?><?php if(get_field('donate_quote_person_title')): ?>, <?php the_field('donate_quote_person_title'); ?><?php endif; ?>
 				</h4>
 			</div>
-			<div class="col-lg-6 donation-form">
-				<?php if(  $_SERVER['HTTP_HOST'] == 'localhost:8080' || is_user_logged_in() ): ?>
+			<div class="col-lg-6 donation-form" id="donation-form-container">
+				<?php $override = true; ?>
+				<?php if(  $_SERVER['HTTP_HOST'] == 'localhost:8080' || is_user_logged_in() || $override ): ?>
 					<?php $form_id = get_field('donate_page_form'); ?>
 					<?php gravity_form($form_id, false, false, false, '', true, 1); ?>
 					<?php else: ?>
@@ -31,6 +37,8 @@
 							<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" class="paypal-button-hidden-image">
 						</form>
 					<?php endif; ?>
+					<div id="paypal-target">
+					</div>
 				</div>
 			</div>
 		</div>

@@ -28,7 +28,7 @@ function jumpLinks(config){
 
 		$('.jump-home').click(function(e){
 
-			console.log('hey');
+			//console.log('jump-home');
 
 			e.preventDefault();
 

@@ -3,51 +3,69 @@
 function paypal() {
 	//console.log('paypal.js loaded');
 
-	var endpoint = 'https://pilot-payflowpro.paypal.com';
-	var partner = 'Paypal';
-	var vendor = 'avenuepvd';
-	var user = 'workshop';
-	var pwd = 'Cmi!!2012';
-	var trxtype = 'S';
-	var amt = 40;
-	var createsecuretoken = 'Y';
-	var securetokenid = '12528208de1413abc3d60c86cb14';
-
-	var postData = {
-		PARTNER : partner,
-		VENDOR : vendor,
-		USER : user,
-		PWD : pwd,
-		TRXTYPE : trxtype,
-		AMT : amt,
-		CREATESECURETOKEN : createsecuretoken,
-		SECURETOKENID : securetokenid
-	};
-
 
 	$(document).ready( function() {
 
 		if( $('body').hasClass('page-id-189') ){
 
-			// $.ajax({
-			// 	url: endpoint,
-			// 	type: 'POST',
-			// 	data: postData
-			// })
-			// .done(function() {
-			// 	console.log('success');
-			// 	console.log(data);
-			// })
-			// .fail(function() {
-			// 	console.log('error');
-			// })
-			// .always(function() {
-			// 	console.log('complete');
-			// });
+			var donationLoading = $('<div>').addClass('donation-loading');
+			$('.gform_wrapper').append(donationLoading);
+
+			var wpPostData = {};
+
+			$(document).on('gform_confirmation_loaded', function(){
+				//console.log('gform_confirmation_loaded');
+				console.log($('#donation-form-container').offset().top);
+
+				$('html,body').animate({
+					scrollTop: $('#donation-form-container').offset().top - 300
+				}, 200);
+
+				var wpEndpoint = '/wp-json/paypal/v1/iframe';
+
+				$.ajax({
+					url: wpEndpoint,
+					type: 'POST',
+					data: wpPostData
+				})
+				.done(function(data) {
+					console.log('success');
+					console.log(data);
+					$('#paypal-target').append(data);
+					$('.donation-loading').removeClass('active');
+				})
+				.fail(function(error) {
+					console.log('error');
+				})
+				.always(function() {
+					//console.log('complete');
+				});
+
+			});
+
+			$(document).on('gform_post_render', function(){
+				setTimeout(function() {
+					if( $('.gform_validation-error').length > 0 ){
+						$('.donation-loading').removeClass('active');
+					}
+				}, 500);
+
+			});
+
+			var form = $('#donation form');
+			form.on('submit', function(e) {
+				//console.log('on submit');
+
+				$('.donation-loading').addClass('active');
+				wpPostData = $(this).serialize();
+
+			});
 
 		}
 
 	});
+
+
 
 }
 

@@ -114,6 +114,16 @@
 							Recent Posts
 						</a>
 					</li>
+					<li>
+						<a href="/blog?category=3d" class="">
+							Sculptures
+						</a>
+					</li>
+					<li>
+						<a href="/blog?category=2d" class="">
+							Murals
+						</a>
+					</li>
 				</ul>
 			</li>
 <!-- 			<li class="has-sub-menu closed nav-menu-primary-item">

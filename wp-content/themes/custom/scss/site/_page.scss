@@ -104,6 +104,10 @@ $delay: 1.9s;
 	width: 100%;
 	left: 0;
 
+	@media screen and (max-width: $sm) {
+		min-height: 50px;
+	}
+
 	ul{
 		text-align: right;
 	}

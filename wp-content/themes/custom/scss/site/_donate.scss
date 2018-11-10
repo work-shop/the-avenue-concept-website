@@ -1,10 +1,14 @@
 
 
 #paypal-iframe{
-	height: 1000px;
+	height: 768px;
 	border: none;
-	outline: none;
-	padding: 0;
+	//outline: none;
+	//padding: 0;
+
+	@media screen and (max-width: $sm) {
+		transform: scale(.75);
+	}
 }
 
 
@@ -64,21 +68,21 @@
 
 #donation{
 
-	#field_3_8,#field_3_5{
-		float: left;
-		width: 48%;
+	// #field_3_8,#field_3_5{
+	// 	float: left;
+	// 	width: 48%;
 
-		@media screen and (max-width: $sm) {
-			float: none;
-			width: 100%;
-		}
-	}
+	// 	@media screen and (max-width: $sm) {
+	// 		float: none;
+	// 		width: 100%;
+	// 	}
+	// }
 
 	#field_3_8{
-		margin-right: 2%;
-		@media screen and (max-width: $sm) {
-			margin-right: 0;
-		}
+		// margin-right: 2%;
+		// @media screen and (max-width: $sm) {
+		// 	margin-right: 0;
+		// }
 
 		.instruction{
 			@extend .small;
@@ -86,13 +90,13 @@
 		}
 	}
 
-	#field_3_5{
-		margin-left: 2%;
-		@media screen and (max-width: $sm) {
-			margin-left: 0;
-			margin-bottom: 2em;
-		}
-	}
+	// #field_3_5{
+	// 	margin-left: 2%;
+	// 	@media screen and (max-width: $sm) {
+	// 		margin-left: 0;
+	// 		margin-bottom: 2em;
+	// 	}
+	// }
 
 	#field_3_1{
 		&:before{
@@ -169,6 +173,26 @@
 
 	.ginput_card_security_code_icon{
 		display: none;
+	}
+}
+
+.donation-loading{
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100px;
+
+	div{
+		background-image: url('../images/loading.gif');
+		background-size: 60px 60px;
+		background-position: center center;
+		background-repeat: no-repeat;
+	}
+
+	&.active{
+		display: block;
 	}
 }
 
