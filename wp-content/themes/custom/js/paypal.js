@@ -8,20 +8,18 @@ function paypal() {
 
 		if( $('body').hasClass('page-id-189') ){
 
-			var donationLoading = $('<div>').addClass('donation-loading');
-			$('.gform_wrapper').append(donationLoading);
-
 			var wpPostData = {};
 
 			$(document).on('gform_confirmation_loaded', function(){
 				//console.log('gform_confirmation_loaded');
-				console.log($('#donation-form-container').offset().top);
+
+				$('.donation-loading').addClass('active');
 
 				$('html,body').animate({
 					scrollTop: $('#donation-form-container').offset().top - 300
 				}, 200);
 
-				var wpEndpoint = '/wp-json/paypal/v1/iframe';
+				var wpEndpoint = 'https://theavenueconcept.org/wp-json/paypal/v1/iframe';
 
 				$.ajax({
 					url: wpEndpoint,
@@ -29,13 +27,18 @@ function paypal() {
 					data: wpPostData
 				})
 				.done(function(data) {
-					console.log('success');
-					console.log(data);
-					$('#paypal-target').append(data);
-					$('.donation-loading').removeClass('active');
+					//console.log('success');
+					//console.log(data);
+					$('#paypal-target').append(data.iframe);
+					setTimeout(function() {
+						$('.donation-loading').removeClass('active');
+						$('#donation-summary-amount').html('$ ' + data.amount);
+						$('.donation-summary').addClass('active');
+						$('#donation-form-container').addClass('iframe-loaded');
+					}, 1000);
 				})
 				.fail(function(error) {
-					console.log('error');
+					console.log(error);
 				})
 				.always(function() {
 					//console.log('complete');
@@ -43,20 +46,16 @@ function paypal() {
 
 			});
 
-			$(document).on('gform_post_render', function(){
-				setTimeout(function() {
-					if( $('.gform_validation-error').length > 0 ){
-						$('.donation-loading').removeClass('active');
-					}
-				}, 500);
 
+			$(document).on('gform_post_render', function(){
+				//console.log('gform_post_render');
 			});
 
+
 			var form = $('#donation form');
-			form.on('submit', function(e) {
+			form.on('submit', function() {
 				//console.log('on submit');
 
-				$('.donation-loading').addClass('active');
 				wpPostData = $(this).serialize();
 
 			});
@@ -69,4 +68,4 @@ function paypal() {
 
 }
 
-export { paypal }
+export { paypal };

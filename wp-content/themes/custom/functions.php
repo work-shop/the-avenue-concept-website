@@ -131,9 +131,15 @@ function get_paypal( $data ) {
     parse_str($resp, $arr);
   }
 
-  $iframe = '<iframe src="' . $endpoint2 . '?MODE=' . $mode . '&SECURETOKENID=' . $securetokenid . '&SECURETOKEN=' . $arr["SECURETOKEN"] . '&TEMPLATE=MOBILE" name="test_iframe" scrolling="no"  id="paypal-iframe"></iframe>';
+  $iframe = '<iframe src="' . $endpoint2 . '?MODE=' . $mode . '&SECURETOKENID=' . $securetokenid . '&SECURETOKEN=' . $arr["SECURETOKEN"] . '&TEMPLATE=MOBILE" name="test_iframe" scrolling="yes" width="570px" height="540px" id="paypal-iframe"></iframe>';
 
-  return $iframe;
+   $response = array(
+    'iframe' => $iframe , 
+    'amount' => $amt
+  );
+
+
+  return $response;
 }
 
 

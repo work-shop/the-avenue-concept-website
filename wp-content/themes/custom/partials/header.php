@@ -18,10 +18,28 @@
 	</title>
 
 	<?php 
-	$social_title = get_field('social_media_title'); 
-	$social_description = get_field('social_media_description');
-	$social_url = get_field('social_media_url'); 
-	$social_image = get_bloginfo( template_directory ) . '/images/social_card_v1.jpg';
+	if( get_field('social_media_title') ):
+		$social_title = get_field('social_media_title'); 
+	else:
+		$social_title = bloginfo( 'name' );
+	endif;
+	if( get_field('social_media_description') ):
+		$social_description = get_field('social_media_description');
+	else:
+		$social_description = '';
+	endif;
+	if( get_field('social_media_url') ):
+		$social_url = get_field('social_media_url'); 
+	else: 
+		$social_url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+	endif;
+	if( get_field('social_media_image') ):
+		$social_image_array = get_field('social_media_image');
+		$social_image = $social_image_array['sizes']['fb'];
+	else:
+		$social_image = get_bloginfo( template_directory ) . '/images/social_card_v1.jpg';
+	endif;
+
 	?>
 
 	<!-- Facebook Open Graph data -->
@@ -30,6 +48,8 @@
 	<meta property="og:image" content="<?php echo $social_image; ?>" />
 	<meta property="og:url" content="<?php echo $social_url; ?>" />
 	<meta property="og:type" content="website" />
+
+
 
 	<!-- Twitter Card data -->
 	<meta name="twitter:card" value="<?php echo $social_description; ?>">

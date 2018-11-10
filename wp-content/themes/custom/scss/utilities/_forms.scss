@@ -22,12 +22,29 @@ input,textarea,select{
 	}
 
 	&[type="submit"]{
-		@extend .button;
-		background-color: transparent;
+		//@extend .button;
+		//background-color: transparent;
 		border: none;
 		max-width: 300px;
 		margin: 0 auto;
+		transition: all .1s;
+		border: 2px solid $aqua;
+		padding: 15px;
+		
+		
+		background-image: none;
+		color: $aqua;
+		background: white;
+		border-radius: 20px;
+
+		&:hover{
+			background-image: none;
+			background: $aqua;
+			color: white;
+		}
 	}
+
+
 
 	&[type="checkbox"]{
 		max-width: 30px;

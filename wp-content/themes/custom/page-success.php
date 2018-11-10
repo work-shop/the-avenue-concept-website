@@ -8,7 +8,9 @@
 	</script>
 </head>
 <body>
-	<!-- <h2>Oops, something went wrong.</h2> -->
+
+
+	<!-- <h2>Thank you!</h2> -->
 
 	<?php 
 	//echo $_GET['RESPMSG'];
@@ -17,6 +19,8 @@
 	//echo '<br><br>'; 
 	//echo '<br><br>'; 
 	?>
+
 </body>
 </html>
+
 
