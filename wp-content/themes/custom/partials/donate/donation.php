@@ -3,6 +3,9 @@ $override = true;
 if(  $_SERVER['HTTP_HOST'] == 'localhost:8080' || is_user_logged_in() || $override ):
 	$show_form = true;
 endif; 
+if( $_GET['failed'] === 'failed' ): 
+	$transaction_failed = true;
+endif; 
 ?>
 <section class="block padded bg-white page-content" id="donation">
 	<div class="container-fluid container-fluid-stretch">
@@ -34,7 +37,19 @@ endif;
 					<?php the_field('donate_quote_person'); ?><?php if(get_field('donate_quote_person_title')): ?>, <?php the_field('donate_quote_person_title'); ?><?php endif; ?>
 				</h4>
 			</div>
-			<div class="col-lg-6 offset-xl-1 donation-form" id="donation-form-container">
+			<div class="col-lg-6 offset-xl-1 donation-form <?php if( $transaction_failed ): ?> donation-form-error <?php endif; ?>" id="donation-form-container">
+				<?php if( $transaction_failed ): ?>
+					<div class="donation-error">
+						<p>
+							<?php echo $_GET['response']; ?>
+						</p>
+						<p class="mb0">
+							Sorry, something went wrong with the transaction. 
+							<br>
+							Please try again, or if you have issues, <a href="/contact" class="underline">contact us.</a>
+						</p>
+					</div>
+				<?php endif; ?>
 				<div class="donation-loading">
 				</div>
 				<div class="donation-form-inner">

@@ -3,11 +3,10 @@
 #paypal-iframe{
 	height: 100vh;
 	border: none;
-	//outline: none;
-	//padding: 0;
 
-	@media screen and (max-width: $sm) {
-		//transform: scale(.75);
+	@media screen and (max-width: $xs) {
+		transform: scale(.95);
+		transform-origin: 0 0;
 	}
 }
 
@@ -81,6 +80,17 @@
 	input[type="submit"]{
 		display: block;
 	}
+
+	@media screen and (max-width: $sm) {
+		order: 0;
+		margin-bottom: 5em;
+	}
+}
+
+.donation-appeal{
+	@media screen and (max-width: $sm) {
+		order: 2;
+	}
 }
 
 .donation-loading{
@@ -102,6 +112,7 @@
 }
 
 .iframe-loaded{
+	padding: 0;
 	.donation-form-inner{
 		//background: rgb(251,251,251);
 
@@ -122,10 +133,29 @@
 		max-width: 450px;
 		//@extend .centered;
 		@extend .h3;
+
+		@media screen and (max-width: $xs) {
+			max-width: 332px;
+		}
 	}
 
 	&.active{
 		display: block;
+	}
+}
+
+.donation-form-error{
+	//padding-top: 120px;
+}
+
+.donation-error,.gform_wrapper .validation_error{
+	background: lighten($error, 30%);
+	padding: 1em;
+	margin-bottom: 2em;
+	border-radius: 5px;
+
+	*{
+		color: darken($error, 20%);
 	}
 }
 
@@ -334,6 +364,10 @@
 
 		@media screen and (max-width: $md) {
 			font-size: 8vw;
+		}
+
+		@media screen and (max-width: $xs) {
+			font-size: 9vw;
 		}
 	}
 

@@ -133,7 +133,7 @@ function get_paypal( $data ) {
 
   $iframe = '<iframe src="' . $endpoint2 . '?MODE=' . $mode . '&SECURETOKENID=' . $securetokenid . '&SECURETOKEN=' . $arr["SECURETOKEN"] . '&TEMPLATE=MOBILE" name="test_iframe" scrolling="yes" width="570px" height="540px" id="paypal-iframe"></iframe>';
 
-   $response = array(
+  $response = array(
     'iframe' => $iframe , 
     'amount' => $amt
   );
@@ -157,13 +157,13 @@ add_action( 'rest_api_init', function () {
 
 
 
-  add_filter( 'parse_query', 'ts_hide_pages_in_wp_admin' );
-  function ts_hide_pages_in_wp_admin($query) {
-    global $pagenow,$post_type;
-    if (is_admin() && $pagenow=='edit.php' && $post_type =='page') {
-      $query->query_vars['post__not_in'] = array('821');
-    }
+add_filter( 'parse_query', 'ts_hide_pages_in_wp_admin' );
+function ts_hide_pages_in_wp_admin($query) {
+  global $pagenow,$post_type;
+  if (is_admin() && $pagenow=='edit.php' && $post_type =='page') {
+    $query->query_vars['post__not_in'] = array('821');
   }
+}
 
   /**
  * Use * for origin
@@ -175,16 +175,17 @@ add_action( 'rest_api_init', function () {
       header( 'Access-Control-Allow-Origin: *' );
       return $value;
 
-      });
-      }, 1 );
+    });
+  }, 1 );
 
-      function grant_gforms_editor_access() {
+  function grant_gforms_editor_access() {
 
-        $role = get_role( 'editor' );
-        $role->add_cap( 'gform_full_access' );
-      }
-// Tie into the 'after_switch_theme' hook
-      add_action( 'init', 'grant_gforms_editor_access' );
+    $role = get_role( 'editor' );
+    $role->add_cap( 'gform_full_access' );
+  }
+  // Tie into the 'after_switch_theme' hook
+  add_action( 'init', 'grant_gforms_editor_access' );
 
+  add_filter( 'gform_confirmation_anchor', '__return_false' );
 
-      ?>
+?>
