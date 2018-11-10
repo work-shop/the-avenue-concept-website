@@ -4,7 +4,7 @@
 
         <?php //get_template_part('partials/modals' ); ?>
 
-        <?php get_template_part('partials/viewport_label' ); ?>
+        <?php //get_template_part('partials/viewport_label' ); ?>
 
         <script async defer src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCFQ2F5EK1p-g-xShVMv51XClmBGPTIUFQ"></script>
         <!-- Global site tag (gtag.js) - Google Analytics -->

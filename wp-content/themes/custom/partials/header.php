@@ -21,7 +21,7 @@
 	if( get_field('social_media_title') ):
 		$social_title = get_field('social_media_title'); 
 	else:
-		$social_title = bloginfo( 'name' );
+		$social_title = get_bloginfo( 'name' );
 	endif;
 	if( get_field('social_media_description') ):
 		$social_description = get_field('social_media_description');
@@ -48,8 +48,6 @@
 	<meta property="og:image" content="<?php echo $social_image; ?>" />
 	<meta property="og:url" content="<?php echo $social_url; ?>" />
 	<meta property="og:type" content="website" />
-
-
 
 	<!-- Twitter Card data -->
 	<meta name="twitter:card" value="<?php echo $social_description; ?>">
