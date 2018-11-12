@@ -22,7 +22,7 @@ function paypal() {
 
 				var wpEndpoint = 'https://theavenueconcept.org/wp-json/paypal/v1/iframe';
 
-				var entryIdString = '&entryId=' + entryId;
+				var entryIdString = '&USER1=' + entryId;
 				wpPostData += entryIdString;
 				console.log(wpPostData);
 
