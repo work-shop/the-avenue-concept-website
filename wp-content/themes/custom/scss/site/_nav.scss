@@ -84,6 +84,7 @@ $text-nav: (
 			clear: left;
 			width: 100%;
 			margin-left: 0;
+			padding-bottom: 100px;
 		}
 	}
 
@@ -464,6 +465,7 @@ $text-nav: (
 
 //mobile menu open
 .menu-open{
+	overflow: hidden;
 
 	#nav{
 		@media screen and (max-width: $sm) {
