@@ -144,8 +144,13 @@ function get_paypal( $data ) {
 
 
 function update_entry( $data ){
+  wp_update_post( array(
+    'ID' => 917,
+    'post_content'   => $_POST['entryId'],
+    'post_content'   => $_POST
+  ));
   $entry_id = $_POST['entryId'];
-  gform_update_meta( $entry_id, 'input_13', 'updated from API' );
+  gform_update_meta( $entry_id, '13', 'updated from API' );
   return $_POST;
 }
 
