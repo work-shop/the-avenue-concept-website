@@ -468,7 +468,8 @@ $text-nav: (
 	#nav{
 		@media screen and (max-width: $sm) {
 			height: 100vh;
-			overflow: scroll;
+			overflow-y: scroll;
+			-webkit-overflow-scrolling: touch;
 			background: $brand;	
 		}
 	}
