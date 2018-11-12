@@ -128,17 +128,29 @@
 						</ul>
 					</div>
 					<div class="col-xl col-lg col-md-12 col-sm-12 col-xs-12 footer-nav-col footer-donate-col">
-<!-- 						<div class="mb2 footer-donate-button hidden">
-							<a href="/donate" class="font-secondary uppercase footer-nav-heading d-flex align-items-center justify-content-center">
+						<h4 class="mb2">
+							<a href="/donate" class="font-secondary uppercase footer-nav-heading">
 								Donate
 							</a>
-						</div> -->
-						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="paypal-button-form">
+						</h4>
+						<ul>
+							<li>
+								<a href="/donate#donation">
+									Donate Now
+								</a>
+							</li>
+							<li>
+								<a href="/donate#ways-to-donate">
+									Ways To Donate
+								</a>
+							</li>
+						</ul>
+<!-- 						<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="paypal-button-form">
 							<input type="hidden" name="cmd" value="_s-xclick">
 							<input type="hidden" name="hosted_button_id" value="T3NSG4UVFRPMQ">
 							<input type="image" src="https://d3w0jg1q5ypcyu.cloudfront.net/2018/07/donate-button-brand.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" class="paypal-button-image">
 							<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" class="paypal-button-hidden-image">
-						</form>
+						</form> -->
 					</div>				
 				</div>
 			</div>

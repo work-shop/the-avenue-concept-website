@@ -10,13 +10,13 @@ endif;
 <section class="block padded bg-white page-content" id="donation">
 	<div class="container-fluid container-fluid-stretch">
 		<?php if ( $override && is_user_logged_in() === false &&   $_SERVER['HTTP_HOST'] != 'localhost:8080' ): ?>
-			<div class="row mb4">
+<!-- 			<div class="row mb4">
 				<div class="col-xl-8 offset-xl-2">
 					<h2 class="error">
 						Please note this page is not currently set up to take donations, and the below form is inactive. 
 					</h2>
 				</div>
-			</div>
+			</div> -->
 		<?php endif; ?>
 		<div class="row section-header-row">
 			<div class="col-xl-8">

@@ -106,21 +106,21 @@
 		}
 	}
 
-	.footer-donate-button{
-		a{
-			background-image: url('../images/blob-03.svg');
-			background-size: 100% 100%;
-			display: block;
-			width: 140px;
-			height: 100px;
-			margin-top: -33px;
-			text-align: center;	
+	// .footer-donate-button{
+	// 	a{
+	// 		background-image: url('../images/blob-03.svg');
+	// 		background-size: 100% 100%;
+	// 		display: block;
+	// 		width: 140px;
+	// 		height: 100px;
+	// 		margin-top: -33px;
+	// 		text-align: center;	
 
-			@media screen and (max-width: $md) {
-				margin-top: 0px;
-			}		
-		}
-	}
+	// 		@media screen and (max-width: $md) {
+	// 			margin-top: 0px;
+	// 		}		
+	// 	}
+	// }
 
 }
 
