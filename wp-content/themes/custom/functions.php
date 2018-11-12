@@ -145,7 +145,7 @@ function get_paypal( $data ) {
 
 function update_entry( $data ){
   $entry_id = $_POST['entryId'];
-  gform_update_meta( $entry_id, 'input_12.2', 'true' );
+  gform_update_meta( $entry_id, 'input_13', 'updated from API' );
   return $_POST;
 }
 

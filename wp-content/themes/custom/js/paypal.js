@@ -63,7 +63,6 @@ function paypal() {
 
 				scrollToForm();
 				wpPostData = $(this).serialize();
-				console.log(wpPostData);
 
 			});
 
