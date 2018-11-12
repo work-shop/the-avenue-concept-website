@@ -143,6 +143,11 @@ function get_paypal( $data ) {
 }
 
 
+function update_entry( $data ){
+  return $data;
+}
+
+
 add_action( 'rest_api_init', function () {
   register_rest_route( 'zoho/v1', '/artworks', array(
     'methods' => WP_REST_Server::ALLMETHODS,
@@ -151,6 +156,10 @@ add_action( 'rest_api_init', function () {
   register_rest_route( 'paypal/v1', '/iframe', array(
     'methods' => WP_REST_Server::ALLMETHODS,
     'callback' => 'get_paypal',
+  ) );
+  register_rest_route( 'paypal/v1', '/silent', array(
+    'methods' => WP_REST_Server::ALLMETHODS,
+    'callback' => 'update_entry',
   ) );
 } );
 
@@ -188,4 +197,12 @@ function ts_hide_pages_in_wp_admin($query) {
 
   add_filter( 'gform_confirmation_anchor', '__return_false' );
 
-?>
+  add_filter( 'gform_confirmation_3', 'custom_confirmation_message', 10, 4 );
+  function custom_confirmation_message( $confirmation, $form, $entry, $ajax ) {
+    //$confirmation = $entry['id'];
+    $entryId =  $entry['id'];
+    $confirmation = '<script>var entryId = ' . $entryId . '</script>';
+    return $confirmation;
+  }
+
+  ?>

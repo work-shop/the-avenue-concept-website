@@ -22,6 +22,10 @@ function paypal() {
 
 				var wpEndpoint = 'https://theavenueconcept.org/wp-json/paypal/v1/iframe';
 
+				var entryIdString = '&entryId=' + entryId;
+				wpPostData += entryIdString;
+				console.log(wpPostData);
+
 				$.ajax({
 					url: wpEndpoint,
 					type: 'POST',
@@ -59,6 +63,7 @@ function paypal() {
 
 				scrollToForm();
 				wpPostData = $(this).serialize();
+				console.log(wpPostData);
 
 			});
 
