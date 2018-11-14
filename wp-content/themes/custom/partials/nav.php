@@ -49,7 +49,7 @@
 				</a>
 				<ul class="sub-menu" id="sub-menu-artworks">
 					<li>
-						<a href="/artworks" class="">
+						<a href="/artworks?view=map" class="">
 							Map
 						</a>
 					</li>
