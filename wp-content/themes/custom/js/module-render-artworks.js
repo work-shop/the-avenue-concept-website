@@ -227,7 +227,7 @@ import { Artwork } from './module-zoho-artwork.js';
 
     mapObject.marker.icon = {
        url: '/wp-content/themes/custom/images/marker.png',
-       size: new google.maps.Size(120, 200),
+       size: new google.maps.Size(45, 75),
        scaledSize: new google.maps.Size(45, 75),
        origin: new google.maps.Point( 0, 0 ),
        anchor: new google.maps.Point( 22.5, 75 )

@@ -4,13 +4,13 @@
 				View Artworks As:
 			</h5>
 			<div class="sidebar-view-row">
-				<a href="#" class="sidebar-view-button active" data-artworks-view="map">
-					<span class="icon" data-icon=","></span>
-					Map
-				</a>
 				<a href="#" class="sidebar-view-button" data-artworks-view="thumbnails">
 					<span class="icon" data-icon="à"></span>
 					Thumbnails
+				</a>
+				<a href="#" class="sidebar-view-button active" data-artworks-view="map">
+					<span class="icon" data-icon=","></span>
+					Map
 				</a>
 				<a href="#" class="sidebar-view-button" data-artworks-view="list">
 					<span class="icon" data-icon="4"></span>

@@ -6,7 +6,7 @@
 
 .artworks-sidebar{
 	position: fixed;
-	overflow: scroll;
+	//overflow-y: scroll;
 	z-index: 1;
 	width: $sb-width;
 	height: calc( 100vh - #{$nav-height});
@@ -28,6 +28,14 @@
 	// box-shadow: -0px 0px 10px transparentize($medium, .5);
 	// border-radius: 10px;
 	// border-left: none;
+
+	@media screen and (max-width: $sm) {
+		overflow-y: scroll;
+	}
+
+	@media screen and (max-height: 767px) {
+		overflow-y: scroll;
+	}
 
 	@media screen and (max-width: $sm) {
 		width: 100%;
@@ -195,24 +203,28 @@
 		text-transform: none;
 	}
 
+
+
 	&:nth-child(1){
-		width: 30%;
+		width: 42%;
 		border-left: none;
+	}
+
+		&:nth-child(2){
+		width: 28%;
+		border-left: none;
+		border-right: none;
 		.icon:before{
 			top: 1px;
 		}
-	}
-
-	&:nth-child(2){
-		width: 40%;
-		border-left: none;
-		border-right: none;
 	}
 
 	&:nth-child(3){
 		width: 30%;
 		border-right: none;
 	}
+
+
 
 	&:hover{
 		box-shadow: inset 0px 0px 10px $medium;

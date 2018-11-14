@@ -43,7 +43,7 @@
 				</ul>
 			</li>
 			<li class="has-sub-menu closed nav-menu-primary-item">
-				<a href="/artworks" class="dropdown-link closed mobile-closed <?php if( Helpers::is_tree(187) ): echo ' nav-current '; endif; ?>" id="nav-link-artworks" data-dropdown-target="artworks">
+				<a href="/artworks?view=thumbnails" class="dropdown-link closed mobile-closed <?php if( Helpers::is_tree(187) ): echo ' nav-current '; endif; ?>" id="nav-link-artworks" data-dropdown-target="artworks">
 					Artworks
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
@@ -54,7 +54,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="/artworks" class="">
+						<a href="/artworks?view=thumbnails" class="">
 							On View Now
 						</a>
 					</li>

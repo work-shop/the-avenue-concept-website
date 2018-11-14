@@ -144,9 +144,10 @@ function get_paypal( $data ) {
 
 
 function update_entry( $data ){
+  //return $_GET;
   wp_update_post( array(
     'ID' => 917,
-    'post_content'   => $_POST['USER1'],
+    'post_title'   => $_GET['RESPMSG'],
     'post_content'   => $_POST
   ));
   $entry_id = $_POST['USER1'];

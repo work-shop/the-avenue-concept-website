@@ -92,6 +92,11 @@ import { URLManager } from './module-url-manager.js';
 
         }
 
+        var hasScrollbar = window.innerWidth > document.documentElement.clientWidth;
+        if( hasScrollbar ){
+            $('body').addClass('has-scrollbar');
+        }
+
     });
 
 
