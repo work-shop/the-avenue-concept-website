@@ -132,6 +132,7 @@ $sb-mobile-toggle-height: 80px;
 	#artworks-track{
 		transition: all 1s;
 		transform: translateX( calc( (100vw - #{$sb-width}) * -1 ));
+		
 		@media screen and (max-width: $sm) {
 			transform: translateX( -100vw );
 		}
@@ -140,6 +141,10 @@ $sb-mobile-toggle-height: 80px;
 	&.has-scrollbar{
 		#artworks-track{
 			transform: translateX( calc( ((100vw - #{$sb-width}) * -1 ) + 15px) );
+		}
+
+		@media screen and (max-width: $sm) {
+			transform: translateX( -100vw );
 		}		
 	}
 }
@@ -156,6 +161,10 @@ $sb-mobile-toggle-height: 80px;
 	&.has-scrollbar{
 		#artworks-track{
 			transform: translateX( calc( ((200vw - #{$sb-width*2}) * -1 ) + 30px) );
+		}
+
+		@media screen and (max-width: $sm) {
+			transform: translateX( -200vw );
 		}		
 	}
 

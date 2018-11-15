@@ -4,7 +4,7 @@
 			<h3 class="">
 				<?php the_field('map_heading'); ?>
 			</h3>
-			<a href="/artworks" class="button">
+			<a href="/artworks?view=map" class="button">
 				<?php the_field('map_link_text'); ?>
 			</a>
 		</div>
