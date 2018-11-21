@@ -3,9 +3,46 @@
 function dropdowns( config ) {
 	//console.log('dropdowns.js loaded');
 
+	var touchOpen = false;
+
 	$(document).ready( function() {
 
 		var dropdownDelay = 200, timer;
+
+		$( '.has-sub-menu' ).on('touchstart', function(e) {
+			if( window.innerWidth > 767 ){
+				e.preventDefault();
+				var currentLink = $(this);
+				//console.log('touchstart');
+
+				if(touchOpen === false){
+					showCurve();
+					openDropdown( currentLink );
+					touchOpen = true;
+					//console.log('touch opened');
+				} else{
+					if( currentLink.hasClass('open') ){
+						hideCurve();
+						closeDropdown(currentLink);
+						touchOpen = false;
+						//console.log('touch closed');
+					} else{
+						$('.has-sub-menu').removeClass('open');
+						$('.has-sub-menu').addClass('closed');
+						openDropdown( currentLink );
+						touchOpen = true;
+					}
+
+				}
+			}
+		});
+
+		$( '.sub-menu a' ).on('touchstart', function(e) {
+			if( window.innerWidth > 767 ){
+				//console.log('stopPropagation');
+				e.stopPropagation();
+			}
+		});
 
 		$( config.linkSelector ).hover(
 			function() {
@@ -36,8 +73,11 @@ function dropdowns( config ) {
 			}
 		});
 
-		$(config.blanketSelector).click(function(){
-			closeDropdown();
+		$('#nav-blanket').click(function(){
+			closeDropdown( $('.has-sub-menu.open') );
+			hideCurve();
+			touchOpen = false;
+			console.log('blanket clicked');
 		});
 
 	});
@@ -98,7 +138,6 @@ function dropdowns( config ) {
 	}
 
 
-		//open the mobile dropdown
 	function showCurve(){
 		//console.log('showCurve');
 
@@ -108,7 +147,6 @@ function dropdowns( config ) {
 
 	}	
 
-	//close the mobile dropdown
 	function hideCurve(){
 		//console.log('hideCurve');
 
@@ -116,7 +154,6 @@ function dropdowns( config ) {
 			$('body').removeClass('curve-on').addClass('curve-off');
 		}
 	}
-
 
 
 }

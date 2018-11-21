@@ -1,4 +1,4 @@
-
+<div id="nav-blanket"></div>
 <div id="nav-curve-outer" class="nav-curve">
 	<?php include get_template_directory() . '/images/nav-curve-1.svg'; ?>
 </div>
@@ -155,7 +155,6 @@
 			</li> --> 
 		</ul>
 	</div>
-
 </nav>
 <div class="hamburger menu-toggle">
 	<span class="hamburger-line hl-1"></span>
