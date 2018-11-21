@@ -61,6 +61,8 @@
 	<meta name="author" content="Work-Shop Design Studio http://workshop.co">
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+	<script src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyCFQ2F5EK1p-g-xShVMv51XClmBGPTIUFQ"></script>
+
 	<?php wp_head(); ?>
 
 	<?php
