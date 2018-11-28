@@ -63,6 +63,7 @@ add_filter( 'template_include', function( $template ) {
 
 
 function get_artwork_meta_field( $data ) {
+
   $artworks = get_post_meta( 821, 'zoho', true);
 
   if ( empty( $artworks ) ) {
@@ -71,6 +72,7 @@ function get_artwork_meta_field( $data ) {
 
   return $artworks;
 }
+
 
 function get_paypal( $data ) {
 
@@ -178,7 +180,9 @@ add_filter( 'parse_query', 'ts_hide_pages_in_wp_admin' );
 function ts_hide_pages_in_wp_admin($query) {
   global $pagenow,$post_type;
   if (is_admin() && $pagenow=='edit.php' && $post_type =='page') {
-    $query->query_vars['post__not_in'] = array('821');
+    if ( ! current_user_can( 'administrator' ) ) {
+      $query->query_vars['post__not_in'] = array('821');
+    }
   }
 }
 
