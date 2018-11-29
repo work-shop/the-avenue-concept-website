@@ -1,5 +1,8 @@
-<h1><?php esc_html_e('Sitemap', 'wp-meta-seo') ?></h1>
-<div class="wpmsrow">
+<?php
+/* Prohibit direct script loading */
+defined('ABSPATH') || die('No direct script access allowed!');
+?>
+<div class="wpmsrow sitemap-menu-bar">
     <div class="col s12">
         <ul class="tabs wpmstabs">
             <li class="tab wpmstab col active">

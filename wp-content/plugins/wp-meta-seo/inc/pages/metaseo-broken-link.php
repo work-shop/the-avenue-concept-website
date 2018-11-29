@@ -1,4 +1,6 @@
 <?php
+/* Prohibit direct script loading */
+defined('ABSPATH') || die('No direct script access allowed!');
 if (!class_exists('MetaSeoBrokenLinkTable')) {
     require_once(WPMETASEO_PLUGIN_DIR . '/inc/class.metaseo-broken-link-table.php');
 }
@@ -23,14 +25,13 @@ if (!empty($_REQUEST['_wp_http_referer'])) {
 
     <div class="wrap broken_link_table seo_extended_table_page">
         <div id="icon-edit-pages" class="icon32 icon32-posts-page"></div>
-
-        <?php echo '<h1>' . esc_html__('404 & Redirects', 'wp-meta-seo') . '</h1>'; ?>
-
-        <form id="wp-seo-meta-form" action="" method="post">
-
-            <?php $metaseo_list_table->searchBox1(); ?>
-
-            <?php $metaseo_list_table->display(); ?>
+        <form id="wp-seo-meta-form" class="wpms-form-table" action="" method="post">
+            <?php
+            echo '<h1 class="wpms-top-h1">' . esc_html__('404 & Redirects', 'wp-meta-seo') . '</h1>';
+            $metaseo_list_table->searchBox1();
+            $metaseo_list_table->brokenFilter('sl_broken[]');
+            $metaseo_list_table->display();
+            ?>
         </form>
 
         <?php

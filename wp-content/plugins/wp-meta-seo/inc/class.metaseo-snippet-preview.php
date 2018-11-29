@@ -159,8 +159,8 @@ class WPMSEOSnippetPreview
     {
         $content = '<div id="wpmseosnippet">
 <a class="title" id="wpmseosnippet_title" href="#">' . esc_html($this->title) . '</a>
-<span class="url">' . esc_url($this->url) . '</span>
-<p class="desc">' . esc_html($this->date) . '<span class="autogen"></span><span class="content">' . esc_html($this->description) . '</span></p>
+<a class="url m-t-20">' . esc_url($this->url) . '</a><br />
+<p class="desc m-t-20">' . esc_html($this->date) . '<span class="autogen"></span><span class="content">' . esc_html($this->description) . '</span></p>
 </div>';
         $this->setContentThroughFilter($content);
     }

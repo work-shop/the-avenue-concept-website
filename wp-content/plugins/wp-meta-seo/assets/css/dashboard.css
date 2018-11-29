@@ -1,0 +1,327 @@
+#wpcontent {
+    padding-left: 0;
+}
+
+.dashboard {
+    width: 100%;
+    padding: 0 4%;
+    font-family: Roboto, sans-serif;
+}
+
+.dash-infos-right {
+    width: calc(100% - 550px - 3%);
+}
+
+.right-checkbox {
+    float: right;
+    line-height: 50px;
+    padding-right: 30px;
+}
+
+.ju-setting-label {
+    padding-left: 20px;
+}
+
+.dash-infos-right .ju-setting-label {
+    min-width: 0 !important;
+    font-size: 14px;
+}
+
+.addon-feature .title-top {
+    font-size: 40px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 2px;
+    color: #394857;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.addon-feature .description-top {
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 2.14;
+    letter-spacing: 0.5px;
+    color: #4c6482;
+    padding: 0 0 20px 0;
+}
+
+.addon-feature .addon-img {
+    width: 100%;
+    height: 160px;
+    background: #e9f1f8;
+    text-align: center;
+}
+
+.addon-feature .panel-addon {
+    width: 170px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1px solid #F7F0EB;
+    border-radius: 5px;
+    color: #ffa45a;
+    background-color: #F7F0EB;
+    margin: 9px 0;
+    font-weight: 500;
+}
+
+.addon-feature .panel-addon a {
+    color: #ffa45a;
+    font-weight: 500;
+    text-decoration: none;
+}
+
+.ju-setting-label i {
+    color: #96a2bb;
+}
+
+.dash-infos-right .ju-settings-option:nth-child(2n+1) {
+    float: right;
+    margin-right: 0 !important;
+}
+
+.addon-feature .ju-settings-option {
+    width: 32%;
+    margin: 30px 2% 30px 0;
+}
+
+.addon-feature .ju-settings-option .ju-setting-label {
+    font-size: 16px;
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: normal;
+    letter-spacing: 0.9px;
+    color: #404852;
+    width: 49%;
+}
+
+.addon-feature .ju-settings-option .description {
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 2.14;
+    letter-spacing: 0.5px;
+    color: #4c6482;
+    height: 140px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 20px;
+}
+
+.toplevel_page_metaseo_dashboard .wpms_dashboard_notification {
+    width: 100% !important;
+    margin: 0 auto;
+    float: left;
+    padding: 20px 4% !important;
+}
+
+.web-left {
+    position: relative;
+    width: 550px;
+    overflow: hidden;
+}
+
+.btn-reload-web {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    text-transform: uppercase;
+    border: 1px solid #F7F0EB !important;
+    border-radius: 5px !important;
+    color: #ffa45a !important;
+    background-color: #F7F0EB !important;
+    font-weight: 500;
+}
+
+.dashboard .left {
+    width: 70%;
+    float: left;
+    height: 100%;
+    background: none repeat scroll 0 0 #fff;
+    min-height: 150px
+}
+
+.dashboard .right {
+    width: 30%;
+    float: right;
+    background: #fff;
+    min-height: 150px
+}
+
+.dashboard h1 {
+    padding: 10px 0 10px 20px
+}
+
+.dashboard .top_h1 {
+    font-size: 40px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 1.5px;
+    color: #404852;
+    padding: 0;
+    margin: 50px 0 10px 0;
+}
+
+.dashboard .top_link {
+    font-size: 22px;
+    font-weight: 500;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 0.8px;
+    color: #ff8726;
+    margin: 0;
+    float: left;
+    text-decoration: none;
+}
+
+.dashboard .panel-body {
+    padding: 27px;
+}
+
+.dashboard .percent_1 {
+    font-size: 25px !important;
+    margin-right: 10px !important;
+}
+
+.wpms_dash_widgets {
+    width: 48%;
+    float: left;
+    margin: 0 1%;
+}
+
+.wpms_dashboard_widgets_left {
+    width: 50%;
+    float: left;
+}
+
+.wpms_dashboard_widgets_right {
+    width: 47%;
+    float: left;
+    height: 70px;
+}
+
+.wpms_dashboard_widgets_left {
+    height: 70px;
+    position: relative;
+}
+
+/*progress*/
+.dashboard .progress-rating {
+    position: relative;
+    height: 8px;
+    display: block;
+    width: 100%;
+    border-radius: 2px;
+    margin: 32px 0;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.33);
+    float: left;
+}
+
+.dashboard .progress-rating .determinate {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #fff;
+    -webkit-transition: width 0.3s linear;
+    -moz-transition: width 0.3s linear;
+    -o-transition: width 0.3s linear;
+    -ms-transition: width 0.3s linear;
+    transition: width 0.3s linear;
+}
+
+.dashboard .progress {
+    position: relative;
+    height: 5px;
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    border-radius: 2px;
+    margin: 0.5rem 0 1rem 0;
+    overflow: hidden;
+}
+
+.dashboard .dashboard-title {
+    color: #fff !important;
+}
+
+.dashboard p.dashboard-title {
+    font-size: 10px !important;
+}
+
+.dashboard .dashboard-card {
+    background: #00AFF5;
+}
+
+.dashboard h4 {
+    font-weight: normal !important;
+}
+
+.dashboard .panel {
+    height: 70px !important;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+}
+
+.dashboard .wpms_dashboard_widgets_left .percent_1 {
+    margin: 12px 0 10px 0 !important;
+}
+
+.dashboard .wpms_dashboard_widgets_left .percent_2 {
+    font-size: 10px;
+}
+
+.page-loader {
+    display: none;
+    position: absolute;
+    left: calc(50% - 75px);
+    bottom: calc(50% - 50px);
+    height: 100px;
+}
+
+@media screen and (max-width: 1369px) {
+    .addon-feature .ju-settings-option {
+        width: 48%;
+        margin: 30px 2% 30px 0 !important;
+    }
+}
+
+@media screen and (max-width: 1215px) {
+    .dash-infos-right > .ju-settings-option {
+        width: 100% !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .dash-infos-right {
+        width: 550px;
+        float: left !important;
+        margin-top: 20px;
+    }
+
+    .addon-feature .ju-settings-option {
+        width: 100%;
+        margin: 30px 0 30px 0 !important;
+    }
+}
+
+@media screen and (max-width: 550px) {
+    .web-left, .site_img, .dash-infos-right {
+        width: 100% !important;
+    }
+
+    .dash-infos-right {
+        float: left !important;
+        margin-top: 20px;
+    }
+}

@@ -52,13 +52,85 @@ class MetaSeoSitemap
     public function __construct()
     {
         $this->getSitemapSettings();
-        add_action('admin_init', array($this, 'settingsSitemap'));
         add_action('admin_enqueue_scripts', array($this, 'adminEnqueueScripts'));
         add_action('wp_enqueue_scripts', array($this, 'enqueueScripts'));
         add_filter('the_content', array($this, 'sitemapInContent'));
         add_shortcode('wpms_html_sitemap', array($this, 'sitemapShortcode'));
         add_action('wp_ajax_wpms_regenerate_sitemaps', array($this, 'regenerateSitemaps'));
         add_action('wp_ajax_wpms_save_sitemap_settings', array($this, 'saveSitemapSettings'));
+        add_action('wp_ajax_wpms_list_posts_category', array($this, 'listPostsCategory'));
+        add_action('wp_update_nav_menu', array($this, 'wpUpdateNavMenu'), 10, 1);
+        add_action('wp_update_nav_menu_item', array($this, 'wpAddNavMenuItem'), 10, 3);
+    }
+
+    /**
+     *  Fires after a navigation menu item has been updated.
+     *
+     * @param integer $menu_id         Menu ID
+     * @param integer $menu_item_db_id Menu item ID
+     * @param array   $args            Params
+     *
+     * @return void
+     */
+    public function wpAddNavMenuItem($menu_id, $menu_item_db_id, $args)
+    {
+        $this->autoAddMenuItems($menu_id);
+    }
+
+    /**
+     * This action is documented in wp-includes/nav-menu.php.
+     *
+     * @param integer $nav_menu_selected_id Menu ID
+     *
+     * @return void
+     */
+    public function wpUpdateNavMenu($nav_menu_selected_id)
+    {
+        global $pagenow;
+        if (isset($pagenow) && $pagenow === 'nav-menus.php') {
+            $this->autoAddMenuItems($nav_menu_selected_id);
+        }
+    }
+
+
+    /**
+     * Auto add menu items
+     *
+     * @param integer $nav_menu_selected_id Menu ID
+     *
+     * @return void
+     */
+    public function autoAddMenuItems($nav_menu_selected_id)
+    {
+        $settings = get_option('_metaseo_settings_sitemap');
+        if (isset($settings['check_all_menu_items']) && in_array($nav_menu_selected_id, $settings['check_all_menu_items'])) {
+            $list_submenu_id = get_objects_in_term($nav_menu_selected_id, 'nav_menu');
+            $args            = array(
+                'orderby'        => 'menu_order',
+                'order'          => 'ASC',
+                'posts_per_page' => - 1,
+                'post_type'      => 'nav_menu_item',
+                'post_status'    => 'any',
+                'post__in'       => $list_submenu_id,
+                'meta_key'       => '_menu_item_menu_item_parent',
+                'meta_value'     => 0
+            );
+
+            $query    = new WP_Query($args);
+            $submenus = $query->get_posts();
+            foreach ($submenus as $menu) {
+                if (empty($settings['wpms_sitemap_menus'][$menu->ID])) {
+                    $settings['wpms_sitemap_menus'][$menu->ID] = array(
+                        'menu_id'   => $menu->ID,
+                        'priority'  => '1',
+                        'frequency' => 'monthly'
+                    );
+                }
+            }
+
+            update_option('_metaseo_settings_sitemap', $settings);
+            $this->regenerateSitemaps('submit');
+        }
     }
 
     /**
@@ -74,6 +146,7 @@ class MetaSeoSitemap
             'wpms_sitemap_author'        => 0,
             'wpms_sitemap_taxonomies'    => array(),
             'wpms_category_link'         => array(),
+            'check_all_menu_items'       => array(),
             'wpms_html_sitemap_page'     => 0,
             'wpms_html_sitemap_column'   => 1,
             'wpms_html_sitemap_theme'    => 'default',
@@ -143,7 +216,7 @@ class MetaSeoSitemap
 
         wp_enqueue_script(
             'site-jPages-js',
-            plugins_url('js/site-jPages.js', dirname(__FILE__)),
+            plugins_url('assets/js/site-jPages.js', dirname(__FILE__)),
             array('jquery'),
             WPMSEO_VERSION,
             true
@@ -155,14 +228,14 @@ class MetaSeoSitemap
         );
         wp_enqueue_script(
             'jpage-js',
-            plugins_url('js/jPages.js', dirname(__FILE__)),
+            plugins_url('assets/js/jPages.js', dirname(__FILE__)),
             array('jquery'),
             WPMSEO_VERSION,
             true
         );
         wp_enqueue_style(
             'jpage-css',
-            plugins_url('css/jPages.css', dirname(__FILE__)),
+            plugins_url('assets/css/jPages.css', dirname(__FILE__)),
             array(),
             WPMSEO_VERSION
         );
@@ -211,7 +284,7 @@ class MetaSeoSitemap
 
         wp_enqueue_script(
             'metaseositemap',
-            plugins_url('js/metaseo_sitemap.js', dirname(__FILE__)),
+            plugins_url('assets/js/metaseo_sitemap.js', dirname(__FILE__)),
             array('jquery'),
             WPMSEO_VERSION,
             true
@@ -225,193 +298,37 @@ class MetaSeoSitemap
         );
         wp_enqueue_script(
             'jpage-js',
-            plugins_url('js/jPages.js', dirname(__FILE__)),
+            plugins_url('assets/js/jPages.js', dirname(__FILE__)),
             array('jquery'),
             WPMSEO_VERSION,
             true
         );
         wp_enqueue_style(
             'metaseositemapstyle',
-            plugins_url('css/metaseo_sitemap.css', dirname(__FILE__)),
+            plugins_url('assets/css/metaseo_sitemap.css', dirname(__FILE__)),
             array(),
             WPMSEO_VERSION
         );
         wp_enqueue_style(
             'jpage-css',
-            plugins_url('css/jPages.css', dirname(__FILE__)),
+            plugins_url('assets/css/jPages.css', dirname(__FILE__)),
             array(),
             WPMSEO_VERSION
         );
         wp_enqueue_style(
             'm-style-qtip',
-            plugins_url('css/jquery.qtip.css', dirname(__FILE__)),
+            plugins_url('assets/css/jquery.qtip.css', dirname(__FILE__)),
             array(),
             WPMSEO_VERSION
         );
+
         wp_enqueue_script(
             'jquery-qtip',
-            plugins_url('js/jquery.qtip.min.js', dirname(__FILE__)),
+            plugins_url('assets/js/jquery.qtip.min.js', dirname(__FILE__)),
             array('jquery'),
             '2.2.1',
             true
         );
-    }
-
-    /**
-     * Add a new field to a section of a sitemap settings page
-     *
-     * @return void
-     */
-    public function settingsSitemap()
-    {
-        register_setting('MetaSEO Sitemap', '_metaseo_settings_sitemap');
-        add_settings_section('metaseo_sitemap', '', array($this, 'showSettingSitemap'), 'metaseo_settings_sitemap');
-        add_settings_field(
-            'wpms_sitemap_link',
-            esc_html__('XML sitemap link', 'wp-meta-seo'),
-            array($this, 'sitemapLink'),
-            'metaseo_settings_sitemap',
-            'metaseo_sitemap',
-            array(
-                'label_for' => esc_html__('Link to the xml file generated. It’s highly recommended
-                 to add this sitemap link to your Google search console', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'wpms_html_sitemap_page',
-            esc_html__('HTML Sitemap page', 'wp-meta-seo'),
-            array($this, 'sitemapPage'),
-            'metaseo_settings_sitemap',
-            'metaseo_sitemap',
-            array(
-                'label_for' => esc_html__('A page is automatically generated to display your HTML sitemap.
-                 You can also use any of the existing pages', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'wpms_sitemap_taxonomies',
-            esc_html__('Additional content', 'wp-meta-seo'),
-            array($this, 'sitemapTaxonomies'),
-            'metaseo_settings_sitemap',
-            'metaseo_sitemap',
-            array(
-                'label_for' => esc_html__('The additional WordPress taxonomies that you want
-                 to load in your sitemaps', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'wpms_sitemap_author',
-            esc_html__('Display author posts', 'wp-meta-seo'),
-            array($this, 'sitemapAuthor'),
-            'metaseo_settings_sitemap',
-            'metaseo_sitemap',
-            array(
-                'label_for' => esc_html__('You can include a list of posts by author in your sitemaps', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'wpms_html_sitemap_column',
-            esc_html__('HTML Sitemap display', 'wp-meta-seo'),
-            array($this, 'sitemapColumn'),
-            'metaseo_settings_sitemap',
-            'metaseo_sitemap',
-            array(
-                'label_for' => esc_html__('Number of columns of the HTML sitemap.
-                 You can also setup where your content will be displayed using the tabs above', 'wp-meta-seo')
-            )
-        );
-        if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
-            add_settings_field(
-                'wpms_html_sitemap_theme',
-                esc_html__('HTML Sitemap theme', 'wp-meta-seo'),
-                array($this, 'sitemapTheme'),
-                'metaseo_settings_sitemap',
-                'metaseo_sitemap'
-            );
-        }
-        add_settings_field(
-            'wpms_html_sitemap_position',
-            esc_html__('HTML Sitemap Position', 'wp-meta-seo'),
-            array($this, 'sitemapPosition'),
-            'metaseo_settings_sitemap',
-            'metaseo_sitemap'
-        );
-        add_settings_field(
-            'wpms_sitemap_add',
-            esc_html__('Sitemap and robot.txt', 'wp-meta-seo'),
-            array($this, 'settingRobotFile'),
-            'metaseo_settings_sitemap',
-            'metaseo_sitemap',
-            array(
-                'label_for' => esc_html__('You can include a link to your xml sitemap in the robot.txt.
-                 It helps some search engines to find it', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'wpms_sitemap_root',
-            esc_html__('Sitemap root', 'wp-meta-seo'),
-            array($this, 'sitemapRoot'),
-            'metaseo_settings_sitemap',
-            'metaseo_sitemap',
-            array(
-                'label_for' => esc_html__('Add a copy of the lastest version of your .xml sitemap at the root
-                 of your WordPress install named sitemap.xml. Some SEO tools and search engines bots
-                  are searching for it.', 'wp-meta-seo')
-            )
-        );
-
-        if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
-            if (is_plugin_active('sitepress-multilingual-cms/sitepress.php')) {
-                $label = esc_html__('WPML language', 'wp-meta-seo');
-                add_settings_field(
-                    'wpms_sitemap_include_lang',
-                    $label,
-                    array($this, 'sitemapIncludeLanguages'),
-                    'metaseo_settings_sitemap',
-                    'metaseo_sitemap',
-                    array(
-                        'label_for' => esc_html__('Select a language to include in your sitemap,
-                         it will add the relative menu, post, page… content automatically', 'wp-meta-seo')
-                    )
-                );
-            } elseif (is_plugin_active('polylang/polylang.php')) {
-                $label = esc_html__('Polylang language', 'wp-meta-seo');
-                add_settings_field(
-                    'wpms_sitemap_include_lang',
-                    $label,
-                    array($this, 'sitemapIncludeLanguages'),
-                    'metaseo_settings_sitemap',
-                    'metaseo_sitemap',
-                    array(
-                        'label_for' => esc_html__('Select a language to include in your sitemap,
-                         it will add the relative menu, post, page… content automatically', 'wp-meta-seo')
-                    )
-                );
-            }
-        }
-
-        if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
-            add_settings_field(
-                'wpms_sitemap_link_check',
-                esc_html__('Sitemap link check', 'wp-meta-seo'),
-                array($this, 'checkLink'),
-                'metaseo_settings_sitemap',
-                'metaseo_sitemap',
-                array(
-                    'label_for' => esc_html__('A page is automatically generated to display your
-                     HTML sitemap. You can also use any of the existing pages.', 'wp-meta-seo')
-                )
-            );
-        }
-    }
-
-    /**
-     * Show sitemap setting header
-     *
-     * @return void
-     */
-    public function showSettingSitemap()
-    {
     }
 
     /**
@@ -436,37 +353,8 @@ class MetaSeoSitemap
             $link  = get_option('siteurl') . '/' . $this->wpms_sitemap_name;
         }
         echo '<input readonly id="wpms_sitemap_link" name="_metaseo_settings_sitemap[wpms_sitemap_link]"
-         type="text" value="' . esc_attr($value) . '" size="50"/>';
-        echo '<a class="button" href="' . esc_url($link) . '" target="_blank">' . esc_html__('Open', 'wp-meta-seo') . '</a>';
-    }
-
-    /**
-     * Display field add sitemap robots
-     *
-     * @return void
-     */
-    public function settingRobotFile()
-    {
-        if (is_multisite()) { ?>
-            <div class="pure-checkbox">
-                <input id="wpms_sitemap_add" disabled="disabled" type="checkbox"
-                       name="_metaseo_settings_sitemap[wpms_sitemap_add]"
-                       value="1" <?php checked(1, $this->settings_sitemap['wpms_sitemap_add']); ?>>
-                <label for="wpms_sitemap_add"><?php esc_html_e('add sitemap file path in robots.txt', 'wp-meta-seo'); ?></label>
-            </div>
-            <p style="color:red">
-                <?php esc_html_e('Since you are using multisite,
-             the plugin does not allow to add a sitemap to robots.txt', 'wp-meta-seo'); ?>
-            </p>
-        <?php } else { ?>
-            <!-- for robots.txt we need to use site_url instead home_url ! -->
-            <div class="pure-checkbox">
-                <input id="wpms_sitemap_add" type="checkbox" name="_metaseo_settings_sitemap[wpms_sitemap_add]"
-                       value="1" <?php checked(1, $this->settings_sitemap['wpms_sitemap_add']); ?>>
-                <label for="wpms_sitemap_add"><?php esc_html_e('add sitemap link in the', 'wp-meta-seo'); ?> <a
-                            href="<?php echo esc_url(site_url('/')); ?>robots.txt" target="_new">robots.txt</a></label>
-            </div>
-        <?php }
+         type="text" value="' . esc_attr($value) . '" size="50" class="wpms-large-input wpms-no-margin wpms_width_90" />';
+        echo '<a class="wpms-open-xml-sitemap ju-button orange-button waves-effect waves-light wpms-small-btn" href="' . esc_url($link) . '" target="_blank">' . esc_html__('Open', 'wp-meta-seo') . '</a>';
     }
 
     /**
@@ -483,22 +371,6 @@ class MetaSeoSitemap
     }
 
     /**
-     * Display field sitemap root
-     *
-     * @return void
-     */
-    public function sitemapRoot()
-    {
-        ?>
-        <div class="pure-checkbox">
-            <input id="wpms_sitemap_root" type="checkbox" name="_metaseo_settings_sitemap[wpms_sitemap_root]"
-                   value="1" <?php checked(1, $this->settings_sitemap['wpms_sitemap_root']); ?>>
-            <label for="wpms_sitemap_root"><?php esc_html_e('Add a sitemap.xml copy @ the site root', 'wp-meta-seo'); ?></label>
-        </div>
-        <?php
-    }
-
-    /**
      * Display field sitemap link check
      *
      * @return void
@@ -506,9 +378,9 @@ class MetaSeoSitemap
     public function checkLink()
     {
         ?>
-        <input type="button" class="button wpms_run_linkcheck"
-               value="<?php esc_attr_e('Run a link check', 'wp-meta-seo') ?>">
-        <span class="spinner spinner_run_linkchecker"></span>
+        <a href="#links-check-list" title="<?php esc_attr_e('Sitemap links', 'wp-meta-seo') ?>"
+           class="ju-button orange-button wpms-small-btn wpms_run_linkcheck m-t-5"
+        ><?php esc_html_e('Run a link check', 'wp-meta-seo') ?></a>
         <?php
     }
 
@@ -520,11 +392,8 @@ class MetaSeoSitemap
     public function sitemapAuthor()
     {
         ?>
-        <div class="pure-checkbox">
-            <input id="wpms_sitemap_author" type="checkbox" name="_metaseo_settings_sitemap[wpms_sitemap_author]"
-                   value="1" <?php checked(1, $this->settings_sitemap['wpms_sitemap_author']); ?>>
-            <label for="wpms_sitemap_author"><?php esc_html_e('Display author post archive', 'wp-meta-seo'); ?></label>
-        </div>
+        <input id="wpms_sitemap_author" type="checkbox" name="_metaseo_settings_sitemap[wpms_sitemap_author]"
+               value="1" <?php checked(1, $this->settings_sitemap['wpms_sitemap_author']); ?>>
         <?php
     }
 
@@ -541,7 +410,7 @@ class MetaSeoSitemap
         );
         foreach ($wpms_taxonomies as $key => $value) {
             ?>
-            <div class="pure-checkbox">
+            <div class="pure-checkbox wpms_left wpms_width_50">
                 <?php if (in_array($key, $this->settings_sitemap['wpms_sitemap_taxonomies'])) : ?>
                     <input title class="wpms_sitemap_taxonomies"
                            id="<?php echo esc_attr('wpms_sitemap_taxonomies_' . $key); ?>"
@@ -555,7 +424,8 @@ class MetaSeoSitemap
                            name="_metaseo_settings_sitemap[wpms_sitemap_taxonomies][]"
                            value="<?php echo esc_attr($key) ?>">
                 <?php endif; ?>
-                <label for="<?php echo esc_attr('wpms_sitemap_taxonomies_' . $key); ?>"><?php echo esc_html($value) ?></label>
+                <label class="wpms-text"
+                       for="<?php echo esc_attr('wpms_sitemap_taxonomies_' . $key); ?>"><?php echo esc_html($value) ?></label>
             </div>
             <?php
         }
@@ -583,25 +453,26 @@ class MetaSeoSitemap
             $this->settings_sitemap['wpms_html_sitemap_page'] = $sitemap_page->ID;
         }
         ?>
-        <label>
-            <select id="wpms_html_sitemap_page" name="_metaseo_settings_sitemap[wpms_html_sitemap_page]">
-                <option value="0"><?php esc_html_e('- Choose Your Sitemap Page -', 'wp-meta-seo') ?></option>
-                <?php
-                foreach ($pages as $page) {
-                    if ((int) $this->settings_sitemap['wpms_html_sitemap_page'] === (int) $page->ID) {
-                        echo '<option selected value="' . esc_attr($page->ID) . '">' . esc_html($page->post_title) . '</option>';
-                    } else {
-                        echo '<option value="' . esc_attr($page->ID) . '">' . esc_html($page->post_title) . '</option>';
-                    }
+        <select id="wpms_html_sitemap_page" name="_metaseo_settings_sitemap[wpms_html_sitemap_page]"
+                class="wpms-large-input wpms_width_90">
+            <option value="0"><?php esc_html_e('- Choose Your Sitemap Page -', 'wp-meta-seo') ?></option>
+            <?php
+            foreach ($pages as $page) {
+                if ((int) $this->settings_sitemap['wpms_html_sitemap_page'] === (int) $page->ID) {
+                    echo '<option selected value="' . esc_attr($page->ID) . '">' . esc_html($page->post_title) . '</option>';
+                } else {
+                    echo '<option value="' . esc_attr($page->ID) . '">' . esc_html($page->post_title) . '</option>';
                 }
-                ?>
-            </select>
-        </label>
+            }
+            ?>
+        </select>
         <?php
         if (!empty($this->settings_sitemap['wpms_html_sitemap_page'])) {
-            echo '<a class="button" href="' . esc_url(get_post_permalink($this->settings_sitemap['wpms_html_sitemap_page'])) . '"
+            echo '<a class="ju-button orange-button waves-effect waves-light wpms-open-html-sitemap wpms-no-margin wpms-small-btn" href="' . esc_url(get_post_permalink($this->settings_sitemap['wpms_html_sitemap_page'])) . '"
              target="_blank">' . esc_html__('Open', 'wp-meta-seo') . '</a>';
         }
+        ?>
+        <?php
     }
 
     /**
@@ -613,13 +484,14 @@ class MetaSeoSitemap
     {
         ?>
         <label>
-            <select id="wpms_html_sitemap_column" name="_metaseo_settings_sitemap[wpms_html_sitemap_column]">
+            <select id="wpms_html_sitemap_column" name="_metaseo_settings_sitemap[wpms_html_sitemap_column]"
+                    class="wpms-large-input wpms_width_100">
                 <option <?php selected($this->settings_sitemap['wpms_html_sitemap_column'], 1) ?>
                         value="1"><?php esc_html_e('1 column', 'wp-meta-seo') ?></option>
                 <option <?php selected($this->settings_sitemap['wpms_html_sitemap_column'], 2) ?>
-                        value="2"><?php esc_html_e('2 column', 'wp-meta-seo') ?></option>
+                        value="2"><?php esc_html_e('2 columns', 'wp-meta-seo') ?></option>
                 <option <?php selected($this->settings_sitemap['wpms_html_sitemap_column'], 3) ?>
-                        value="3"><?php esc_html_e('3 column', 'wp-meta-seo') ?></option>
+                        value="3"><?php esc_html_e('3 columns', 'wp-meta-seo') ?></option>
             </select>
         </label>
         <?php
@@ -634,7 +506,8 @@ class MetaSeoSitemap
     {
         ?>
         <label>
-            <select id="wpms_html_sitemap_theme" name="_metaseo_settings_sitemap[wpms_html_sitemap_theme]">
+            <select id="wpms_html_sitemap_theme" name="_metaseo_settings_sitemap[wpms_html_sitemap_theme]"
+                    class="wpms-large-input wpms_width_100">
                 <option <?php selected($this->settings_sitemap['wpms_html_sitemap_theme'], 'default') ?>
                         value="default"><?php esc_html_e('Simple list', 'wp-meta-seo') ?></option>
                 <option <?php selected($this->settings_sitemap['wpms_html_sitemap_theme'], 'accordions') ?>
@@ -654,16 +527,15 @@ class MetaSeoSitemap
     public function sitemapPosition()
     {
         ?>
-        <label>
-            <select id="wpms_html_sitemap_position" name="_metaseo_settings_sitemap[wpms_html_sitemap_position]">
-                <option <?php selected($this->settings_sitemap['wpms_html_sitemap_position'], 'replace') ?>
-                        value="replace"><?php esc_html_e('Replace the Page Content', 'wp-meta-seo') ?></option>
-                <option <?php selected($this->settings_sitemap['wpms_html_sitemap_position'], 'before') ?>
-                        value="before"><?php esc_html_e('Before Page Content', 'wp-meta-seo') ?></option>
-                <option <?php selected($this->settings_sitemap['wpms_html_sitemap_position'], 'after') ?>
-                        value="after"><?php esc_html_e('After Page Content', 'wp-meta-seo') ?></option>
-            </select>
-        </label>
+        <select id="wpms_html_sitemap_position" name="_metaseo_settings_sitemap[wpms_html_sitemap_position]"
+                class="wpms-large-input wpms_width_100">
+            <option <?php selected($this->settings_sitemap['wpms_html_sitemap_position'], 'replace') ?>
+                    value="replace"><?php esc_html_e('Replace the Page Content', 'wp-meta-seo') ?></option>
+            <option <?php selected($this->settings_sitemap['wpms_html_sitemap_position'], 'before') ?>
+                    value="before"><?php esc_html_e('Before Page Content', 'wp-meta-seo') ?></option>
+            <option <?php selected($this->settings_sitemap['wpms_html_sitemap_position'], 'after') ?>
+                    value="after"><?php esc_html_e('After Page Content', 'wp-meta-seo') ?></option>
+        </select>
         <?php
     }
 
@@ -1109,6 +981,15 @@ class MetaSeoSitemap
             chmod(ABSPATH, 0755);
         }
 
+        /**
+         * Filter run before save sitemap to xml file
+         *
+         * @param object The current xml object
+         *
+         * @return object
+         */
+        $xml = apply_filters('wpms_save_sitemap_xml', $xml);
+
         if (is_multisite()) {
             $home_url = preg_replace(
                 '/[^a-zA-ZА-Яа-я0-9\s]/',
@@ -1264,17 +1145,16 @@ class MetaSeoSitemap
             }
         }
 
-        $cats = get_categories();
+        $cats = get_categories(array('taxonomy' => 'category', 'hide_empty' => true));
         foreach ($cats as $cat) {
             if (in_array($cat->cat_ID, $this->settings_sitemap['wpms_category_link'])) {
                 $cat_link = '<a href="' . esc_url(get_term_link($cat)) . '">' . esc_html($cat->cat_name) . '</a>';
             } else {
                 $cat_link = $cat->cat_name;
             }
+            $html .= '<li class="wpms_li_cate"><div class="cat_name">' . $cat_link . '</div></li>';
 
-            $html .= '<li class="wpms_li_cate"><div class="cat_name">' . $cat_link . '</div>';
             if (!empty($this->settings_sitemap['wpms_sitemap_posts'])) {
-                $html .= '<ul>';
                 query_posts(array('post__in' => $ids, 'posts_per_page' => - 1, 'cat' => $cat->cat_ID));
                 while (have_posts()) {
                     the_post();
@@ -1292,9 +1172,7 @@ class MetaSeoSitemap
                     }
                 }
                 wp_reset_query();
-                $html .= '</ul>';
             }
-            $html .= '</li>';
         }
         $html .= '</ul></div>';
         $html .= '<div class="holder holder_sitemaps_posts"></div>';
@@ -1462,10 +1340,14 @@ class MetaSeoSitemap
                             }
 
                             global $wpdb;
-                            $taxonomy_objects = get_object_taxonomies($post_type, 'names');
-                            $ids              = array(0);
+                            if ($post_type === 'product') {
+                                $taxonomy_objects = array('product_cat');
+                            } else {
+                                $taxonomy_objects = get_object_taxonomies($post_type, 'names');
+                            }
+                            $ids = array(0);
                             if (!empty($this->settings_sitemap['wpms_sitemap_' . $post_type])) {
-                                $html .= '<div id="sitemap_posts" class="wpms_sitemap_posts"><h4>';
+                                $html .= '<div id="sitemap_' . $post_type . '" class="wpms_sitemap_' . $post_type . '"><h4>';
                                 $html .= esc_html($postTitle);
                                 $html .= '</h4><ul>';
                                 foreach ((array) $this->settings_sitemap['wpms_sitemap_' . $post_type] as $k => $v) {
@@ -1478,7 +1360,7 @@ class MetaSeoSitemap
                             $list_links = array();
                             if (!empty($taxonomy_objects)) {
                                 foreach ($taxonomy_objects as $taxo) {
-                                    $categorys = get_categories(array('hide_empty' => false, 'taxonomy' => $taxo));
+                                    $categorys = get_categories(array('hide_empty' => true, 'taxonomy' => $taxo));
                                     foreach ($categorys as $cat) {
                                         $results = $wpdb->get_results($wpdb->prepare('SELECT p.ID as ID,p.post_title as post_title   
 FROM ' . $wpdb->posts . ' AS p
@@ -1493,27 +1375,28 @@ ORDER BY p.post_date DESC', array('publish', $post_type, $taxo, $cat->slug)));
                                             if (in_array($cat->cat_ID, $this->settings_sitemap['wpms_category_link'])) {
                                                 $cat_link = '<a href="' . esc_url(get_term_link($cat)) . '">
                                             ' . esc_html($cat->cat_name) . '</a>';
+                                                $html     .= '<li class="wpms_li_cate wpms_li_cate">';
+                                                $html     .= '<div class="cat_name">' . $cat_link . '</div>';
+                                                $html     .= '</li>';
                                             } else {
                                                 $cat_link = esc_html($cat->cat_name);
+                                                if (!empty($this->settings_sitemap['wpms_sitemap_' . $post_type])) {
+                                                    $html .= '<li class="wpms_li_cate wpms_li_cate">';
+                                                    $html .= '<div class="cat_name">' . $cat_link . '</div>';
+                                                    $html .= '</li>';
+                                                }
                                             }
-                                            $html .= '<li class="wpms_li_cate wpms_li_cate">';
-                                            $html .= '<div class="cat_name">' . $cat_link . '</div>';
 
                                             if (!empty($this->settings_sitemap['wpms_sitemap_' . $post_type])) {
-                                                $html .= '<ul>';
                                                 foreach ($results as $p) {
-                                                    $i = $cat->cat_ID . '-' . $p->ID;
-                                                    if (isset($this->settings_sitemap['wpms_sitemap_' . $post_type][$i])) {
-                                                        $link = get_permalink($p->ID);
-                                                        if (!in_array($link, $list_links)) {
-                                                            $list_links[] = $link;
-                                                            $html         .= '<li><a href="' . esc_url($link) . '">' . esc_html($p->post_title) . '</a></li>';
-                                                        }
+                                                    $i    = $cat->cat_ID . '-' . $p->ID;
+                                                    $link = get_permalink($p->ID);
+                                                    if (!in_array($link, $list_links)) {
+                                                        $list_links[] = $link;
+                                                        $html         .= '<li><a href="' . esc_url($link) . '">' . esc_html($p->post_title) . '</a></li>';
                                                     }
                                                 }
-                                                $html .= '</ul>';
                                             }
-                                            $html .= '</li>';
                                         }
                                     }
                                 }
@@ -1540,7 +1423,7 @@ ORDER BY p.post_date DESC', array('publish', $post_type, $taxo, $cat->slug)));
                             if (!empty($this->settings_sitemap['wpms_sitemap_' . $post_type])) {
                                 $html .= '</ul></div>';
                             }
-
+                            $html .= '<div class="holder holder_sitemaps_' . $post_type . '"></div>';
                             //======================================================================================
                         }
                     }
@@ -1550,7 +1433,12 @@ ORDER BY p.post_date DESC', array('publish', $post_type, $taxo, $cat->slug)));
 
             $ids_menu   = array(0);
             $check_menu = array();
-            $terms      = get_terms(array('taxonomy' => 'nav_menu', 'hide_empty' => true));
+            $terms      = get_terms(array(
+                'taxonomy'   => 'nav_menu',
+                'hide_empty' => true,
+                'orderby'    => 'term_id',
+                'order'      => 'ASC'
+            ));
             foreach ($terms as $term) {
                 $list_submenu_id = get_objects_in_term($term->term_id, 'nav_menu');
                 $ids_menu        = array_merge($ids_menu, $list_submenu_id);
@@ -1618,7 +1506,7 @@ ORDER BY p.post_date DESC', array('publish', $post_type, $taxo, $cat->slug)));
         if ($theme === 'default') {
             wp_enqueue_style(
                 'html-sitemap',
-                plugins_url('css/html_sitemap.css', dirname(__FILE__)),
+                plugins_url('assets/css/html_sitemap.css', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
             );
@@ -1627,14 +1515,14 @@ ORDER BY p.post_date DESC', array('publish', $post_type, $taxo, $cat->slug)));
         } elseif ($theme === 'tab') {
             wp_enqueue_script(
                 'wpms_materialize_js',
-                plugins_url('js/materialize/materialize.min.js', dirname(__FILE__)),
+                plugins_url('assets/js/materialize/materialize.min.js', dirname(__FILE__)),
                 array('jquery'),
                 WPMSEO_VERSION,
                 true
             );
             wp_enqueue_style(
                 'wpms_materialize_style',
-                plugins_url('css/materialize/materialize_frontend_tab_theme.css', dirname(__FILE__)),
+                plugins_url('assets/css/materialize/materialize_frontend_tab_theme.css', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
             );
@@ -1679,14 +1567,14 @@ ORDER BY p.post_date DESC', array('publish', $post_type, $taxo, $cat->slug)));
         } elseif ($theme === 'accordions') {
             wp_enqueue_script(
                 'wpms_materialize_js',
-                plugins_url('js/materialize/materialize.min.js', dirname(__FILE__)),
+                plugins_url('assets/js/materialize/materialize.min.js', dirname(__FILE__)),
                 array('jquery'),
                 WPMSEO_VERSION,
                 true
             );
             wp_enqueue_style(
                 'wpms_materialize_style',
-                plugins_url('css/materialize/materialize_frontend_accordions_theme.css', dirname(__FILE__)),
+                plugins_url('assets/css/materialize/materialize_frontend_accordions_theme.css', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
             );
@@ -1919,10 +1807,10 @@ ORDER BY p.post_date DESC', array('publish', $post_type, $taxo, $cat->slug)));
     {
         $posts     = array();
         $taxo      = 'category';
-        $categorys = get_categories(array('hide_empty' => false, 'taxonomy' => $taxo));
+        $categorys = get_categories(array('hide_empty' => true, 'taxonomy' => $taxo));
         global $wpdb;
         foreach ($categorys as $cat) {
-            $results = $wpdb->get_results($wpdb->prepare('SELECT p.ID as ID,p.post_title as post_title   
+            $count = $wpdb->get_var($wpdb->prepare('SELECT COUNT(p.ID)    
 FROM ' . $wpdb->posts . ' AS p
 INNER JOIN ' . $wpdb->term_relationships . ' AS tr ON (p.ID = tr.object_id)
 INNER JOIN ' . $wpdb->term_taxonomy . ' AS tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id)
@@ -1931,15 +1819,27 @@ WHERE   p.post_status = %s
     AND p.post_type = %s
     AND tt.taxonomy = %s AND t.slug=%s  
 ORDER BY p.post_date DESC', array('publish', 'post', $taxo, $cat->slug)));
+
+            $results       = $wpdb->get_results($wpdb->prepare('SELECT p.ID as ID,p.post_title as post_title   
+FROM ' . $wpdb->posts . ' AS p
+INNER JOIN ' . $wpdb->term_relationships . ' AS tr ON (p.ID = tr.object_id)
+INNER JOIN ' . $wpdb->term_taxonomy . ' AS tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id)
+INNER JOIN ' . $wpdb->terms . ' AS t ON (t.term_id = tt.term_id)
+WHERE   p.post_status = %s 
+    AND p.post_type = %s
+    AND tt.taxonomy = %s AND t.slug=%s  
+ORDER BY p.post_date DESC LIMIT 10', array('publish', 'post', $taxo, $cat->slug)));
+            $obj           = new StdClass();
+            $obj->cat_name = $cat->cat_name;
+            $obj->cat_ID   = $cat->cat_ID;
+            $obj->taxo     = $taxo;
+            $obj->slug     = $cat->slug;
+            $obj->results  = array();
             if (!empty($results)) {
-                $obj           = new StdClass();
-                $obj->cat_name = $cat->cat_name;
-                $obj->cat_ID   = $cat->cat_ID;
-                $obj->taxo     = $taxo;
-                $obj->slug     = $cat->slug;
-                $obj->results  = $results;
-                $posts[]       = $obj;
+                $obj->results = $results;
             }
+            $obj->count_posts = $count;
+            $posts[]          = $obj;
         }
 
         return $posts;
@@ -1955,11 +1855,16 @@ ORDER BY p.post_date DESC', array('publish', 'post', $taxo, $cat->slug)));
     public function getPostsCustom($post_type)
     {
         global $wpdb;
-        $posts            = array();
-        $taxonomy_objects = get_object_taxonomies($post_type, 'names');
+        $posts = array();
+        if ($post_type === 'product') {
+            $taxonomy_objects = array('product_cat');
+        } else {
+            $taxonomy_objects = get_object_taxonomies($post_type, 'names');
+        }
+
         if (!empty($taxonomy_objects)) {
             foreach ($taxonomy_objects as $taxo) {
-                $categorys = get_categories(array('hide_empty' => false, 'taxonomy' => $taxo));
+                $categorys = get_categories(array('hide_empty' => true, 'taxonomy' => $taxo));
                 foreach ($categorys as $cat) {
                     $results = $wpdb->get_results($wpdb->prepare('SELECT p.ID as ID,p.post_title as post_title   
 FROM ' . $wpdb->posts . ' AS p
@@ -2092,7 +1997,7 @@ ORDER BY p.post_date DESC', array($post_type)));
     public function countParent($menuID)
     {
         $parent = get_post_meta($menuID, '_menu_item_menu_item_parent', true);
-        if (!empty($this->settings_sitemap['wpms_sitemap_menus']->{$parent}) && !empty($parent)) {
+        if ((!empty($this->settings_sitemap['wpms_sitemap_menus'][$parent]) || !empty($this->settings_sitemap['wpms_sitemap_menus']->{$parent})) && !empty($parent)) {
             $this->level[$menuID] += 1;
             $this->loopParent($parent, $menuID);
         } else {
@@ -2144,27 +2049,61 @@ ORDER BY p.post_date DESC', array($post_type)));
 
         $query    = new WP_Query($args);
         $submenus = $query->get_posts();
+        ?>
+        <div class="wpms_row_full">
+            <div class="ju-settings-option wpms_row" style="margin-top: 20px">
+                <div class="wpms_row_full">
+                    <label class="ju-setting-label text wpms-uppercase"
+                           data-alt="<?php echo esc_attr('Include all elements in the sitemap', 'wp-meta-seo') ?>">
+                        <?php echo esc_html($term->name) ?>
+                    </label>
+                    <div class="ju-switch-button">
+                        <label class="switch">
+                            <?php if (isset($this->settings_sitemap['check_all_menu_items']) && in_array($term->term_id, $this->settings_sitemap['check_all_menu_items'])) : ?>
+                                <input class="xm_cb_all check_all_menu_items" checked
+                                       data-category="<?php echo esc_attr('nav_menu' . $term->slug) ?>"
+                                       value="<?php echo esc_attr($term->term_id) ?>"
+                                       id="<?php echo esc_attr('xm_cb_all_' . $term->slug) ?>" type="checkbox" ?>>
+                            <?php else : ?>
+                                <input class="xm_cb_all check_all_menu_items"
+                                       data-category="<?php echo esc_attr('nav_menu' . $term->slug) ?>"
+                                       value="<?php echo esc_attr($term->term_id) ?>"
+                                       id="<?php echo esc_attr('xm_cb_all_' . $term->slug) ?>" type="checkbox" ?>>
+                            <?php endif; ?>
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
 
-        $this->html .= '<h3>';
-        $this->html .= '<div class="pure-checkbox">';
-        $this->html .= '<input class="xm_cb_all" id="' . esc_attr('xm_cb_all_' . $term->slug) . '" type="checkbox">';
-        $this->html .= '<label for="' . esc_attr('xm_cb_all_' . $term->slug) . '">' . esc_html($term->name) . '</label>';
-        $this->html .= '</div>';
-        $this->html .= '</h3>';
-        $this->html .= '<div class="wpms_xmp_custom_column" style="font-weight: bold;">';
-        $this->html .= '<label>' . esc_html__('Display in column', 'wp-meta-seo') . '</label>';
-        $this->html .= '<select class="wpms_display_column wpms_display_column_menus"
-         data-menu_id="' . esc_attr($term->term_id) . '">';
-        for ($i = 1; $i <= $this->settings_sitemap['wpms_html_sitemap_column']; $i ++) {
-            if (isset($this->settings_sitemap['wpms_display_column_menus'][$term->term_id])
-                && (int) $this->settings_sitemap['wpms_display_column_menus'][$term->term_id] === (int) $i) {
-                $this->html .= '<option selected value="' . esc_attr($i) . '">' . esc_html($this->columns[$i]) . '</option>';
-            } else {
-                $this->html .= '<option value="' . esc_attr($i) . '">' . esc_html($this->columns[$i]) . '</option>';
-            }
-        }
-        $this->html .= '</select>';
-        $this->html .= '</div>';
+            <div class="ju-settings-option wpms_xmp_custom_column wpms_row wpms_right m-r-0" style="margin-top: 20px">
+                <div class="wpms_row_full">
+                    <label class="ju-setting-label wpms_left"
+                           data-alt="<?php echo esc_attr('Column selection if you’re using the HTML sitemap', 'wp-meta-seo') ?>">
+                        <?php esc_html_e('HTML Sitemap column', 'wp-meta-seo') ?>
+                    </label>
+                    <div class="ju-switch-button">
+                        <label>
+                            <select class="wpms_display_column wpms_display_column_menus wpms-large-input m-r-10"
+                                    data-menu_id="<?php echo esc_attr($term->term_id) ?>">
+                                <?php
+                                for ($i = 1; $i <= $this->settings_sitemap['wpms_html_sitemap_column']; $i ++) {
+                                    if (isset($this->settings_sitemap['wpms_display_column_menus'][$term->term_id])
+                                        && (int) $this->settings_sitemap['wpms_display_column_menus'][$term->term_id] === (int) $i) {
+                                        echo '<option selected value="' . esc_attr($i) . '">' . esc_html($this->columns[$i]) . '</option>';
+                                    } else {
+                                        echo '<option value="' . esc_attr($i) . '">' . esc_html($this->columns[$i]) . '</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <?php
         foreach ($submenus as $menu) {
             if (empty($this->settings_sitemap['wpms_sitemap_menus'][$menu->ID]['frequency'])) {
                 $this->settings_sitemap['wpms_sitemap_menus'][$menu->ID]['frequency'] = 'monthly';
@@ -2190,8 +2129,8 @@ ORDER BY p.post_date DESC', array($post_type)));
                 $post_submenu = get_post($menu->ID);
                 $title        = $post_submenu->post_title;
                 if (empty($title)) {
-                    $term  = get_term($id_menu, $type_menu);
-                    $title = $term->name;
+                    $term_menu = get_term($id_menu, $type_menu);
+                    $title     = $term_menu->name;
                 }
             } else {
                 $post  = get_post($menu->ID);
@@ -2201,49 +2140,50 @@ ORDER BY p.post_date DESC', array($post_type)));
                     $title        = $post_submenu->post_title;
                 }
             }
-            $level      = 1;
-            $this->html .= '<div class="wpms_row wpms_row_record">';
+            $level = 1;
+            echo '<div class="wpms_row wpms_row_record">';
             $check_type = get_post_meta($menu->ID, '_menu_item_object', true);
             $permalink  = $this->getPermalinkSitemap($check_type, $id_menu);
-            $this->html .= '<div style="float:left;line-height:30px">';
+            echo '<div style="float:left;line-height:30px">';
             if (empty($this->settings_sitemap['wpms_check_firstsave'])) {
-                $this->html .= '<input class="wpms_sitemap_input_link checked"
+                echo '<input class="wpms_sitemap_input_link checked"
                  type="hidden" data-type="menu" value="' . esc_attr($permalink) . '">';
-                $this->html .= '<div class="pure-checkbox">';
-                $this->html .= '<input class="' . esc_attr('cb_sitemaps_menu wpms_xmap_menu nav_menu' . $term->slug) . '"
+                echo '<div class="pure-checkbox">';
+                echo '<input class="' . esc_attr('cb_sitemaps_menu wpms_xmap_menu nav_menu' . $term->slug) . '"
                  id="' . esc_attr('wpms_sitemap_menus_' . $menu->ID) . '" type="checkbox"
                   name="' . esc_attr('_metaseo_settings_sitemap[wpms_sitemap_menus][' . $menu->ID . '][menu_id]') . '"
                    value="' . esc_attr($menu->ID) . '" checked>';
-                $this->html .= '<label for="' . esc_attr('wpms_sitemap_menus_' . $menu->ID) . '">' . esc_html($title) . '</label>';
-                $this->html .= '</div>';
+                echo '<label for="' . esc_attr('wpms_sitemap_menus_' . $menu->ID) . '" class="wpms-text">' . esc_html($title) . '</label>';
+                echo '</div>';
             } else {
                 if (isset($this->settings_sitemap['wpms_sitemap_menus'][$menu->ID]['menu_id'])
                     && (int) $this->settings_sitemap['wpms_sitemap_menus'][$menu->ID]['menu_id'] === (int) $menu->ID) {
-                    $this->html .= '<input class="wpms_sitemap_input_link checked"
+                    echo '<input class="wpms_sitemap_input_link checked"
                      type="hidden" data-type="menu" value="' . esc_url($permalink) . '">';
-                    $this->html .= '<div class="pure-checkbox">';
-                    $this->html .= '<input class="' . esc_attr('cb_sitemaps_menu wpms_xmap_menu nav_menu' . $term->slug) . '"
+                    echo '<div class="pure-checkbox">';
+                    echo '<input class="' . esc_attr('cb_sitemaps_menu wpms_xmap_menu nav_menu' . $term->slug) . '"
                      id="' . esc_attr('wpms_sitemap_menus_' . $menu->ID) . '" type="checkbox"
                       name="' . esc_attr('_metaseo_settings_sitemap[wpms_sitemap_menus][' . $menu->ID . '][menu_id]') . '"
                        value="' . esc_attr($menu->ID) . '" checked>';
-                    $this->html .= '<label for="' . esc_attr('wpms_sitemap_menus_' . $menu->ID) . '">' . esc_html($title) . '</label>';
-                    $this->html .= '</div>';
+                    echo '<label for="' . esc_attr('wpms_sitemap_menus_' . $menu->ID) . '" class="wpms-text">' . esc_html($title) . '</label>';
+                    echo '</div>';
                 } else {
-                    $this->html .= '<input class="wpms_sitemap_input_link" type="hidden" data-type="menu"
+                    echo '<input class="wpms_sitemap_input_link" type="hidden" data-type="menu"
                      value="' . esc_url($permalink) . '">';
-                    $this->html .= '<div class="pure-checkbox">';
-                    $this->html .= '<input class="' . esc_attr('cb_sitemaps_menu wpms_xmap_menu nav_menu' . $term->slug) . '"
+                    echo '<div class="pure-checkbox">';
+                    echo '<input class="' . esc_attr('cb_sitemaps_menu wpms_xmap_menu nav_menu' . $term->slug) . '"
                      id="' . esc_attr('wpms_sitemap_menus_' . $menu->ID) . '" type="checkbox"
                       name="' . esc_attr('_metaseo_settings_sitemap[wpms_sitemap_menus][' . $menu->ID . '][menu_id]') . '"
                        value="' . esc_attr($menu->ID) . '">';
-                    $this->html .= '<label for="' . esc_attr('wpms_sitemap_menus_' . $menu->ID) . '">' . esc_html($title) . '</label>';
-                    $this->html .= '</div>';
+                    echo '<label for="' . esc_attr('wpms_sitemap_menus_' . $menu->ID) . '" class="wpms-text">' . esc_html($title) . '</label>';
+                    echo '</div>';
                 }
             }
 
-            $this->html .= '</div>';
-            $this->html .= '<div style="margin-left:200px">' . $slpr . $slfr . '</div>';
-            $this->html .= '</div>';
+            echo '</div>';
+            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method MetaSeoSitemap::viewFrequency, MetaSeoSitemap::viewPriority
+            echo '<div class="wpms_right">' . $slpr . $slfr . '</div>';
+            echo '</div>';
             $this->loop($menu->ID, $level + 1, $this->settings_sitemap, $term);
         }
 
@@ -2272,6 +2212,7 @@ ORDER BY p.post_date DESC', array($post_type)));
         );
         $query    = new WP_Query($args);
         $submenus = $query->get_posts();
+
         if (!empty($submenus)) {
             foreach ($submenus as $submenu) {
                 $type       = get_post_meta($submenu->ID, '_menu_item_type', true);
@@ -2283,12 +2224,13 @@ ORDER BY p.post_date DESC', array($post_type)));
                 if (empty($settings_sitemap['wpms_sitemap_menus'][$submenu->ID]['priority'])) {
                     $settings_sitemap['wpms_sitemap_menus'][$submenu->ID]['priority'] = '1.0';
                 }
+
                 if ($type === 'taxonomy') {
                     $post_submenu = get_post($submenu->ID);
                     $title        = $post_submenu->post_title;
                     if (empty($title)) {
-                        $term  = get_term($post_subid, $type_menu);
-                        $title = $term->name;
+                        $term_sub = get_term($post_subid, $type_menu);
+                        $title    = $term_sub->name;
                     }
                 } else {
                     $post_submenu = get_post($submenu->ID);
@@ -2334,15 +2276,17 @@ ORDER BY p.post_date DESC', array($post_type)));
                     }
                 }
 
-                $this->html .= '<div class="wpms_row">';
-                $this->html .= '<div style="float:left;line-height:30px">';
-                $this->html .= '<div class="pure-checkbox">';
-                $this->html .= $checkbox;
-                $this->html .= '<label for="' . esc_attr('wpms_sitemap_menus_' . $submenu->ID) . '">' . esc_html($title) . '</label>';
-                $this->html .= '</div>';
-                $this->html .= '</div>';
-                $this->html .= '<div style="margin-left:200px">' . $slpr . $slfr . '</div>';
-                $this->html .= '</div>';
+                echo '<div class="wpms_row wpms_row_record">';
+                echo '<div style="float:left;line-height:30px">';
+                echo '<div class="pure-checkbox">';
+                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in this method
+                echo $checkbox;
+                echo '<label for="' . esc_attr('wpms_sitemap_menus_' . $submenu->ID) . '" class="wpms-text">' . esc_html($title) . '</label>';
+                echo '</div>';
+                echo '</div>';
+                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method MetaSeoSitemap::viewFrequency, MetaSeoSitemap::viewPriority
+                echo '<div class="wpms_right">' . $slpr . $slfr . '</div>';
+                echo '</div>';
                 $this->loop($submenu->ID, $level + 1, $settings_sitemap, $term);
             }
         }
@@ -2351,9 +2295,11 @@ ORDER BY p.post_date DESC', array($post_type)));
     /**
      * Ajax generate sitemap to xml file
      *
+     * @param string $type Type
+     *
      * @return void
      */
-    public function regenerateSitemaps()
+    public function regenerateSitemaps($type = 'ajax')
     {
         $wpms_url_robot = get_home_path() . 'robots.txt';
         $wpms_url_home  = site_url('/');
@@ -2393,13 +2339,19 @@ ORDER BY p.post_date DESC', array($post_type)));
                 }
             } else {
                 $error = esc_html__('Cannot edit "robots.txt". Check your permissions', 'wp-meta-seo');
-                wp_send_json(array('status' => false, 'message' => $error));
+                if ($type === 'ajax') {
+                    wp_send_json(array('status' => false, 'message' => $error));
+                }
             }
         }
 
-        // Don't ping if blog is not public.
+        /**
+         * Submit sitemaps, don't ping if blog is not public.
+         */
         do_action('wpms_submit_sitemap');
-        wp_send_json(array('status' => true, 'message' => 'success'));
+        if ($type === 'ajax') {
+            wp_send_json(array('status' => true, 'message' => 'success'));
+        }
     }
 
     /**
@@ -2414,7 +2366,7 @@ ORDER BY p.post_date DESC', array($post_type)));
     public function viewPriority($id, $name, $selected)
     {
         $values = array('1' => '100%', '0.9' => '90%', '0.8' => '80%', '0.7' => '70%', '0.6' => '60%', '0.5' => '50%');
-        $select = '<select id="' . esc_attr($id) . '" name="' . esc_attr($name) . '" class="wpmsleft">';
+        $select = '<select id="' . esc_attr($id) . '" name="' . esc_attr($name) . '" class="wpmsleft wpms-large-input">';
         $select .= '<option value="1">' . esc_html__('Priority', 'wp-meta-seo') . '</option>';
         foreach ($values as $k => $v) {
             if ($k === $selected) {
@@ -2447,7 +2399,7 @@ ORDER BY p.post_date DESC', array($post_type)));
             'yearly'  => 'Yearly',
             'never'   => 'Never'
         );
-        $select = '<select id="' . esc_attr($id) . '" name="' . esc_attr($name) . '" class="wpmsleft">';
+        $select = '<select id="' . esc_attr($id) . '" name="' . esc_attr($name) . '" class="wpmsleft wpms-large-input">';
         $select .= '<option value="monthly">' . esc_html__('Frequency', 'wp-meta-seo') . '</option>';
         foreach ($values as $k => $v) {
             if ($k === $selected) {
@@ -2458,6 +2410,94 @@ ORDER BY p.post_date DESC', array($post_type)));
         }
         $select .= '</select>';
         return $select;
+    }
+
+    /**
+     * Get all posts in a category
+     *
+     * @return void
+     */
+    public function listPostsCategory()
+    {
+        if (empty($_POST['wpms_nonce'])
+            || !wp_verify_nonce($_POST['wpms_nonce'], 'wpms_nonce')) {
+            die();
+        }
+        set_time_limit(0);
+        global $wpdb;
+        $results = $wpdb->get_results($wpdb->prepare('SELECT p.ID as ID,p.post_title as post_title   
+FROM ' . $wpdb->posts . ' AS p
+INNER JOIN ' . $wpdb->term_relationships . ' AS tr ON (p.ID = tr.object_id)
+INNER JOIN ' . $wpdb->term_taxonomy . ' AS tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id)
+INNER JOIN ' . $wpdb->terms . ' AS t ON (t.term_id = tt.term_id)
+WHERE   p.post_status = "publish"
+    AND p.post_type = "post"
+    AND tt.taxonomy = "category" AND t.term_id=%s 
+ORDER BY p.post_date DESC', array($_POST['category_id'])));
+
+        $settings = get_option('_metaseo_settings_sitemap');
+        $html     = '';
+        foreach ($results as $num => $p) {
+            if ((int) $num < 10) {
+                continue;
+            }
+
+            if (empty($settings['wpms_sitemap_posts'][$p->ID]['frequency'])) {
+                $postfrequency = 'monthly';
+            } else {
+                $postfrequency = $settings['wpms_sitemap_posts'][$p->ID]['frequency'];
+            }
+            if (empty($settings['wpms_sitemap_posts'][$p->ID]['priority'])) {
+                $postpriority = '1.0';
+            } else {
+                $postpriority = $settings['wpms_sitemap_posts'][$p->ID]['priority'];
+            }
+            $slpr      = $this->viewPriority(
+                'priority_posts_' . $p->ID,
+                '_metaseo_settings_sitemap[wpms_sitemap_posts][' . $p->ID . '][priority]',
+                $postpriority
+            );
+            $slfr      = $this->viewFrequency(
+                'frequency_posts_' . $p->ID,
+                '_metaseo_settings_sitemap[wpms_sitemap_posts][' . $p->ID . '][frequency]',
+                $postfrequency
+            );
+            $permalink = get_permalink($p->ID);
+            $html      .= '<div class="wpms_row wpms_row_record">';
+            $html      .= '<div style="float:left;line-height:30px;">';
+            if (strlen($p->post_title) > 30) {
+                $title = substr($p->post_title, 0, 30);
+            } else {
+                $title = $p->post_title;
+            }
+            if (isset($settings['wpms_sitemap_posts'][$p->ID]['post_id'])
+                && (int) $settings['wpms_sitemap_posts'][$p->ID]['post_id'] === (int) $p->ID) {
+                $html .= '<input class="wpms_sitemap_input_link checked"
+                         type="hidden" data-type="post" value="' . esc_attr($permalink) . '">';
+                $html .= '<div class="pure-checkbox">';
+                $html .= '<input class="' . esc_attr('cb_sitemaps_posts wpms_xmap_posts category' . $_POST['slug']) . '"
+                         id="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" type="checkbox"
+                          name="_metaseo_settings_sitemap[wpms_sitemap_posts]" value="' . esc_attr($p->ID) . '" checked>';
+                $html .= '<label for="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" class="wpms-text">' . esc_html($title) . '</label>';
+                $html .= '</div>';
+            } else {
+                $html .= '<input class="wpms_sitemap_input_link" type="hidden"
+                         data-type="post" value="' . esc_attr($permalink) . '">';
+                $html .= '<div class="pure-checkbox">';
+                $html .= '<input class="' . esc_attr('cb_sitemaps_posts wpms_xmap_posts category' . $_POST['slug']) . '"
+                         id="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" type="checkbox"
+                          name="_metaseo_settings_sitemap[wpms_sitemap_posts]" value="' . esc_attr($p->ID) . '">';
+                $html .= '<label for="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" class="wpms-text">' . esc_html($title) . '</label>';
+                $html .= '</div>';
+            }
+
+            $html .= '</div>';
+            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method MetaSeoSitemap::viewPriority and MetaSeoSitemap::viewFrequency
+            $html .= '<div class="wpms_right">' . $slpr . $slfr . '</div>';
+            $html .= '</div>';
+        }
+
+        wp_send_json($html);
     }
 
     /**
@@ -2486,6 +2526,7 @@ ORDER BY p.post_date DESC', array($post_type)));
             'wpms_display_column_posts'  => 1,
             'wpms_display_column_pages'  => 1,
             'wpms_category_link'         => array(),
+            'check_all_menu_items'       => array(),
             'wpms_display_order_menus'   => 1,
             'wpms_display_order_posts'   => 2,
             'wpms_display_order_pages'   => 3,
@@ -2573,6 +2614,12 @@ ORDER BY p.post_date DESC', array($post_type)));
 
         update_option('_metaseo_settings_sitemap', $settings_sitemap);
 
+        /**
+         * Save sitemap settings
+         *
+         * @param array Sitemap settings
+         */
+        do_action('wpms_save_sitemap_settings', $settings_sitemap);
         wp_send_json(true);
     }
 }

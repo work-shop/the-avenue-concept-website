@@ -1,3 +1,7 @@
+<?php
+/* Prohibit direct script loading */
+defined('ABSPATH') || die('No direct script access allowed!');
+?>
 <div class="wpms_dashboard_widgets">
     <div class="wpms_dash_widgets wpms_dash_permalink"
          data-alt="<?php esc_attr_e('It’s better using a permalink structure that
@@ -20,9 +24,7 @@
                                 </div>
                             </div>
                             <div class="wpms_dashboard_widgets_right">
-                                <div class="progress-rating">
-                                    <div class="determinate percent_3" style="width: 50%"></div>
-                                </div>
+                                <img src="<?php echo esc_url(WPMETASEO_PLUGIN_URL . 'assets/images/white-loader.gif') ?>" class="white-loader">
                             </div>
                         </div>
                     </div>
@@ -51,9 +53,7 @@
                                 </div>
                             </div>
                             <div class="wpms_dashboard_widgets_right">
-                                <div class="progress-rating">
-                                    <div class="determinate percent_3" style="width: 0"></div>
-                                </div>
+                                <img src="<?php echo esc_url(WPMETASEO_PLUGIN_URL . 'assets/images/white-loader.gif') ?>" class="white-loader">
                             </div>
                         </div>
                     </div>
@@ -84,9 +84,7 @@
                                 </div>
                             </div>
                             <div class="wpms_dashboard_widgets_right">
-                                <div class="progress-rating">
-                                    <div class="determinate percent_3" style="width: 0"></div>
-                                </div>
+                                <img src="<?php echo esc_url(WPMETASEO_PLUGIN_URL . 'assets/images/white-loader.gif') ?>" class="white-loader">
                             </div>
                         </div>
                     </div>
@@ -127,9 +125,7 @@
                                 </div>
                             </div>
                             <div class="wpms_dashboard_widgets_right">
-                                <div class="progress-rating">
-                                    <div class="determinate percent_3" style="width: 0"></div>
-                                </div>
+                                <img src="<?php echo esc_url(WPMETASEO_PLUGIN_URL . 'assets/images/white-loader.gif') ?>" class="white-loader">
                             </div>
                         </div>
                     </div>
@@ -162,9 +158,7 @@
                                 </div>
                             </div>
                             <div class="wpms_dashboard_widgets_right">
-                                <div class="progress-rating">
-                                    <div class="determinate percent_3" style="width: 0"></div>
-                                </div>
+                                <img src="<?php echo esc_url(WPMETASEO_PLUGIN_URL . 'assets/images/white-loader.gif') ?>" class="white-loader">
                             </div>
                         </div>
                     </div>
@@ -194,9 +188,7 @@
                                 </div>
                             </div>
                             <div class="wpms_dashboard_widgets_right">
-                                <div class="progress-rating">
-                                    <div class="determinate percent_3" style="width: 0"></div>
-                                </div>
+                                <img src="<?php echo esc_url(WPMETASEO_PLUGIN_URL . 'assets/images/white-loader.gif') ?>" class="white-loader">
                             </div>
                         </div>
                     </div>
@@ -225,43 +217,7 @@
                                 </div>
                             </div>
                             <div class="wpms_dashboard_widgets_right">
-                                <div class="progress-rating">
-                                    <div class="determinate percent_3" style="width: 0"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="wpms_dash_widgets wpms_dash_404_error"
-         data-alt="<?php esc_attr_e('A website with a bunch of 404 errors doesn’t provide a good user experience,
-          which is significantly important in content marketing and SEO. We recommend to use our internal
-           broken link checker and redirect tool to fix all the 404 error you can periodically.', 'wp-meta-seo') ?>">
-        <div class="row panel-statistics">
-            <div class="tooltipped">
-                <div class="panel panel-updates dashboard-card">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="wpms_dashboard_widgets_left">
-                                <h4 class="panel-title dashboard-title"><?php esc_html_e('404 ERRORS', 'wp-meta-seo') ?></h4>
-                                <div class="panel-bottom">
-                                    <h3 class="dashboard-title percent_1"><?php echo esc_html($error_404['percent']) ?>%</h3>
-                                    <span class="dashboard-title percent_2">
-                                        <?php
-                                        esc_html_e('Redirected 404 errors', 'wp-meta-seo');
-                                        echo ': ';
-                                        echo esc_html($error_404['count_404_redirected'] . '/' . $error_404['count_404']);
-                                        ?>
-                                </div>
-                            </div>
-                            <div class="wpms_dashboard_widgets_right">
-                                <div class="progress-rating">
-                                    <div class="determinate percent_3"
-                                         style="width: <?php echo esc_html($error_404['percent']) ?>%"></div>
-                                </div>
+                                <img src="<?php echo esc_url(WPMETASEO_PLUGIN_URL . 'assets/images/white-loader.gif') ?>" class="white-loader">
                             </div>
                         </div>
                     </div>

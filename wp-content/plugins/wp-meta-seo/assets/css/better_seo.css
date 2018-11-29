@@ -1,0 +1,135 @@
+#wpcontent {
+    padding-left: 0;
+}
+
+.dashboard {
+    width: 100%;
+    padding: 0 10%;
+    font-family: Roboto, sans-serif;
+}
+
+.better-top {
+    text-align: center;
+    width: 60%;
+    margin: 20px auto;
+}
+
+.right-checkbox {
+    float: right;
+    line-height: 50px;
+    padding-right: 30px;
+}
+
+.ju-setting-label {
+    padding-left: 20px;
+}
+
+.addon-feature .title-top {
+    font-size: 40px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 2px;
+    color: #394857;
+    padding: 0;
+    margin: 10px 0;
+}
+
+.addon-feature .description-top {
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 2.14;
+    letter-spacing: 0.5px;
+    color: #4c6482;
+    padding: 0 0 20px 0;
+}
+
+.addon-feature .addon-img {
+    width: 100%;
+    height: 160px;
+    background: #e9f1f8;
+    text-align: center;
+}
+
+.addon-feature .panel-addon {
+    width: 170px;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    text-transform: uppercase;
+    border: 1px solid #F7F0EB;
+    border-radius: 5px;
+    color: #ffa45a;
+    background-color: #F7F0EB;
+    margin: 9px 0;
+    font-weight: 500;
+}
+
+.better-layout {
+    width: 47%;
+}
+
+.addon-feature .ju-settings-option {
+    width: 100%;
+}
+
+.addon-feature .better-layout .ju-settings-option:nth-child(even) {
+    background-color: #f7fafc;
+}
+
+.addon-feature .ju-settings-option .ju-setting-label {
+    font-weight: 700;
+    font-style: normal;
+    font-stretch: normal;
+    text-transform: capitalize;
+    font-size: 17px;
+    color: #404852;
+    width: 49%;
+}
+
+.addon-feature .ju-settings-option .description {
+    font-size: 14px;
+    font-weight: 300;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: 2.14;
+    letter-spacing: 0.5px;
+    color: #9FADBD !important;
+    height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0 20px;
+}
+
+.dashboard h1 {
+    padding: 10px 0 10px 20px
+}
+
+.dashboard .top_h1 {
+    font-size: 40px;
+    font-weight: 600;
+    font-style: normal;
+    font-stretch: normal;
+    line-height: normal;
+    letter-spacing: 1.5px;
+    color: #404852;
+    padding: 0;
+    margin: 50px 0 10px 0;
+}
+
+@media screen and (max-width: 1369px) {
+    .addon-feature .ju-settings-option {
+        width: 48%;
+        margin: 30px 2% 30px 0 !important;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .addon-feature .ju-settings-option {
+        width: 100%;
+        margin: 30px 0 30px 0 !important;
+    }
+}

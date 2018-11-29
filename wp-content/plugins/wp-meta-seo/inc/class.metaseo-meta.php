@@ -53,34 +53,40 @@ class WPMSEOMeta
     public static $meta_fields = array(
         'general'  => array(
             'snippetpreview' => array(
-                'type'  => 'snippetpreview',
-                'title' => '',
-                'help'  => '',
+                'type'     => 'snippetpreview',
+                'title'    => '',
+                'help'     => '',
+                'classrow' => 'wpms_width_100'
             ),
             'title'          => array(
-                'type'          => 'textarea',
+                'type'          => 'text',
                 'title'         => '',
                 'default_value' => '',
                 'description'   => '',
                 'help'          => '',
-                'rows'          => 2
+                'rows'          => 2,
+                'class'         => 'wpms_width_100 has-length wpms-large-input',
+                'classrow'      => 'wpms_width_100'
             ),
             'desc'           => array(
                 'type'          => 'textarea',
                 'title'         => '',
                 'default_value' => '',
-                'class'         => 'desc',
+                'class'         => 'desc wpms_width_100 has-length',
                 'rows'          => 3,
                 'description'   => '',
                 'help'          => '',
+                'classrow'      => 'wpms_width_100'
             ),
             'keywords'       => array(
-                'type'          => 'textarea',
+                'type'          => 'text',
                 'title'         => '',
                 'default_value' => '',
                 'description'   => '',
                 'help'          => '',
-                'rows'          => 2
+                'rows'          => 2,
+                'class'         => 'wpms_width_100 has-length wpms-large-input',
+                'classrow'      => 'wpms_width_100'
             ),
             'metaseo_chart'  => array(
                 'type'          => 'metaseo_chart',
@@ -89,63 +95,76 @@ class WPMSEOMeta
                 'class'         => 'metaseo_chart',
                 'rows'          => 2,
                 'description'   => '',
-                'help'          => '',
+                'help'          => ''
             )
         ),
         'social'   => array(
-            'opengraph-title' => array(
-                'type'          => 'text',
-                'title'         => '',
-                'default_value' => '',
-                'description'   => '',
-                'help'          => '',
+            'facebook' => array(
+                'opengraph-title' => array(
+                    'type'          => 'text',
+                    'title'         => '',
+                    'default_value' => '',
+                    'description'   => '',
+                    'help'          => '',
+                    'class'         => 'wpms_width_100 wpms-large-input',
+                    'classrow'      => 'wpms_width_50'
+                ),
+                'opengraph-desc'  => array(
+                    'type'          => 'text',
+                    'title'         => '',
+                    'default_value' => '',
+                    'class'         => 'wpms_width_100 wpms-large-input',
+                    'rows'          => 3,
+                    'description'   => '',
+                    'help'          => '',
+                    'classrow'      => 'wpms_width_50'
+                ),
+                'opengraph-image' => array(
+                    'type'          => 'upload',
+                    'title'         => '',
+                    'default_value' => '',
+                    'class'         => 'wpms-large-input',
+                    'description'   => '',
+                    'help'          => '',
+                    'classrow'      => 'wpms_width_100'
+                )
             ),
-            'opengraph-desc'  => array(
-                'type'          => 'textarea',
-                'title'         => '',
-                'default_value' => '',
-                'class'         => 'desc',
-                'rows'          => 3,
-                'description'   => '',
-                'help'          => '',
-            ),
-            'opengraph-image' => array(
-                'type'          => 'upload',
-                'title'         => '',
-                'default_value' => '',
-                'class'         => 'desc',
-                'description'   => '',
-                'help'          => '',
-            ),
-            'twitter-title'   => array(
-                'type'          => 'text',
-                'title'         => '',
-                'default_value' => '',
-                'description'   => '',
-                'help'          => '',
-            ),
-            'twitter-desc'    => array(
-                'type'          => 'textarea',
-                'title'         => '',
-                'default_value' => '',
-                'class'         => 'desc',
-                'rows'          => 3,
-                'description'   => '',
-                'help'          => '',
-            ),
-            'twitter-image'   => array(
-                'type'          => 'upload',
-                'title'         => '',
-                'default_value' => '',
-                'class'         => 'desc',
-                'description'   => '',
-                'help'          => '',
-            ),
+            'twitter'  => array(
+                'twitter-title' => array(
+                    'type'          => 'text',
+                    'title'         => '',
+                    'default_value' => '',
+                    'description'   => '',
+                    'help'          => '',
+                    'class'         => 'wpms_width_100 wpms-large-input',
+                    'classrow'      => 'wpms_width_50'
+                ),
+                'twitter-desc'  => array(
+                    'type'          => 'text',
+                    'title'         => '',
+                    'default_value' => '',
+                    'class'         => 'wpms_width_100 wpms-large-input',
+                    'rows'          => 3,
+                    'description'   => '',
+                    'help'          => '',
+                    'classrow'      => 'wpms_width_50'
+                ),
+                'twitter-image' => array(
+                    'type'          => 'upload',
+                    'title'         => '',
+                    'default_value' => '',
+                    'class'         => 'wpms-large-input',
+                    'description'   => '',
+                    'help'          => '',
+                    'classrow'      => 'wpms_width_100'
+                )
+            )
+
         ),
         'non_form' => array(
             'linkdex' => array(
                 'type'          => null,
-                'default_value' => '0',
+                'default_value' => '0'
             ),
         ),
     );

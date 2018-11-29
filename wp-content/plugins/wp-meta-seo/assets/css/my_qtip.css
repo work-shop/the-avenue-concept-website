@@ -1,0 +1,16 @@
+.wpms-widgets-qtip,
+.wpms-widgets-qtip_show_arow,
+.metaseo-qtip {
+    border: 1px solid #707070 !important;
+    color: #fff !important;
+    background-color: #707070 !important;
+    z-index: 10000;
+    border-radius: 2px;
+    font-size: 12px !important;
+    line-height: 18px !important;
+}
+
+.wpms-widgets-qtip .qtip-tip,
+.metaseo-qtip .qtip-tip {
+    opacity: 0 !important;
+}

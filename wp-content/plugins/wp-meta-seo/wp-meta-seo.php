@@ -4,7 +4,7 @@
  * Plugin Name: WP Meta SEO
  * Plugin URI: http://www.joomunited.com/wordpress-products/wp-meta-seo
  * Description: WP Meta SEO is a plugin for WordPress to fill meta for content, images and main SEO info in a single view.
- * Version: 3.7.6
+ * Version: 4.0.0
  * Text Domain: wp-meta-seo
  * Domain Path: /languages
  * Author: JoomUnited
@@ -90,7 +90,7 @@ if (!defined('WPMSEO_VERSION')) {
     /**
      * Plugin version
      */
-    define('WPMSEO_VERSION', '3.7.6');
+    define('WPMSEO_VERSION', '4.0.0');
 }
 
 if (!defined('WPMS_CLIENTID')) {
@@ -160,6 +160,33 @@ require_once(WPMETASEO_PLUGIN_DIR . 'inc/class.wp-metaseo.php');
 add_action('init', array('WpMetaSeo', 'init'));
 require_once(WPMETASEO_PLUGIN_DIR . 'inc/class.metaseo-sitemap.php');
 $GLOBALS['metaseo_sitemap'] = new MetaSeoSitemap;
+/**
+ * Get default settings
+ *
+ * @return array
+ */
+function wpmsGetDefaultSettings()
+{
+    return array(
+        'home_meta_active' => 1,
+        'webpage_testid'   => 0,
+        'metaseo_title_home'     => '',
+        'metaseo_desc_home'      => '',
+        'metaseo_showfacebook'   => '',
+        'metaseo_showfbappid'    => '',
+        'metaseo_showtwitter'    => '',
+        'metaseo_twitter_card'   => 'summary',
+        'metaseo_showkeywords'   => 0,
+        'metaseo_showtmetablock' => 1,
+        'metaseo_showsocial'     => 1,
+        'metaseo_seovalidate'    => 0,
+        'metaseo_linkfield'      => 1,
+        'metaseo_metatitle_tab'  => 1,
+        'metaseo_follow'         => 0,
+        'metaseo_index'          => 0,
+        'metaseo_overridemeta'   => 1
+    );
+}
 if (is_admin()) {
     require_once(WPMETASEO_PLUGIN_DIR . 'inc/class.metaseo-content-list-table.php');
     require_once(WPMETASEO_PLUGIN_DIR . 'inc/class.metaseo-image-list-table.php');
@@ -178,8 +205,8 @@ if (is_admin()) {
         $GLOBALS['metaseo_admin'] = new MetaSeoAdmin;
     }
 
-    add_filter('wp_prepare_attachment_for_js', array('MetaSeoImageListTable', 'addMoreAttachmentSizes'), 10, 2);
-    add_filter('image_size_names_choose', array('MetaSeoImageListTable', 'addMoreAttachmentSizesChoose'), 10, 1);
+    /*add_filter('wp_prepare_attachment_for_js', array('MetaSeoImageListTable', 'addMoreAttachmentSizes'), 10, 2);
+    add_filter('image_size_names_choose', array('MetaSeoImageListTable', 'addMoreAttachmentSizesChoose'), 10, 1);*/
     add_filter('user_contactmethods', 'metaseoContactuser', 10, 1);
 
     /**
@@ -277,7 +304,15 @@ if (is_admin()) {
             $content = $wp_query->post->post_content;
         }
         wp_reset_query();
-        $settings = get_option('_metaseo_settings');
+
+        $default_settings = wpmsGetDefaultSettings();
+        $settings       = get_option('_metaseo_settings');
+        if (is_array($settings)) {
+            $settings = array_merge($default_settings, $settings);
+        } else {
+            $settings = $default_settings;
+        }
+
         // get meta title
         $opengraph      = new MetaSeoOpenGraph();
         $meta_title     = $opengraph->getTitle($is_shop, $id);
@@ -316,11 +351,11 @@ if (is_admin()) {
         $meta_fbimage = $images[0];
         $meta_twimage = $images[1];
 
-        $current_url = $opengraph->getCurentUrl();
-        $type        = $opengraph->getType();
-
+        $current_url      = $opengraph->getCurentUrl();
+        $type             = $opengraph->getType();
+        $home_meta_active = wpmsGetOption('home_meta_active');
         // check homepage is latest post
-        if (is_home()) {
+        if (is_home() && !empty($home_meta_active)) {
             $metas          = $opengraph->getHome($settings);
             $meta_title_esc = $metas['title'];
             $meta_twtitle   = $metas['title'];
@@ -436,7 +471,13 @@ if (is_admin()) {
     function wpmstitle($title)
     {
         global $wp_query;
-        $settings = get_option('_metaseo_settings');
+        $default_settings = wpmsGetDefaultSettings();
+        $settings       = get_option('_metaseo_settings');
+        if (is_array($settings)) {
+            $settings = array_merge($default_settings, $settings);
+        } else {
+            $settings = $default_settings;
+        }
         if (empty($settings)) {
             return esc_html($title);
         }
@@ -490,6 +531,45 @@ if (is_admin()) {
     $GLOBALS['metaseo_front'] = new MetaSeoFront;
 
     /*     * ******************************************** */
+}
+
+/**
+ * Set a option
+ *
+ * @param string              $option_name Option name
+ * @param string|array|object $value       Value of option
+ *
+ * @return void
+ */
+function wpmsSetOption($option_name, $value)
+{
+    $settings = get_option('_metaseo_settings');
+    if (empty($settings)) {
+        $settings               = array();
+        $settings[$option_name] = $value;
+    } else {
+        $settings[$option_name] = $value;
+    }
+
+    update_option('_metaseo_settings', $settings);
+}
+
+/**
+ * Get a option
+ *
+ * @param string $option_name Option name
+ *
+ * @return mixed
+ */
+function wpmsGetOption($option_name)
+{
+    $default_settings = wpmsGetDefaultSettings();
+    $settings         = get_option('_metaseo_settings');
+    if (isset($settings) && isset($settings[$option_name])) {
+        return $settings[$option_name];
+    }
+
+    return $default_settings[$option_name];
 }
 
 /* * ****** Check and import meta data from other installed plugins for SEO ******* */
@@ -637,7 +717,6 @@ function wpmsTemplateRedirect()
 {
     global $wpdb;
     // redirect by rule
-
     $url = '';
     if (isset($_SERVER['REQUEST_URI'])) {
         $url = $_SERVER['REQUEST_URI'];
@@ -675,6 +754,11 @@ function wpmsTemplateRedirect()
         } else {
             if (is_404()) {
                 if (isset($_SERVER['REQUEST_URI'])) {
+                    $path_infos = pathinfo($_SERVER['REQUEST_URI']);
+                    if (isset($path_infos['extension'])) {
+                        return;
+                    }
+
                     $url = $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
                     if (isset($_SERVER['HTTPS']) &&
                         ($_SERVER['HTTPS'] === 'on' || (int) $_SERVER['HTTPS'] === 1) ||
@@ -694,7 +778,21 @@ function wpmsTemplateRedirect()
                         )
                     ));
 
+                    // get referer url
+                    if (wp_get_raw_referer()) {
+                        $referer_url = wp_get_raw_referer();
+                    } else {
+                        $referer_url = get_home_url();
+                    }
+
+                    if ($referer_url === '') {
+                        $referer_url = get_home_url();
+                    }
                     if (count($check) === 0) {
+                        if (!function_exists('wp_validate_redirect')) {
+                            require_once(ABSPATH . 'wp-includes/pluggable.php');
+                        }
+
                         // insert url
                         $insert = array(
                             'link_url'        => ($url),
@@ -704,7 +802,8 @@ function wpmsTemplateRedirect()
                             'broken_indexed'  => 1,
                             'broken_internal' => 0,
                             'warning'         => 0,
-                            'dismissed'       => 0
+                            'dismissed'       => 0,
+                            'referrer'        => $referer_url
                         );
 
                         $wpdb->insert($wpdb->prefix . 'wpms_links', $insert);
@@ -720,12 +819,23 @@ function wpmsTemplateRedirect()
                         ));
 
                         if (!empty($links_broken)) {
-                            $value = array('hit' => (int) $links_broken->hit + 1);
+                            $list_referrers = explode('||', $links_broken->referrer);
+                            if (!in_array($referer_url, $list_referrers)) {
+                                $list_referrers[] = $referer_url;
+                            }
+
+                            $referrers = implode('||', $list_referrers);
+                            $referrers = trim($referrers, '||');
+                            $value = array(
+                                'hit'      => (int) $links_broken->hit + 1,
+                                'referrer' => $referrers
+                            );
+
                             $wpdb->update(
                                 $wpdb->prefix . 'wpms_links',
                                 $value,
                                 array('id' => $links_broken->id),
-                                array('%d'),
+                                array('%d', '%s'),
                                 array('%d')
                             );
 
@@ -736,9 +846,11 @@ function wpmsTemplateRedirect()
                                 } else {
                                     $status_redirect = 302;
                                 }
+
                                 if (empty($status_redirect)) {
                                     $status_redirect = 302;
                                 }
+
                                 wp_redirect($links_broken->link_url_redirect, $status_redirect);
                                 exit();
                             }

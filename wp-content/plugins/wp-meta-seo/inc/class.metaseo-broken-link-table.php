@@ -62,37 +62,177 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                 <input type="hidden" name="page" value="metaseo_image_meta"/>
 
                 <div class="alignleft actions bulkactions">
-                    <?php $this->brokenFilter('sl_broken'); ?>
-                    <?php $this->redirectFilter('sl_redirect'); ?>
-                    <?php $this->typeFilter('sltype'); ?>
-                    <?php $this->flushFilter('sl_flush'); ?>
+                    <?php
+                    $this->btnFilter();
+                    $this->flushFilter('sl_flush');
+                    ?>
                 </div>
-            <?php elseif ($which === 'bottom') : ?>
-                <input type="hidden" name="page" value="metaseo_image_meta"/>
-                <div class="alignleft actions bulkactions">
-                    <?php $this->brokenFilter('sl_broken1'); ?>
-                    <?php $this->redirectFilter('sl_redirect1'); ?>
-                    <?php $this->flushFilter('sltype1'); ?>
+                <div style="float:right;margin-left:5px;">
+                    <label style="float: left">
+                        <input type="number" required
+                               value="<?php echo esc_attr($this->_pagination_args['per_page']) ?>"
+                               maxlength="3" name="metaseo_broken_link_per_page"
+                               class="metaseo_imgs_per_page screen-per-page"
+                               max="999" min="1" step="1">
+                    </label>
+
+                    <button type="submit" name="btn_perpage" class="button_perpage ju-button orange-button waves-effect waves-light" id="button_perpage"><?php esc_html_e('Apply', 'wp-meta-seo') ?></button>
                 </div>
             <?php endif ?>
 
             <input type="hidden" name="page" value="metaseo_image_meta"/>
-            <div style="float:right;margin-left:8px;">
-                <label>
-                    <input type="number" required
-                           value="<?php echo esc_attr($this->_pagination_args['per_page']) ?>"
-                           maxlength="3" name="metaseo_broken_link_per_page"
-                           class="metaseo_imgs_per_page screen-per-page"
-                           max="999" min="1" step="1">
-                </label>
 
-                <input type="submit" name="btn_perpage" class="button_perpage button" id="button_perpage" value="Apply">
-            </div>
-            <?php $this->pagination($which); ?>
+            <?php if ($which === 'bottom') : ?>
+                <?php $this->pagination('top'); ?>
+            <?php endif ?>
             <br class="clear"/>
         </div>
 
         <?php
+    }
+
+    /**
+     * Display the pagination.
+     *
+     * @param string $which Possition
+     *
+     * @return void
+     */
+    protected function pagination($which)
+    {
+        if (empty($this->_pagination_args)) {
+            return;
+        }
+
+        $total_items     = (int) $this->_pagination_args['total_items'];
+        $total_pages     = (int) $this->_pagination_args['total_pages'];
+        $infinite_scroll = false;
+        if (isset($this->_pagination_args['infinite_scroll'])) {
+            $infinite_scroll = $this->_pagination_args['infinite_scroll'];
+        }
+
+        if ('top' === $which && $total_pages > 1) {
+            $this->screen->render_screen_reader_content('heading_pagination');
+        }
+
+        $output = '<span class="displaying-num">' . sprintf(_n('%s item', '%s items', $total_items, 'wp-meta-seo'), number_format_i18n($total_items)) . '</span>';
+
+        $current              = (int) $this->get_pagenum();
+        $removable_query_args = wp_removable_query_args();
+
+        $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
+        $current_url = remove_query_arg($removable_query_args, $current_url);
+
+        $page_links = array();
+
+        $total_pages_before = '<span class="paging-input">';
+        $total_pages_after  = '</span></span>';
+
+        $disable_first = false;
+        $disable_last = false;
+        $disable_prev = false;
+        $disable_next = false;
+
+        if ($current === 1) {
+            $disable_first = true;
+            $disable_prev  = true;
+        }
+        if ($current === 2) {
+            $disable_first = true;
+        }
+
+        if ($current === $total_pages) {
+            $disable_last = true;
+            $disable_next = true;
+        }
+        if ($current === $total_pages - 1) {
+            $disable_last = true;
+        }
+
+        if ($disable_first) {
+            $page_links[] = '<a class="wpms-number-page first-page disable"><i class="material-icons">first_page</i></a>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='first-page' href='%s'><span class='screen-reader-text'>%s</span><i class='material-icons'>%s</i></a>",
+                esc_url(remove_query_arg('paged', $current_url)),
+                __('First page', 'wp-meta-seo'),
+                'first_page'
+            );
+        }
+
+        if ($disable_prev) {
+            $page_links[] = '<a class="wpms-number-page prev-page disable"><i class="material-icons">keyboard_backspace</i></a>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='prev-page' href='%s'><span class='screen-reader-text'>%s</span><i class='material-icons'>%s</i></a>",
+                esc_url(add_query_arg('paged', max(1, $current - 1), $current_url)),
+                __('Previous page', 'wp-meta-seo'),
+                'keyboard_backspace'
+            );
+        }
+
+        $begin = $current - 2;
+        $end   = $current + 2;
+        if ($begin < 1) {
+            $begin = 1;
+            $end   = $begin + 4;
+        }
+        if ($end > $total_pages) {
+            $end   = $total_pages;
+            $begin = $end - 4;
+        }
+        if ($begin < 1) {
+            $begin = 1;
+        }
+
+        $custom_html = '';
+        for ($i = $begin; $i <= $end; $i ++) {
+            if ($i === $current) {
+                $custom_html .= '<a class="wpms-number-page active" href="' . esc_url(add_query_arg('paged', $i, $current_url)) . '"><span class="screen-reader-text">' . esc_html($i) . '</span><span aria-hidden="true">' . esc_html($i) . '</span></a>';
+            } else {
+                $custom_html .= '<a class="wpms-number-page" href="' . esc_url(add_query_arg('paged', $i, $current_url)) . '"><span class="screen-reader-text">' . esc_html($i) . '</span><span aria-hidden="true">' . esc_html($i) . '</span></a>';
+            }
+        }
+        $page_links[] = $total_pages_before . $custom_html . $total_pages_after;
+
+        if ($disable_next) {
+            $page_links[] = '<a class="wpms-number-page disable next-page"><i class="material-icons">trending_flat</i></a>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='next-page' href='%s'><span class='screen-reader-text'>%s</span><i class='material-icons'>%s</i></a>",
+                esc_url(add_query_arg('paged', min($total_pages, $current + 1), $current_url)),
+                __('Next page', 'wp-meta-seo'),
+                'trending_flat'
+            );
+        }
+
+        if ($disable_last) {
+            $page_links[] = '<a class="wpms-number-page last-page disable"><i class="material-icons">last_page</i></a>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='last-page' href='%s'><span class='screen-reader-text'>%s</span><i class='material-icons'>%s</i></a>",
+                esc_url(add_query_arg('paged', $total_pages, $current_url)),
+                __('Last page', 'wp-meta-seo'),
+                'last_page'
+            );
+        }
+
+        $pagination_links_class = 'pagination-links';
+        if (!empty($infinite_scroll)) {
+            $pagination_links_class .= ' hide-if-js';
+        }
+        $output .= '<span class="' . esc_html($pagination_links_class) . '">' . join('', $page_links) . '</span>';
+
+        if ($total_pages) {
+            $page_class = $total_pages < 2 ? ' one-page' : '';
+        } else {
+            $page_class = ' no-pages';
+        }
+        $this->_pagination = '<div class="tablenav-pages' . esc_html($page_class) . '">' . $output . '</div>';
+
+        // phpcs:ignore WordPress.Security.EscapeOutput -- Content already escaped
+        echo $this->_pagination;
     }
 
     /**
@@ -212,7 +352,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
             if ($column_key === 'cb') {
                 echo '<th scope="col" ' . $id . ' ' . $class . ' style="padding:8px 10px;">' . $column_display_name . '</th>';
             } else {
-                echo '<th scope="col" ' . $id . ' ' . $class . ' ' . $style . ' colspan="3">' . $column_display_name . '</th>';
+                echo '<th scope="col" ' . $id . ' ' . $class . ' ' . $style . '>' . $column_display_name . '</th>';
             }
             // phpcs:enable
         }
@@ -228,35 +368,37 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         global $wpdb;
         $where = array('1=1');
         // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
-        if (!empty($_REQUEST['sltype']) && $_REQUEST['sltype'] !== 'all') {
-            if ($_REQUEST['sltype'] !== 'other') {
-                $where[] = $wpdb->prepare('type = %s', array($_REQUEST['sltype']));
-            } else {
-                $where[] = "type IN ('comment','404_automaticaly')";
+        $where[] = "type IN ('url', 'comment', '404_automaticaly')";
+        $where_or = array();
+        if (!empty($_REQUEST['sl_broken'])) {
+            if (in_array('custom_redirect_url', $_REQUEST['sl_broken'])) {
+                $where_or[] = 'link_url_redirect !=""';
             }
+
+            if (in_array('valid_links', $_REQUEST['sl_broken'])) {
+                $where_or[] = 'broken_internal = 0 AND broken_indexed = 0';
+            }
+
+            if (in_array('internal_broken_links', $_REQUEST['sl_broken'])) {
+                $where_or[] = 'broken_internal = 1';
+            }
+
+            if (in_array('automaticaly_indexed', $_REQUEST['sl_broken'])) {
+                $where_or[] = 'broken_indexed = 1';
+            }
+
+            if (in_array('not_yet_redirect', $_REQUEST['sl_broken'])) {
+                $where_or[] = '(broken_internal = 1 OR broken_indexed = 1) AND link_url_redirect = ""';
+            }
+        } else {
+            // default
+            $where_or[] = 'broken_internal = 1';
+            $where_or[] = 'broken_indexed = 1';
+            $where_or[] = 'link_url_redirect = ""';
         }
 
-        if (!empty($_REQUEST['sl_broken']) && $_REQUEST['sl_broken'] !== 'all') {
-            if ($_REQUEST['sl_broken'] === 'custom_redirect_url') {
-                $where[] = "link_url_redirect !=''";
-            } elseif ($_REQUEST['sl_broken'] === 'valid_links') {
-                $where[] = 'broken_internal = 0 AND broken_indexed = 0';
-            } elseif ($_REQUEST['sl_broken'] === 'internal_broken_links') {
-                $where[] = 'broken_internal = 1';
-            } else {
-                $where[] = 'broken_indexed = 1';
-            }
-        }
-
-        if (!empty($_REQUEST['sl_redirect']) && $_REQUEST['sl_redirect'] !== 'all') {
-            if ($_REQUEST['sl_redirect'] === 'already_redirect') {
-                $where[] = '(broken_internal = 1 OR broken_indexed = 1)';
-                $where[] = 'link_url_redirect !="" ';
-            } else {
-                $where[] = '(broken_internal = 1 OR broken_indexed = 1)';
-                $where[] = 'link_url_redirect ="" ';
-            }
-        }
+        $where_or_string = implode(' OR ', $where_or);
+        $where[] = '(' . $where_or_string . ')';
 
         $keyword = !empty($_GET['txtkeyword']) ? $_GET['txtkeyword'] : '';
         if (isset($keyword) && $keyword !== '') {
@@ -267,7 +409,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         }
 
         $orderby = !empty($_GET['orderby']) ? ($_GET['orderby']) : 'id';
-        $order   = !empty($_GET['order']) ? ($_GET['order']) : 'asc';
+        $order   = !empty($_GET['order']) ? ($_GET['order']) : 'desc';
         $paged   = !empty($_GET['paged']) ? $_GET['paged'] : '';
         if (empty($paged) || !is_numeric($paged) || $paged <= 0) {
             $paged = 1;
@@ -348,10 +490,6 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
             require_once(WPMETASEO_ADDON_PLUGIN_DIR . 'inc/page/custom_redirect_form.php');
         }
         // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
-        if (empty($_REQUEST['txtkeyword']) && !$this->has_items()) {
-            return;
-        }
-
         $txtkeyword = (!empty($_REQUEST['txtkeyword'])) ? urldecode(stripslashes($_REQUEST['txtkeyword'])) : '';
         if (!empty($_REQUEST['orderby'])) {
             echo '<input type="hidden" name="orderby" value="' . esc_attr($_REQUEST['orderby']) . '" />';
@@ -372,48 +510,12 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         ?>
         <p class="search-box">
             <label>
-                <input type="search" id="image-search-input" name="txtkeyword"
-                       value="<?php echo esc_attr(stripslashes($txtkeyword)); ?>"/>
+                <input type="search" id="image-search-input" class="wpms-search-input" name="txtkeyword" class="form-control"
+                       value="<?php echo esc_attr(stripslashes($txtkeyword)); ?>" placeholder="<?php esc_html_e('Search URL', 'wp-meta-seo') ?>"/>
             </label>
 
-            <?php submit_button('Search URL', 'button', 'search', false, array('id' => 'search-submit')); ?>
+            <button type="submit" id="search-submit"><span class="dashicons dashicons-search"></span></button>
         </p>
-        <?php
-    }
-
-    /**
-     * Add filter redirect
-     *
-     * @param string $name Filter name
-     *
-     * @return void
-     */
-    public function redirectFilter($name)
-    {
-        $redirects = array(
-            'not_yet_redirect' => esc_html__('Not yet redirected', 'wp-meta-seo'),
-            'already_redirect' => esc_html__('Already redirected', 'wp-meta-seo')
-        );
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
-        $curent_redirect = isset($_REQUEST['sl_redirect']) ? $_REQUEST['sl_redirect'] : 'all';
-        ?>
-        <label for="filter-by-redirect"
-               class="screen-reader-text"><?php esc_html_e('Filter by redirect', 'wp-meta-seo'); ?></label>
-        <select name="<?php echo esc_html($name) ?>" id="filter-by-redirect" class="redirect_filter">
-            <option<?php selected($curent_redirect, 'all'); ?> value="all">
-                <?php esc_html_e('Status', 'wp-meta-seo'); ?>
-            </option>
-            <?php
-            foreach ($redirects as $k => $redirect) {
-                if ($curent_redirect === $k) {
-                    echo '<option selected value="' . esc_attr($k) . '">' . esc_html($redirect) . '</option>';
-                } else {
-                    echo '<option value="' . esc_attr($k) . '">' . esc_html($redirect) . '</option>';
-                }
-            }
-            ?>
-        </select>
-
         <?php
     }
 
@@ -427,75 +529,54 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
     public function brokenFilter($name)
     {
         $brokens = array(
-            'valid_links'           => esc_html__('Valid links', 'wp-meta-seo'),
+            'internal_broken_links' => esc_html__('Internal broken links', 'wp-meta-seo'),
             'automaticaly_indexed'  => esc_html__('404 automaticaly indexed', 'wp-meta-seo'),
-            'internal_broken_links' => esc_html__('Internal broken links', 'wp-meta-seo')
         );
         if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
             $brokens['custom_redirect_url'] = esc_html__('Custom redirect URL', 'wp-meta-seo');
         }
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
-        $curent_broken = isset($_REQUEST['sl_broken']) ? $_REQUEST['sl_broken'] : 'all';
+        $brokens['valid_links'] = esc_html__('Valid links', 'wp-meta-seo');
+        $brokens['not_yet_redirect'] = esc_html__('Not yet redirected', 'wp-meta-seo');
+        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        if (empty($_REQUEST['sl_broken'])) {
+            $selected = array('automaticaly_indexed', 'internal_broken_links', 'not_yet_redirect');
+        } else {
+            $selected = $_REQUEST['sl_broken'];
+        }
+        // phpcs:enable
         ?>
         <label for="filter-by-broken"
                class="screen-reader-text"><?php esc_html_e('Filter by broken', 'wp-meta-seo'); ?></label>
-        <select name="<?php echo esc_attr($name) ?>" id="filter-by-broken" class="broken_filter">
-            <option<?php selected($curent_broken, 'all'); ?>
-                    value="all"><?php esc_html_e('All', 'wp-meta-seo'); ?></option>
-            <?php
-            foreach ($brokens as $k => $broken) {
-                if ($curent_broken === $k) {
-                    echo '<option selected value="' . esc_attr($k) . '">' . esc_html($broken) . '</option>';
-                } else {
-                    echo '<option value="' . esc_attr($k) . '">' . esc_html($broken) . '</option>';
+        <div class="form-group form-group-broken">
+            <select multiple name="<?php echo esc_attr($name) ?>" id="filter-by-broken" class="broken_filter form-control">
+                <?php
+                foreach ($brokens as $k => $broken) {
+                    if (in_array($k, $selected)) {
+                        echo '<option selected value="' . esc_attr($k) . '">' . esc_html($broken) . '</option>';
+                    } else {
+                        echo '<option value="' . esc_attr($k) . '">' . esc_html($broken) . '</option>';
+                    }
                 }
-            }
-            ?>
-        </select>
-
+                ?>
+            </select>
+            <input type="submit" name="filter_type_action" id="broken-submit"
+                   class="ju-button orange-button wpms-small-btn wpms_right" style="height: 45px" value="<?php esc_attr_e('Filter', 'wp-meta-seo') ?>">
+        </div>
         <?php
     }
 
     /**
      * Add filter type
      *
-     * @param string $name Filter name
-     *
      * @return void
      */
-    public function typeFilter($name)
+    public function btnFilter()
     {
-        $types = array(
-            'url'   => esc_html__('URL', 'wp-meta-seo'),
-            'image' => esc_html__('Image', 'wp-meta-seo'),
-            'other' => esc_html__('Other', 'wp-meta-seo')
-        );
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
-        $curent_type = isset($_REQUEST['sltype']) ? $_REQUEST['sltype'] : 'all';
-        ?>
-        <label for="filter-by-type"
-               class="screen-reader-text"><?php esc_html_e('Filter by type', 'wp-meta-seo'); ?></label>
-        <select name="<?php echo esc_attr($name) ?>" id="filter-by-type" class="metaseo-filter">
-            <option<?php selected($curent_type, 'all'); ?>
-                    value="all"><?php esc_html_e('Type', 'wp-meta-seo'); ?></option>
-            <?php
-            foreach ($types as $k => $type) {
-                if ($curent_type === $k) {
-                    echo '<option selected value="' . esc_attr($k) . '">' . esc_html($type) . '</option>';
-                } else {
-                    echo '<option value="' . esc_attr($k) . '">' . esc_html($type) . '</option>';
-                }
-            }
-            ?>
-        </select>
-        <input type="submit" name="filter_type_action" id="broken-submit"
-               class="wpmsbtn wpmsbtn_small wpmsbtn_secondary" value="<?php esc_attr_e('Filter', 'wp-meta-seo') ?>">
-        <?php
-        echo '<div style="float:left;padding-left: 5px;"><div class="wpms_process" data-w="0"></div>';
-        echo '<div data-comment_paged="1" data-paged="1" class="wpmsbtn wpmsbtn_small wpms_scan_link">';
+        echo '<div style="float:left; margin-left: 5px">';
+        echo '<div data-comment_paged="1" data-paged="1" class="ju-button orange-button wpms_scan wpms_scan_link">';
         esc_html_e('Index internal broken links', 'wp-meta-seo');
+        echo '<div class="wpms_process ju-button" data-w="0"></div>';
         echo '</div></div>';
-        echo '<span class="spinner"></span>';
     }
 
     /**
@@ -513,21 +594,23 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
             'all'                   => esc_html__('Flush all 404', 'wp-meta-seo')
         );
         ?>
-        <label for="filter-by-flush"
-               class="screen-reader-text"><?php esc_html_e('Filter by flush', 'wp-meta-seo'); ?></label>
-        <select name="<?php echo esc_attr($name) ?>" id="filter-by-flush">
-            <option value="none"><?php esc_html_e('Select', 'wp-meta-seo'); ?></option>
-            <?php
-            foreach ($flushs as $k => $flush) {
-                echo '<option value="' . esc_attr($k) . '">' . esc_html($flush) . '</option>';
-            }
-            ?>
-        </select>
-
+        <div class="wpms_left">
+            <label for="filter-by-flush"
+                   class="screen-reader-text"><?php esc_html_e('Filter by flush', 'wp-meta-seo'); ?></label>
+            <select name="<?php echo esc_attr($name) ?>" id="filter-by-flush">
+                <option value="none"><?php esc_html_e('Remove URLs', 'wp-meta-seo'); ?></option>
+                <?php
+                foreach ($flushs as $k => $flush) {
+                    echo '<option value="' . esc_attr($k) . '">' . esc_html($flush) . '</option>';
+                }
+                ?>
+            </select>
+            <input type="button" class="ju-button orange-button wpms_flush_link" value="<?php esc_html_e('Flush', 'wp-meta-seo') ?>">
+            <span class="spinner wpms-spinner wpms-spinner-flush"></span>
+            <span class="wpms-msg-success flush-msg-success"><?php esc_html_e('URLs removed!', 'wp-meta-seo') ?></span>
+            <span class="wpms-msg-error flush-msg-error"><?php esc_html_e('Please select a remove URL option to flush', 'wp-meta-seo') ?></span>
+        </div>
         <?php
-        echo '<div class="wpmsbtn wpmsbtn_small wpmsbtn_secondary wpms_flush_link">';
-        esc_html_e('Flush', 'wp-meta-seo');
-        echo '</div>';
     }
 
     /**
@@ -537,6 +620,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
      */
     public function display_rows() // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps -- extends from WP_List_Table class
     {
+        add_thickbox();
         $records = $this->items;
         $i       = 0;
         list($columns, $hidden) = $this->get_column_info();
@@ -553,7 +637,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                             } else {
                                 $value_url = $rec->link_url;
                             }
-                            echo '<td class="wpms_link_html" colspan="3">';
+                            echo '<td class="wpms_link_html">';
                             echo '<input type="hidden" class="wpms_link_text"
                              value="' . esc_attr($rec->link_text) . '">';
                             if ($rec->type === 'add_custom') {
@@ -617,9 +701,11 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                                         );
                                         foreach ($matches[0] as $i => $content) {
                                             preg_match('/< *a[^>]*href *= *["\']?([^"\']*)/i', $content, $matches);
-                                            $href = $matches[1];
-                                            if ($href === $rec->link_url) {
-                                                $iii ++;
+                                            if (isset($matches[1])) {
+                                                $href = $matches[1];
+                                                if ($href === $rec->link_url) {
+                                                    $iii ++;
+                                                }
                                             }
                                         }
                                     }
@@ -634,9 +720,11 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                                         );
                                         foreach ($matches[0] as $i => $content) {
                                             preg_match('/< *a[^>]*href *= *["\']?([^"\']*)/i', $content, $matches);
-                                            $href = $matches[1];
-                                            if ($href === $rec->link_url) {
-                                                $jjj ++;
+                                            if (isset($matches[1])) {
+                                                $href = $matches[1];
+                                                if ($href === $rec->link_url) {
+                                                    $jjj ++;
+                                                }
                                             }
                                         }
                                     }
@@ -648,39 +736,39 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                                 <?php
                                 if ($rec->type === 'url') {
                                     if ($iii > 1) {
-                                        echo '<span class="wpms-input-text-wrap">
-<span class="title">' . esc_html__('Text', 'wp-meta-seo') . '</span>
-<input type="text" name="link_text" class="wpms-link-text-field"
- placeholder="' . esc_attr__('Multiple link', 'wp-meta-seo') . '" data-type="multi" /></span>';
+                                        echo '<div class="form-group">
+<label class="title">' . esc_html__('Text', 'wp-meta-seo') . '</label>
+<input type="text" name="link_text" class="wpms-link-text-field form-control"
+ placeholder="' . esc_attr__('Multiple link', 'wp-meta-seo') . '" data-type="multi" /></div>';
                                     } else {
-                                        echo '<span class="wpms-input-text-wrap">
-<span class="title">' . esc_html__('Text', 'wp-meta-seo') . '</span>
-<input type="text" name="link_text" class="wpms-link-text-field"
- value="' . esc_attr($rec->link_text) . '" data-type="only" /></span>';
+                                        echo '<div class="form-group">
+<label class="title">' . esc_html__('Text', 'wp-meta-seo') . '</label>
+<input type="text" name="link_text" class="wpms-link-text-field form-control"
+ value="' . esc_attr($rec->link_text) . '" data-type="only" /></div>';
                                     }
                                 } elseif ($rec->type === 'comment_content_url') {
                                     if ($jjj > 1) {
-                                        echo '<span class="wpms-input-text-wrap">
-<span class="title">' . esc_html__('Text', 'wp-meta-seo') . '</span>
-<input type="text" name="link_text" class="wpms-link-text-field"
- placeholder="' . esc_attr__('Multiple link', 'wp-meta-seo') . '" data-type="multi" /></span>';
+                                        echo '<div class="form-group">
+<label class="title">' . esc_html__('Text', 'wp-meta-seo') . '</label>
+<input type="text" name="link_text" class="wpms-link-text-field form-control"
+ placeholder="' . esc_attr__('Multiple link', 'wp-meta-seo') . '" data-type="multi" /></div>';
                                     } else {
-                                        echo '<span class="wpms-input-text-wrap">
-<span class="title">' . esc_html__('Text', 'wp-meta-seo') . '</span>
-<input type="text" name="link_text" class="wpms-link-text-field"
+                                        echo '<span class="form-group">
+<label class="title">' . esc_html__('Text', 'wp-meta-seo') . '</label>
+<input type="text" name="link_text" class="wpms-link-text-field form-control"
  value="' . esc_attr($rec->link_text) . '" data-type="only" /></span>';
                                     }
                                 } else {
                                     if ($rec->type !== 'add_custom') {
-                                        echo '<span class="wpms-input-text-wrap">
-<span class="title">' . esc_html__('Text', 'wp-meta-seo') . '</span>
-<input readonly type="text" name="link_text" class="wpms-link-text-field" value="(None)" data-type="only" /></span>';
+                                        echo '<div class="form-group">
+<label class="title">' . esc_html__('Text', 'wp-meta-seo') . '</label>
+<input readonly type="text" name="link_text" class="wpms-link-text-field form-control" value="(None)" data-type="only" /></div>';
                                     } else {
                                         ?>
-                                        <p class="wpms-input-text-wrap">
-                                        <span class="title">
+                                        <div class="form-group">
+                                        <label class="title">
                                             <?php esc_html_e('Status', 'wp-meta-seo') ?>
-                                        </span>
+                                        </label>
                                             <label>
                                                 <select name="custom_redirect_status" class="custom_redirect_status">
                                                     <option value="301" <?php selected($rec->meta_title, 301) ?>>301
@@ -691,44 +779,41 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                                                     </option>
                                                 </select>
                                             </label>
-                                        </p>
+                                        </div>
                                         <?php
                                     }
                                 }
                                 ?>
 
-                                <p class="wpms-input-text-wrap">
-                                    <span
+                                <div class="form-group">
+                                    <label
                                             class="title">
                                         <?php esc_html_e('URL', 'wp-meta-seo'); ?>
-                                    </span>
-                                    <label>
-                                        <input <?php echo ($rec->type === '404_automaticaly') ? 'readonly' : '' ?>
-                                                type="text" name="link_url" class="wpms-link-url-field"
-                                                value="<?php echo esc_attr($value_url); ?>"/>
                                     </label>
-                                </p>
-                                <p class="wpms-input-text-wrap">
-                                    <span class="title"><?php esc_html_e('Redirect', 'wp-meta-seo'); ?></span>
-                                    <label>
-                                        <input type="text" name="link_url_redirect" class="wpms-link-redirect-field"
-                                               value="<?php echo esc_attr($rec->link_url_redirect); ?>"/>
-                                    </label>
+                                    <input <?php echo ($rec->type === '404_automaticaly') ? 'readonly' : '' ?>
+                                            type="text" name="link_url" class="wpms-link-url-field form-control"
+                                            value="<?php echo esc_attr($value_url); ?>"/>
+
+                                </div>
+                                <div class="form-group">
+                                    <label class="title"><?php esc_html_e('Redirect', 'wp-meta-seo'); ?></label>
+                                    <input type="text" name="link_url_redirect" class="wpms-link-redirect-field form-control" style="margin-right: 0"
+                                           value="<?php echo esc_attr($rec->link_url_redirect); ?>"/>
                                     <span class="wlink-btn">
                                         <i class="mce-ico mce-i-link link-btn" id="link-btn"></i>
                                     </span>
-                                </p>
+                                </div>
 
                                 <div class="submit wpms-inline-editor-buttons">
                                     <input type="button"
-                                           class="wpmsbtn wpmsbtn_small wpmsbtn_secondary
+                                           class="ju-button wpms-small-btn
                                             cancel alignleft wpms-cancel-button"
                                            value="<?php echo esc_attr(__('Cancel', 'wp-meta-seo')); ?>"/>
                                     <input type="button" data-type="<?php echo esc_html($rec->type) ?>"
                                            data-link_id="<?php echo esc_attr($rec->id) ?>"
                                            data-source_id="<?php echo esc_attr($rec->source_id) ?>"
-                                           class="wpmsbtn wpmsbtn_small save alignright wpms-update-link-button"
-                                           value="<?php echo esc_attr(__('Add custom redirect', 'wp-meta-seo')); ?>"/>
+                                           class="ju-button orange-button wpms-small-btn save alignright wpms-update-link-button"
+                                           value="<?php echo esc_attr(__('Update', 'wp-meta-seo')); ?>"/>
                                 </div>
                             </div>
                             <?php
@@ -736,12 +821,12 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                             break;
 
                         case 'col_hit':
-                            echo '<td colspan="3" style="text-align:center;">';
+                            echo '<td style="text-align:center;">';
                             echo esc_html($rec->hit);
                             echo '</td>';
                             break;
                         case 'col_status':
-                            echo '<td colspan="3" class="col_status">';
+                            echo '<td class="col_status">';
                             if (strpos($rec->status_text, '200') !== false) {
                                 echo '<i class="material-icons wpms_ok metaseo_help_status" data-alt="Link is OK">done</i>';
                             } elseif (strpos($rec->status_text, '301') !== false) {
@@ -771,16 +856,16 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
 
                         case 'col_link_text':
                             if ($rec->type === 'image' || $rec->type === 'comment_content_image') {
-                                echo '<td colspan="3" class="link_text">
+                                echo '<td class="link_text">
 <span style="float: left;margin-right: 5px;"><i class="material-icons metaseo_help_status" data-alt="Images">photo</i></span>
 <span> ' . esc_html__('Image', 'wp-meta-seo') . '</span></td>';
                             } elseif ($rec->type === 'comment') {
-                                echo '<td colspan="3" class="link_text"><span> ' . esc_html($rec->link_text) . '</span></td>';
+                                echo '<td class="link_text"><span> ' . esc_html($rec->link_text) . '</span></td>';
                             } else {
                                 if (strip_tags($rec->link_text) !== '') {
-                                    echo '<td colspan="3" class="link_text">' . esc_html(strip_tags($rec->link_text)) . '</td>';
+                                    echo '<td class="link_text">' . esc_html(strip_tags($rec->link_text)) . '</td>';
                                 } else {
-                                    echo '<td colspan="3" class="link_text">
+                                    echo '<td class="link_text">
 <i>' . esc_html__('No text on this link', 'wp-meta-seo') . '</i></td>';
                                 }
                             }
@@ -794,8 +879,28 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                                 $source_inner = '<span style="float: left;margin-right: 5px;">
 <i class="material-icons metaseo_help_status" data-alt="External URL indexed">link</i></span>';
                                 $source_inner .= esc_html__('404 automaticaly indexed', 'wp-meta-seo');
+
+                                // referrer infos
+                                $referrers    = explode('||', $rec->referrer);
+                                $source_inner .= '<div id="referrers-' . $rec->id . '" style="display:none;">';
+                                $source_inner .= '<h3>' . $rec->link_url . '</h3>';
+                                $source_inner .= '<ul class="referrers_infos">';
+                                foreach ($referrers as $referrer) {
+                                    if ($referrer !== '') {
+                                        $source_inner .= '<li><i class="material-icons">arrow_right_alt</i><a href="' . $referrer . '" target="_blank">' . $referrer . '</a></li>';
+                                    } else {
+                                        $source_inner .= '<li><i class="material-icons">arrow_right_alt</i><a href="' . esc_url(get_home_url()) . '" target="_blank">' . esc_url(get_home_url()) . '</a></li>';
+                                    }
+                                }
+                                $source_inner .= '</ul>';
+                                $source_inner .= '</div>';
+
+                                $source_inner .= '<div>';
+                                $source_inner .= '<a href="#TB_inline?width=600&height=550&inlineId=referrers-' . $rec->id . '" class="thickbox">' . esc_html__('Referrer', 'wp-meta-seo') . '</a>';
+                                $source_inner .= '</div>';
+
                                 // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                                echo '<td colspan="3">' . $source_inner . '</td>';
+                                echo '<td>' . $source_inner . '</td>';
                             } else {
                                 if ($rec->type === 'comment' || $rec->type === 'comment_content_url'
                                     || $rec->type === 'comment_content_image') {
@@ -845,7 +950,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                                     }
                                 }
 
-                                echo '<td colspan="3">';
+                                echo '<td>';
                                 if (!empty($source)) {
                                     // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
                                     echo $source_inner;
@@ -880,7 +985,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $redirect    = false;
         // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
-        if (isset($_POST['search'])) {
+        if (isset($_POST['txtkeyword'])) {
             $current_url = add_query_arg(
                 array(
                     'search'     => 'Search',
@@ -894,8 +999,6 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         if (isset($_POST['filter_type_action'])) {
             $current_url = add_query_arg(
                 array(
-                    'sltype'      => $_POST['sltype'],
-                    'sl_redirect' => $_POST['sl_redirect'],
                     'sl_broken'   => $_POST['sl_broken']
                 ),
                 $current_url
@@ -1673,6 +1776,10 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
 
         $link_settings['wpms_lastRun_scanlink'] = time();
         update_option('wpms_link_settings', $link_settings);
+        /**
+         * Scan link
+         */
+        do_action('wpms_scan_link');
         wp_send_json(array('status' => true));
     }
 
@@ -1686,64 +1793,66 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
      */
     public static function insertLink($link, $wpdb)
     {
-        $links = $wpdb->get_results($wpdb->prepare(
-            'SELECT * FROM ' . $wpdb->prefix . 'wpms_links WHERE link_url=%s AND link_text=%s AND type=%s AND source_id=%d ',
-            array(
-                $link['link_url'],
-                $link['link_text'],
-                $link['type'],
-                $link['source_id']
-            )
-        ));
-        if (count($links) === 0) {
-            $status_text = self::getStatusText($link['status']);
-            $value       = array(
-                'link_url'        => $link['link_url'],
-                'link_final_url'  => $link['link_final_url'],
-                'link_text'       => $link['link_text'],
-                'source_id'       => $link['source_id'],
-                'type'            => $link['type'],
-                'status_code'     => $link['status'],
-                'status_text'     => $status_text,
-                'broken_indexed'  => 0,
-                'broken_internal' => 0,
-                'warning'         => 0,
-                'dismissed'       => 0,
-                'meta_title'      => $link['meta_title'],
-                'follow'          => $link['follow']
-            );
-            if (isset($link['status_type']) && $link['status_type'] !== 'ok') {
-                $value[$link['status_type']] = 1;
-            }
-
-            $site_url = get_site_url();
-            $value    = self::checkInternalLink($link['link_url'], $site_url, $value);
-
-            $wpdb->insert(
-                $wpdb->prefix . 'wpms_links',
-                $value
-            );
-        } else {
-            $value    = array(
-                'meta_title' => $link['meta_title'],
-                'follow'     => $link['follow']
-            );
-            $site_url = get_site_url();
-            // get status
-            $status_text          = self::getStatusText($link['status']);
-            $value                = self::checkInternalLink($links[0]->link_url, $site_url, $value);
-            $value['status_code'] = $link['status'];
-            $value['status_text'] = $status_text;
-            if ((int) $links[0]->follow !== (int) $link['follow'] || $links[0]->meta_title !== $link['meta_title']
-                || (int) $links[0]->internal !== (int) $value['internal'] || $links[0]->status_code !== $value['status_code']) {
-                // update link status
-                $wpdb->update(
-                    $wpdb->prefix . 'wpms_links',
-                    $value,
-                    array(
-                        'id' => $links[0]->id
-                    )
+        if (!empty($link['link_url'])) {
+            $links = $wpdb->get_results($wpdb->prepare(
+                'SELECT * FROM ' . $wpdb->prefix . 'wpms_links WHERE link_url=%s AND link_text=%s AND type=%s AND source_id=%d ',
+                array(
+                    $link['link_url'],
+                    $link['link_text'],
+                    $link['type'],
+                    $link['source_id']
+                )
+            ));
+            if (count($links) === 0) {
+                $status_text = self::getStatusText($link['status']);
+                $value       = array(
+                    'link_url'        => $link['link_url'],
+                    'link_final_url'  => $link['link_final_url'],
+                    'link_text'       => $link['link_text'],
+                    'source_id'       => $link['source_id'],
+                    'type'            => $link['type'],
+                    'status_code'     => $link['status'],
+                    'status_text'     => $status_text,
+                    'broken_indexed'  => 0,
+                    'broken_internal' => 0,
+                    'warning'         => 0,
+                    'dismissed'       => 0,
+                    'meta_title'      => $link['meta_title'],
+                    'follow'          => $link['follow']
                 );
+                if (isset($link['status_type']) && $link['status_type'] !== 'ok') {
+                    $value[$link['status_type']] = 1;
+                }
+
+                $site_url = get_site_url();
+                $value    = self::checkInternalLink($link['link_url'], $site_url, $value);
+
+                $wpdb->insert(
+                    $wpdb->prefix . 'wpms_links',
+                    $value
+                );
+            } else {
+                $value    = array(
+                    'meta_title' => $link['meta_title'],
+                    'follow'     => $link['follow']
+                );
+                $site_url = get_site_url();
+                // get status
+                $status_text          = self::getStatusText($link['status']);
+                $value                = self::checkInternalLink($links[0]->link_url, $site_url, $value);
+                $value['status_code'] = $link['status'];
+                $value['status_text'] = $status_text;
+                if ((int) $links[0]->follow !== (int) $link['follow'] || $links[0]->meta_title !== $link['meta_title']
+                    || (int) $links[0]->internal !== (int) $value['internal'] || $links[0]->status_code !== $value['status_code']) {
+                    // update link status
+                    $wpdb->update(
+                        $wpdb->prefix . 'wpms_links',
+                        $value,
+                        array(
+                            'id' => $links[0]->id
+                        )
+                    );
+                }
             }
         }
     }
@@ -1847,6 +1956,11 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
             $wpms_nonce = $_POST['wpms_nonce'];
         }
 
+        /**
+         * Add custom redirect
+         *
+         * @param string nonce
+         */
         do_action('wpms_add_custom_redirect', $wpms_nonce);
         wp_send_json(array('status' => true, 'message' => esc_html__('Done!', 'wp-meta-seo')));
     }

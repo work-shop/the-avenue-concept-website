@@ -55,7 +55,7 @@
 	</p>
 
 	<p class="themes-plugins-different-plugin-version-notice inline-message warning themes-plugins-message" style="display: none; margin: 10px 0 0 0;">
-		<strong><?php _e( 'Version Mismatch', 'wp-migrate-db-pro-theme-plugin-files' ); ?></strong> &mdash; <?php printf( __( 'We have detected you have version <span class="themes-plugins-remote-version"></span> of WP Migrate DB Pro Theme & Plugin Files at <span class="themes-plugins-remote-location"></span> but are using %1$s here. Please go to the <a href="%2$s">Plugins page</a> on both installs and check for updates.', 'wp-migrate-db-pro-theme-plugin-files' ), $GLOBALS['wpmdb_meta'][ $this->plugin_slug ]['version'], network_admin_url( 'plugins.php' ) ); ?>
+		<strong><?php _e( 'Version Mismatch', 'wp-migrate-db-pro-theme-plugin-files' ); ?></strong> &mdash; <?php printf( __( 'We have detected you have version <span class="themes-plugins-remote-version"></span> of WP Migrate DB Pro Theme & Plugin Files at <span class="themes-plugins-remote-location"></span> but are using %1$s here. Please go to the <a href="%2$s">Plugins page</a> on both installs and check for updates.', 'wp-migrate-db-pro-theme-plugin-files' ), $GLOBALS['wpmdb_meta'][ 'wp-migrate-db-pro-theme-plugin-files' ]['version'], network_admin_url( 'plugins.php' ) ); ?>
 	</p>
 
 </div>

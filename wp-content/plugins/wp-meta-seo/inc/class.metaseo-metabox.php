@@ -86,16 +86,32 @@ class WPMSEOMetabox extends WPMSEOMeta
         );
 
         foreach ($meta_boxes as $key => $meta_box) {
-            $data = null;
-            if ('checkbox' === $meta_box['type']) {
-                $data = isset($_POST[self::$form_prefix . $key]) ? 'on' : 'off';
-            } else {
-                if (isset($_POST[self::$form_prefix . $key])) {
-                    $data = $_POST[self::$form_prefix . $key];
+            if ($key === 'facebook' || $key === 'twitter') {
+                foreach ($meta_box as $k => $social) {
+                    $data = null;
+                    if ('checkbox' === $social['type']) {
+                        $data = isset($_POST[self::$form_prefix . $k]) ? 'on' : 'off';
+                    } else {
+                        if (isset($_POST[self::$form_prefix . $k])) {
+                            $data = $_POST[self::$form_prefix . $k];
+                        }
+                    }
+                    if (isset($data)) {
+                        self::setValue($k, $data, $post_id);
+                    }
                 }
-            }
-            if (isset($data)) {
-                self::setValue($key, $data, $post_id);
+            } else {
+                $data = null;
+                if ('checkbox' === $meta_box['type']) {
+                    $data = isset($_POST[self::$form_prefix . $key]) ? 'on' : 'off';
+                } else {
+                    if (isset($_POST[self::$form_prefix . $key])) {
+                        $data = $_POST[self::$form_prefix . $key];
+                    }
+                }
+                if (isset($data)) {
+                    self::setValue($key, $data, $post_id);
+                }
             }
         }
         do_action('wpmseo_saved_postdata');
@@ -119,7 +135,7 @@ class WPMSEOMetabox extends WPMSEOMeta
 
         self::$meta_fields['general']['title']['title']       = esc_html__('Search engine title', 'wp-meta-seo');
         self::$meta_fields['general']['title']['description'] = sprintf(
-            '<span id="metaseo_wpmseo_title-length">%s</span>',
+            '<span id="metaseo_wpmseo_title-length" class="length-box-meta">%s</span>',
             self::$meta_length_reason
         );
         self::$meta_fields['general']['title']['help']        = esc_attr__('This is the title of your content that may be displayed
@@ -130,7 +146,7 @@ class WPMSEOMetabox extends WPMSEOMeta
         if (isset($settings['metaseo_showkeywords']) && (int) $settings['metaseo_showkeywords'] === 1) {
             self::$meta_fields['general']['keywords']['title'] = esc_html__('Search engine keywords', 'wp-meta-seo');
             self::$meta_fields['general']['keywords']['description']
-                                                               = '<span id="metaseo_wpmseo_keywords-length"></span>';
+                                                               = '<span id="metaseo_wpmseo_keywords-length" class="length-box-meta"></span>';
             self::$meta_fields['general']['keywords']['help']  = esc_attr__('This is the keywords of your content that may be
              displayed in search engine results (meta keywords).', 'wp-meta-seo');
         } else {
@@ -140,7 +156,7 @@ class WPMSEOMetabox extends WPMSEOMeta
 
         self::$meta_fields['general']['desc']['title']       = esc_html__('Search engine description', 'wp-meta-seo');
         self::$meta_fields['general']['desc']['description'] = sprintf(
-            '<span id="metaseo_wpmseo_desc-length">%s</span>',
+            '<span id="metaseo_wpmseo_desc-length" class="length-box-meta">%s</span>',
             self::$meta_length_reason
         );
         self::$meta_fields['general']['desc']['help']        = esc_attr__('The description of your content that may be displayed
@@ -148,28 +164,28 @@ class WPMSEOMetabox extends WPMSEOMeta
           By default search engine take an excerpt from your content (depending on the search query).
           320 characters max allowed.', 'wp-meta-seo');
 
-        self::$meta_fields['social']['opengraph-title']['title']       = esc_html__('Facebook Title', 'wp-meta-seo');
-        self::$meta_fields['social']['opengraph-title']['description'] = esc_html__('Custom title to display when
+        self::$meta_fields['social']['facebook']['opengraph-title']['title']       = esc_html__('Facebook Title', 'wp-meta-seo');
+        self::$meta_fields['social']['facebook']['opengraph-title']['description'] = esc_html__('Custom title to display when
          sharing this content on facebook, content title override', 'wp-meta-seo');
 
-        self::$meta_fields['social']['opengraph-desc']['title']       = esc_html__('Facebook Description', 'wp-meta-seo');
-        self::$meta_fields['social']['opengraph-desc']['description'] = esc_html__('Custom description to display when sharing
+        self::$meta_fields['social']['facebook']['opengraph-desc']['title']       = esc_html__('Facebook Description', 'wp-meta-seo');
+        self::$meta_fields['social']['facebook']['opengraph-desc']['description'] = esc_html__('Custom description to display when sharing
          this content on facebook, content description override', 'wp-meta-seo');
 
-        self::$meta_fields['social']['opengraph-image']['title']       = esc_html__('Facebook Image', 'wp-meta-seo');
-        self::$meta_fields['social']['opengraph-image']['description'] = esc_html__('Custom image to display when sharing
+        self::$meta_fields['social']['facebook']['opengraph-image']['title']       = esc_html__('Facebook Image', 'wp-meta-seo');
+        self::$meta_fields['social']['facebook']['opengraph-image']['description'] = esc_html__('Custom image to display when sharing
          this content on facebook, content description override, recommended size is 1200px x 630px', 'wp-meta-seo');
 
-        self::$meta_fields['social']['twitter-title']['title']       = esc_html__('Twitter Title', 'wp-meta-seo');
-        self::$meta_fields['social']['twitter-title']['description'] = esc_html__('Custom title to display when sharing this
+        self::$meta_fields['social']['twitter']['twitter-title']['title']       = esc_html__('Twitter Title', 'wp-meta-seo');
+        self::$meta_fields['social']['twitter']['twitter-title']['description'] = esc_html__('Custom title to display when sharing this
          content on twitter, content title override', 'wp-meta-seo');
 
-        self::$meta_fields['social']['twitter-desc']['title']       = esc_html__('Twitter Description', 'wp-meta-seo');
-        self::$meta_fields['social']['twitter-desc']['description'] = esc_html__('Custom description to display when sharing
+        self::$meta_fields['social']['twitter']['twitter-desc']['title']       = esc_html__('Twitter Description', 'wp-meta-seo');
+        self::$meta_fields['social']['twitter']['twitter-desc']['description'] = esc_html__('Custom description to display when sharing
          this content on twitter, content description override', 'wp-meta-seo');
 
-        self::$meta_fields['social']['twitter-image']['title']       = esc_html__('Twitter Image', 'wp-meta-seo');
-        self::$meta_fields['social']['twitter-image']['description'] = esc_html__('Custom image to display when sharing
+        self::$meta_fields['social']['twitter']['twitter-image']['title']       = esc_html__('Twitter Image', 'wp-meta-seo');
+        self::$meta_fields['social']['twitter']['twitter-image']['description'] = esc_html__('Custom image to display when sharing
          this content on facebook, content description override, recommended min size 440px X 220px', 'wp-meta-seo');
 
         do_action('wpmseo_tab_translate');
@@ -202,43 +218,87 @@ class WPMSEOMetabox extends WPMSEOMeta
                     )
                 );
             }
+
+            // Register CSS
+            wp_enqueue_style(
+                'wpms_ju_framework_styles',
+                plugins_url('assets/wordpress-css-framework/css/style.css', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+
+            wp_enqueue_script(
+                'wpms_ju_velocity_js',
+                plugins_url('assets/wordpress-css-framework/js/velocity.min.js', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+            wp_enqueue_script(
+                'wpms_ju_waves_js',
+                plugins_url('assets/wordpress-css-framework/js/waves.js', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+            wp_enqueue_script(
+                'wpms_ju_tabs_js',
+                plugins_url('assets/wordpress-css-framework/js/tabs.js', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+
+            wp_enqueue_style(
+                'wpms_main',
+                plugins_url('assets/css/main.css', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+
             wp_enqueue_style(
                 'm-metabox-tabs',
-                plugins_url('css/metabox-tabs.css', WPMSEO_FILE),
+                plugins_url('assets/css/metabox-tabs.css', WPMSEO_FILE),
                 array(),
                 WPMSEO_VERSION
             );
             wp_enqueue_style(
                 'm-style-qtip',
-                plugins_url('css/jquery.qtip.css', WPMSEO_FILE),
+                plugins_url('assets/css/jquery.qtip.css', WPMSEO_FILE),
                 array(),
                 WPMSEO_VERSION
             );
             wp_enqueue_script(
                 'jquery-qtip',
-                plugins_url('js/jquery.qtip.min.js', WPMSEO_FILE),
+                plugins_url('assets/js/jquery.qtip.min.js', WPMSEO_FILE),
                 array('jquery'),
                 '2.2.1',
                 true
             );
             wp_enqueue_script(
                 'm-wp-seo-metabox',
-                plugins_url('js/wp-metaseo-metabox.js', WPMSEO_FILE),
+                plugins_url('assets/js/wp-metaseo-metabox.js', WPMSEO_FILE),
                 array('jquery', 'jquery-ui-core'),
                 WPMSEO_VERSION,
                 true
             );
             wp_enqueue_script(
                 'mwpseo-admin-media',
-                plugins_url('js/wp-metaseo-admin-media.js', WPMSEO_FILE),
+                plugins_url('assets/js/wp-metaseo-admin-media.js', WPMSEO_FILE),
                 array('jquery', 'jquery-ui-core'),
                 WPMSEO_VERSION,
                 true
             );
+
+            wp_enqueue_script(
+                'metaseo-circle-progress',
+                plugins_url('assets/js/circle-progress.js', WPMSEO_FILE),
+                array('jquery'),
+                WPMSEO_VERSION,
+                true
+            );
+
             wp_enqueue_script(
                 'metaseo-cliffpyles',
-                plugins_url('js/cliffpyles.js', WPMSEO_FILE),
-                array('jquery'),
+                plugins_url('assets/js/cliffpyles.js', WPMSEO_FILE),
+                array('jquery', 'metaseo-circle-progress'),
                 WPMSEO_VERSION,
                 true
             );
@@ -392,10 +452,10 @@ class WPMSEOMetabox extends WPMSEOMeta
         $service         = false;
         ?>
         <div class="wpmseo-metabox-tabs-div">
-        <ul class="wpmseo-metabox-tabs" id="wpmseo-metabox-tabs">
-            <li class="general">
+        <ul class="wpmseo-metabox-tabs tabs wpmstabs" id="wpmseo-metabox-tabs">
+            <li class="tab wpmstab col">
                 <a class="wpmseo_tablink"
-                   data-link="wpmseo_general"><?php esc_html_e('SEO Page optimization', 'wp-meta-seo'); ?></a>
+                   href="#wpmseo_general"><?php esc_html_e('SEO Page optimization', 'wp-meta-seo'); ?></a>
             </li>
             <?php
             if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
@@ -408,8 +468,8 @@ class WPMSEOMetabox extends WPMSEOMeta
                     }
                 }
                 if ($check_connected) {
-                    echo '<li class="gsckeywords">';
-                    echo '<a class="wpmseo_tablink" data-link="wpmseo_gsc_keywords">';
+                    echo '<li class="tab wpmstab col">';
+                    echo '<a class="wpmseo_tablink" href="#wpmseo_gsc_keywords">';
                     esc_html_e('Search console keywords', 'wp-meta-seo');
                     echo '</a>';
                     echo '</li>';
@@ -419,9 +479,9 @@ class WPMSEOMetabox extends WPMSEOMeta
 
             <?php if ((isset($default_settings['metaseo_showsocial'])
                        && (int) $default_settings['metaseo_showsocial'] === 1)) : ?>
-                <li class="social">
+                <li class="tab wpmstab col">
                     <a class="wpmseo_tablink"
-                       data-link="wpmseo_social"><?php esc_html_e('Social for search engine', 'wp-meta-seo') ?></a>
+                       href="#wpmseo_social"><?php esc_html_e('Social for search engine', 'wp-meta-seo') ?></a>
                 </li>
             <?php endif; ?>
             <?php do_action('wpmseo_tab_header'); ?>
@@ -434,7 +494,7 @@ class WPMSEOMetabox extends WPMSEOMeta
             }
             unset($key, $meta_field);
         }
-        $this->doTab('general', $content);
+        $this->doTab('wpmseo_general', $content);
         if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
             if ($check_connected) {
                 // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method MetaSeoAddonAdmin::gscKeywords
@@ -444,12 +504,36 @@ class WPMSEOMetabox extends WPMSEOMeta
 
 
         $content = '';
-        foreach ($this->getMetaFieldDefs('social') as $meta_key => $meta_field) {
-            $content .= $this->doMetaBox($meta_field, $meta_key);
+
+        $social = $this->getMetaFieldDefs('social');
+        foreach ($social as $k => $fields) {
+            $content .= '<div class="metabox-social-block">';
+            if ($k === 'facebook') {
+                $image_src = WPMETASEO_PLUGIN_URL . 'assets/images/facebook/facebook.png';
+                $srcset2x  = WPMETASEO_PLUGIN_URL . 'assets/images/facebook/facebook@2x.png';
+                $srcset3x  = WPMETASEO_PLUGIN_URL . 'assets/images/facebook/facebook@3x.png';
+                $img = '<img src="'.esc_url($image_src).'"
+                 srcset="'.esc_url($srcset2x).' 2x,'.esc_url($srcset3x).' 3x"
+                 class="social-img">';
+                $content .= '<h2 class="wpms-top-h2" style="padding: 0 20px">' . $img . '<span>' . esc_html__('Facebook', 'wp-meta-seo') .'</span></h2>';
+            } elseif ($k === 'twitter') {
+                $image_src = WPMETASEO_PLUGIN_URL . 'assets/images/twitter/twitter.png';
+                $srcset2x  = WPMETASEO_PLUGIN_URL . 'assets/images/twitter/twitter@2x.png';
+                $srcset3x  = WPMETASEO_PLUGIN_URL . 'assets/images/twitter/twitter@3x.png';
+                $img = '<img src="'.esc_url($image_src).'"
+                 srcset="'.esc_url($srcset2x).' 2x,'.esc_url($srcset3x).' 3x"
+                 class="social-img">';
+                $content .= '<h2 class="wpms-top-h2" style="padding: 0 20px">' . $img . '<span>' . esc_html__('Twitter', 'wp-meta-seo') .'</span></h2>';
+            }
+
+            foreach ($fields as $key => $field) {
+                $content .= $this->doMetaBox($field, $key);
+            }
+            $content .= '</div>';
         }
 
         if ((isset($default_settings['metaseo_showsocial']) && (int) $default_settings['metaseo_showsocial'] === 1)) {
-            $this->doTab('social', $content);
+            $this->doTab('wpmseo_social', $content);
         }
 
         do_action('wpmseo_tab_content');
@@ -509,13 +593,9 @@ class WPMSEOMetabox extends WPMSEOMeta
     {
         $output = '';
         $circliful = 0;
-        $output    .= '<div style="width:100%;float:left;">';
+        $output    .= '<div class="wpms_width_100">';
         $output    .= '<div class="metaseo_left">
-            <div class="metaseo-progress-bar" data-post_id="' . esc_attr($post->ID) . '">
-                  <canvas id="inactiveProgress" class="metaseo-progress-inactive" height="275px" width="275px"></canvas>
-              <canvas id="activeProgress" class="metaseo-progress-active"  height="275px" width="275px"></canvas>
-              <p>0%</p>
-            </div>
+            <div class="metaseo-progress-bar" data-post_id="' . esc_attr($post->ID) . '"><strong></strong></div>
             <input type="hidden" id="progressController" value="' . esc_attr($circliful) . '" />
                 <input type="hidden" id="metaseo_alanysis_ok" value="' . esc_attr($this->perc_score) . '" />
           </div>';
@@ -567,7 +647,7 @@ class WPMSEOMetabox extends WPMSEOMeta
                 }
                 $content .= '<input type="text"' . $placeholder . ' id="' . esc_attr($esc_form_key) . '" ' . $ac . '
                 name="' . esc_attr($esc_form_key) . '" value="' . esc_attr($meta_value) . '"
-                 class="' . esc_attr('large-text' . $class) . '"/><br />';
+                 class="' . esc_attr('large-text' . $class) . '"/>';
                 break;
 
             case 'textarea':
@@ -575,7 +655,7 @@ class WPMSEOMetabox extends WPMSEOMeta
                 if (isset($meta_field_def['rows']) && $meta_field_def['rows'] > 0) {
                     $rows = $meta_field_def['rows'];
                 }
-                $content .= '<textarea class="' . esc_attr('large-text' . $class) . '"
+                $content .= '<textarea class="' . esc_attr('wpms_width_100' . $class) . '"
                  rows="' . esc_attr($rows) . '" id="' . esc_attr($esc_form_key) . '"
                   name="' . esc_attr($esc_form_key) . '">' . esc_textarea($meta_value) . '</textarea>';
                 break;
@@ -598,8 +678,8 @@ class WPMSEOMetabox extends WPMSEOMeta
             case 'upload':
                 $content .= '<input id="' . esc_attr($esc_form_key) . '" type="text" size="36" class="' . esc_attr($class) . '"
                  name="' . esc_attr($esc_form_key) . '" value="' . esc_attr($meta_value) . '" />';
-                $content .= '<input id="' . esc_attr($esc_form_key) . '_button" class="wpmseo_image_upload_button button"
-                 type="button" value="' . esc_html__('Upload Image', 'wp-meta-seo') . '" />';
+                $content .= '<button id="' . esc_attr($esc_form_key) . '_button" class="wpmseo_image_upload_button ju-button orange-button wpms-small-btn"
+                 type="button">'.esc_html__('Upload Image', 'wp-meta-seo').'</button>';
                 break;
         }
 
@@ -624,30 +704,30 @@ class WPMSEOMetabox extends WPMSEOMeta
                     'checkbox',
                 ), true) === false
             ) {
-                $label = '<label for="' . esc_attr($esc_form_key) . '">' . $label . ':</label>';
+                $label = '<label for="' . esc_attr($esc_form_key) . '">' . $label . '</label>';
             }
 
             $help = '';
+            $image_src = WPMETASEO_PLUGIN_URL . 'assets/images/question/question.png';
             if (isset($meta_field_def['help']) && $meta_field_def['help'] !== '') {
-                $help = '<i class="material-icons alignright metaseo_help"
-                 id="' . esc_attr($key . 'help') . '" data-alt="' . esc_attr($meta_field_def['help']) . '"
-                  style="color:#32373C">chat_bubble</i>';
+                $help = '<img src="'.esc_url($image_src).'"  class="meta-question metaseo_help" id="' . esc_attr($key . 'help') . '" data-alt="' . esc_attr($meta_field_def['help']) . '">';
             }
-
-            $html = '
-                            <tr>
-                                    <th scope="row">' . $label . $help . '</th>
-                                    <td>';
-
-            $html .= $content;
 
             if (isset($meta_field_def['description'])) {
-                $html .= '<div>' . $meta_field_def['description'] . '</div>';
+                if (strpos($meta_field_def['class'], 'has-length') !== false) {
+                    $content .= $meta_field_def['description'];
+                }
             }
 
-            $html .= '
-                                    </td>
-                            </tr>';
+            $html = '<div class="'. esc_html($meta_field_def['classrow'] . ' wpms_left optimization-row-box m-tb-10') .'">';
+            $html .= '<label class="ju-setting-label wpms_width_100 wpms_left p-l-0">'. $label . $help .'</label>';
+            $html .= '<label class="wpms_width_100 label-input wpms_left p-tb-20">'. $content .'</label>';
+            if (isset($meta_field_def['description'])) {
+                if (!strpos($meta_field_def['class'], 'has-length') !== false) {
+                    $html .= '<p class="description">' . $meta_field_def['description'] . '</p>';
+                }
+            }
+            $html .= '</div>';
         }
         return $html;
     }
@@ -698,28 +778,38 @@ class WPMSEOMetabox extends WPMSEOMeta
     {
         global $post;
         ?>
-        <div class="<?php echo esc_attr('wpmseotab ' . $id) ?>">
-            <?php if ($id === 'general') : ?>
-                <p class="reload_analysis">
+
+        <div class="<?php echo esc_attr('wpmseotab ' . $id) ?>" id="<?php echo esc_attr($id) ?>">
+            <div class="meta-box-top">
+                <h1 class="wpms-top-h2" style="float: left">
+                    <?php
+                    if ($id === 'wpmseo_general') {
+                        esc_html_e('SEO Page Optimization', 'wp-meta-seo');
+                    } elseif ($id === 'wpmseo_social') {
+                        esc_html_e('Social Sharing Apparence', 'wp-meta-seo');
+                    }
+                    ?>
+                </h1>
+            <?php if ($id === 'wpmseo_general') : ?>
+                <p class="reload_analysis" style="margin: 20px 0">
                     <span class="spinner" style="float: left;"></span>
-                    <input type="button" name="reload_analysis" id="reload_analysis" class="button button-primary"
-                           value="<?php esc_attr_e('Reload analysis', 'wp-meta-seo'); ?>">
+                    <button type="button" name="reload_analysis" id="reload_analysis" class="ju-button orange-button waves-effect waves-light"
+                           ><?php esc_html_e('Reload analysis', 'wp-meta-seo'); ?></button>
                 </p>
             <?php endif; ?>
-            <table class="form-table">
-                <?php
-                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method doMetaBox
-                echo $content;
-                ?>
-            </table>
+            </div>
             <?php
-            if ($id === 'general') {
+            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method doMetaBox
+            echo $content;
+            ?>
+            <?php
+            if ($id === 'wpmseo_general') {
                 // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method pageAnalysis
                 echo $this->pageAnalysis($post);
                 $settings = get_option('_metaseo_settings');
                 if (!empty($settings['metaseo_follow'])) {
                     $page_follow = get_post_meta($post->ID, '_metaseo_metafollow', true);
-                    $slf = '<select class="metaseo_metabox_follow" data-post_id="' . esc_attr($post->ID) . '">';
+                    $slf = '<select class="metaseo_metabox_follow wpms-large-input" data-post_id="' . esc_attr($post->ID) . '">';
                     if ($page_follow === 'nofollow') {
                         $slf .= '<option value="follow">' . esc_html__('Follow', 'wp-meta-seo') . '</option>';
                         $slf .= '<option selected value="nofollow">' . esc_html__('Nofollow', 'wp-meta-seo') . '</option>';
@@ -728,7 +818,7 @@ class WPMSEOMetabox extends WPMSEOMeta
                         $slf .= '<option value="nofollow">' . esc_html__('Nofollow', 'wp-meta-seo') . '</option>';
                     }
                     $slf .= '</select>';
-                    echo '<p class="p_index_folder"><span class="wpmslabel">' . esc_html__('Follow', 'wp-meta-seo') . '
+                    echo '<p class="wpms_width_100 wpms_left optimization-row-box m-tb-10 p_index_folder"><span class="wpmslabel">' . esc_html__('Follow', 'wp-meta-seo') . '
                     <i class="material-icons alignright metaseo_help" id="deschelp"
                      data-alt="' . esc_attr__('Nofollow provides a way for webmasters to tell search engines:
                       don\'t follow this link. So it may influence the link target’s ranking', 'wp-meta-seo') . '"
@@ -737,7 +827,7 @@ class WPMSEOMetabox extends WPMSEOMeta
 
                 if (!empty($settings['metaseo_index'])) {
                     $page_index = get_post_meta($post->ID, '_metaseo_metaindex', true);
-                    $sli = '<select class="metaseo_metabox_index" data-post_id="' . esc_attr($post->ID) . '">';
+                    $sli = '<select class="metaseo_metabox_index wpms-large-input" data-post_id="' . esc_attr($post->ID) . '">';
                     if ($page_index === 'noindex') {
                         $sli .= '<option value="index">' . esc_html__('Index', 'wp-meta-seo') . '</option>';
                         $sli .= '<option selected value="noindex">' . esc_html__('Noindex', 'wp-meta-seo') . '</option>';
@@ -747,7 +837,7 @@ class WPMSEOMetabox extends WPMSEOMeta
                     }
 
                     $sli .= '</select>';
-                    echo '<p class="p_index_folder"><span class="wpmslabel">' . esc_html__('Index', 'wp-meta-seo') . '
+                    echo '<p class="wpms_width_100 wpms_left optimization-row-box m-tb-10 p_index_folder"><span class="wpmslabel">' . esc_html__('Index', 'wp-meta-seo') . '
                     <i class="material-icons alignright metaseo_help" id="deschelp"
                      data-alt="' . esc_attr__('Allow search engines robots to index this content,
                       as default your content is indexed', 'wp-meta-seo') . '"

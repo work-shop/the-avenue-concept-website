@@ -579,8 +579,8 @@ class GF_System_Report {
 								'value'              => esc_html( phpversion() ),
 								'type'               => 'version_check',
 								'version_compare'    => '>=',
-								'minimum_version'    => '5.6',
-								'validation_message' => esc_html__( 'Gravity Forms requires PHP 5.6 or above.', 'gravityforms' ),
+								'minimum_version'    => '7.1',
+								'validation_message' => esc_html__( 'Recommended: PHP 7.1 or higher.', 'gravityforms' ),
 							),
 							array(
 								'label'        => esc_html__( 'Memory Limit', 'gravityforms' ) . ' (memory_limit)',
@@ -1457,7 +1457,8 @@ class GF_System_Report {
 	public static function get_theme() {
 
 		wp_update_themes();
-		$update_themes = get_site_transient( 'update_themes' );
+		$update_themes          = get_site_transient( 'update_themes' );
+		$update_themes_versions = ! empty( $update_themes->checked ) ? $update_themes->checked : array();
 
 		$active_theme     = wp_get_theme();
 		$theme_name       = wp_strip_all_tags( $active_theme->get( 'Name' ) );
@@ -1470,7 +1471,7 @@ class GF_System_Report {
 				'label'        => $theme_name,
 				'value'        => sprintf( 'by <a href="%s">%s</a> - %s', $theme_author_uri, $theme_author, $theme_version ),
 				'value_export' => sprintf( 'by %s (%s) - %s', $theme_author, $theme_author_uri, $theme_version ),
-				'is_valid'     => version_compare( $theme_version, rgar( $update_themes->checked, $active_theme->get_stylesheet() ), '>=' )
+				'is_valid'     => version_compare( $theme_version, rgar( $update_themes_versions, $active_theme->get_stylesheet() ), '>=' )
 			),
 		);
 
@@ -1486,7 +1487,7 @@ class GF_System_Report {
 				'label_export' => $parent_name . ' (Parent)',
 				'value'        => sprintf( 'by <a href="%s">%s</a> - %s', $parent_author_uri, $parent_author, $parent_version ),
 				'value_export' => sprintf( 'by %s (%s) - %s', $parent_author, $parent_author_uri, $parent_version ),
-				'is_valid'     => version_compare( $parent_version, rgar( $update_themes->checked, $parent_theme->get_stylesheet() ), '>=' )
+				'is_valid'     => version_compare( $parent_version, rgar( $update_themes_versions, $parent_theme->get_stylesheet() ), '>=' )
 			);
 		}
 

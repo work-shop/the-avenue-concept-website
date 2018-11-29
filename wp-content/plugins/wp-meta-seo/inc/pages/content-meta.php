@@ -1,8 +1,11 @@
 <?php
+/* Prohibit direct script loading */
+defined('ABSPATH') || die('No direct script access allowed!');
 if (!class_exists('MetaSeoContentListTable')) {
     require_once(WPMETASEO_PLUGIN_DIR . '/inc/class.metaseo-content-list-table.php');
 }
 
+add_thickbox();
 $metaseo_list_table = new MetaSeoContentListTable();
 $metaseo_list_table->processAction();
 $metaseo_list_table->prepare_items();
@@ -16,10 +19,49 @@ if (!empty($_REQUEST['_wp_http_referer'])) {
 
 <div class="wrap seo_extended_table_page">
     <div id="icon-edit-pages" class="icon32 icon32-posts-page"></div>
-    <?php echo '<h1>' . esc_html__('Content Meta', 'wp-meta-seo') . '</h1>'; ?>
-    <form id="wp-seo-meta-form" action="" method="post">
+
+    <form id="wp-seo-meta-form" class="wpms-form-table" action="" method="post">
+        <div id="meta-bulk-actions" style="display:none;">
+            <div class="m-tb-20">
+                <h3 class="wpms-top-h3"><?php esc_html_e('Apply bulk action to', 'wp-meta-seo') ?></h3>
+                <p>
+                    <label class="wpms-text-action">
+                        <input type="checkbox" class="mbulk_copy wpms-checkbox" value="all">
+                        <?php esc_html_e('All Posts', 'wp-meta-seo') ?>
+                    </label>
+                </p>
+                <p>
+                    <label class="wpms-text-action">
+                        <input type="checkbox" class="mbulk_copy wpms-checkbox" value="only-selection" checked="checked">
+                        <?php esc_html_e('Only post selection', 'wp-meta-seo') ?>
+                    </label>
+                </p>
+            </div>
+
+            <div class="m-tb-20">
+                <h3 class="wpms-top-h3"><?php esc_html_e('Action', 'wp-meta-seo') ?></h3>
+                <p>
+                    <label class="wpms-text-action">
+                        <input type="checkbox" class="wpms-bulk-action wpms-checkbox" value="post-copy-title">
+                        <?php esc_html_e('Copy Title as Meta Title', 'wp-meta-seo') ?>
+                    </label>
+                </p>
+                <p>
+                    <label class="wpms-text-action">
+                        <input type="checkbox" class="wpms-bulk-action wpms-checkbox" value="post-copy-desc">
+                        <?php esc_html_e('Copy Title as Meta Description', 'wp-meta-seo') ?>
+                    </label>
+                </p>
+            </div>
+
+            <button type="button" name="do_copy" data-action="bulk_post_copy"
+                                 class="ju-button orange-button btn_do_copy post_do_copy wpms-small-btn wpms_left"><?php esc_html_e('Apply now', 'wp-meta-seo') ?></button>
+            <span class="spinner wpms-spinner wpms-spinner-copy wpms_left"></span>
+            <label class="bulk-msg"><?php esc_html_e('Done! You may ', 'wp-meta-seo') ?><a href="<?php echo esc_url(admin_url('admin.php?page=metaseo_content_meta')) ?>"><?php esc_html_e('close the window and refresh the page...', 'wp-meta-seo') ?></a></label>
+        </div>
         <?php
-        $metaseo_list_table->search_box(esc_html__('Search Posts', 'wp-meta-seo'), 'wpms_content');
+        echo '<h1 class="wpms-top-h1">' . esc_html__('Content Meta', 'wp-meta-seo') . '</h1>';
+        $metaseo_list_table->searchBox(esc_html__('Search Posts', 'wp-meta-seo'), 'wpms_content');
         $metaseo_list_table->display();
         ?>
     </form>

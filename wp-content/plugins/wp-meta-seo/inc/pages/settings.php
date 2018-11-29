@@ -1,267 +1,216 @@
 <?php
+/* Prohibit direct script loading */
+defined('ABSPATH') || die('No direct script access allowed!');
 wp_enqueue_style('m-style-qtip');
 wp_enqueue_script('jquery-qtip');
+
+$tabs_data = array(
+    array(
+        'id'    => 'general',
+        'title' => __('General', 'wp-meta-seo'),
+        'icon'  => 'home'
+    )
+);
+
+if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
+    $tabs_data[] = array(
+        'id'    => 'local_business',
+        'title' => __('Local business', 'wp-meta-seo'),
+        'icon'  => 'account_circle'
+    );
+}
+
+$tabs_data[] = array(
+    'id'    => 'redirections_404',
+    'title' => __('Redirections and 404', 'wp-meta-seo'),
+    'icon'  => 'directions'
+);
+
+$tabs_data[] = array(
+    'id'    => 'breadcrumb',
+    'title' => __('Breadcrumb', 'wp-meta-seo'),
+    'icon'  => 'horizontal_split'
+);
+
+if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
+    $tabs_data[] = array(
+        'id'    => 'send_email',
+        'title' => __('Send Email', 'wp-meta-seo'),
+        'icon'  => 'email'
+    );
+}
+
+$tabs_data[] = array(
+    'id'    => 'social',
+    'title' => __('Social', 'wp-meta-seo'),
+    'icon'  => 'share'
+);
+
+$tabs_data[] = array(
+    'id'       => 'image_compression',
+    'title'    => __('Image compression', 'wp-meta-seo'),
+    'icon'     => 'compare'
+);
+
+$tabs_data[] = array(
+    'id'       => 'jutranslation',
+    'title'    => __('Translation', 'wp-meta-seo'),
+    'icon'     => 'format_color_text'
+);
+
+$tabs_data[] = array(
+    'id' => 'system_check',
+    'title' => __('System Check', 'wp-meta-seo'),
+    'content' => 'system-check',
+    'icon' => 'verified_user',
+);
+
+$setting_switch_fields = array(
+    'metaseo_showkeywords'   => array(
+        'label' => __('Meta keywords', 'wp-meta-seo'),
+        'help'  => __('Active the meta keyword edition feature', 'wp-meta-seo'),
+    ),
+    'metaseo_metatitle_tab'  => array(
+        'label' => __('Meta title as page title', 'wp-meta-seo'),
+        'help'  => __('When meta title is filled use it as page title instead of the content title', 'wp-meta-seo'),
+    ),
+    'metaseo_showtmetablock' => array(
+        'label' => __('Meta block edition', 'wp-meta-seo'),
+        'help'  => __('Activate the OnPage analysis and meta edition below the content', 'wp-meta-seo'),
+    ),
+    'metaseo_linkfield'      => array(
+        'label' => __('Link text field', 'wp-meta-seo'),
+        'help'  => __('Add back the missing title field in the Insert/Edit URL box', 'wp-meta-seo'),
+    ),
+    'metaseo_seovalidate'    => array(
+        'label' => __('Force SEO validation', 'wp-meta-seo'),
+        'help'  => __('Allow user to force on page SEO criteria validation by clicking on the icon', 'wp-meta-seo'),
+    ),
+    'metaseo_index'          => array(
+        'label' => __('Post/Page index', 'wp-meta-seo'),
+        'help'  => __('Add an option to say to search engine: hey!
+                 Do not index this content', 'wp-meta-seo'),
+    ),
+    'metaseo_follow'         => array(
+        'label' => __('Post/Page follow', 'wp-meta-seo'),
+        'help'  => __('Add an option to setup Follow/Nofollow instruction for each content', 'wp-meta-seo'),
+    ),
+    'metaseo_overridemeta'   => array(
+        'label' => __('Use image information from bulk editor', 'wp-meta-seo'),
+        'help'  => __('Override the image information (Alt text) with image bulk editor content', 'wp-meta-seo'),
+    )
+);
+
 ?>
-<div class="wrap wrap_wpms_settings">
-    <h1><?php esc_html_e('WP Meta SEO global settings', 'wp-meta-seo') ?></h1>
-    <div class="tab-header">
-        <ul class="tabs wpmstabs">
-            <li class="tab wpmstab col active"><a href="#wpms-global"><?php esc_html_e('Global', 'wp-meta-seo') ?></a>
-            </li>
-            <li class="tab wpmstab col"><a
-                        href="#wpms-redirection"><?php esc_html_e('Redirections and 404', 'wp-meta-seo') ?></a></li>
-            <li class="tab wpmstab col"><a href="#wpms-breadcrumb"><?php esc_html_e('Breadcrumb', 'wp-meta-seo') ?></a>
-            </li>
-            <?php
-            if (is_plugin_active(WPMSEO_ADDON_FILENAME)) :
-                ?>
-                <li class="tab wpmstab col"><a href="#wpms-email"><?php esc_html_e('Send Email', 'wp-meta-seo') ?></a>
+
+<div class="ju-main-wrapper">
+    <div class="ju-left-panel">
+        <div class="ju-logo">
+            <a href="https://www.joomunited.com/" target="_blank">
+                <img src="<?php echo esc_url(WPMETASEO_PLUGIN_URL . 'assets/wordpress-css-framework/images/logo-joomUnited-white.png') ?>"
+                     alt="<?php esc_html_e('JoomUnited logo', 'wp-meta-seo') ?>">
+            </a>
+        </div>
+        <div class="ju-menu-search">
+            <i class="material-icons ju-menu-search-icon">
+                search
+            </i>
+
+            <input type="text" class="ju-menu-search-input"
+                   placeholder="<?php esc_html_e('Search settings', 'wp-meta-seo') ?>"
+            >
+        </div>
+        <ul class="tabs ju-menu-tabs">
+            <?php foreach ($tabs_data as $tab) : ?>
+                <li class="tab" data-tab-title="<?php echo esc_attr($tab['title']) ?>">
+                    <a href="#<?php echo esc_attr($tab['id']) ?>"
+                       class="link-tab white-text waves-effect waves-light <?php echo (empty($tab['sub_tabs'])) ? 'no-submenus' : 'with-submenus' ?>"
+                    >
+                        <i class="material-icons menu-tab-icon"><?php echo esc_html($tab['icon']) ?></i>
+                        <span class="tab-title"
+                              title="<?php echo esc_attr($tab['title']) ?>"><?php echo esc_html($tab['title']) ?></span>
+                        <?php
+                        if ($tab['id'] === 'system_check') {
+                            if (version_compare(PHP_VERSION, '7.2.0', '<') || !in_array('curl', get_loaded_extensions()) || !function_exists('gd_info')) {
+                                echo '<i class="material-icons system-checkbox material-icons-menu-alert" style="float: right;vertical-align: text-bottom;">info</i>';
+                            }
+                        }
+                        ?>
+                    </a>
                 </li>
-                <li class="tab wpmstab col"><a
-                            href="#wpms-local_usiness"><?php esc_html_e('Local business', 'wp-meta-seo') ?></a></li>
-                <?php
-            endif;
-            ?>
-            <li class="tab wpmstab col"><a
-                        href="#wpms-jutranslation"><?php esc_html_e('Translation', 'wp-meta-seo') ?></a></li>
+            <?php endforeach; ?>
         </ul>
     </div>
-    <div class="wpms_content_settings">
-        <div id="wpms-global" class="content-box">
-            <form method="post" action="options.php">
-                <?php
-                settings_fields('Wp Meta SEO');
-                do_settings_sections('metaseo_settings');
-                ?>
-                <p class="submit"><input type="submit" name="submit" id="submit" class="wpmsbtn" value="Save Changes">
-                </p>
-            </form>
-        </div>
-
-        <div id="wpms-redirection" class="content-box">
-            <table class="form-table">
-                <tbody>
-                <tr>
-                    <th scope="row"><?php esc_html_e('Global home redirect', 'wp-meta-seo') ?></th>
-                    <td>
-                        <input type="hidden" class="wpms_redirect_homepage" name="wpms_redirect[wpms_redirect_homepage]"
-                               value="<?php echo esc_attr($defaul_settings_404['wpms_redirect_homepage']) ?>">
-                        <label><?php esc_html_e('Redirect all 404 errors to home page', 'wp-meta-seo'); ?></label>
-                        <div class="switch-optimization">
-                            <label class="switch switch-optimization">
-                                <?php
-                                if (isset($defaul_settings_404['wpms_redirect_homepage'])
-                                    && (int) $defaul_settings_404['wpms_redirect_homepage'] === 1) :
-                                    ?>
-                                    <input type="checkbox" class="cb_option" id="wpms_redirect_homepage"
-                                           data-label="wpms_redirect_homepage"
-                                           value="1" checked>
-                                <?php else : ?>
-                                    <input type="checkbox" class="cb_option" id="wpms_redirect_homepage"
-                                           data-label="wpms_redirect_homepage"
-                                           value="1">
-                                <?php endif; ?>
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row"><?php esc_html_e('Custom 404 page', 'wp-meta-seo') ?></th>
-                    <td>
-                        <label>
-                            <select name="wpms_redirect[wpms_type_404]"
-                                    class="wpms_type_404"
-                                <?php echo ((int) $defaul_settings_404['wpms_redirect_homepage'] === 1) ? 'disabled' : '' ?>>
-                                <?php foreach ($types_404 as $k => $type_404) : ?>
-                                    <option <?php selected($defaul_settings_404['wpms_type_404'], $k) ?>
-                                            value="<?php echo esc_attr($k) ?>"><?php echo esc_html($type_404) ?></option>
-                                <?php endforeach; ?>
-                            </select>
+    <form method="post" action="">
+        <div class="ju-right-panel">
+            <div class="ju-content-wrapper">
+                <div id="profiles-container">
+                    <?php foreach ($tabs_data as $tab) : ?>
+                        <div class="ju-content-wrapper" id="<?php echo esc_attr($tab['id']) ?>" style="display: none">
                             <?php
-                            if ((int) $defaul_settings_404['wpms_redirect_homepage'] === 1
-                                || $defaul_settings_404['wpms_type_404'] !== 'custom_page') {
-                                $disable = 'disabled';
-                            } else {
-                                $disable = '';
+                            if (!empty($tab['sub_tabs'])) :
+                                ?>
+                                <div class="ju-top-tabs-wrapper">
+                                    <ul class="tabs ju-top-tabs">
+                                        <?php
+                                        foreach ($tab['sub_tabs'] as $tab_id => $tab_label) :
+                                            ?>
+
+                                            <li class="tab">
+                                                <a href="#<?php echo esc_html($tab_id) ?>"
+                                                   class="link-tab waves-effect waves-light">
+                                                    <?php echo esc_html($tab_label) ?>
+                                                </a>
+                                            </li>
+
+                                            <?php
+                                        endforeach;
+                                        ?>
+                                    </ul>
+                                </div>
+                                <?php
+                            endif;
+                            ?>
+                            <?php if ($tab['id'] !== 'image_compression' && $tab['id'] !== 'cloud') : ?>
+                                <div class="wpms_width_100 top_bar">
+                                    <h1><?php echo esc_html($tab['title']) . ' ' . esc_html__('Settings', 'wp-meta-seo') ?></h1>
+                                </div>
+                            <?php endif; ?>
+
+                            <?php
+                            // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- View request, no action
+                            if (isset($_POST['btn_wpms_save']) && $tab['id'] !== 'cloud') {
+                                ?>
+                                <div class="wpms_width_100 top_bar saved_infos">
+                                    <?php
+                                    require WPMETASEO_PLUGIN_DIR . '/inc/pages/settings/saved_info.php';
+                                    ?>
+                                </div>
+                                <?php
                             }
                             ?>
-                            <select name="wpms_redirect[wpms_page_redirected]"
-                                    class="wpms_page_redirected" <?php echo esc_attr($disable) ?>>
-                                <option value="none"><?php esc_html_e('— Select —', 'wp-meta-seo') ?></option>
-                                <?php foreach ($posts as $post) : ?>
-                                    <option <?php selected($defaul_settings_404['wpms_page_redirected'], $post->ID) ?>
-                                            value="<?php echo esc_attr($post->ID) ?>"><?php echo esc_html($post->post_title) ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </label>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <?php
-            if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
-                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in 'wp-meta-seo-addon/inc/page/link_settings.php' file
-                echo $link_settings_html;
-            }
-            ?>
-            <div class="button wpms_save_settings404"><?php esc_html_e('Save', 'wp-meta-seo') ?></div>
-            <span class="message_saved"><?php esc_html_e('Saved', 'wp-meta-seo') ?></span>
-        </div>
-
-        <div id="wpms-breadcrumb" class="content-box">
-            <table class="form-table">
-                <tbody>
-                <tr>
-                    <th scope="row">
-                        <label for="<?php esc_attr_e('The separator that materialize the breadcrumb levels', 'wp-meta-seo') ?>">
-                            <?php esc_html_e('Breadcrumb separator', 'wp-meta-seo') ?>
-                        </label>
-                    </th>
-                    <td>
-                        <label>
-                            <input id="breadcrumbs_separator" name="_metaseo_breadcrumbs[separator]" type="text"
-                                   value="<?php echo esc_attr(htmlentities($breadcrumbs['separator'])) ?>" size="50">
-                        </label>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th scope="row">
-                        <label for="<?php esc_attr_e('Include the Home element in the breadcrumb', 'wp-meta-seo') ?>">
-                            <?php esc_html_e('Include Home', 'wp-meta-seo') ?></label>
-                    </th>
-                    <td>
-                        <input name="_metaseo_breadcrumbs[include_home]" type="hidden" value="0">
-                        <div class="switch-optimization">
-                            <label class="switch switch-optimization">
-                                <input type="checkbox" id="include_home"
-                                       name="_metaseo_breadcrumbs[include_home]"
-                                       value="1" <?php checked($breadcrumbs['include_home'], 1) ?>>
-                                <span class="slider round"></span>
-                            </label>
+                            <?php include_once(WPMETASEO_PLUGIN_DIR . '/inc/pages/settings/' . $tab['id'] . '.php'); ?>
                         </div>
-                    </td>
-                </tr>
+                    <?php endforeach; ?>
 
-                <tr>
-                    <th scope="row">
-                        <label for="<?php esc_attr_e('If home is included, you may want to force a text.
-                         By default it’s the content title', 'wp-meta-seo') ?>">
-                            <?php esc_html_e('Home text', 'wp-meta-seo') ?>
-                        </label>
-                    </th>
-                    <td>
-                        <input name="_metaseo_breadcrumbs[home_text_default]" type="hidden" value="0">
-                        <div class="switch-optimization">
-                            <label class="switch switch-optimization">
-                                <input type="checkbox" id="home_text_default"
-                                       name="_metaseo_breadcrumbs[home_text_default]"
-                                       value="1" <?php checked($breadcrumbs['home_text_default'], 1) ?>>
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-
-                <?php
-                if ((int) $breadcrumbs['home_text_default'] === 0) {
-                    $class = 'hide';
-                } else {
-                    $class = 'show';
-                }
-                ?>
-                <tr class="<?php echo esc_attr('tr_home_text ' . $class) ?>">
-                    <th scope="row">
-                        <label></label>
-                    </th>
-                    <td>
-                        <label>
-                            <input id="breadcrumbs_home_text" name="_metaseo_breadcrumbs[home_text]" type="text"
-                                   value="<?php echo esc_attr($breadcrumbs['home_text']) ?>" size="50">
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="row">
-                        <label for="<?php esc_attr_e('The breadcrumb element can be clickable or not', 'wp-meta-seo') ?>">
-                            <?php esc_html_e('Clickable breadcrumb', 'wp-meta-seo') ?></label>
-                    </th>
-                    <td>
-                        <input name="_metaseo_breadcrumbs[clickable]" type="hidden" value="0">
-                        <div class="switch-optimization">
-                            <label class="switch switch-optimization">
-                                <input type="checkbox" id="clickable"
-                                       name="_metaseo_breadcrumbs[clickable]"
-                                       value="1" <?php checked($breadcrumbs['clickable'], 1) ?>>
-                                <span class="slider round"></span>
-                            </label>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th scope="row">
-                        <label for="<?php esc_attr_e('Generate a breadcrumb navigation based on your categories or page levels.
-                         The shortcode can be included in theme layouts', 'wp-meta-seo') ?>">
-                            <?php esc_html_e('PHP Shortcode', 'wp-meta-seo') ?>
-                        </label>
-                    </th>
-                    <td>
-                        <label>
-                            <textarea style="width: 700px;height:200px;resize:both" readonly>
-        /**
-        * @param bool $return Whether to return or echo the trail. (optional)
-        * @param bool $reverse Whether to reverse the output or not. (optional)
-        */
-        if(function_exists('wpms_breadcrumb')){
-            $return = false;
-            $reverse = false;
-            echo '<div class="breadcrumbs" typeof="BreadcrumbList" vocab="https://schema.org/">';
-            wpms_breadcrumb($return,$reverse);
-            echo '</div>';
-        }
-                            </textarea>
-                        </label>
-                    </td>
-                </tr>
-
-                <tr>
-                    <th scope="row">
-                        <label for="<?php esc_attr_e('Generate a breadcrumb navigation based on your categories or page levels.
-                         The WordPress shortcode can be called anywhere in your content', 'wp-meta-seo') ?>">
-                            <?php esc_html_e('WordPress Shortcode', 'wp-meta-seo') ?>
-                        </label>
-                    </th>
-                    <td>
-                        <label>
-                            <input type="text" size="50" readonly value="[wpms_breadcrumb reverse=”0″]">
-                        </label>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="button wpms_save_settings_breadcrumb"><?php esc_html_e('Save', 'wp-meta-seo') ?></div>
-            <span class="message_saved"><?php esc_html_e('Saved', 'wp-meta-seo') ?></span>
+                </div>
+            </div>
         </div>
-
-        <div id="wpms-jutranslation" class="content-box">
-            <?php \Joomunited\WPMetaSEO\Jutranslation\Jutranslation::getInput(); ?>
-        </div>
-
-        <?php
-        if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
-            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in 'wp-meta-seo-addon/inc/page/email_settings.php' file
-            echo $html_tabemail;
-            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in 'wp-meta-seo-addon/inc/page/local_business.php' file
-            echo $local_business_html;
-        }
-        ?>
-
-    </div>
+    </form>
 </div>
+
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
+        <?php
+        // phpcs:disable Generic.WhiteSpace.ScopeIndent.Incorrect, Generic.WhiteSpace.ScopeIndent.IncorrectExact, WordPress.Security.NonceVerification.NoNonceVerification -- View request, no action
+        if (!empty($_POST['wpmf_hash'])) :
+        ?>
+        $('.ju-top-tabs .link-tab[href="#<?php echo esc_html($_POST['wpmf_hash']) ?>"]').click();
+        <?php
+        endif;
+        // phpcs:enable
+        ?>
+
         jQuery('.wrap_wpms_settings tr label').qtip({
             content: {
                 attr: 'for'
@@ -371,6 +320,14 @@ wp_enqueue_script('jquery-qtip');
             } else {
                 enable = 0;
             }
+
+            if ($('#showautentication').is(":checked")) {
+                var showautentication = 'yes';
+            } else {
+                showautentication = 'no';
+            }
+
+
             var $this = $(this);
             $.ajax({
                 url: ajaxurl,
@@ -382,7 +339,7 @@ wp_enqueue_script('jquery-qtip');
                     host: $('#showSmtpHost').val(),
                     type_encryption: $('[name="wpms_email_settings[type_encryption]"]:checked').val(),
                     port: $('#showSmtpPort').val(),
-                    autentication: $('[name="wpms_email_settings[autentication]"]:checked').val(),
+                    autentication: showautentication,
                     username: $('#showSmtpUser').val(),
                     password: $('#showSmtpPass').val(),
                     wpms_nonce: wpms_localize.wpms_nonce
@@ -433,7 +390,7 @@ wp_enqueue_script('jquery-qtip');
 
         $(".wpms-seoImgAdd").on("click", function () {
             var file_frame,
-                $this = $(this).parents('.wpms-seo-image-wrapper');
+                $this = $('.local-business-bar');
             if (undefined !== file_frame) {
                 file_frame.open();
                 return;
@@ -459,7 +416,7 @@ wp_enqueue_script('jquery-qtip');
                 $this.find('#wpms_local_business_logo').val(imgId);
                 $this.find('.wpms-seoImgRemove').removeClass('wpms-seo-hidden');
                 $this.find('img').remove();
-                $this.find('.wpms-seo-image-preview').append("<img src='" + imgUrl + "' />");
+                $this.find('.wpms-seo-image-preview').html("<img src='" + imgUrl + "' />");
                 $this.parents('.wpms-seo-image').find('.image-info').html(imgInfo);
             });
             // Now display the actual file_frame
@@ -469,10 +426,10 @@ wp_enqueue_script('jquery-qtip');
         $(".wpms-seoImgRemove").on("click", function (e) {
             e.preventDefault();
             if (confirm("Are you sure?")) {
-                var $this = $(this).parents('.wpms-seo-image-wrapper');
+                var $this = $('.local-business-bar');
                 $this.find('input').val('');
                 $this.find('.wpms-seoImgRemove').addClass('wpms-seo-hidden');
-                $this.find('img').remove();
+                $this.find('.wpms-seo-image-preview').html('<i class="material-icons business-img-default">photo</i>');
                 $this.parents('.wpms-seo-image').find('.image-info').html('');
             }
         });

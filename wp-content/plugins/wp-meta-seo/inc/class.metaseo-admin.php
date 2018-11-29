@@ -91,10 +91,11 @@ class MetaSeoAdmin
             update_option('_wpms_dash_last_update', time());
         }
 
+        add_action('admin_init', array($this, 'adminRedirects'));
+        add_action('init', array($this, 'install'));
         add_action('admin_init', array($this, 'adminInit'));
         add_action('init', array($this, 'loadLangguage'));
         add_action('admin_menu', array($this, 'addMenuPage'));
-
         /**
          * Load admin js
          */
@@ -141,23 +142,7 @@ class MetaSeoAdmin
      */
     public function initSettings()
     {
-        $this->settings = array(
-            'metaseo_title_home'     => '',
-            'metaseo_desc_home'      => '',
-            'metaseo_showfacebook'   => '',
-            'metaseo_showfbappid'    => '',
-            'metaseo_showtwitter'    => '',
-            'metaseo_twitter_card'   => 'summary',
-            'metaseo_showkeywords'   => 0,
-            'metaseo_showtmetablock' => 1,
-            'metaseo_showsocial'     => 1,
-            'metaseo_seovalidate'    => 0,
-            'metaseo_linkfield'      => 1,
-            'metaseo_metatitle_tab'  => 0,
-            'metaseo_follow'         => 0,
-            'metaseo_index'          => 0,
-            'metaseo_overridemeta'   => 1
-        );
+        $this->settings = wpmsGetDefaultSettings();
         $settings       = get_option('_metaseo_settings');
 
         if (is_array($settings)) {
@@ -212,7 +197,6 @@ class MetaSeoAdmin
      */
     public function adminInit()
     {
-        $this->fieldSettings();
         $this->createDatabase();
         $this->updateLinksTable();
     }
@@ -226,14 +210,14 @@ class MetaSeoAdmin
     {
         wp_enqueue_style(
             'm-style-qtip',
-            plugins_url('css/jquery.qtip.css', dirname(__FILE__)),
+            plugins_url('assets/css/jquery.qtip.css', dirname(__FILE__)),
             array(),
             WPMSEO_VERSION
         );
 
         wp_enqueue_script(
             'jquery-qtip',
-            plugins_url('js/jquery.qtip.min.js', dirname(__FILE__)),
+            plugins_url('assets/js/jquery.qtip.min.js', dirname(__FILE__)),
             array('jquery'),
             '2.2.1',
             true
@@ -333,13 +317,13 @@ class MetaSeoAdmin
     {
         wp_enqueue_style(
             'm-style-qtip',
-            plugins_url('css/jquery.qtip.css', dirname(__FILE__)),
+            plugins_url('assets/css/jquery.qtip.css', dirname(__FILE__)),
             array(),
             WPMSEO_VERSION
         );
         wp_enqueue_script(
             'jquery-qtip',
-            plugins_url('js/jquery.qtip.min.js', dirname(__FILE__)),
+            plugins_url('assets/js/jquery.qtip.min.js', dirname(__FILE__)),
             array('jquery'),
             '2.2.1',
             true
@@ -449,13 +433,13 @@ class MetaSeoAdmin
     {
         wp_enqueue_style(
             'm-style-qtip',
-            plugins_url('css/jquery.qtip.css', dirname(__FILE__)),
+            plugins_url('assets/css/jquery.qtip.css', dirname(__FILE__)),
             array(),
             WPMSEO_VERSION
         );
         wp_enqueue_script(
             'jquery-qtip',
-            plugins_url('js/jquery.qtip.min.js', dirname(__FILE__)),
+            plugins_url('assets/js/jquery.qtip.min.js', dirname(__FILE__)),
             array('jquery'),
             '2.2.1',
             true
@@ -463,12 +447,11 @@ class MetaSeoAdmin
         wp_enqueue_style('wpms-dashboard-widgets');
         wp_enqueue_script(
             'wpms-dashboard-widgets',
-            plugins_url('js/dashboard_widgets.js', dirname(__FILE__)),
+            plugins_url('assets/js/dashboard_widgets.js', dirname(__FILE__)),
             array('jquery'),
             WPMSEO_VERSION
         );
         wp_enqueue_style('wpms-myqtip');
-        $error_404 = MetaSeoDashboard::get404Link();
         require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/dashboard_widgets.php');
     }
 
@@ -665,6 +648,21 @@ class MetaSeoAdmin
             $this->create404Page('404 error page', '404 Error, content does not exist anymore');
             update_option($option_v, true);
         }
+
+        $option_v     = 'metaseo_db_version4.0.0';
+        $db_installed = get_option($option_v, false);
+        if (!$db_installed) {
+            $row = $wpdb->get_results($wpdb->prepare(
+                'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+            WHERE table_name = %s AND column_name = %s  AND TABLE_SCHEMA = %s',
+                array($wpdb->prefix . 'wpms_links', 'referrer', $wpdb->dbname)
+            ));
+
+            if (empty($row)) {
+                $wpdb->query('ALTER TABLE ' . $wpdb->prefix . 'wpms_links ADD referrer text DEFAULT ""');
+            }
+            update_option($option_v, true);
+        }
     }
 
     /**
@@ -677,7 +675,7 @@ class MetaSeoAdmin
         if (isset($this->settings['metaseo_linkfield']) && (int) $this->settings['metaseo_linkfield'] === 1) {
             wp_enqueue_script(
                 'wpmslinkTitle',
-                plugins_url('js/wpms-link-title-field.js', dirname(__FILE__)),
+                plugins_url('assets/js/wpms-link-title-field.js', dirname(__FILE__)),
                 array('wplink'),
                 WPMSEO_VERSION,
                 true
@@ -752,6 +750,45 @@ class MetaSeoAdmin
     }
 
     /**
+     * Handle redirects to setup/welcome page after install and updates.
+     *
+     * For setup wizard, transient must be present, the user must have access rights, and we must ignore the network/bulk plugin updaters.
+     *
+     * @return void
+     */
+    public function adminRedirects()
+    {
+        // Setup wizard redirect
+        if (is_null(get_option('_wpmf_activation_redirect', null)) && is_null(get_option('wpms_version', null))) {
+            // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- View request, no action
+            if ((!empty($_GET['page']) && in_array($_GET['page'], array('wpms-setup')))) {
+                return;
+            }
+            update_option('wpms_version', WPMSEO_VERSION);
+            wp_safe_redirect(admin_url('index.php?page=wpms-setup'));
+            exit;
+        }
+    }
+
+    /**
+     * Includes WP Media Folder setup
+     *
+     * @return void
+     */
+    public function install()
+    {
+        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- View request, no action
+        if (!empty($_GET['page'])) {
+            // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- View request, no action
+            switch ($_GET['page']) {
+                case 'wpms-setup':
+                    require_once WPMETASEO_PLUGIN_DIR . '/inc/install-wizard/install-wizard.php';
+                    break;
+            }
+        }
+    }
+
+    /**
      * Create field analysis
      *
      * @param string $data_title   Title
@@ -768,7 +805,7 @@ class MetaSeoAdmin
         if ($dashicon === 'done') {
             $output .= '<i class="metaseo-dashicons material-icons dashicons-before icons-mboxdone">done</i>';
         } else {
-            $output .= '<i class="metaseo-dashicons material-icons dashicons-before icons-mboxwarning">warning</i>';
+            $output .= '<i class="metaseo-dashicons material-icons dashicons-before icons-mboxwarning">error_outline</i>';
         }
 
         $output .= esc_html($label);
@@ -1303,6 +1340,13 @@ class MetaSeoAdmin
         }
 
         $circliful = ceil(100 * ($check) / 7);
+        /**
+         * Reload analytics
+         *
+         * @param integer Post ID
+         * @param array   All the datas
+         */
+        do_action('wpms_reload_analytics', $_POST['datas']['post_id'], $_POST['datas']);
         wp_send_json(array('circliful' => $circliful, 'output' => $output, 'check' => $check));
     }
 
@@ -1361,6 +1405,67 @@ class MetaSeoAdmin
     /**
      * Ajax update link meta title and content editor
      *
+     * @param string  $type        Action type
+     * @param string  $link_detail Link details
+     * @param string  $title       Title value
+     * @param integer $link_id     Link ID
+     *
+     * @return void
+     */
+    public function updateLink1($type, $link_detail, $title, $link_id)
+    {
+        global $wpdb;
+        $value = array('meta_title' => $title);
+        $wpdb->update(
+            $wpdb->prefix . 'wpms_links',
+            $value,
+            array('id' => (int) $link_id)
+        );
+
+        $post = get_post($link_detail->source_id);
+        if (!empty($post)) {
+            $content = $post->post_content;
+            $links   = MetaSeoBrokenLinkTable::extractTags($post->post_content, 'a', false, true);
+            foreach ($links as $link) {
+                if ($link['contents'] === $link_detail->link_text) {
+                    $new_html = '<a';
+
+                    foreach ($link['attributes'] as $name => $value) {
+                        //Skip special keys like '#raw' and '#offset'
+                        if (substr($name, 0, 1) === '#') {
+                            continue;
+                        }
+
+                        if (!isset($link['attributes']['title'])) {
+                            $new_html .= sprintf(' %s="%s"', 'title', esc_attr($title));
+                        }
+
+                        if ($name === 'title') {
+                            $new_html .= sprintf(' %s="%s"', $name, esc_attr($title));
+                        } else {
+                            $new_html .= sprintf(' %s="%s"', $name, esc_attr($value));
+                        }
+                    }
+                    $new_html .= '>' . $link_detail->link_text . '</a>';
+                    $content  = str_replace($link['full_tag'], $new_html, $content);
+                }
+            }
+
+            $my_post = array(
+                'ID'           => (int) $link_detail->source_id,
+                'post_content' => $content
+            );
+            remove_action('post_updated', array('MetaSeoBrokenLinkTable', 'updatePost'));
+            wp_update_post($my_post);
+            if ($type === 'ajax') {
+                wp_send_json(array('status' => true));
+            }
+        }
+    }
+
+    /**
+     * Ajax update link meta title and content editor
+     *
      * @return void
      */
     public function updateLink()
@@ -1384,52 +1489,7 @@ class MetaSeoAdmin
             if (empty($link_detail)) {
                 wp_send_json(false);
             }
-
-            $value = array('meta_title' => $_POST['meta_title']);
-            $wpdb->update(
-                $wpdb->prefix . 'wpms_links',
-                $value,
-                array('id' => (int) $_POST['link_id'])
-            );
-
-
-            $post = get_post($link_detail->source_id);
-            if (!empty($post)) {
-                $content   = $post->post_content;
-                $links = MetaSeoBrokenLinkTable::extractTags($post->post_content, 'a', false, true);
-                foreach ($links as $link) {
-                    if ($link['contents'] === $link_detail->link_text) {
-                        $new_html = '<a';
-
-                        foreach ($link['attributes'] as $name => $value) {
-                            //Skip special keys like '#raw' and '#offset'
-                            if (substr($name, 0, 1) === '#') {
-                                continue;
-                            }
-
-                            if (!isset($link['attributes']['title'])) {
-                                $new_html .= sprintf(' %s="%s"', 'title', esc_attr($_POST['meta_title']));
-                            }
-
-                            if ($name === 'title') {
-                                $new_html .= sprintf(' %s="%s"', $name, esc_attr($_POST['meta_title']));
-                            } else {
-                                $new_html .= sprintf(' %s="%s"', $name, esc_attr($value));
-                            }
-                        }
-                        $new_html .= '>' . $link_detail->link_text . '</a>';
-                        $content = str_replace($link['full_tag'], $new_html, $content);
-                    }
-                }
-
-                $my_post = array(
-                    'ID'           => (int) $link_detail->source_id,
-                    'post_content' => $content
-                );
-                remove_action('post_updated', array('MetaSeoBrokenLinkTable', 'updatePost'));
-                wp_update_post($my_post);
-                wp_send_json(array('status' => true));
-            }
+            $this->updateLink1('ajax', $link_detail, $_POST['meta_title'], $_POST['link_id']);
         }
         wp_send_json(false);
     }
@@ -1451,6 +1511,14 @@ class MetaSeoAdmin
         }
         if (isset($_POST['page_id']) && isset($_POST['index'])) {
             update_post_meta($_POST['page_id'], '_metaseo_metaindex', $_POST['index']);
+            /**
+             * Update index/noindex for robots meta tag of a page
+             *
+             * @param integer Page ID
+             * @param string  Page meta index
+             * @param integer Page index value
+             */
+            do_action('wpms_update_page_index', $_POST['page_id'], '_metaseo_metaindex', $_POST['index']);
             wp_send_json(array('status' => true));
         }
         wp_send_json(array('status' => false));
@@ -1473,6 +1541,15 @@ class MetaSeoAdmin
         }
         if (isset($_POST['page_id']) && isset($_POST['follow'])) {
             update_post_meta((int) $_POST['page_id'], '_metaseo_metafollow', $_POST['follow']);
+
+            /**
+             * Update follow/nofollow for robots meta tag of a page
+             *
+             * @param integer Page ID
+             * @param string  Page meta follow
+             * @param integer Page follow value
+             */
+            do_action('wpms_update_page_follow', $_POST['page_id'], '_metaseo_metafollow', $_POST['follow']);
             wp_send_json(array('status' => true));
         }
         wp_send_json(array('status' => false));
@@ -1495,6 +1572,13 @@ class MetaSeoAdmin
         }
         if (isset($_POST['link_id'])) {
             $this->doUpdateFollow($_POST['link_id'], $_POST['follow']);
+            /**
+             * Update follow/nofollow for rel attribute of a link
+             *
+             * @param integer Link ID
+             * @param integer Link follow
+             */
+            do_action('wpms_update_link_follow', $_POST['link_id'], $_POST['follow']);
             wp_send_json(array('status' => true));
         }
         wp_send_json(array('status' => false));
@@ -1516,10 +1600,36 @@ class MetaSeoAdmin
             wp_send_json(array('status' => false));
         }
         global $wpdb;
-        $follow_value = $_POST['follow_value'];
+        $action_name = $_POST['action_name'];
         $limit        = 20;
 
-        switch ($follow_value) {
+        switch ($action_name) {
+            case 'copy_title_selected':
+                if (empty($_POST['linkids'])) {
+                    wp_send_json(array('status' => true));
+                }
+                foreach ($_POST['linkids'] as $linkId) {
+                    $link = $wpdb->get_row(
+                        $wpdb->prepare('SELECT * FROM ' . $wpdb->prefix . 'wpms_links WHERE id = %d', $linkId)
+                    );
+                    $link_text = $link->link_text;
+                    if ($link_text !== '') {
+                        $this->updateLink1('bulk', $link, $link_text, $linkId);
+                    }
+                }
+
+                break;
+            case 'copy_title_all':
+                $links  = $wpdb->get_results(
+                    'SELECT * FROM ' . $wpdb->prefix . 'wpms_links WHERE type="url"'
+                );
+                foreach ($links as $link) {
+                    $link_text = $link->link_text;
+                    if ($link_text !== '') {
+                        $this->updateLink1('bulk', $link, $link_text, $link->id);
+                    }
+                }
+                break;
             case 'follow_selected':
                 if (empty($_POST['linkids'])) {
                     wp_send_json(array('status' => true));
@@ -1528,9 +1638,17 @@ class MetaSeoAdmin
                 $follow = 1;
                 foreach ($_POST['linkids'] as $linkId) {
                     $this->doUpdateFollow($linkId, $follow);
+                    /**
+                     * Update follow/nofollow for rel attribute of a link
+                     *
+                     * @param integer Link ID
+                     * @param integer Link follow
+                     *
+                     * @ignore Hook already documented
+                     */
+                    do_action('wpms_update_link_follow', $linkId, $follow);
                 }
                 break;
-
             case 'follow_all':
                 $follow = 1;
                 $i      = 0;
@@ -1543,11 +1661,18 @@ class MetaSeoAdmin
                     } else {
                         $this->doUpdateFollow($link->id, $follow);
                         $i ++;
+                        /**
+                         * Update follow/nofollow for rel attribute of a link
+                         *
+                         * @param integer Link ID
+                         * @param integer Link follow
+                         *
+                         * @ignore Hook already documented
+                         */
+                        do_action('wpms_update_link_follow', $link->id, $follow);
                     }
                 }
-
                 break;
-
             case 'nofollow_selected':
                 $follow = 0;
                 if (empty($_POST['linkids'])) {
@@ -1556,9 +1681,17 @@ class MetaSeoAdmin
 
                 foreach ($_POST['linkids'] as $linkId) {
                     $this->doUpdateFollow($linkId, $follow);
+                    /**
+                     * Update follow/nofollow for rel attribute of a link
+                     *
+                     * @param integer Link ID
+                     * @param integer Link follow
+                     *
+                     * @ignore Hook already documented
+                     */
+                    do_action('wpms_update_link_follow', $linkId, $follow);
                 }
                 break;
-
             case 'nofollow_all':
                 $follow = 0;
                 $i      = 0;
@@ -1571,6 +1704,15 @@ class MetaSeoAdmin
                     } else {
                         $this->doUpdateFollow($link->id, $follow);
                         $i ++;
+                        /**
+                         * Update follow/nofollow for rel attribute of a link
+                         *
+                         * @param integer Link ID
+                         * @param integer Link follow
+                         *
+                         * @ignore Hook already documented
+                         */
+                        do_action('wpms_update_link_follow', $link->id, $follow);
                     }
                 }
                 break;
@@ -1733,524 +1875,6 @@ class MetaSeoAdmin
     }
 
     /**
-     * Add a new field to a section of a settings page
-     *
-     * @return void
-     */
-    public function fieldSettings()
-    {
-        register_setting('Wp Meta SEO', '_metaseo_settings');
-        add_settings_section('metaseo_dashboard', '', array($this, 'showSettings'), 'metaseo_settings');
-        add_settings_field(
-            'metaseo_title_home',
-            esc_html__('Homepage meta title', 'wp-meta-seo'),
-            array($this, 'titleHome'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('You can define your home page meta title in the content
-                         itself (a page, a post category…),
-                          if for some reason it’s not possible, use this setting', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_desc_home',
-            esc_html__('Homepage meta description', 'wp-meta-seo'),
-            array($this, 'descHome'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('You can define your home page meta description in the content
-                         itself (a page, a post category…),
-                         if for some reason it’s not possible, use this setting', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_showfacebook',
-            esc_html__('Facebook profile URL', 'wp-meta-seo'),
-            array($this, 'showfacebook'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Used as profile in case of social sharing content on Facebook', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_showfbappid',
-            esc_html__('Facebook App ID', 'wp-meta-seo'),
-            array($this, 'showfbappid'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Used as facebook app ID in case of
-                         social sharing content on Facebook', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_showtwitter',
-            esc_html__('Twitter Username', 'wp-meta-seo'),
-            array($this, 'showtwitter'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Used as profile in case of social sharing content on Twitter', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_twitter_card',
-            esc_html__('The default card type to use', 'wp-meta-seo'),
-            array($this, 'showtwittercard'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Choose the Twitter card size generated when sharing a content', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_metatitle_tab',
-            esc_html__('Meta title as page title', 'wp-meta-seo'),
-            array($this, 'showmetatitletab'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Usually not recommended as meta information is
-                 for search engines and content title for readers, but in some case... :)', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_showkeywords',
-            esc_html__('Meta keywords', 'wp-meta-seo'),
-            array($this, 'showkeywords'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Not used directly by search engine to index content,
-                 but in some case it can be helpful (multilingual is an example)', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_showtmetablock',
-            esc_html__('Meta block edition', 'wp-meta-seo'),
-            array($this, 'showtmetablock'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Load the onpage meta edition and analysis block', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_showsocial',
-            esc_html__('Social sharing block', 'wp-meta-seo'),
-            array($this, 'showsocial'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Activate the custom social sharing tool, above the meta block', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_seovalidate',
-            esc_html__('Force SEO validation', 'wp-meta-seo'),
-            array($this, 'showseovalidate'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Possibility to force a criteria validation
-                 in the content analysis tool', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_linkfield',
-            esc_html__('Link text field', 'wp-meta-seo'),
-            array($this, 'showlinkfield'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Add the link title field in the text editor and
-                 in the bulk link edition view', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_follow',
-            esc_html__('Post/Page follow', 'wp-meta-seo'),
-            array($this, 'showfollow'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Add an option to setup Follow/Nofollow instruction for each content', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_index',
-            esc_html__('Post/Page index', 'wp-meta-seo'),
-            array($this, 'showindex'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Add an option to say to search engine: hey!
-                 Do not index this content', 'wp-meta-seo')
-            )
-        );
-        add_settings_field(
-            'metaseo_overridemeta',
-            esc_html__('Auto override Meta', 'wp-meta-seo'),
-            array($this, 'showoverridemeta'),
-            'metaseo_settings',
-            'metaseo_dashboard',
-            array(
-                'label_for' => esc_html__('Auto override image meta in post content when update meta', 'wp-meta-seo')
-            )
-        );
-    }
-
-    /**
-     * Display metatitle_tab input
-     *
-     * @return void
-     */
-    public function showmetatitletab()
-    {
-        echo '<input name="_metaseo_settings[metaseo_metatitle_tab]" type="hidden" value="0"/>';
-        ?>
-        <label>
-            <?php esc_html_e('When meta title is filled use it as page title instead of the content title', 'wp-meta-seo'); ?>
-        </label>
-        <div class="switch-optimization">
-            <label class="switch switch-optimization">
-                <?php
-                if (isset($this->settings['metaseo_metatitle_tab']) && (int) $this->settings['metaseo_metatitle_tab'] === 1) :
-                    ?>
-                    <input type="checkbox" id="metaseo_metatitle_tab" name="_metaseo_settings[metaseo_metatitle_tab]"
-                           value="1" checked>
-                <?php else : ?>
-                    <input type="checkbox" id="metaseo_metatitle_tab" name="_metaseo_settings[metaseo_metatitle_tab]"
-                           value="1">
-                <?php endif; ?>
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <?php
-    }
-
-    /**
-     * Show setting title
-     *
-     * @return void
-     */
-    public function showSettings()
-    {
-    }
-
-    /**
-     * Display title_home input
-     *
-     * @return void
-     */
-    public function titleHome()
-    {
-        $home_title = isset($this->settings['metaseo_title_home']) ? $this->settings['metaseo_title_home'] : '';
-        echo '<input id="metaseo_title_home" name="_metaseo_settings[metaseo_title_home]"
-         type="text" value="' . esc_attr($home_title) . '" size="50"/>';
-    }
-
-    /**
-     * Display desc_home input
-     *
-     * @return void
-     */
-    public function descHome()
-    {
-        $home_desc = isset($this->settings['metaseo_desc_home']) ? $this->settings['metaseo_desc_home'] : '';
-        echo '<input id="metaseo_desc_home" name="_metaseo_settings[metaseo_desc_home]"
-         type="text" value="' . esc_attr($home_desc) . '" size="50"/>';
-    }
-
-    /**
-     * Display showkeywords input
-     *
-     * @return void
-     */
-    public function showkeywords()
-    {
-        echo '<input name="_metaseo_settings[metaseo_showkeywords]" type="hidden" value="0"/>';
-        ?>
-        <label><?php esc_html_e('Active meta keywords', 'wp-meta-seo'); ?></label>
-        <div class="switch-optimization">
-            <label class="switch switch-optimization">
-                <?php
-                if (isset($this->settings['metaseo_showkeywords']) && (int) $this->settings['metaseo_showkeywords'] === 1) :
-                    ?>
-                    <input type="checkbox" id="metaseo_showkeywords" name="_metaseo_settings[metaseo_showkeywords]"
-                           value="1" checked>
-                <?php else : ?>
-                    <input type="checkbox" id="metaseo_showkeywords" name="_metaseo_settings[metaseo_showkeywords]"
-                           value="1">
-                <?php endif; ?>
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display showtmetablock input
-     *
-     * @return void
-     */
-    public function showtmetablock()
-    {
-        echo '<input name="_metaseo_settings[metaseo_showtmetablock]" type="hidden" value="0"/>';
-        ?>
-        <label><?php esc_html_e('Activate meta block edition below content', 'wp-meta-seo'); ?></label>
-        <div class="switch-optimization">
-            <label class="switch switch-optimization">
-                <?php
-                if (isset($this->settings['metaseo_showtmetablock'])
-                    && (int) $this->settings['metaseo_showtmetablock'] === 1) :
-                    ?>
-                    <input type="checkbox" id="metaseo_showtmetablock" name="_metaseo_settings[metaseo_showtmetablock]"
-                           value="1" checked>
-                <?php else : ?>
-                    <input type="checkbox" id="metaseo_showtmetablock" name="_metaseo_settings[metaseo_showtmetablock]"
-                           value="1">
-                <?php endif; ?>
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display showsocial input
-     *
-     * @return void
-     */
-    public function showsocial()
-    {
-        echo '<input name="_metaseo_settings[metaseo_showsocial]" type="hidden" value="0"/>';
-        ?>
-        <label><?php esc_html_e('Activate social edition', 'wp-meta-seo'); ?></label>
-        <div class="switch-optimization">
-            <label class="switch switch-optimization">
-                <?php
-                if (isset($this->settings['metaseo_showsocial']) && (int) $this->settings['metaseo_showsocial'] === 1) :
-                    ?>
-                    <input type="checkbox" id="metaseo_showsocial" name="_metaseo_settings[metaseo_showsocial]"
-                           value="1" checked>
-                <?php else : ?>
-                    <input type="checkbox" id="metaseo_showsocial" name="_metaseo_settings[metaseo_showsocial]"
-                           value="1">
-                <?php endif; ?>
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display seovalidate input
-     *
-     * @return void
-     */
-    public function showseovalidate()
-    {
-        echo '<input name="_metaseo_settings[metaseo_seovalidate]" type="hidden" value="0"/>';
-        ?>
-        <label>
-            <?php esc_html_e('Allow user to force on page SEO criteria validation by clicking on the icon', 'wp-meta-seo'); ?>
-        </label>
-        <div class="switch-optimization">
-            <label class="switch switch-optimization">
-                <?php
-                if (isset($this->settings['metaseo_seovalidate']) && (int) $this->settings['metaseo_seovalidate'] === 1) :
-                    ?>
-                    <input type="checkbox" id="metaseo_seovalidate" name="_metaseo_settings[metaseo_seovalidate]"
-                           value="1" checked>
-                <?php else : ?>
-                    <input type="checkbox" id="metaseo_seovalidate" name="_metaseo_settings[metaseo_seovalidate]"
-                           value="1">
-                <?php endif; ?>
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display linkfield input
-     *
-     * @return void
-     */
-    public function showlinkfield()
-    {
-        echo '<input name="_metaseo_settings[metaseo_linkfield]" type="hidden" value="0"/>';
-        ?>
-        <label><?php esc_html_e('Adds back the missing title field in the Insert/Edit URL box', 'wp-meta-seo'); ?></label>
-        <div class="switch-optimization">
-            <label class="switch switch-optimization">
-                <?php
-                if (isset($this->settings['metaseo_linkfield']) && (int) $this->settings['metaseo_linkfield'] === 1) :
-                    ?>
-                    <input type="checkbox" id="metaseo_linkfield" name="_metaseo_settings[metaseo_linkfield]"
-                           value="1" checked>
-                <?php else : ?>
-                    <input type="checkbox" id="metaseo_linkfield" name="_metaseo_settings[metaseo_linkfield]"
-                           value="1">
-                <?php endif; ?>
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display follow input
-     *
-     * @return void
-     */
-    public function showfollow()
-    {
-        echo '<input name="_metaseo_settings[metaseo_follow]" type="hidden" value="0"/>';
-        ?>
-        <label>
-            <?php esc_html_e('Provides a way for webmasters to tell
-             search engines don\'t follow links on the page.', 'wp-meta-seo'); ?>
-        </label>
-        <div class="switch-optimization">
-            <label class="switch switch-optimization">
-                <?php
-                if (isset($this->settings['metaseo_follow']) && (int) $this->settings['metaseo_follow'] === 1) :
-                    ?>
-                    <input type="checkbox" id="metaseo_follow" name="_metaseo_settings[metaseo_follow]"
-                           value="1" checked>
-                <?php else : ?>
-                    <input type="checkbox" id="metaseo_follow" name="_metaseo_settings[metaseo_follow]"
-                           value="1">
-                <?php endif; ?>
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display index input
-     *
-     * @return void
-     */
-    public function showindex()
-    {
-        echo '<input name="_metaseo_settings[metaseo_index]" type="hidden" value="0"/>';
-        ?>
-        <label>
-            <?php esc_html_e('Provides show or do not show this page in search
-             results in search results.', 'wp-meta-seo'); ?>
-        </label>
-        <div class="switch-optimization">
-            <label class="switch switch-optimization">
-                <?php
-                if (isset($this->settings['metaseo_index']) && (int) $this->settings['metaseo_index'] === 1) :
-                    ?>
-                    <input type="checkbox" id="metaseo_index" name="_metaseo_settings[metaseo_index]"
-                           value="1" checked>
-                <?php else : ?>
-                    <input type="checkbox" id="metaseo_index" name="_metaseo_settings[metaseo_index]"
-                           value="1">
-                <?php endif; ?>
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display override meta
-     *
-     * @return void
-     */
-    public function showoverridemeta()
-    {
-        echo '<input name="_metaseo_settings[metaseo_overridemeta]" type="hidden" value="0"/>';
-        ?>
-        <label><?php esc_html_e('Override meta image in post content when update meta', 'wp-meta-seo'); ?></label>
-        <div class="switch-optimization">
-            <label class="switch switch-optimization">
-                <?php
-                if (isset($this->settings['metaseo_overridemeta']) && (int) $this->settings['metaseo_overridemeta'] === 1) :
-                    ?>
-                    <input type="checkbox" id="metaseo_overridemeta" name="_metaseo_settings[metaseo_overridemeta]"
-                           value="1" checked>
-                <?php else : ?>
-                    <input type="checkbox" id="metaseo_overridemeta" name="_metaseo_settings[metaseo_overridemeta]"
-                           value="1">
-                <?php endif; ?>
-                <span class="slider round"></span>
-            </label>
-        </div>
-        <?php
-    }
-
-    /**
-     * Display showfacebook input
-     *
-     * @return void
-     */
-    public function showfacebook()
-    {
-        $face = isset($this->settings['metaseo_showfacebook']) ? $this->settings['metaseo_showfacebook'] : '';
-        echo '<input id="metaseo_showfacebook" name="_metaseo_settings[metaseo_showfacebook]"
-         type="text" value="' . esc_attr($face) . '" size="50"/>';
-    }
-
-    /**
-     * Display fb app id input
-     *
-     * @return void
-     */
-    public function showfbappid()
-    {
-        $appid = isset($this->settings['metaseo_showfbappid']) ? $this->settings['metaseo_showfbappid'] : '';
-        echo '<input id="metaseo_showfbappid" name="_metaseo_settings[metaseo_showfbappid]"
-         type="text" value="' . esc_attr($appid) . '" size="50"/>';
-    }
-
-    /**
-     * Display showtwitter input
-     *
-     * @return void
-     */
-    public function showtwitter()
-    {
-        $twitter = isset($this->settings['metaseo_showtwitter']) ? $this->settings['metaseo_showtwitter'] : '';
-        echo '<input id="metaseo_showtwitter" name="_metaseo_settings[metaseo_showtwitter]"
-         type="text" value="' . esc_attr($twitter) . '" size="50"/>';
-    }
-
-    /**
-     * Display twitter_card input
-     *
-     * @return void
-     */
-    public function showtwittercard()
-    {
-        if (isset($this->settings['metaseo_twitter_card'])) {
-            $twitter_card = $this->settings['metaseo_twitter_card'];
-        } else {
-            $twitter_card = 'summary';
-        }
-        ?>
-        <label>
-            <select class="select" name="_metaseo_settings[metaseo_twitter_card]" id="metaseo_twitter_card">
-                <option <?php selected($twitter_card, 'summary') ?>
-                        value="summary"><?php esc_html_e('Summary', 'wp-meta-seo'); ?></option>
-                <option <?php selected($twitter_card, 'summary_large_image') ?>
-                        value="summary_large_image"><?php esc_html_e('Summary with large image', 'wp-meta-seo'); ?></option>
-            </select>
-        </label>
-        <?php
-    }
-
-    /**
      * Show meta box in single post
      *
      * @return void
@@ -2356,29 +1980,103 @@ class MetaSeoAdmin
             'wp-meta-seo_page_metaseo_sendemail',
             'wp-meta-seo_page_metaseo_settings'
         );
+
+        wp_enqueue_style(
+            'metaseo-google-icon',
+            '//fonts.googleapis.com/icon?family=Material+Icons'
+        );
         if (in_array($current_screen->base, $lists_pages)) {
             wp_enqueue_style(
-                'metaseo-google-icon',
-                '//fonts.googleapis.com/icon?family=Material+Icons'
+                'wpms-magnific-popup-style',
+                plugins_url('assets/css/magnific-popup.css', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
             );
+
+            wp_enqueue_script(
+                'wpms-magnific-popup-script',
+                plugins_url('assets/js/jquery.magnific-popup.min.js', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+
             wp_enqueue_style(
-                'wpms_materialize_style',
-                plugins_url('css/materialize/materialize.css', dirname(__FILE__)),
+                'wpms_ju_framework_styles',
+                plugins_url('assets/wordpress-css-framework/css/style.css', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+
+            wp_enqueue_script(
+                'wpms_ju_velocity_js',
+                plugins_url('assets/wordpress-css-framework/js/velocity.min.js', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
             );
             wp_enqueue_script(
-                'wpms_materialize_js',
-                plugins_url('js/materialize/materialize.min.js', dirname(__FILE__)),
-                array('jquery'),
-                WPMSEO_VERSION,
-                true
+                'wpms_ju_waves_js',
+                plugins_url('assets/wordpress-css-framework/js/waves.js', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+
+            wp_enqueue_script(
+                'wpms_ju_tabs_js',
+                plugins_url('assets/wordpress-css-framework/js/tabs.js', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+
+            wp_enqueue_script(
+                'wpms_ju_framework_js',
+                plugins_url('assets/wordpress-css-framework/js/script.js', dirname(__FILE__)),
+                array('wpms_ju_tabs_js'),
+                WPMSEO_VERSION
+            );
+
+            if ($current_screen->base !== 'wp-meta-seo_page_metaseo_settings') {
+                wp_enqueue_style(
+                    'wpms_materialize_style',
+                    plugins_url('assets/css/materialize/materialize.css', dirname(__FILE__)),
+                    array(),
+                    WPMSEO_VERSION
+                );
+                wp_enqueue_script(
+                    'wpms_materialize_js',
+                    plugins_url('assets/js/materialize/materialize.min.js', dirname(__FILE__)),
+                    array('jquery'),
+                    WPMSEO_VERSION,
+                    true
+                );
+            } else {
+                // Register CSS
+                wp_enqueue_style(
+                    'wpms-settings-styles',
+                    plugins_url('assets/css/settings.css', dirname(__FILE__)),
+                    array('wpms_main'),
+                    WPMSEO_VERSION
+                );
+
+                wp_enqueue_script(
+                    'wpms-settings-script',
+                    plugins_url('assets/js/settings.js', dirname(__FILE__)),
+                    array('jquery'),
+                    WPMSEO_VERSION,
+                    true
+                );
+            }
+
+            wp_enqueue_style(
+                'wpms_main',
+                plugins_url('assets/css/main.css', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
             );
         }
 
         wp_enqueue_script(
             'wpmetaseoAdmin',
-            plugins_url('js/metaseo_admin.js', dirname(__FILE__)),
+            plugins_url('assets/js/metaseo_admin.js', dirname(__FILE__)),
             array('jquery'),
             WPMSEO_VERSION,
             true
@@ -2387,24 +2085,24 @@ class MetaSeoAdmin
         if (in_array($current_screen->base, $array_menu) || $pagenow === 'post.php' || $pagenow === 'post-new.php') {
             wp_enqueue_style(
                 'wpmetaseoAdmin',
-                plugins_url('css/metaseo_admin.css', dirname(__FILE__)),
+                plugins_url('assets/css/metaseo_admin.css', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
             );
             wp_enqueue_style(
                 'tooltip-metaimage',
-                plugins_url('/css/tooltip-metaimage.css', dirname(__FILE__)),
+                plugins_url('assets/css/tooltip-metaimage.css', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
             );
-            wp_enqueue_style('style', plugins_url('/css/style.css', dirname(__FILE__)), array(), WPMSEO_VERSION);
+            wp_enqueue_style('style', plugins_url('assets/css/style.css', dirname(__FILE__)), array(), WPMSEO_VERSION);
         }
 
         if ($current_screen->base === 'wp-meta-seo_page_metaseo_image_meta'
             || $current_screen->base === 'wp-meta-seo_page_metaseo_content_meta') {
             wp_enqueue_script(
                 'wpms-bulk',
-                plugins_url('js/wpms-bulk-action.js', dirname(__FILE__)),
+                plugins_url('assets/js/wpms-bulk-action.js', dirname(__FILE__)),
                 array('jquery'),
                 WPMSEO_VERSION,
                 true
@@ -2415,51 +2113,74 @@ class MetaSeoAdmin
         if ($current_screen->base === 'wp-meta-seo_page_metaseo_broken_link') {
             wp_enqueue_style(
                 'wpms_brokenlink_style',
-                plugins_url('css/broken_link.css', dirname(__FILE__)),
+                plugins_url('assets/css/broken_link.css', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
+            );
+
+            wp_enqueue_style(
+                'wpms-bootstrap-style',
+                plugins_url('assets/css/bootstrap/bootstrap.min.css', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+
+            wp_enqueue_style(
+                'wpms-bootstrap-multiselect-style',
+                plugins_url('assets/css/bootstrap/bootstrap-multiselect.css', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+
+            wp_enqueue_script(
+                'wpms-bootstrap-multiselect-script',
+                plugins_url('assets/css/bootstrap/bootstrap-multiselect.js', dirname(__FILE__)),
+                array('jquery'),
+                WPMSEO_VERSION,
+                true
             );
         }
 
         if ($current_screen->base === 'toplevel_page_metaseo_dashboard') {
             wp_enqueue_script(
-                'Chart',
-                plugins_url('js/Chart.js', dirname(__FILE__)),
-                array('jquery'),
-                WPMSEO_VERSION,
-                true
-            );
-            wp_enqueue_script(
-                'jquery-knob',
-                plugins_url('js/jquery.knob.js', dirname(__FILE__)),
-                array('jquery'),
-                WPMSEO_VERSION,
-                true
-            );
-            wp_enqueue_script(
                 'metaseo-dashboard',
-                plugins_url('js/dashboard.js', dirname(__FILE__)),
+                plugins_url('assets/js/dashboard.js', dirname(__FILE__)),
                 array('jquery'),
                 WPMSEO_VERSION,
                 true
             );
-            wp_enqueue_style(
-                'chart',
-                plugins_url('/css/chart.css', dirname(__FILE__))
-            );
+
             wp_enqueue_style(
                 'metaseo-quirk',
-                plugins_url('/css/metaseo-quirk.css', dirname(__FILE__))
+                plugins_url('assets/css/metaseo-quirk.css', dirname(__FILE__))
             );
+
             wp_enqueue_style(
                 'm-style-dashboard',
-                plugins_url('css/dashboard.css', dirname(__FILE__)),
+                plugins_url('assets/css/dashboard.css', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
             );
+
             wp_enqueue_style(
-                'm-font-awesome',
-                plugins_url('css/font-awesome.css', dirname(__FILE__)),
+                'wpms-ju-css-framwork',
+                plugins_url('assets/css/main.css', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+        }
+
+        if ($current_screen->base === 'wp-meta-seo_page_metaseo_better_ranking') {
+            wp_enqueue_style(
+                'wpms-better-seo',
+                plugins_url('assets/css/better_seo.css', dirname(__FILE__)),
+                array(),
+                WPMSEO_VERSION
+            );
+
+            wp_enqueue_style(
+                'wpms-ju-css-framwork',
+                plugins_url('assets/css/main.css', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
             );
@@ -2475,13 +2196,13 @@ class MetaSeoAdmin
         if (in_array($current_screen->base, $lists_pages)) {
             wp_enqueue_style(
                 'wpms_notification_style',
-                plugins_url('css/notification.css', dirname(__FILE__)),
+                plugins_url('assets/css/notification.css', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
             );
             wp_enqueue_script(
                 'wpms_notification_script',
-                plugins_url('js/notification.js', dirname(__FILE__)),
+                plugins_url('assets/js/notification.js', dirname(__FILE__)),
                 array(),
                 WPMSEO_VERSION
             );
@@ -2489,88 +2210,89 @@ class MetaSeoAdmin
 
         wp_register_style(
             'wpms-dashboard-widgets',
-            plugins_url('css/dashboard_widgets.css', dirname(__FILE__)),
+            plugins_url('assets/css/dashboard_widgets.css', dirname(__FILE__)),
             null,
             WPMSEO_VERSION
         );
         wp_register_style(
             'wpms-category-field',
-            plugins_url('css/category_field.css', dirname(__FILE__)),
+            plugins_url('assets/css/category_field.css', dirname(__FILE__)),
             null,
             WPMSEO_VERSION
         );
         wp_register_script(
             'wpms-category-field',
-            plugins_url('js/category_field.js', dirname(__FILE__)),
+            plugins_url('assets/js/category_field.js', dirname(__FILE__)),
             array('jquery'),
             WPMSEO_VERSION,
             true
         );
         wp_register_style(
             'm-style-qtip',
-            plugins_url('css/jquery.qtip.css', dirname(__FILE__)),
+            plugins_url('assets/css/jquery.qtip.css', dirname(__FILE__)),
             array(),
             WPMSEO_VERSION
         );
+
         wp_register_script(
             'jquery-qtip',
-            plugins_url('js/jquery.qtip.min.js', dirname(__FILE__)),
+            plugins_url('assets/js/jquery.qtip.min.js', dirname(__FILE__)),
             array('jquery'),
             '2.2.1',
             true
         );
-        wp_register_style(
+
+        wp_register_script(
+            'my-qtips-js',
+            plugins_url('assets/js/my-qtips.js', dirname(__FILE__)),
+            array('jquery'),
+            WPMSEO_VERSION,
+            true
+        );
+
+        wp_enqueue_style(
             'wpms-myqtip',
-            plugins_url('css/my_qtip.css', dirname(__FILE__)),
+            plugins_url('assets/css/my_qtip.css', dirname(__FILE__)),
             array(),
             WPMSEO_VERSION
         );
+
         wp_register_script(
             'wpms-broken-link',
-            plugins_url('js/wpms-broken-link.js', dirname(__FILE__)),
+            plugins_url('assets/js/wpms-broken-link.js', dirname(__FILE__)),
             array('jquery'),
             WPMSEO_VERSION,
             true
         );
 
         wp_register_style('metaseo-google-icon', '//fonts.googleapis.com/icon?family=Material+Icons');
-        if ($current_screen->base === 'wp-meta-seo_page_metaseo_image_meta') {
-            wp_enqueue_script(
-                'mautosize',
-                plugins_url('js/autosize.js', dirname(__FILE__)),
-                array('jquery'),
-                '0.1',
-                true
-            );
-        }
-
         if ($current_screen->base === 'wp-meta-seo_page_metaseo_google_analytics') {
             $lang = get_bloginfo('language');
             $lang = explode('-', $lang);
             $lang = $lang[0];
             wp_enqueue_style(
                 'wpms-nprogress',
-                plugins_url('css/google-analytics/nprogress.css', dirname(__FILE__)),
+                plugins_url('assets/css/google-analytics/nprogress.css', dirname(__FILE__)),
                 null,
                 WPMSEO_VERSION
             );
 
             wp_register_style(
                 'wpms-backend-item-reports',
-                plugins_url('css/google-analytics/admin-widgets.css', dirname(__FILE__)),
+                plugins_url('assets/css/google-analytics/admin-widgets.css', dirname(__FILE__)),
                 null,
                 WPMSEO_VERSION
             );
             wp_register_style(
                 'wpms-backend-tracking-code',
-                plugins_url('css/google-analytics/wpms-tracking-code.css', dirname(__FILE__)),
+                plugins_url('assets/css/google-analytics/wpms-tracking-code.css', dirname(__FILE__)),
                 null,
                 WPMSEO_VERSION
             );
 
             wp_register_style(
                 'jquery-ui-tooltip-html',
-                plugins_url('css/google-analytics/jquery.ui.tooltip.html.css', dirname(__FILE__))
+                plugins_url('assets/css/google-analytics/jquery.ui.tooltip.html.css', dirname(__FILE__))
             );
 
             wp_enqueue_style('jquery-ui-tooltip-html');
@@ -2584,14 +2306,14 @@ class MetaSeoAdmin
 
             wp_enqueue_script(
                 'wpms-nprogress',
-                plugins_url('js/google-analytics/nprogress.js', dirname(__FILE__)),
+                plugins_url('assets/js/google-analytics/nprogress.js', dirname(__FILE__)),
                 array('jquery'),
                 WPMSEO_VERSION
             );
 
             wp_enqueue_script(
                 'wpms-google-analytics',
-                plugins_url('js/google-analytics/google_analytics.js', dirname(__FILE__)),
+                plugins_url('assets/js/google-analytics/google_analytics.js', dirname(__FILE__)),
                 array('jquery'),
                 WPMSEO_VERSION,
                 true
@@ -2690,6 +2412,8 @@ class MetaSeoAdmin
         }
         // in JavaScript, object properties are accessed as ajax_object.ajax_url, ajax_object.we_value
         wp_localize_script('wpmetaseoAdmin', 'wpms_localize', array(
+            'filter_by'                    => esc_html__('Select to filter', 'wp-meta-seo'),
+            'index_link'                   => esc_html__('Loading...', 'wp-meta-seo'),
             'addon_active'                 => $addon_active,
             'ajax_url'                     => admin_url('admin-ajax.php'),
             'settings'                     => $this->settings,
@@ -2697,7 +2421,21 @@ class MetaSeoAdmin
             'wpms_cat_metadesc_length'     => MPMSCAT_DESC_LENGTH,
             'wpms_cat_metakeywords_length' => MPMSCAT_KEYWORDS_LENGTH,
             'wpms_nonce'                   => wp_create_nonce('wpms_nonce'),
-            'home_url'                     => home_url()
+            'home_url'                     => home_url(),
+            'images_url'                   => WPMETASEO_PLUGIN_URL . 'assets/images/',
+            'dashboard_tooltips'           => array(
+                'url_rewwrite'    => esc_html__('Optimized at: ', 'wp-meta-seo'),
+                'images_resized'  => esc_html__('HTML image resized (using handles) count: ', 'wp-meta-seo'),
+                'metatitle'       => esc_html__('Meta title filled: ', 'wp-meta-seo'),
+                'image_alt'       => esc_html__('Image data filled (in content): ', 'wp-meta-seo'),
+                'metadesc'        => esc_html__('Meta description filled: ', 'wp-meta-seo'),
+                'link_title'      => esc_html__('Links title completed: ', 'wp-meta-seo'),
+                'fresh_content'   => esc_html__('Last month new or updated content: ', 'wp-meta-seo'),
+                'elements'        => esc_html__(' elements', 'wp-meta-seo'),
+                'duplicate_title' => esc_html__('Duplicate Meta Titles: ', 'wp-meta-seo'),
+                'duplicate_desc'  => esc_html__('Duplicate Meta Descriptions: ', 'wp-meta-seo'),
+                '404'             => esc_html__('Redirected 404 errors: ', 'wp-meta-seo')
+            )
         ));
     }
 
@@ -2740,10 +2478,11 @@ class MetaSeoAdmin
         );
 
         /**
-         * Filter: 'metaseo_manage_options_capability'
-         * - Allow changing the capability users need to view the settings pages
+         * Allow changing the capability users need to view the settings pages
          *
-         * @api string unsigned The capability
+         * @api string Default capability
+         *
+         * @return string
          */
         $manage_options_cap = apply_filters('metaseo_manage_options_capability', 'manage_options');
 
@@ -2788,15 +2527,6 @@ class MetaSeoAdmin
             array(
                 'metaseo_dashboard',
                 '',
-                esc_html__('Image compression', 'wp-meta-seo'),
-                $manage_options_cap,
-                'metaseo_image_compression',
-                array($this, 'loadPage'),
-                null
-            ),
-            array(
-                'metaseo_dashboard',
-                '',
                 esc_html__('Link editor', 'wp-meta-seo'),
                 $manage_options_cap,
                 'metaseo_link_meta',
@@ -2821,7 +2551,6 @@ class MetaSeoAdmin
                 array($this, 'loadPage'),
                 null
             )
-
         );
 
         if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
@@ -2856,6 +2585,18 @@ class MetaSeoAdmin
             array($this, 'loadPage'),
             null
         );
+
+        if (!is_plugin_active(WPMSEO_ADDON_FILENAME)) {
+            $submenu_pages[] = array(
+                'metaseo_dashboard',
+                '',
+                '<span style="color:orange">' . esc_html__('Better SEO ranking', 'wp-meta-seo') . '</span>',
+                $manage_options_cap,
+                'metaseo_better_ranking',
+                array($this, 'loadPage'),
+                null
+            );
+        }
 
         // Allow submenu pages manipulation
         $submenu_pages = apply_filters('metaseo_submenu_pages', $submenu_pages);
@@ -3157,7 +2898,7 @@ class MetaSeoAdmin
                             echo '<div class="wrap wpmsga_wrap">';
                             echo '<div>';
                             require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/google-analytics/menu.php');
-                            echo '<h2>' . esc_html__('Google Analytics Settings', 'wp-meta-seo') . '</h2>';
+                            echo '<h2 class="wpms-top-h2">' . esc_html__('Google Analytics Settings', 'wp-meta-seo') . '</h2>';
                             echo '<div id="wpms-window-1"></div>';
                             echo '</div>';
                             echo '</div>';
@@ -3203,13 +2944,13 @@ class MetaSeoAdmin
                     $sitemap = new MetaSeoSitemap();
                     require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/sitemaps/metaseo-google-sitemap.php');
                     break;
-                case 'metaseo_image_compression':
-                    require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/metaseo-image-compression.php');
-                    break;
                 case 'metaseo_broken_link':
                     require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/metaseo-broken-link.php');
                     break;
                 case 'metaseo_settings':
+                    if (isset($_POST['_metaseo_settings'])) {
+                        update_option('_metaseo_settings', $_POST['_metaseo_settings']);
+                    }
                     $posts     = get_posts(array('post_type' => 'page', 'posts_per_page' => - 1, 'numberposts' => - 1));
                     $types_404 = array(
                         'none'             => 'None',
@@ -3296,6 +3037,20 @@ class MetaSeoAdmin
                     }
                     $countrys            = apply_filters('wpms_get_countryList', array());
                     $local_business_html = apply_filters('wpmsaddon_local_business', '', $local_business, $countrys);
+
+                    $default_settings = wpmsGetDefaultSettings();
+                    $settings       = get_option('_metaseo_settings');
+                    if (is_array($settings)) {
+                        $settings = array_merge($default_settings, $settings);
+                    } else {
+                        $settings = $default_settings;
+                    }
+
+                    foreach ($settings as $setting_name => $setting_value) {
+                        ${$setting_name} = $setting_value;
+                    }
+
+                    $home_meta_active = wpmsGetOption('home_meta_active');
                     require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/settings.php');
                     break;
 
@@ -3316,6 +3071,9 @@ class MetaSeoAdmin
                     require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/image-optimize.php');
                     break;
 
+                case 'metaseo_better_ranking':
+                    require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/better_seo.php');
+                    break;
                 case 'metaseo_dashboard':
                 default:
                     require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/dashboard.php');
@@ -3336,38 +3094,52 @@ class MetaSeoAdmin
             die();
         }
 
-        if (isset($_POST['type'])) {
-            if ($_POST['type'] === 'alt') {
-                $margs = array(
-                    'posts_per_page' => - 1,
-                    'post_type'      => 'attachment',
-                    'post_status'    => 'any',
-                    'meta_query'     => array(
-                        'relation' => 'OR',
-                        array(
-                            'key'     => '_wp_attachment_image_alt',
-                            'value'   => '',
-                            'compare' => '!='
+        if (isset($_POST['action_name'])) {
+            switch ($_POST['action_name']) {
+                case 'img-copy-alt':
+                    $margs = array(
+                        'posts_per_page' => - 1,
+                        'post_type'      => 'attachment',
+                        'post_status'    => 'any',
+                        'meta_query'     => array(
+                            'relation' => 'OR',
+                            array(
+                                'key'     => '_wp_attachment_image_alt',
+                                'value'   => '',
+                                'compare' => '!='
+                            )
                         )
-                    )
-                );
+                    );
 
-                $m_newquery       = new WP_Query($margs);
-                $mposts_empty_alt = $m_newquery->get_posts();
-                if (!empty($mposts_empty_alt)) {
-                    wp_send_json(true);
-                } else {
-                    wp_send_json(false);
-                }
-            } else {
-                global $wpdb;
-                $check_title = $wpdb->get_var('SELECT COUNT(posts.ID) as total FROM ' . $wpdb->prefix . 'posts as posts
+                    $m_newquery       = new WP_Query($margs);
+                    $mposts_empty_alt = $m_newquery->get_posts();
+                    if (!empty($mposts_empty_alt)) {
+                        wp_send_json(true);
+                    } else {
+                        wp_send_json(false);
+                    }
+                    break;
+
+                case 'img-copy-title':
+                    global $wpdb;
+                    $check_title = $wpdb->get_var('SELECT COUNT(posts.ID) as total FROM ' . $wpdb->prefix . 'posts as posts
                      WHERE posts.post_type = "attachment" AND post_title != ""');
-                if ($check_title > 0) {
-                    wp_send_json(true);
-                } else {
-                    wp_send_json(false);
-                }
+                    if ($check_title > 0) {
+                        wp_send_json(true);
+                    } else {
+                        wp_send_json(false);
+                    }
+                    break;
+                case 'img-copy-desc':
+                    global $wpdb;
+                    $check_title = $wpdb->get_var('SELECT COUNT(posts.ID) as total FROM ' . $wpdb->prefix . 'posts as posts
+                     WHERE posts.post_type = "attachment" AND post_content != ""');
+                    if ($check_title > 0) {
+                        wp_send_json(true);
+                    } else {
+                        wp_send_json(false);
+                    }
+                    break;
             }
         }
     }
@@ -3385,7 +3157,7 @@ class MetaSeoAdmin
         }
 
         global $wpdb;
-        if (empty($_POST['mtype'])) {
+        if (empty($_POST['action_name'])) {
             wp_send_json(false);
         }
 
@@ -3406,11 +3178,40 @@ class MetaSeoAdmin
                     $i_info_url = pathinfo($attachment->guid);
                     switch ($_POST['mtype']) {
                         case 'image_alt':
-                            update_post_meta($attachment->ID, '_wp_attachment_image_alt', $i_info_url['filename']);
+                            $value = $i_info_url['filename'];
+                            /**
+                             * Filter before update meta for image
+                             *
+                             * @param string  Meta value
+                             * @param integer Image ID
+                             * @param string  Meta key
+                             * @param array   Extra informations
+                             *
+                             * @return string
+                             */
+                            $value = apply_filters('wpms_update_image_meta', $value, $attachment->ID, '_wp_attachment_image_alt', array('source'=>'bulk_copy_alt'));
+                            update_post_meta($attachment->ID, '_wp_attachment_image_alt', $value);
                             break;
 
                         case 'image_title':
-                            wp_update_post(array('ID' => $attachment->ID, 'post_title' => $i_info_url['filename']));
+                            $value = $i_info_url['filename'];
+                            /**
+                             * Filter before update meta for image
+                             *
+                             * @param string  Meta value
+                             * @param integer Image ID
+                             * @param string  Post title field name
+                             * @param array   Extra informations
+                             *
+                             * @return string
+                             *
+                             * @ignore Hook already documented
+                             */
+                            $value = apply_filters('wpms_update_image_meta', $value, $attachment->ID, 'post_title', array('source'=>'bulk_copy_title'));
+                            wp_update_post(array('ID' => $attachment->ID, 'post_title' => $value));
+                            break;
+                        case 'img-copy-desc':
+                            wp_update_post(array('ID' => $attachment->ID, 'post_content' => $i_info_url['filename']));
                             break;
                     }
                 }
@@ -3421,36 +3222,79 @@ class MetaSeoAdmin
             // selected
             if (isset($_POST['ids'])) {
                 $ids   = $_POST['ids'];
-                $margs = array(
-                    'posts_per_page' => - 1,
-                    'post_type'      => 'attachment',
-                    'post_status'    => 'any',
-                    'post__in'       => $ids
-                );
+                switch ($_POST['action_name']) {
+                    case 'img-copy-alt':
+                        $margs = array(
+                            'posts_per_page' => - 1,
+                            'post_type'      => 'attachment',
+                            'post_status'    => 'any',
+                            'post__in'       => $ids
+                        );
 
-                $m_newquery         = new WP_Query($margs);
-                $mposts_empty_alt   = $m_newquery->get_posts();
-                $mposts_empty_title = $wpdb->get_results($wpdb->prepare('SELECT *
-                        FROM ' . $wpdb->posts . ' WHERE post_type = %s
-                               AND post_mime_type LIKE %s AND ID IN (' . implode(',', esc_sql($ids)) . ') 
-                        ', array('attachment', '%image%')));
-                switch ($_POST['mtype']) {
-                    case 'image_alt':
+                        $m_newquery       = new WP_Query($margs);
+                        $mposts_empty_alt = $m_newquery->get_posts();
                         if (!empty($mposts_empty_alt)) {
                             foreach ($mposts_empty_alt as $post) {
                                 $i_info_url = pathinfo($post->guid);
-                                update_post_meta($post->ID, '_wp_attachment_image_alt', $i_info_url['filename']);
+                                $value = $i_info_url['filename'];
+                                /**
+                                 * Filter before update meta for image
+                                 *
+                                 * @param string  Meta value
+                                 * @param integer Image ID
+                                 * @param string  Meta key
+                                 * @param array   Extra informations
+                                 *
+                                 * @return string
+                                 *
+                                 * @ignore Hook already documented
+                                 */
+                                $value = apply_filters('wpms_update_image_meta', $value, $post->ID, '_wp_attachment_image_alt', array('source'=>'bulk_copy_alt'));
+                                update_post_meta($post->ID, '_wp_attachment_image_alt', $value);
                             }
                         } else {
                             wp_send_json(false);
                         }
                         break;
 
-                    case 'image_title':
-                        if (!empty($mposts_empty_title)) {
-                            foreach ($mposts_empty_title as $post) {
+                    case 'img-copy-title':
+                        $posts_result = $wpdb->get_results($wpdb->prepare('SELECT *
+                        FROM ' . $wpdb->posts . ' WHERE post_type = %s
+                               AND post_mime_type LIKE %s AND ID IN (' . implode(',', esc_sql($ids)) . ') 
+                        ', array('attachment', '%image%')));
+
+                        if (!empty($posts_result)) {
+                            foreach ($posts_result as $post) {
                                 $i_info_url = pathinfo($post->guid);
-                                wp_update_post(array('ID' => $post->ID, 'post_title' => $i_info_url['filename']));
+                                $value = $i_info_url['filename'];
+                                /**
+                                 * Filter before update meta for image
+                                 *
+                                 * @param string  Meta value
+                                 * @param integer Image ID
+                                 * @param string  Post title field name
+                                 * @param array   Extra informations
+                                 *
+                                 * @return string
+                                 *
+                                 * @ignore Hook already documented
+                                 */
+                                $value = apply_filters('wpms_update_image_meta', $value, $post->ID, 'post_title', array('source'=>'bulk_copy_title'));
+                                wp_update_post(array('ID' => $post->ID, 'post_title' => $value));
+                            }
+                        } else {
+                            wp_send_json(false);
+                        }
+                        break;
+                    case 'img-copy-desc':
+                        $posts_result = $wpdb->get_results($wpdb->prepare('SELECT *
+                        FROM ' . $wpdb->posts . ' WHERE post_type = %s
+                               AND post_mime_type LIKE %s AND ID IN (' . implode(',', esc_sql($ids)) . ') 
+                        ', array('attachment', '%image%')));
+                        if (!empty($posts_result)) {
+                            foreach ($posts_result as $post) {
+                                $i_info_url = pathinfo($post->guid);
+                                wp_update_post(array('ID' => $post->ID, 'post_content' => $i_info_url['filename']));
                             }
                         } else {
                             wp_send_json(false);
@@ -3469,7 +3313,7 @@ class MetaSeoAdmin
      *
      * @return void
      */
-    public function bulkPostCopyTitle()
+    public function bulkPostCopy()
     {
         if (empty($_POST['wpms_nonce'])
             || !wp_verify_nonce($_POST['wpms_nonce'], 'wpms_nonce')) {
@@ -3479,32 +3323,21 @@ class MetaSeoAdmin
         $post_types = get_post_types(array('public' => true, 'exclude_from_search' => false));
         unset($post_types['attachment']);
         $margs = array();
+
+        switch ($_POST['action_name']) {
+            case 'post-copy-title':
+                $key = '_metaseo_metatitle';
+                break;
+            case 'post-copy-desc':
+                $key = '_metaseo_metadesc';
+                break;
+        }
+
         if (isset($_POST['sl_bulk']) && $_POST['sl_bulk'] === 'all') { // for select a;;
             $margs = array(
                 'posts_per_page' => - 1,
                 'post_type'      => $post_types,
-                'post_status'    => array(
-                    'publish',
-                    'pending',
-                    'draft',
-                    'auto-draft',
-                    'future',
-                    'private',
-                    'inherit',
-                    'trash'
-                ),
-                'meta_query'     => array(
-                    'relation' => 'OR',
-                    array(
-                        'key'     => '_metaseo_metatitle',
-                        'compare' => 'NOT EXISTS',
-                    ),
-                    array(
-                        'key'   => '_metaseo_metatitle',
-                        'value' => false,
-                        'type'  => 'BOOLEAN'
-                    ),
-                )
+                'post_status'    => 'any'
             );
         } else { // for select some post
             if (isset($_POST['ids'])) {
@@ -3512,29 +3345,8 @@ class MetaSeoAdmin
                 $margs = array(
                     'posts_per_page' => - 1,
                     'post_type'      => $post_types,
-                    'post_status'    => array(
-                        'publish',
-                        'pending',
-                        'draft',
-                        'auto-draft',
-                        'future',
-                        'private',
-                        'inherit',
-                        'trash'
-                    ),
-                    'post__in'       => $ids,
-                    'meta_query'     => array(
-                        'relation' => 'OR',
-                        array(
-                            'key'     => '_metaseo_metatitle',
-                            'compare' => 'NOT EXISTS',
-                        ),
-                        array(
-                            'key'   => '_metaseo_metatitle',
-                            'value' => false,
-                            'type'  => 'BOOLEAN'
-                        ),
-                    )
+                    'post_status'    => 'any',
+                    'post__in'       => $ids
                 );
             } else {
                 wp_send_json(false);
@@ -3545,7 +3357,21 @@ class MetaSeoAdmin
         $mposts     = $m_newquery->get_posts();
         if (!empty($mposts)) {
             foreach ($mposts as $post) {
-                update_post_meta($post->ID, '_metaseo_metatitle', $post->post_title);
+                $value = $post->post_title;
+                /**
+                 * Filter before update meta for post/page
+                 *
+                 * @param string  Meta value
+                 * @param integer Post ID
+                 * @param string  Meta key
+                 * @param array   Extra informations
+                 *
+                 * @return string
+                 *
+                 * @ignore Hook already documented
+                 */
+                $value = apply_filters('wpms_update_content_meta', $value, $post->ID, '_metaseo_metatitle', array('source'=>'copy_title'));
+                update_post_meta($post->ID, '_metaseo_metatitle', $value);
             }
             wp_send_json(true);
         } else {
@@ -3607,7 +3433,7 @@ class MetaSeoAdmin
                     MetaSeoContentListTable::dismissImport();
                     break;
                 case 'bulk_post_copy':
-                    $this->bulkPostCopyTitle();
+                    $this->bulkPostCopy();
                     break;
                 case 'bulk_image_copy':
                     $this->bulkImageCopy();
@@ -3689,6 +3515,9 @@ class MetaSeoAdmin
                     break;
                 case 'dash_imgsmeta':
                     MetaSeoDashboard::dashImgsMeta();
+                    break;
+                case 'reload-web':
+                    MetaSeoDashboard::reloadWeb();
                     break;
                 case 'setcookie_notification':
                     $this->setcookieNotification();

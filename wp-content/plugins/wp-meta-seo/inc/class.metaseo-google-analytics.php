@@ -74,7 +74,11 @@ class MetaSeoGoogleAnalytics
 
             if (isset($uri_parts[3])) {
                 $uri = '/' . $uri_parts[3];
-                // allow URL correction before sending an API request
+                /**
+                 * Allow URL correction before sending an API request
+                 *
+                 * @param string URL
+                 */
                 $filter   = apply_filters('wpmsga_backenditem_uri', $uri);
                 $lastchar = substr($filter, - 1);
 

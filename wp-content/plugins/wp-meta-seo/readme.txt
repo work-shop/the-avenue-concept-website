@@ -3,7 +3,7 @@ Contributors: JoomUnited
 Tags: google, webmaster tools, keywords, meta, meta description, meta keywords, meta title, robots meta, search engine optimization, seo, wordpress seo, yahoo, image optimization, image resize, custom post seo, redirect, redirection, 301, broken link
 Requires at least: 4.0
 Tested up to: 4.9.8
-Stable tag: 3.7.6
+Stable tag: 4.0.0
 Requires PHP: 5.3
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -277,13 +277,29 @@ Yes WP Meta SEO is compatible with Gutenberg editor since 3.7 version.
 
 == Changelog ==
 
+= 4.0.0 =
+* Add : New admin UX and design
+* Add : Settings UX with AJAX search engine
+* Add : Implement new plugin dashboard with new criteria checks
+* Add : Implement bulk actions on meta bulk editor
+* Add : Implement bulk actions on image information bulk editor
+* Add : Implement bulk actions on the link title manager
+* Add : Check color for meta lenght: check is meta is too short or too long
+* Add : Plugin installer with quick configuration
+* Add : Environment checker on install (PHP Version, PHP Extensions, Apache Modules)
+* Add : System Check menu to notify of server configuration problems after install
+* Fix : Sitemap display on frontend
+
+= 3.7.7 =
+* Add : Add actions and filters for developers
+
 = 3.7.6 =
 * Fix : Redirect to home page when WPMS Addon is not activated
 
 = 3.7.5 =
 * Fix : Warning returned on frontend
 * Fix : Load Dashboard widget content using ajax method (large amount of data)
-* Fix : ¨PHP warning in redirect URL interface
+* Fix : PHP warning in redirect URL interface
 
 = 3.7.4 =
 * Fix : Update alt meta for Elementor image in content

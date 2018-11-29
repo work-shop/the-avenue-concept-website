@@ -64,7 +64,7 @@ div#jutranslation.wordpress div.control-group.edition table {
     div#jutranslation.wordpress tr.do_table_line td input.do_table_language,
     div#jutranslation.wordpress div.control-group.edition td input.do_table_filter_override,
     div#jutranslation.wordpress div.control-group.edition td input.do_table_override {
-        min-width: 250px;
+        min-width: 200px;
     }
 }
 
@@ -90,7 +90,7 @@ div#jutranslation.wordpress div.control-group.edition table {
     div#jutranslation.wordpress tr.do_table_line td input.do_table_language,
     div#jutranslation.wordpress div.control-group.edition td input.do_table_filter_override,
     div#jutranslation.wordpress div.control-group.edition td input.do_table_override {
-        min-width: 200px;
+        min-width: 150px;
     }
 }
 

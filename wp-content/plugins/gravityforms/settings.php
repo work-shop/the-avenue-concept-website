@@ -171,6 +171,7 @@ class GFSettings {
 			delete_option( 'gf_submissions_block' );
 			delete_option( 'gf_imported_file' );
 			delete_option( 'gf_imported_theme_file' );
+			delete_option( 'gf_rest_api_db_version' );
 
 			delete_option( 'gform_api_count' );
 			delete_option( 'gform_email_count' );

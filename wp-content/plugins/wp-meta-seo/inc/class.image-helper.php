@@ -500,8 +500,7 @@ class ImageHelper
                 $msg[$iID]['imNotGood']['button']  = '<a href="javascript:void(0);"
                  class=" fix-metas wpmsbtn wpmsbtn_small" data-img-name="' . esc_attr($_imgs[$iID]) . '"
                   data-post-id="' . esc_attr($iID) . '" data-opt-key="fix_metas" onclick="showPostsList(this)"
-                   alt="' . esc_attr__('This image has been detected
-                    in your content, edit information here…', 'wp-meta-seo') . '">
+                   alt="' . esc_attr__('Edit the image information', 'wp-meta-seo') . '">
                    ' . esc_html__('Edit meta in content', 'wp-meta-seo') . '<span class="spinner-light"></span></a>';
 
 

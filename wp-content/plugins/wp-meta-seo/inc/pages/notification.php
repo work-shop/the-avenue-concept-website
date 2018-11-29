@@ -1,4 +1,6 @@
 <?php
+/* Prohibit direct script loading */
+defined('ABSPATH') || die('No direct script access allowed!');
 if (!empty($_COOKIE[$class_btn_close])) {
     $check = time() - (int) $_COOKIE[$class_btn_close];
     $month = 30 * 24 * 60 * 60;

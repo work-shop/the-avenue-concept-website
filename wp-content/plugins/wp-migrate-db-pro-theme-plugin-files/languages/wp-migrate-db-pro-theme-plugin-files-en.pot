@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: wp-migrate-db-pro-theme-plugin-files\n"
 "Report-Msgid-Bugs-To: nom@deliciousbrains.com\n"
-"POT-Creation-Date: 2018-09-25 07:35-0400\n"
+"POT-Creation-Date: 2018-11-27 09:56-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,20 +17,115 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-local.php:62
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-local.php:117
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:189
+msgid "Themes"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:190
+msgid "Plugins"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:191
+msgid "Theme & Plugin Files"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:192
+msgid "(active)"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:193
+msgid "Please select themes for migration."
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:194
+msgid "Please select plugins for migration."
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:195
+msgid "remote"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:196
+msgid "local"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:197
+msgid "Failed to transfer file."
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:198
+msgid "Theme & Plugin Files Transfer Error"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:199
+msgid "Loading transfer queue"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesAddon.php:200
+msgid "Transferring: "
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:116
+#, php-format
+msgid ""
+"Temporary file not found when finalizing Theme & Plugin Files migration: %s "
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:125
+#, php-format
+msgid ""
+"Unable to overwrite destination file when finalizing Theme & Plugin Files "
+"migration: %s"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:141
+#, php-format
+msgid ""
+"Unable to move file into place when finalizing Theme & Plugin Files "
+"migration. Source: %s | Destination: %s"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesFinalize.php:212
+#, php-format
+msgid "Unable to verify file migration, %s does not exist."
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:115
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:170
 msgid "Error: empty folder list supplied."
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-local.php:72
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:125
 msgid "Invalid folder list supplied (invalid array)"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-local.php:162
-msgid "A problem occured starting the Theme & Plugin files migration."
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesLocal.php:277
+#, php-format
+msgid "Unable to save local queue status - %s"
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-local.php:177
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:172
+msgid "No files returned from the remote server."
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:251
+msgid "Saving queue status to remote failed."
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:263
+#, php-format
+msgid "Unable to save remote queue status - %s"
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/ThemePluginFilesRemote.php:295
+msgid "Failed to respond to payload post."
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/TransferCheck.php:56
+msgid "A problem occurred starting the Theme & Plugin files migration."
+msgstr ""
+
+#: src/wp-migrate-db-pro-theme-plugin-files/class/TransferCheck.php:71
 msgid ""
 "Unfortunately it looks like we can't migrate your theme or plugin files. "
 "However, running a migration without theme and plugin files should work. "
@@ -38,103 +133,8 @@ msgid ""
 "and try your migration again."
 msgstr ""
 
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-local.php:179
+#: src/wp-migrate-db-pro-theme-plugin-files/class/TransferCheck.php:73
 msgid "More Details »"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-local.php:277
-#, php-format
-msgid "Unable to save local queue status - %s"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-remote.php:99
-msgid "No files returned from the remote server."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-remote.php:180
-msgid "Saving queue status to remote failed."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-remote.php:192
-#, php-format
-msgid "Unable to save remote queue status - %s"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files-remote.php:226
-msgid "Failed to respond to payload post."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:169
-msgid "Themes"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:170
-msgid "Plugins"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:171
-msgid "Theme & Plugin Files"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:172
-msgid "(active)"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:173
-msgid "Please select themes for migration."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:174
-msgid "Please select plugins for migration."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:175
-msgid "remote"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:176
-msgid "local"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:177
-msgid "Failed to transfer file."
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:178
-msgid "Theme & Plugin Files Transfer Error"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:179
-msgid "Loading transfer queue"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:180
-msgid "Transferring: "
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:480
-#, php-format
-msgid ""
-"Temporary file not found when finalizing Theme & Plugin Files migration: %s "
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:489
-#, php-format
-msgid ""
-"Unable to overwrite destination file when finalizing Theme & Plugin Files "
-"migration: %s"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:505
-#, php-format
-msgid ""
-"Unable to move file into place when finalizing Theme & Plugin Files "
-"migration. Source: %s | Destination: %s"
-msgstr ""
-
-#: src/wp-migrate-db-pro-theme-plugin-files/class/wpmdbpro-theme-plugin-files.php:574
-#, php-format
-msgid "Unable to verify file migration, %s does not exist."
 msgstr ""
 
 #: src/wp-migrate-db-pro-theme-plugin-files/template/migrate.php:5

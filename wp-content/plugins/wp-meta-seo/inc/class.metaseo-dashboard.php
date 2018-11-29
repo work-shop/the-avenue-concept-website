@@ -130,75 +130,6 @@ class MetaSeoDashboard
     }
 
     /**
-     * Display rank of site
-     *
-     * @param string $url URL
-     *
-     * @return void
-     */
-    public function displayRank($url)
-    {
-        $rank = $this->getRank($url);
-        if ($rank !== '') {
-            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method getRank
-            echo $rank;
-        } else {
-            esc_html_e('We can\'t get rank of this site from Alexa.com!', 'wp-meta-seo');
-        }
-    }
-
-    /**
-     * Get rank of site
-     *
-     * @param string $url URL
-     *
-     * @return mixed|string
-     */
-    public function getRank($url)
-    {
-        if (!function_exists('curl_version')) {
-            $content = file_get_contents($url);
-            if (!$content) {
-                return '';
-            }
-        } else {
-            if (!is_array($url)) {
-                $url = array($url);
-            }
-            $contents = $this->getContents($url);
-            $content  = $contents[0];
-        }
-
-        $doc = new DOMDocument();
-        libxml_use_internal_errors(true);
-        if (empty($content)) {
-            return '';
-        }
-
-        $doc->loadHTML($content);
-        $doc->preserveWhiteSpace = false;
-
-        $finder    = new DOMXPath($doc);
-        $classname = 'note-no-data';
-        $nodes     = $finder->query('//section[contains(@class, "' . $classname . '")]');
-        if ($nodes->length < 1) {
-            $classname = 'rank-row';
-            $nodes     = $finder->query('//div[contains(@class, "' . $classname . '")]');
-        }
-
-        $tmp_dom = new DOMDocument();
-        foreach ($nodes as $key => $node) {
-            $tmp_dom->appendChild($tmp_dom->importNode($node, true));
-        }
-
-        $html = trim($tmp_dom->saveHTML());
-        $html = str_replace('We don\'t have', esc_html__('Alexa doesn\'t have', 'wp-meta-seo'), $html);
-        $html = str_replace('Get Certified', '', $html);
-        $html = str_replace('"/topsites/countries', '"http://www.alexa.com/topsites/countries', $html);
-        return $html;
-    }
-
-    /**
      * Get content a file
      *
      * @param array $urls URL infos
@@ -522,77 +453,6 @@ class MetaSeoDashboard
     }
 
     /**
-     * Return count link 404 , count link 404 is redirected , percent
-     *
-     * @return array
-     */
-    public static function get404Link()
-    {
-        global $wpdb;
-        $count_404 = $wpdb->get_var('SELECT COUNT(*) FROM ' . $wpdb->prefix . 'wpms_links WHERE (broken_internal = 1 OR broken_indexed = 1)');
-
-        $count_404_redirected = $wpdb->get_var('SELECT COUNT(*) FROM ' . $wpdb->prefix . 'wpms_links
-             WHERE link_url_redirect != "" AND (broken_internal = 1 OR broken_indexed = 1)');
-        if ((int) $count_404 !== 0) {
-            $percent = ceil($count_404_redirected / $count_404 * 100);
-        } else {
-            $percent = 100;
-        }
-        return array('count_404' => $count_404, 'count_404_redirected' => $count_404_redirected, 'percent' => $percent);
-    }
-
-    /**
-     * Return count image is optimized
-     *
-     * @return integer
-     */
-    public function getImagesOptimizer()
-    {
-        global $wpdb;
-        $row = $wpdb->get_results($wpdb->prepare('SELECT * FROM INFORMATION_SCHEMA.TABLES
-            WHERE table_name = %s AND TABLE_SCHEMA = %s', array($wpdb->prefix . 'wpio_images', $wpdb->dbname)));
-        if (!empty($row)) {
-            $files          = $wpdb->get_results('SELECT distinct file FROM ' . $wpdb->prefix . 'wpio_images');
-            $image_optimize = 0;
-            foreach ($files as $file) {
-                if (file_exists(str_replace('/', DIRECTORY_SEPARATOR, ABSPATH . $file->file))) {
-                    $image_optimize ++;
-                }
-            }
-            return $image_optimize;
-        } else {
-            return 0;
-        }
-    }
-
-    /**
-     * Get count image
-     *
-     * @return array
-     */
-    public function getImagesCount()
-    {
-        $image_optimize = $this->getImagesOptimizer();
-        $allowed_ext    = array('jpg', 'jpeg', 'jpe', 'gif', 'png', 'pdf');
-        $count_image    = 0;
-        $scan_dir       = str_replace('/', DIRECTORY_SEPARATOR, ABSPATH);
-        foreach (new RecursiveIteratorIterator(new IgnorantRecursiveDirectoryIterator($scan_dir)) as $filename) {
-            if (!in_array(strtolower(pathinfo($filename, PATHINFO_EXTENSION)), $allowed_ext)) {
-                continue;
-            }
-
-            $count_image ++;
-        }
-
-        if ((int) $count_image === 0) {
-            $precent = 0;
-        } else {
-            $precent = ceil($image_optimize / $count_image * 100);
-        }
-        return array('image_optimize' => $image_optimize, 'count_image' => $count_image, 'percent' => $precent);
-    }
-
-    /**
      * Update time dashboard update
      *
      * @param string $name Option name
@@ -692,12 +552,25 @@ class MetaSeoDashboard
         $where[]    = 'post_type IN (\'' . $post_types . '\')';
         $where[]    = 'post_content <> "" AND post_content LIKE "%<img%>%"';
 
+        // check count posts have image tag in content
+        $all_posts = $wpdb->get_var('SELECT COUNT(ID) FROM ' . $wpdb->posts . ' WHERE post_content <> "" AND post_content LIKE "%<img%>%"');
+        if (empty($all_posts)) {
+            $options_dashboard['image_meta']  = array(
+                'imgs_statis'       => array(0, 0, 100),
+                'imgs_metas_statis' => array(0, 0, 100)
+            );
+            update_option('options_dashboard', $options_dashboard);
+            self::dashLastUpdate('image_meta');
+            $results           = $options_dashboard['image_meta'];
+            $results['status'] = true;
+            wp_send_json($results);
+        }
+
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Variable has been prepare
         $posts = $wpdb->get_results($wpdb->prepare('SELECT ID,post_content FROM ' . $wpdb->posts . ' WHERE ' . implode(' AND ', $where) . ' ORDER BY ID LIMIT %d OFFSET %d', array(
             $limit,
             $offset
         )));
-
         if (count($posts) > 0) {
             $doc = new DOMDocument();
             libxml_use_internal_errors(true);
@@ -764,12 +637,14 @@ class MetaSeoDashboard
             $response['imgs_count']           = $countImg;
             $response['page']                 = (int) $_POST['page'];
         } else {
+            // run with last page
             if (!empty($_POST['imgs_count'])) {
                 $percent_iresizing = ceil($_POST['imgs_statis'] / $_POST['imgs_count'] * 100);
             } else {
                 $percent_iresizing = 100;
             }
             $response['imgs_statis'][2] = $percent_iresizing;
+
             if (!empty($_POST['imgs_count'])) {
                 $percent_imeta = ceil($_POST['imgs_metas_statis'] / $_POST['imgs_count'] * 100);
             } else {
@@ -783,31 +658,160 @@ class MetaSeoDashboard
             );
 
             // update options_dashboard option
-            if (!empty($options_dashboard) && is_array($options_dashboard)) {
-                if (empty($options_dashboard['image_meta'])) {
-                    update_option('options_dashboard', $options_dashboard);
-                    self::dashLastUpdate('image_meta');
-                } else {
-                    $option_last_update_post = get_option('wpms_last_update_post');
-                    $option_last_dash_update = get_option('_wpms_dash_last_update');
-                    if ((!empty($option_last_update_post) && $option_last_update_post > $option_last_dash_update)
-                        || empty($option_last_update_post)) {
-                        update_option('options_dashboard', $options_dashboard);
-                        self::dashLastUpdate('image_meta');
-                    }
-                }
-            } else {
+            $option_last_update_post = get_option('wpms_last_update_post');
+            $option_last_dash_update = get_option('_wpms_dash_last_update');
+            if ((!empty($option_last_update_post) && $option_last_update_post > $option_last_dash_update)
+                || empty($option_last_update_post)) {
                 update_option('options_dashboard', $options_dashboard);
                 self::dashLastUpdate('image_meta');
             }
 
-            $options_dashboard = get_option('options_dashboard');
             $results           = $options_dashboard['image_meta'];
-
             $results['status'] = true;
             wp_send_json($results);
         }
 
         wp_send_json($response);
+    }
+
+    /**
+     * Connect with webpage test api
+     *
+     * @param string  $page     URL of page check
+     * @param string  $key      Key of webpage test api
+     * @param boolean $run_time Run time
+     * @param boolean $type     Type check
+     *
+     * @return string
+     */
+    public static function getTestId($page, $key, $run_time = false, $type = false)
+    {
+        $idTest = wpmsGetOption('webpage_testid');
+        if (!empty($idTest)) {
+            return $idTest;
+        }
+
+        $testID = '';
+        if (!$type) {
+            $type = 'xml';
+        }
+        if (!$run_time) {
+            $run_time = 1;
+        }
+        $runTest  = 'http://www.webpagetest.org/runtest.php?url=' .
+                    $page . '&runs=' . $run_time . '&f=' . $type . '&k=' . $key;
+        $response = wp_remote_get($runTest);
+        if (is_array($response)) {
+            $xmlres = simplexml_load_string($response['body']);
+            if ($xmlres) {
+                if ((string) $xmlres->statusText === 'Ok') {
+                    $testID = (string) $xmlres->data->testId;
+                }
+
+                if ((string) $xmlres->statusText === 'Invalid API Key') {
+                    $testID = 'Invalid API Key';
+                }
+            }
+        }
+
+        return $testID;
+    }
+
+    /**
+     * Get response from URL
+     *
+     * @param string $url URL
+     *
+     * @return SimpleXMLElement|boolean
+     */
+    public static function sxe($url)
+    {
+        // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Fix warning in some case
+        $xml = @file_get_contents($url);
+        if (empty($xml)) {
+            return false;
+        }
+        foreach ($http_response_header as $header) {
+            if (preg_match('#^Content-Type: text/xml; charset=(.*)#i', $header, $m)) {
+                switch (strtolower($m[1])) {
+                    case 'utf-8':
+                        // do nothing
+                        break;
+
+                    case 'iso-8859-1':
+                        $xml = utf8_encode($xml);
+                        break;
+
+                    default:
+                        $xml = iconv($m[1], 'utf-8', $xml);
+                }
+                break;
+            }
+        }
+
+        return simplexml_load_string($xml);
+    }
+
+    /**
+     * Get screenshot website
+     *
+     * @return string|array
+     */
+    public static function thumbalizr()
+    {
+        $url = home_url();
+        $idTest   = self::getTestId($url, 'A.8fbb3da31a268442d7636c6510558702');
+        if (empty($idTest) || $idTest === 'Invalid API Key') {
+            return 'https://ps.w.org/wp-meta-seo/assets/banner-772x250.png';
+        }
+        wpmsSetOption('webpage_testid', $idTest);
+        $urlTest  = 'http://www.webpagetest.org/xmlResult/' . $idTest . '/';
+        $xmlResult = self::sxe($urlTest);
+        if (!$xmlResult) {
+            return 'https://ps.w.org/wp-meta-seo/assets/banner-772x250.png';
+        }
+
+        $status   = '';
+        if ($xmlResult !== false) {
+            $status = (int) $xmlResult->statusCode;
+        }
+
+        if ($status < 200) {
+            return array('status' => false, 'statusCode' => $status);
+        } elseif ($status === 200) {
+            wpmsSetOption('webpage_testid', 0);
+            return (string) $xmlResult->data->run[0]->firstView->images->screenShot;
+        }
+
+        return 'https://ps.w.org/wp-meta-seo/assets/banner-772x250.png';
+    }
+
+    /**
+     * Reload web
+     *
+     * @return void
+     */
+    public static function reloadWeb()
+    {
+        $upload_dir   = wp_upload_dir();
+        $server_check = parse_url(home_url());
+        if (isset($server_check['host']) && $server_check['host'] === 'localhost') {
+            $link = 'https://ps.w.org/wp-meta-seo/assets/banner-772x250.png';
+        } else {
+            $response = self::thumbalizr();
+            if (is_array($response)) {
+                wp_send_json($response);
+            }
+            // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Fix warning in some case
+            $content = @file_get_contents($response);
+            if ($content) {
+                file_put_contents($upload_dir['basedir'] . '/wpms-web-screenshot.jpg', $content);
+                $link = $upload_dir['baseurl'] . '/wpms-web-screenshot.jpg';
+            } else {
+                $link = 'https://ps.w.org/wp-meta-seo/assets/banner-772x250.png';
+            }
+        }
+
+        wp_send_json(array('status' => true, 'link' => $link));
     }
 }

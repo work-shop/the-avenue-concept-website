@@ -1,8 +1,11 @@
 <?php
+/* Prohibit direct script loading */
+defined('ABSPATH') || die('No direct script access allowed!');
 if (!class_exists('MetaSeoLinkListTable')) {
     require_once(WPMETASEO_PLUGIN_DIR . '/inc/class.metaseo-link-list-table.php');
 }
 
+add_thickbox();
 $metaseo_list_table = new MetaSeoLinkListTable();
 $metaseo_list_table->processAction();
 $metaseo_list_table->prepare_items();
@@ -16,12 +19,56 @@ if (!empty($_REQUEST['_wp_http_referer'])) {
 
 <div class="wrap seo_extended_table_page">
     <div id="icon-edit-pages" class="icon32 icon32-posts-page"></div>
+    <form id="wp-seo-meta-form" class="wpms-form-table" action="" method="post">
+        <div id="meta-bulk-actions" style="display:none;">
+            <div class="m-tb-20">
+                <h3 class="wpms-top-h3"><?php esc_html_e('Apply to', 'wp-meta-seo') ?></h3>
+                <p>
+                    <label class="wpms-text-action">
+                        <input type="checkbox" class="mbulk_copy link-apply-action wpms-checkbox" value="all">
+                        <?php esc_html_e('All Links', 'wp-meta-seo') ?>
+                    </label>
+                </p>
+                <p>
+                    <label class="wpms-text-action">
+                        <input type="checkbox" class="mbulk_copy link-apply-action wpms-checkbox" value="selected" checked="checked">
+                        <?php esc_html_e('Only link selection', 'wp-meta-seo') ?>
+                    </label>
+                </p>
+            </div>
 
-    <?php echo '<h1>' . esc_html__('Link editor', 'wp-meta-seo') . '</h1>'; ?>
+            <div class="m-tb-20">
+                <h3 class="wpms-top-h3"><?php esc_html_e('Apply the following actions', 'wp-meta-seo') ?></h3>
+                <p>
+                    <label class="wpms-text-action">
+                        <input type="checkbox" class="wpms-bulk-action link-bulk-action wpms-checkbox" value="follow">
+                        <?php esc_html_e('Follow', 'wp-meta-seo') ?>
+                    </label>
+                </p>
+                <p>
+                    <label class="wpms-text-action">
+                        <input type="checkbox" class="wpms-bulk-action link-bulk-action wpms-checkbox" value="nofollow">
+                        <?php esc_html_e('UnFollow', 'wp-meta-seo') ?>
+                    </label>
+                </p>
+                <p>
+                    <label class="wpms-text-action">
+                        <input type="checkbox" class="wpms-bulk-action link-bulk-action wpms-checkbox" value="copy_title">
+                        <?php esc_html_e('Copy link text as link title', 'wp-meta-seo') ?>
+                    </label>
+                </p>
+            </div>
 
-    <form id="wp-seo-meta-form" action="" method="post">
-        <?php $metaseo_list_table->searchBox1(); ?>
-        <?php $metaseo_list_table->display(); ?>
+            <button type="button"
+                    class="ju-button orange-button btn_bulk_link wpms-small-btn wpms_left"><?php esc_html_e('Apply now', 'wp-meta-seo') ?></button>
+            <span class="spinner wpms-spinner spinner_apply_follow wpms_left"></span>
+        </div>
+
+        <?php
+        echo '<h1 class="wpms-top-h1">' . esc_html__('Link Editor', 'wp-meta-seo') . '</h1>';
+        $metaseo_list_table->searchBox1();
+        $metaseo_list_table->display();
+        ?>
     </form>
 
     <?php
@@ -53,8 +100,8 @@ if (!empty($_REQUEST['_wp_http_referer'])) {
             wpmsChangeFollow(this);
         });
 
-        $('.btn_apply_follow').on('click', function () {
-            wpmsUpdateFollow(this);
+        $('.btn_bulk_link').on('click', function () {
+            wpmsLinkDoAction(this);
         });
 
         // index link

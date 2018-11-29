@@ -50,22 +50,211 @@ class MetaSeoContentListTable extends WP_List_Table
                 <input type="hidden" name="post_status" value="<?php echo esc_attr($_REQUEST['post_status']); ?>"/>
             <?php endif ?>
             <?php // phpcs:enable
-            ?>
-            <?php $this->extra_tablenav($which); ?>
-
-            <div style="float:right;margin-left:8px;">
-                <label>
-                    <input type="number" required
-                           value="<?php echo esc_attr($this->_pagination_args['per_page']) ?>"
-                           maxlength="3" name="metaseo_posts_per_page" class="metaseo_imgs_per_page screen-per-page"
-                           max="999" min="1" step="1">
-                </label>
-                <input type="submit" name="btn_perpage" class="button_perpage button" id="button_perpage" value="Apply">
-            </div>
-            <?php $this->pagination($which); ?>
+            if ($which === 'top') {
+                $this->extra_tablenav($which); ?>
+                <div style="float:right;margin-left:8px;">
+                    <label>
+                        <input type="number" required
+                               value="<?php echo esc_attr($this->_pagination_args['per_page']) ?>"
+                               maxlength="3" name="metaseo_posts_per_page" class="metaseo_imgs_per_page screen-per-page"
+                               max="999" min="1" step="1">
+                        <button type="submit" name="btn_perpage"
+                                class="button_perpage ju-button orange-button waves-effect waves-light"
+                                id="button_perpage"><?php esc_html_e('Apply', 'wp-meta-seo') ?></button>
+                    </label>
+                </div>
+            <?php } else { ?>
+                <?php $this->pagination('top'); ?>
+            <?php } ?>
             <br class="clear"/>
         </div>
 
+        <?php
+    }
+
+    /**
+     * Display the pagination.
+     *
+     * @param string $which Possition
+     *
+     * @return void
+     */
+    protected function pagination($which)
+    {
+        if (empty($this->_pagination_args)) {
+            return;
+        }
+
+        $total_items     = (int) $this->_pagination_args['total_items'];
+        $total_pages     = (int) $this->_pagination_args['total_pages'];
+        $infinite_scroll = false;
+        if (isset($this->_pagination_args['infinite_scroll'])) {
+            $infinite_scroll = $this->_pagination_args['infinite_scroll'];
+        }
+
+        if ('top' === $which && $total_pages > 1) {
+            $this->screen->render_screen_reader_content('heading_pagination');
+        }
+
+        $output = '<span class="displaying-num">' . sprintf(_n('%s item', '%s items', $total_items, 'wp-meta-seo'), number_format_i18n($total_items)) . '</span>';
+
+        $current              = (int) $this->get_pagenum();
+        $removable_query_args = wp_removable_query_args();
+
+        $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
+        $current_url = remove_query_arg($removable_query_args, $current_url);
+
+        $page_links = array();
+
+        $total_pages_before = '<span class="paging-input">';
+        $total_pages_after  = '</span></span>';
+
+        $disable_first = false;
+        $disable_last = false;
+        $disable_prev = false;
+        $disable_next = false;
+
+        if ($current === 1) {
+            $disable_first = true;
+            $disable_prev  = true;
+        }
+        if ($current === 2) {
+            $disable_first = true;
+        }
+
+        if ($current === $total_pages) {
+            $disable_last = true;
+            $disable_next = true;
+        }
+        if ($current === $total_pages - 1) {
+            $disable_last = true;
+        }
+
+        if ($disable_first) {
+            $page_links[] = '<a class="wpms-number-page first-page disable"><i class="material-icons">first_page</i></a>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='first-page' href='%s'><span class='screen-reader-text'>%s</span><i class='material-icons'>%s</i></a>",
+                esc_url(remove_query_arg('paged', $current_url)),
+                __('First page', 'wp-meta-seo'),
+                'first_page'
+            );
+        }
+
+        if ($disable_prev) {
+            $page_links[] = '<a class="wpms-number-page prev-page disable"><i class="material-icons">keyboard_backspace</i></a>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='prev-page' href='%s'><span class='screen-reader-text'>%s</span><i class='material-icons'>%s</i></a>",
+                esc_url(add_query_arg('paged', max(1, $current - 1), $current_url)),
+                __('Previous page', 'wp-meta-seo'),
+                'keyboard_backspace'
+            );
+        }
+
+        $begin = $current - 2;
+        $end   = $current + 2;
+        if ($begin < 1) {
+            $begin = 1;
+            $end   = $begin + 4;
+        }
+        if ($end > $total_pages) {
+            $end   = $total_pages;
+            $begin = $end - 4;
+        }
+        if ($begin < 1) {
+            $begin = 1;
+        }
+
+        $custom_html = '';
+        for ($i = $begin; $i <= $end; $i ++) {
+            if ($i === $current) {
+                $custom_html .= '<a class="wpms-number-page active" href="' . esc_url(add_query_arg('paged', $i, $current_url)) . '"><span class="screen-reader-text">' . esc_html($i) . '</span><span aria-hidden="true">' . esc_html($i) . '</span></a>';
+            } else {
+                $custom_html .= '<a class="wpms-number-page" href="' . esc_url(add_query_arg('paged', $i, $current_url)) . '"><span class="screen-reader-text">' . esc_html($i) . '</span><span aria-hidden="true">' . esc_html($i) . '</span></a>';
+            }
+        }
+        $page_links[] = $total_pages_before . $custom_html . $total_pages_after;
+
+        if ($disable_next) {
+            $page_links[] = '<a class="wpms-number-page disable next-page"><i class="material-icons">trending_flat</i></a>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='next-page' href='%s'><span class='screen-reader-text'>%s</span><i class='material-icons'>%s</i></a>",
+                esc_url(add_query_arg('paged', min($total_pages, $current + 1), $current_url)),
+                __('Next page', 'wp-meta-seo'),
+                'trending_flat'
+            );
+        }
+
+        if ($disable_last) {
+            $page_links[] = '<a class="wpms-number-page last-page disable"><i class="material-icons">last_page</i></a>';
+        } else {
+            $page_links[] = sprintf(
+                "<a class='last-page' href='%s'><span class='screen-reader-text'>%s</span><i class='material-icons'>%s</i></a>",
+                esc_url(add_query_arg('paged', $total_pages, $current_url)),
+                __('Last page', 'wp-meta-seo'),
+                'last_page'
+            );
+        }
+
+        $pagination_links_class = 'pagination-links';
+        if (!empty($infinite_scroll)) {
+            $pagination_links_class .= ' hide-if-js';
+        }
+        $output .= '<span class="' . esc_html($pagination_links_class) . '">' . join('', $page_links) . '</span>';
+
+        if ($total_pages) {
+            $page_class = $total_pages < 2 ? ' one-page' : '';
+        } else {
+            $page_class = ' no-pages';
+        }
+        $this->_pagination = '<div class="tablenav-pages' . esc_html($page_class) . '">' . $output . '</div>';
+
+        // phpcs:ignore WordPress.Security.EscapeOutput -- Content already escaped
+        echo $this->_pagination;
+    }
+
+    /**
+     * Displays the search box.
+     *
+     * @param string $text     The 'submit' button label.
+     * @param string $input_id ID attribute value for the search input field.
+     *
+     * @return void
+     */
+    public function searchBox($text, $input_id)
+    {
+        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        if (empty($_REQUEST['s']) && !$this->has_items()) {
+            return;
+        }
+
+        $input_id = $input_id . '-search-input';
+
+        if (!empty($_REQUEST['orderby'])) {
+            echo '<input type="hidden" name="orderby" value="' . esc_attr($_REQUEST['orderby']) . '" />';
+        }
+        if (!empty($_REQUEST['order'])) {
+            echo '<input type="hidden" name="order" value="' . esc_attr($_REQUEST['order']) . '" />';
+        }
+        if (!empty($_REQUEST['post_mime_type'])) {
+            echo '<input type="hidden" name="post_mime_type" value="' . esc_attr($_REQUEST['post_mime_type']) . '" />';
+        }
+        if (!empty($_REQUEST['detached'])) {
+            echo '<input type="hidden" name="detached" value="' . esc_attr($_REQUEST['detached']) . '" />';
+        }
+        // phpcs:enable
+        ?>
+        <p class="search-box">
+            <label class="screen-reader-text" for="<?php echo esc_attr($input_id); ?>"><?php echo esc_html($text); ?>
+                :</label>
+            <input type="text" id="<?php echo esc_attr($input_id); ?>" class="wpms-search-input" name="s"
+                   value="<?php _admin_search_query(); ?>"
+                   placeholder="<?php esc_html_e('Search content', 'wp-meta-seo') ?>"/>
+            <button type="submit" id="search-submit"><span class="dashicons dashicons-search"></span></button>
+        </p>
         <?php
     }
 
@@ -93,15 +282,6 @@ class MetaSeoContentListTable extends WP_List_Table
                 selected($selected, $post_type, false)
             );
         }
-
-        $sl_bulk  = '<select name="mbulk_copy" class="mbulk_copy">
-<option value="0">' . esc_html__('Bulk copy', 'wp-meta-seo') . '</option>
-<option value="all">' . esc_html__('All Posts', 'wp-meta-seo') . '</option>
-<option value="bulk-copy-metatitle">' . esc_html__('Selected posts', 'wp-meta-seo') . '</option>
-</select>';
-        $btn_bulk = '<input type="button" name="do_copy" id="post_do_copy"
-         class="wpmsbtn wpmsbtn_small btn_do_copy post_do_copy"
-          value="' . esc_attr__('Content title as meta title', 'wp-meta-seo') . '"><span class="spinner"></span>';
 
         // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
         $selected_duplicate = !empty($_REQUEST['wpms_duplicate_meta']) ? $_REQUEST['wpms_duplicate_meta'] : 'none';
@@ -133,10 +313,8 @@ class MetaSeoContentListTable extends WP_List_Table
             echo $sl_lang;
         }
 
-        echo '<input type="submit" name="do_filter" id="post-query-submit"
-         class="wpmsbtn wpmsbtn_small wpmsbtn_secondary" value="' . esc_html__('Filter', 'wp-meta-seo') . '">';
-        // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-        echo $sl_bulk . $btn_bulk;
+        echo '<a href="#TB_inline?width=600&height=550&inlineId=meta-bulk-actions" title="' . esc_html__('Bulk Actions', 'wp-meta-seo') . '" 
+         class="ju-button orange-button wpms-middle thickbox">' . esc_html__('Meta Bulk Actions', 'wp-meta-seo') . '</a>';
         echo '</div>';
     }
 
@@ -150,14 +328,13 @@ class MetaSeoContentListTable extends WP_List_Table
     {
         $preview = esc_html__(" This is a rendering of what this post might look
          like in Google's search results.", 'wp-meta-seo');
-        $info    = sprintf('<a class="info-content"><img src=' . WPMETASEO_PLUGIN_URL . 'img/info.png>'
+        $info    = sprintf('<a class="info-content"><img src=' . WPMETASEO_PLUGIN_URL . 'assets/images/info.png>'
                            . '<p class="tooltip-metacontent">'
                            . $preview
                            . '</p></a>');
 
         $columns = array(
             'cb'             => '<input id="cb-select-all-1" type="checkbox" style="margin:0">',
-            'col_id'         => '',
             'col_title'      => esc_html__('Title', 'wp-meta-seo'),
             'col_snippet'    => sprintf(esc_html__('Snippet Preview %s', 'wp-meta-seo'), $info),
             'col_meta_title' => esc_html__('Meta Title', 'wp-meta-seo'),
@@ -418,18 +595,10 @@ class MetaSeoContentListTable extends WP_List_Table
 
                     switch ($column_name) {
                         case 'cb':
-                            echo '<th scope="row" class="check-column">';
+                            echo '<td scope="row" class="check-column">';
                             echo '<input id="' . esc_attr('cb-select-' . $rec->ID) . '"
                              class="metaseo_post" type="checkbox" name="post[]" value="' . esc_attr($rec->ID) . '">';
-                            echo '</th>';
-
-                            break;
-
-                        case 'col_id':
-                            echo '<td class="col_id" >';
-                            echo esc_html($i);
                             echo '</td>';
-
                             break;
 
                         case 'col_title':
@@ -440,7 +609,7 @@ class MetaSeoContentListTable extends WP_List_Table
 
                             echo sprintf(
                                 '<td %2$s><div class="action-wrapper">
-<strong id="' . esc_attr('post-title-' . $rec->ID) . '">%1$s</strong>',
+<strong id="' . esc_attr('post-title-' . $rec->ID) . '" class="post-title">%1$s</strong>',
                                 esc_html($post_title),
                                 $attributes // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
                             );
@@ -499,7 +668,7 @@ class MetaSeoContentListTable extends WP_List_Table
                             echo '<p id="' . esc_attr('snippet_desc' . $rec->ID) . '" class="snippet_metades">
                             ' . esc_html($rec->metadesc) . '</p></div>';
                             echo '<img class="' . esc_attr('wpms_loader' . $rec->ID . ' wpms_content_loader') . '"
-                             src=' . esc_url(WPMETASEO_PLUGIN_URL) . 'img/update_loading.gif>';
+                             src=' . esc_url(WPMETASEO_PLUGIN_URL) . 'assets/images/update_loading.gif>';
                             echo '<span id="' . esc_attr('savedInfo' . $rec->ID) . '"
  style="position: relative; display: block;float:right"
  class="saved-info metaseo-msg-success"><span style="position:absolute; float:right" class="spinner"></span></span>';
@@ -508,8 +677,8 @@ class MetaSeoContentListTable extends WP_List_Table
 
                         case 'col_meta_title':
                             $input = sprintf(
-                                '</br><textarea class="large-text metaseo-metatitle"
- rows="3" id="%1$s" name="%2$s" autocomplete="off">%3$s</textarea>',
+                                '<input type="text" class="large-text metaseo-metatitle"
+ rows="3" id="%1$s" name="%2$s" autocomplete="off" value="%3$s">',
                                 esc_attr('metaseo-metatitle-' . $rec->ID),
                                 esc_attr('metatitle[' . $rec->ID . ']'),
                                 ($rec->metatitle) ? esc_textarea($rec->metatitle) : ''
@@ -519,12 +688,12 @@ class MetaSeoContentListTable extends WP_List_Table
                                 esc_attr('metaseo-metatitle-len' . $rec->ID)
                             );
                             // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                            echo sprintf('<td %2$s>%1$s</td>', $input, $attributes);
+                            echo sprintf('<td %2$s><div class="content-b">%1$s</div></td>', $input, $attributes);
                             break;
 
                         case 'col_meta_keywords':
                             $input = sprintf(
-                                '</br><textarea class="large-text metaseo-metakeywords"
+                                '<textarea class="large-text metaseo-metakeywords"
  rows="3" id="%1$s" name="%2$s" autocomplete="off">%3$s</textarea>',
                                 esc_attr('metaseo-metakeywords-' . $rec->ID),
                                 esc_attr('metakeywords[' . $rec->ID . ']'),
@@ -535,12 +704,12 @@ class MetaSeoContentListTable extends WP_List_Table
                                 esc_attr('metaseo-metakeywords-len' . $rec->ID)
                             );
                             // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                            echo sprintf('<td %2$s>%1$s</td>', $input, $attributes);
+                            echo sprintf('<td %2$s><div class="content-b">%1$s</div></td>', $input, $attributes);
                             break;
 
                         case 'col_meta_desc':
                             $input = sprintf(
-                                '</br><textarea class="large-text metaseo-metadesc"
+                                '<textarea class="large-text metaseo-metadesc"
  rows="3" id="%1$s" name="%2$s" autocomplete="off">%3$s</textarea>',
                                 esc_attr('metaseo-metadesc-' . $rec->ID),
                                 esc_attr(' metades[' . $rec->ID . ']'),
@@ -551,7 +720,7 @@ class MetaSeoContentListTable extends WP_List_Table
                                 esc_attr('metaseo-metadesc-len' . $rec->ID)
                             );
                             // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                            echo sprintf('<td %2$s>%1$s</td>', $input, $attributes);
+                            echo sprintf('<td %2$s><div class="content-b">%1$s</div></td>', $input, $attributes);
                             break;
 
                         case 'col_index':
@@ -597,19 +766,18 @@ class MetaSeoContentListTable extends WP_List_Table
         $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $redirect    = false;
         // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
-        if (isset($_POST['do_filter'])) {
-            if (isset($_POST['post_type_filter'])) {
-                $current_url = add_query_arg(array('post_type_filter' => $_POST['post_type_filter']), $current_url);
-            }
+        if (isset($_POST['post_type_filter'])) {
+            $current_url = add_query_arg(array('post_type_filter' => $_POST['post_type_filter']), $current_url);
+            $redirect = true;
+        }
 
-            if (isset($_POST['wpms_duplicate_meta'])) {
-                $current_url = add_query_arg(array('wpms_duplicate_meta' => $_POST['wpms_duplicate_meta']), $current_url);
-            }
+        if (isset($_POST['wpms_duplicate_meta'])) {
+            $current_url = add_query_arg(array('wpms_duplicate_meta' => $_POST['wpms_duplicate_meta']), $current_url);
+            $redirect = true;
+        }
 
-            if (isset($_POST['wpms_lang_list'])) {
-                $current_url = add_query_arg(array('wpms_lang_list' => $_POST['wpms_lang_list']), $current_url);
-            }
-
+        if (isset($_POST['wpms_lang_list'])) {
+            $current_url = add_query_arg(array('wpms_lang_list' => $_POST['wpms_lang_list']), $current_url);
             $redirect = true;
         }
 

@@ -1,0 +1,133 @@
+.custom_redirect_editor_content{
+    display: none;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.custom_redirect_editor_content.show{
+    display:block;
+}
+
+.link-target{
+    display: none;
+}
+
+.wp-list-table .wpms-input-text-wrap{
+    width: 100%;
+    float: left;
+}
+
+table.metaseo_images .wpms-input-text-wrap input{
+    max-width:80% !important;
+    float: left;
+}
+
+.broken_link_table .search-box {
+    width: calc(100% - 350px);
+}
+
+.wlink-btn{
+    width: 45px;
+    height: 45px;
+    background: buttonface !important;
+    float: left;
+    cursor: pointer;
+}
+
+.wlink-btn .link-btn {
+    font-size: 26px !important;
+    padding: 4px;
+    margin: 5.5px;
+}
+
+.wpms_form_add_customlink{
+    width: 50%;
+    float: left;
+}
+
+.custom_redirect_editor_content .wpms-input-text-wrap th{
+    width: 100px;
+}
+
+.custom_redirect_editor_content .wpms-input-text-wrap td{
+    padding: 15px 0;
+}
+
+.wpms-update-link-button{
+    margin-right: 0 !important;
+    float: right !important;
+}
+
+.wpms_form_add_customlink .custom_redirect_status{
+    float: left;
+    margin-left: 15%;
+}
+
+.wp-list-table .wpms-inline-editor-content{
+    width: 100%;
+}
+
+.wpms_outgoing{
+    color: #555;
+}
+
+.form-group-broken {
+    width: 340px;
+    float: right;
+}
+
+.form-group-broken .btn-group {
+    position: absolute;
+}
+
+.form-group-broken .multiselect-container>li>a>label>input[type=checkbox] {
+    margin-top: 0;
+    margin-left: -30px;
+}
+
+.form-group-broken .multiselect-item.filter {
+    margin: 0 0 6px 0;
+}
+
+.multiselect.dropdown-toggle.btn.btn-default {
+    padding: 12px 12px !important;
+    border: 0;
+}
+
+.actions.bulkactions {
+    overflow: auto !important;
+}
+
+.wpms_flush_link {
+    vertical-align: middle;
+}
+
+.referrers_infos {
+    list-style: none;
+    padding-left: 10px;
+}
+
+.referrers_infos li {
+    margin: 15px 0;
+}
+
+.referrers_infos li i {
+    vertical-align: middle;
+    padding-right: 10px;
+}
+
+.referrers_infos li a {
+    text-decoration: none;
+    vertical-align: middle;
+    line-height: 24px;
+}
+
+.form-group-broken .multiselect-container {
+    width: 100%;
+    box-shadow: none;
+    border: 0;
+}
+
+.wpms-spinner-flush {
+    display: none;
+}

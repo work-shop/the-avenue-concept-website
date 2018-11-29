@@ -25,7 +25,7 @@ The modes can be changed from the Settings -> Writing screen. See the screenshot
 = 0.5 =
 Updated for Gutenberg 4.1 and WordPress 5.0-beta1.
 Removed some functionality that now exists in Gutenberg.
-Fixed redirecting back to the CLassic editor after looking at post revisions.
+Fixed redirecting back to the Classic editor after looking at post revisions.
 
 = 0.4 =
 Fixed removing of the "Try Gutenberg" call-out when the Gutenberg plugin is not activated.

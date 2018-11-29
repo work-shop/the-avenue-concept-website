@@ -6,7 +6,7 @@ function paypal() {
 
 	$(document).ready( function() {
 
-		if( $('body').hasClass('page-id-189') ){
+		if( $('body').hasClass('page-id-189') || $('body').hasClass('parent-pageid-189') ){
 
 			if(window.location.hash && window.location.hash === '#donation-form-container') {
 				scrollToForm();
@@ -22,9 +22,9 @@ function paypal() {
 
 				var wpEndpoint = 'https://theavenueconcept.org/wp-json/paypal/v1/iframe';
 
-				var entryIdString = '&USER1=' + entryId;
-				wpPostData += entryIdString;
-				console.log(wpPostData);
+				//var entryIdString = '&USER1=' + entryId;
+				//wpPostData += entryIdString;
+				//console.log(wpPostData);
 
 				$.ajax({
 					url: wpEndpoint,

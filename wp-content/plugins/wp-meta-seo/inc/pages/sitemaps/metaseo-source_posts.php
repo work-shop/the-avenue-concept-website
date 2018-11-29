@@ -1,61 +1,100 @@
-<div id="menu_source_posts" class="wpms_source wpms_source_posts">
-    <div class="div_sitemap_check_all">
-        <div class="pure-checkbox">
-            <input class="sitemap_check_all" data-type="posts" id="wpms_check_all_posts" type="checkbox">
-            <label for="wpms_check_all_posts"><?php esc_html_e('Check all posts', 'wp-meta-seo'); ?></label>
-        </div>
-    </div>
-
-    <div class="div_sitemap_check_all">
-        <div class="pure-checkbox">
-            <input class="sitemap_check_all_posts_in_page" data-type="posts" id="wpms_check_all_posts_in_page"
-                   type="checkbox">
-            <label for="wpms_check_all_posts_in_page">
-                <?php esc_html_e('Check all posts in current page', 'wp-meta-seo'); ?>
+<?php
+/* Prohibit direct script loading */
+defined('ABSPATH') || die('No direct script access allowed!');
+?>
+<div id="menu_source_posts" class="wpms_source wpms_source_posts content-box">
+    <h1 class="h1_top"><?php esc_html_e('Source : Post', 'wp-meta-seo') ?></h1>
+    <div class="ju-settings-option">
+        <div class="wpms_row_full">
+            <label class="ju-setting-label text"
+                   data-alt="<?php echo esc_attr('Include all elements in the sitemap', 'wp-meta-seo') ?>">
+                <?php esc_html_e('Check all posts', 'wp-meta-seo') ?>
             </label>
+            <div class="ju-switch-button">
+                <label class="switch">
+                    <input type="checkbox" class="sitemap_check_all" data-type="posts" id="wpms_check_all_posts"
+                           value="1">
+                    <span class="slider round"></span>
+                </label>
+            </div>
         </div>
     </div>
 
-    <div class="div_sitemap_check_all" style="font-weight: bold;">
-        <label><?php esc_html_e('Public name', 'wp-meta-seo'); ?></label>
-        <label>
-            <input type="text" class="public_name_posts"
-                   value="<?php echo esc_attr($sitemap->settings_sitemap['wpms_public_name_posts']) ?>">
-        </label>
+    <div class="ju-settings-option">
+        <div class="wpms_row_full">
+            <label class="ju-setting-label text">
+                <?php esc_html_e('Check all posts in current page', 'wp-meta-seo') ?>
+            </label>
+            <div class="ju-switch-button">
+                <label class="switch">
+                    <input type="checkbox" class="sitemap_check_all_posts_in_page" data-type="posts"
+                           id="wpms_check_all_posts_in_page"
+                           value="1">
+                    <span class="slider round"></span>
+                </label>
+            </div>
+        </div>
     </div>
 
-    <div class="div_sitemap_check_all wpms_xmp_custom_column" style="font-weight: bold;">
-        <label><?php esc_html_e('Display in column', 'wp-meta-seo'); ?></label>
-        <label>
-            <select class="wpms_display_column wpms_display_column_posts">
-                <?php
-                for ($i = 1; $i <= $sitemap->settings_sitemap['wpms_html_sitemap_column']; $i ++) {
-                    if ((int) $sitemap->settings_sitemap['wpms_display_column_posts'] === (int) $i) {
-                        echo '<option selected value="' . esc_attr($i) . '">' . esc_html($sitemap->columns[$i]) . '</option>';
-                    } else {
-                        echo '<option value="' . esc_attr($i) . '">' . esc_html($sitemap->columns[$i]) . '</option>';
-                    }
-                }
-                ?>
-            </select>
-        </label>
+    <div class="ju-settings-option">
+        <div class="wpms_row_full">
+            <label class="ju-setting-label text wpms_width_100 wpms_left">
+                <?php esc_html_e('Public name', 'wp-meta-seo') ?>
+            </label>
+            <p class="p-d-20">
+                <label>
+                    <input type="text" class="public_name_posts wpms-large-input wpms_width_100"
+                           value="<?php echo esc_attr($sitemap->settings_sitemap['wpms_public_name_posts']) ?>">
+                </label>
+            </p>
+        </div>
     </div>
 
-    <div class="div_sitemap_check_all wpms_xmp_order" style="font-weight: bold;">
-        <label><?php esc_html_e('Order', 'wp-meta-seo'); ?></label>
-        <label>
-            <select class="wpms_display_order_posts">
-                <?php
-                for ($i = 1; $i <= 4; $i ++) {
-                    if ((int) $sitemap->settings_sitemap['wpms_display_order_posts'] === (int) $i) {
-                        echo '<option selected value="' . esc_attr($i) . '">' . esc_html($i) . '</option>';
-                    } else {
-                        echo '<option value="' . esc_attr($i) . '">' . esc_html($i) . '</option>';
-                    }
-                }
-                ?>
-            </select>
-        </label>
+    <div class="ju-settings-option wpms_xmp_custom_column">
+        <div class="wpms_row_full">
+            <label class="ju-setting-label text wpms_width_100 wpms_left"
+                   data-alt="<?php echo esc_attr('Column selection if you’re using the HTML sitemap', 'wp-meta-seo') ?>">
+                <?php esc_html_e('HTML Sitemap column', 'wp-meta-seo') ?>
+            </label>
+            <p class="p-d-20">
+                <label>
+                    <select class="wpms_display_column wpms_display_column_posts wpms-large-input wpms_width_100">
+                        <?php
+                        for ($i = 1; $i <= $sitemap->settings_sitemap['wpms_html_sitemap_column']; $i ++) {
+                            if ((int) $sitemap->settings_sitemap['wpms_display_column_posts'] === (int) $i) {
+                                echo '<option selected value="' . esc_attr($i) . '">' . esc_html($sitemap->columns[$i]) . '</option>';
+                            } else {
+                                echo '<option value="' . esc_attr($i) . '">' . esc_html($sitemap->columns[$i]) . '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                </label>
+            </p>
+        </div>
+    </div>
+
+    <div class="ju-settings-option wpms_xmp_order wpms_right m-r-0">
+        <div class="wpms_row_full">
+            <label class="ju-setting-label text wpms_width_100 wpms_left">
+                <?php esc_html_e('Order', 'wp-meta-seo') ?>
+            </label>
+            <p class="p-d-20">
+                <label>
+                    <select class="wpms_display_order_posts wpms-large-input wpms_width_100">
+                        <?php
+                        for ($i = 1; $i <= 4; $i ++) {
+                            if ((int) $sitemap->settings_sitemap['wpms_display_order_posts'] === (int) $i) {
+                                echo '<option selected value="' . esc_attr($i) . '">' . esc_html($i) . '</option>';
+                            } else {
+                                echo '<option value="' . esc_attr($i) . '">' . esc_html($i) . '</option>';
+                            }
+                        }
+                        ?>
+                    </select>
+                </label>
+            </p>
+        </div>
     </div>
 
     <div id="wrap_sitemap_option_posts" class="wrap_sitemap_option">
@@ -67,36 +106,50 @@
         foreach ($posts as $post) {
             if (!in_array($post->taxo, $check)) {
                 $check[] = $post->taxo;
-                echo '<div class="wpms_row"><h1>' . esc_html($post->taxo) . '</h1></div>';
             }
 
             if (in_array($post->cat_ID, $sitemap->settings_sitemap['wpms_category_link'])) {
-                echo '<div class="wpms_row"><h3>';
-                echo '<div class="pure-checkbox">';
-                echo '<input for="' . esc_attr($desclink_category_remove) . '"
-                 class="sitemap_addlink_categories" id="' . esc_attr('sitemap_addlink_categories_' . $post->cat_ID) . '"
-                  type="checkbox" value="' . esc_attr($post->cat_ID) . '" checked>';
-                echo '<label for="' . esc_attr('sitemap_addlink_categories_' . $post->cat_ID) . '">' . esc_html($post->cat_name) . '</label>';
-                echo '</div>';
-                echo '</h3></div>';
+                $checked = 'checked';
             } else {
-                echo '<div class="wpms_row"><h3>';
-                echo '<div class="pure-checkbox">';
-                echo '<input for="' . esc_attr($desclink_category_remove) . '"
-                 class="sitemap_addlink_categories" id="' . esc_attr('sitemap_addlink_categories_' . $post->cat_ID) . '"
-                  type="checkbox" value="' . esc_attr($post->cat_ID) . '">';
-                echo '<label for="' . esc_attr('sitemap_addlink_categories_' . $post->cat_ID) . '">' . esc_html($post->cat_name) . '</label>';
-                echo '</div>';
-                echo '</h3></div>';
+                $checked = '';
             }
+            ?>
+            <div class="wpms_row_full">
+                <div class="ju-settings-option wpms_row">
+                    <div class="wpms_row_full">
+                        <label class="ju-setting-label text wpms-uppercase">
+                            <?php echo esc_html($post->cat_name) ?>
+                        </label>
+                        <div class="ju-switch-button">
+                            <label class="switch">
+                                <input class="sitemap_addlink_categories"
+                                       id="<?php echo esc_attr('sitemap_addlink_categories_' . $post->cat_ID) ?>"
+                                       type="checkbox"
+                                       value="<?php echo esc_attr($post->cat_ID) ?>" <?php echo esc_html($checked) ?>>
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
 
-            echo '<div class="wpms_row wpms_row_check_all_posts">';
-            echo '<div class="pure-checkbox">';
-            echo '<input data-category="' . esc_attr($post->taxo . $post->slug) . '"
-             class="xm_cb_all" id="xm_cb_all" type="checkbox">';
-            echo '<label for="xm_cb_all">' . esc_html__('Select all', 'wp-meta-seo') . '</label>';
-            echo '</div>';
-            echo '</div>';
+                <div class="ju-settings-option wpms_row">
+                    <div class="wpms_row_full">
+                        <label class="ju-setting-label text">
+                            <?php esc_html_e('Select all', 'wp-meta-seo') ?>
+                        </label>
+                        <div class="ju-switch-button">
+                            <label class="switch">
+                                <input data-category="<?php echo esc_attr($post->taxo . $post->slug) ?>"
+                                       class="xm_cb_all" id="<?php echo esc_attr($post->taxo . $post->slug) ?>"
+                                       type="checkbox">
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+
             foreach ($post->results as $p) {
                 $category = get_the_terms($p, $post->taxo);
                 if ((int) $category[0]->term_id === (int) $post->cat_ID) {
@@ -136,7 +189,7 @@
                         echo '<input class="' . esc_attr('cb_sitemaps_posts wpms_xmap_posts ' . $post->taxo . $post->slug) . '"
                          id="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" type="checkbox"
                           name="_metaseo_settings_sitemap[wpms_sitemap_posts]" value="' . esc_attr($p->ID) . '" checked>';
-                        echo '<label for="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '">' . esc_html($title) . '</label>';
+                        echo '<label for="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" class="wpms-text">' . esc_html($title) . '</label>';
                         echo '</div>';
                     } else {
                         echo '<input class="wpms_sitemap_input_link" type="hidden"
@@ -145,18 +198,32 @@
                         echo '<input class="' . esc_attr('cb_sitemaps_posts wpms_xmap_posts ' . $post->taxo . $post->slug) . '"
                          id="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" type="checkbox"
                           name="_metaseo_settings_sitemap[wpms_sitemap_posts]" value="' . esc_attr($p->ID) . '">';
-                        echo '<label for="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '">' . esc_html($title) . '</label>';
+                        echo '<label for="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" class="wpms-text">' . esc_html($title) . '</label>';
                         echo '</div>';
                     }
 
                     echo '</div>';
                     // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method MetaSeoSitemap::viewPriority and MetaSeoSitemap::viewFrequency
-                    echo '<div style="margin-left:200px">' . $slpr . $slfr . '</div>';
+                    echo '<div class="wpms_right">' . $slpr . $slfr . '</div>';
                     echo '</div>';
                 }
             }
+
+            if ($post->count_posts > 10) {
+                echo '<a href="#open-popup-posts-list" class="open-popup-posts-list ju-button wpms-small-btn wpms_left m-t-10 see-more-posts" data-slug="' . esc_attr($post->slug) . '" data-category="' . esc_attr($post->cat_ID) . '"><i class="material-icons wpms-middle">arrow_right_alt</i><label>' . esc_html__('See more posts in this category', 'wp-meta-seo') . '</label></a>';
+            }
         }
         ?>
+    </div>
+
+    <div id="open-popup-posts-list" class="white-popup mfp-hide">
+        <div style="width: 100%; float: left; text-align: center">
+            <img class="img-links-loader" src="<?php echo esc_url(WPMETASEO_PLUGIN_URL . 'assets/images/ajax-loader.gif') ?>">
+        </div>
+
+        <div class="list_posts_sitemap">
+
+        </div>
     </div>
     <div class="holder holder_posts"></div>
 </div>
