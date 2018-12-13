@@ -150,14 +150,14 @@ module.exports = function(grunt) {
         },
     });
 
-	// grunt.loadNpmTasks('grunt-contrib-watch');
+  // grunt.loadNpmTasks('grunt-contrib-watch');
     // grunt.loadNpmTasks('grunt-sass');
     // grunt.loadNpmTasks('grunt-browserify');
     // grunt.loadNpmTasks('grunt-extract-sourcemap');
 
-	grunt.registerTask('default', ['sass:dev', 'browserify:dev', 'extract_sourcemap:dev', 'watch']);
-	grunt.registerTask('dev', ['browserify:dev','sass:dev', 'sass:adminDev', 'extract_sourcemap:dev']);
-	grunt.registerTask('dist', ['browserify:dist','sass:dist', 'sass:adminDist']);
+  grunt.registerTask('default', ['sass:dev', 'browserify:dev', 'extract_sourcemap:dev', 'watch']);
+  grunt.registerTask('dev', ['browserify:dev','sass:dev', 'sass:adminDev', 'extract_sourcemap:dev']);
+  grunt.registerTask('dist', ['browserify:dist','sass:dist', 'sass:adminDist']);
 
 
 };

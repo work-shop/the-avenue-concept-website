@@ -85,7 +85,7 @@
 				<div class="row mb1 single-meta-sponsors">
 					<div class="col-3 d-flex align-items-start">
 						<h4 class="single-artwork-meta-label">
-							Sponsors
+							Partners, Sponsors
 						</h4>
 					</div>
 					<div class="col-7">
