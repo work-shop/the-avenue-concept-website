@@ -135,6 +135,7 @@ function nl2br (str, is_xhtml) {
                 dots: true,
                 arrows: true,
                 autoplay: true,
+                swipe: true,
                 fade: false,
                 autoplaySpeed: 7000,
                 speed: 700
