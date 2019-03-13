@@ -968,6 +968,11 @@ class GF_System_Report {
 		// Loop through Gravity Forms tables.
 		foreach ( $gf_tables as $i => $table_name ) {
 
+			if ( $table_name == GFFormsModel::get_rest_api_keys_table_name() && ! self::is_rest_api_enabled() ) {
+				// The REST API key table is only created when the REST API is enabled.
+				continue;
+			}
+
 			// Set initial validity and validation message states.
 			$value                     = true;
 			$validation_message        = '';
@@ -1548,6 +1553,19 @@ class GF_System_Report {
 		$percent_complete = round( $count / $legacy_count * 100, 2 );
 
 		return $percent_complete;
+	}
+
+
+	/**
+	 * Checks whether the REST API is enabled.
+ 	 *
+ 	 * @since 2.4.0.1
+	 *
+	 * @return bool
+	 */
+	public static function is_rest_api_enabled() {
+		$rest_api_settings = get_option( 'gravityformsaddon_gravityformswebapi_settings' );
+		return ! empty( $rest_api_settings ) && $rest_api_settings['enabled'];
 	}
 
 }
