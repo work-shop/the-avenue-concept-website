@@ -138,6 +138,11 @@
 						</a>
 					</li>
 					<li>
+						<a href="/donate#donors" class="">
+							Donors
+						</a>
+					</li>
+					<li>
 						<a href="/donate#ways-to-donate" class="">
 							Ways to Donate
 						</a>
