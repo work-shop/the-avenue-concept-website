@@ -21,7 +21,7 @@
 									<?php the_sub_field('donation_option_description'); ?>
 								</p>
 							<?php endif; ?>
-							<?php $link = get_sub_field('donor_link');
+							<?php $link = get_sub_field('donation_option_link');
 							if( $link ): ?>
 								<a class="button" href="<?php echo $link['url']; ?>" target="<?php echo $link['target']; ?>"><?php echo $link['title']; ?></a>
 							<?php endif; ?>
