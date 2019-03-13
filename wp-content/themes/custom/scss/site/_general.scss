@@ -216,6 +216,7 @@ $text-button: (
 	@extend .tracked-less;
 	display: inline-block;
 	text-align: center;
+	line-height: 1.3 !important;
 	@include text-size($text-button);	
 	background-image: url('../images/blob-button-aqua.svg');
 	background-size: 100% 100%;
