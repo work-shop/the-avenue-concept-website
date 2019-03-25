@@ -1,6 +1,7 @@
 <?php
 $fc = get_field('page_flexible_content');
 $fc_row = $fc[$GLOBALS['fc_index']]; 
+$section_id = $fc_row['section_id'];
 $section_heading = $fc_row['section_heading'];
 $background_type = $fc_row['background_type'];
 $background_image = $fc_row['background_image'];
@@ -32,7 +33,11 @@ $fc_background_classes .= 'fc-background-height-' . $section_height . ' ';
 $fc_background_classes .=  $background_color . ' ';
 endif; ?>
 
-<section class="block flexible-content fc fc-background <?php echo $fc_background_classes; ?>">
+<?php if( $section_id === false ){
+	$section_id = $fc[$GLOBALS['fc_index']]; 
+} ?>
+
+<section class="block flexible-content fc fc-background <?php echo $fc_background_classes; ?>" id="fc-<?php echo $section_id; ?>">
 	<?php if( $background_type === 'image' ): ?>
 		<?php WS_Flexible_Content_Helper::fc_background_image( $background_type, $background_image, $section_height_image, $background_image_masking ); ?>
 		<?php if( $include_text ): ?>

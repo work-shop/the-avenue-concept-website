@@ -1,12 +1,18 @@
 <?php
 $fc = get_field('page_flexible_content');
 $fc_row = $fc[$GLOBALS['fc_index']]; 
+$section_id = $fc_row['section_id'];
 $section_heading = $fc_row['section_heading'];
 $section_background_color = $fc_row['section_background_color'];
 $section_text_color = $fc_row['section_text_color'];
 $list_items = $fc_row['list_items'];
 ?>
-<section class="block flexible-content fc fc-labelled-list <?php echo $section_background_color; ?>">
+
+<?php if( $section_id === false ){
+	$section_id = $fc[$GLOBALS['fc_index']]; 
+} ?>
+
+<section class="block flexible-content fc fc-labelled-list <?php echo $section_background_color; ?>" id="fc-<?php echo $section_id; ?>">
 	<div class="container-fc">
 		<?php if( $section_heading ): ?>
 			<div class="row fc-section-heading fc-row-primary">
