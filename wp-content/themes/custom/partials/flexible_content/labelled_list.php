@@ -8,8 +8,8 @@ $section_text_color = $fc_row['section_text_color'];
 $list_items = $fc_row['list_items'];
 ?>
 
-<?php if( $section_id === false ){
-	$section_id = $fc[$GLOBALS['fc_index']]; 
+<?php if( $section_id == NULL || $section_id == false ){
+	$section_id = $GLOBALS['fc_index']; 
 } ?>
 
 <section class="block flexible-content fc fc-labelled-list <?php echo $section_background_color; ?>" id="fc-<?php echo $section_id; ?>">

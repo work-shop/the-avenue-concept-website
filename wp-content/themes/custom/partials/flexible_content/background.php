@@ -33,8 +33,8 @@ $fc_background_classes .= 'fc-background-height-' . $section_height . ' ';
 $fc_background_classes .=  $background_color . ' ';
 endif; ?>
 
-<?php if( $section_id === false ){
-	$section_id = $fc[$GLOBALS['fc_index']]; 
+<?php if( $section_id == NULL || $section_id == false ){
+	$section_id = $GLOBALS['fc_index']; 
 } ?>
 
 <section class="block flexible-content fc fc-background <?php echo $fc_background_classes; ?>" id="fc-<?php echo $section_id; ?>">

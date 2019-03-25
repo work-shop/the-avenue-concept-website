@@ -1,6 +1,7 @@
 <?php
 $fc = get_field('page_flexible_content');
 $fc_row = $fc[$GLOBALS['fc_index']]; 
+$section_id = $fc_row['section_id'];
 $section_heading = $fc_row['section_heading'];
 $section_background_color = $fc_row['section_background_color'];
 $section_text_color = $fc_row['section_text_color'];
@@ -9,7 +10,12 @@ $vimeo_id = $fc_row['vimeo_id'];
 $youtube_id = $fc_row['youtube_id'];
 $video_title = $fc_row['video_title'];
 ?>
-<section class="block flexible-content fc fc-video <?php echo $section_background_color; ?>">
+
+<?php if( $section_id == NULL || $section_id == false ){
+	$section_id = $GLOBALS['fc_index']; 
+} ?>
+
+<section class="block flexible-content fc fc-video <?php echo $section_background_color; ?>" id="fc-<?php echo $section_id; ?>">
 	<div class="container-fc">
 		<?php if( $section_heading ): ?>
 			<div class="row fc-section-heading fc-row-primary">
