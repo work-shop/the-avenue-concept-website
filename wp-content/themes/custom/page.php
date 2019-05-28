@@ -28,6 +28,8 @@ if ( $post->post_parent === 189 ) { ?>
 
 	<?php get_template_part('partials/page/page_hero' ); ?>
 
+	<?php get_template_part('partials/page/page_nav' ); ?>
+
 	<?php get_template_part('partials/flexible_content/flexible_content' ); ?>
 
 <?php } ?>
