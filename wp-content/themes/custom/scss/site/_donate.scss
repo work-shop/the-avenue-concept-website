@@ -413,12 +413,22 @@ $delay: 1.5s;
 /* memberships */
 
 .input-membership-level{
+
+	label:first-child{
+		color: $medium;
+		text-transform: uppercase;
+		@extend .bold;
+	}
+
 	input{
 		width: 30px;
 		display: inline-block;
 	}
 	label{
 		display: inline-block;
+		@media screen and (max-width: $sm) {
+			display: inline-block;
+		}
 	}
 }
 
