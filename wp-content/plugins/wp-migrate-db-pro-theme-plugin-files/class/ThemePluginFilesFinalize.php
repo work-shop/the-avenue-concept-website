@@ -6,7 +6,9 @@ use DeliciousBrains\WPMDB\Common\Error\ErrorLog;
 use DeliciousBrains\WPMDB\Common\Filesystem\Filesystem;
 use DeliciousBrains\WPMDB\Common\FormData\FormData;
 use DeliciousBrains\WPMDB\Common\Http\Http;
+use DeliciousBrains\WPMDB\Common\MigrationState\MigrationStateManager;
 use DeliciousBrains\WPMDB\Common\MigrationState\StateDataContainer;
+use DeliciousBrains\WPMDB\Container;
 use DeliciousBrains\WPMDB\Pro\Queue\Manager;
 use DeliciousBrains\WPMDB\Pro\Transfers\Files\Chunker;
 use DeliciousBrains\WPMDB\Pro\Transfers\Files\Util;
@@ -42,6 +44,10 @@ class ThemePluginFilesFinalize {
 	 * @var Manager
 	 */
 	private $manager;
+	/**
+	 * @var MigrationStateManager
+	 */
+	private $migration_state_manager;
 
 	public function __construct(
 		FormData $form_data,
@@ -50,22 +56,27 @@ class ThemePluginFilesFinalize {
 		ErrorLog $error_log,
 		Http $http,
 		StateDataContainer $state_data_container,
-		Manager $manager
+		Manager $manager,
+		MigrationStateManager $migration_state_manager
 	) {
-		$this->form_data            = $form_data;
-		$this->filesystem           = $filesystem;
-		$this->transfer_helpers     = $transfer_helpers;
-		$this->error_log            = $error_log;
-		$this->http                 = $http;
-		$this->state_data_container = $state_data_container;
-		$this->manager              = $manager;
+		$this->form_data               = $form_data;
+		$this->filesystem              = $filesystem;
+		$this->transfer_helpers        = $transfer_helpers;
+		$this->error_log               = $error_log;
+		$this->http                    = $http;
+		$this->state_data_container    = $state_data_container;
+		$this->manager                 = $manager;
+		$this->migration_state_manager = $migration_state_manager;
 	}
 
 	public function maybe_finalize_tp_migration() {
+		$state_data = Container::getInstance()->get( 'state_data_container' )->state_data;
 
-		$state_data = $this->state_data_container->getData();
+		if ( ! isset( $state_data['stage'] ) ) {
+			return false;
+		}
 
-		if ( isset( $state_data['stage'] ) && ! in_array( $state_data['stage'], array( 'themes', 'plugins' ) ) ) {
+		if ( ! in_array( $state_data['stage'], array( 'themes', 'plugins' ) ) ) {
 			return false;
 		}
 
@@ -184,14 +195,14 @@ class ThemePluginFilesFinalize {
 	 * @throws \Exception
 	 */
 	public function verify_file_transfer() {
-		$state_data = $this->state_data_container->getData();
+		$state_data = Container::getInstance()->get( 'state_data_container' )->state_data;
 
 		if ( isset( $state_data['stage'] ) && ! in_array( $state_data['stage'], array( 'themes', 'plugins' ) ) ) {
 			return false;
 		}
 
-		$stages     = array();
-		$form_data  = $this->form_data->getFormData();
+		$stages    = array();
+		$form_data = $this->form_data->getFormData();
 
 		if ( isset( $form_data['migrate_themes'] ) && '1' === $form_data['migrate_themes'] ) {
 			$stages[] = 'themes';

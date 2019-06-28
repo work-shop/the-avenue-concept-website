@@ -113,7 +113,8 @@ CREATE TABLE {$wpdb->base_prefix}itsec_fingerprints (
 	PRIMARY KEY  (fingerprint_id),
 	UNIQUE KEY fingerprint_user__hash (fingerprint_user,fingerprint_hash),
 	UNIQUE KEY fingerprint_uuid (fingerprint_uuid)
-) $charset_collate;";
+) $charset_collate;
+";
 
 		require_once( ABSPATH . 'wp-admin/includes/upgrade.php' );
 		dbDelta( $tables );

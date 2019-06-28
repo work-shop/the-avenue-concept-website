@@ -24,7 +24,7 @@ var QM_i18n = {
 			num_int   = Math.floor( number ),
 			num_str   = num_int.toString(),
 			fraction  = num_float.substring( num_float.indexOf( '.' ) + 1, num_float.length ),
-			o = '';
+			o         = '';
 
 		if ( num_str.length > 3 ) {
 			for ( i = num_str.length; i > 3; i -= 3 ) {
@@ -48,17 +48,22 @@ var QM_i18n = {
 if ( window.jQuery ) {
 
 	jQuery( function($) {
-		var minheight = 100;
-		var maxheight = ( $(window).height() - 50 );
-		var container = $('#query-monitor');
-		var container_storage_key = 'qm-container-height';
-		var container_pinned_key = 'qm-container-pinned';
+		var toolbarHeight          = $('#wpadminbar').outerHeight();
+		var minheight              = 100;
+		var maxheight              = ( $(window).height() - toolbarHeight );
+		var minwidth               = 300;
+		var maxwidth               = $(window).width();
+		var container              = $('#query-monitor-main');
+		var container_height_key   = 'qm-container-height';
+		var container_pinned_key   = 'qm-container-pinned';
+		var container_position_key = 'qm-container-position';
+		var container_width_key    = 'qm-container-width';
 
-		if ( $('#query-monitor').hasClass('qm-peek') ) {
+		if ( container.hasClass('qm-peek') ) {
 			minheight = 27;
 		}
 
-		$('#query-monitor').removeClass('qm-no-js').addClass('qm-js');
+		container.removeClass('qm-no-js').addClass('qm-js');
 
 		var link_click = function(e){
 			var href = $( this ).attr('href') || $( this ).data('qm-href');
@@ -75,7 +80,7 @@ if ( window.jQuery ) {
 		};
 
 		var show_panel = function( panel ) {
-			$('#query-monitor').addClass('qm-show').removeClass('qm-hide');
+			container.addClass('qm-show').removeClass('qm-hide');
 			$( '.qm' ).removeClass('qm-panel-show');
 			$('#qm-panels').scrollTop(0);
 			$( panel ).addClass('qm-panel-show');
@@ -85,23 +90,26 @@ if ( window.jQuery ) {
 			}
 
 			$('#qm-panel-menu').find('button').removeClass('qm-selected-menu');
+			$('#qm-panel-menu').find('li').removeClass('qm-current-menu');
 			var selected_menu = $('#qm-panel-menu').find('[data-qm-href="' + panel + '"]').addClass('qm-selected-menu');
 
 			if ( selected_menu.length ) {
-				var selected_menu_pos = selected_menu.position();
-				var menu_height = $('#qm-panel-menu').height();
-				var menu_scroll = $('#qm-panel-menu').scrollTop();
+				var selected_menu_top = selected_menu.position().top - 27;
+				var menu_height       = $('#qm-panel-menu').height();
+				var menu_scroll       = $('#qm-panel-menu').scrollTop();
+				selected_menu.closest('#qm-panel-menu > ul > li').addClass('qm-current-menu');
 
-				if ( ( selected_menu_pos.top > ( menu_height + menu_scroll ) ) || ( selected_menu_pos.top < menu_scroll ) ) {
-					$('#qm-panel-menu').scrollTop( selected_menu_pos.top - ( menu_height / 2 ) );
+				var selected_menu_off_bottom = ( selected_menu_top > ( menu_height ) );
+				var selected_menu_off_top    = ( selected_menu_top < 0 );
+
+				if ( selected_menu_off_bottom || selected_menu_off_top ) {
+					$('#qm-panel-menu').scrollTop( selected_menu_top + menu_scroll - ( menu_height / 2 ) + ( selected_menu.outerHeight() / 2 ) );
 				}
 			}
 
 			$('.qm-title-heading select').val(panel);
 
-			if ( localStorage.getItem( container_pinned_key ) ) {
-				localStorage.setItem( container_pinned_key, panel );
-			}
+			localStorage.setItem( container_pinned_key, panel );
 
 			var filters = $( panel ).find('.qm-filter');
 
@@ -122,20 +130,17 @@ if ( window.jQuery ) {
 					.addClass(qm.menu.top.classname)
 					.attr('dir','ltr')
 					.find('a').eq(0)
-					.html(qm.menu.top.title)
-				;
+					.html(qm.menu.top.title);
 
 				$.each( qm.menu.sub, function( i, el ) {
 
 					var new_menu = $('#wp-admin-bar-query-monitor-placeholder')
 						.clone()
-						.attr('id','wp-admin-bar-' + el.id)
-					;
+						.attr('id','wp-admin-bar-' + el.id);
 					new_menu
 						.find('a').eq(0)
 						.html(el.title)
-						.attr('href',el.href)
-					;
+						.attr('href',el.href);
 
 					if ( ( typeof el.meta != 'undefined' ) && ( typeof el.meta.classname != 'undefined' ) ) {
 						new_menu.addClass(el.meta.classname);
@@ -153,13 +158,13 @@ if ( window.jQuery ) {
 			$('#wp-admin-bar-query-monitor,#wp-admin-bar-query-monitor-default').show();
 
 		} else {
-			$('#query-monitor').addClass('qm-peek').removeClass('qm-hide');
+			container.addClass('qm-peek').removeClass('qm-hide');
 			$('#qm-overview').addClass('qm-panel-show');
 		}
 
 		$('#qm-panel-menu').find('button').on('click',link_click);
 
-		$('#query-monitor').find('.qm-filter').on('change',function(e){
+		container.find('.qm-filter').on('change',function(e){
 
 			var filter = $(this).attr('data-filter'),
 				table  = $(this).closest('table'),
@@ -214,8 +219,8 @@ if ( window.jQuery ) {
 			stripes(table);
 		});
 
-		$('#query-monitor').find('.qm-filter').each(function () {
-			var key = $(this).attr('id');
+		container.find('.qm-filter').each(function () {
+			var key   = $(this).attr('id');
 			var value = localStorage.getItem( key );
 			if ( value !== null ) {
 				// Escape the following chars with a backslash before passing into jQ selectors: [ ] ( ) ' " \
@@ -227,7 +232,7 @@ if ( window.jQuery ) {
 			}
 		});
 
-		$('#query-monitor').find('.qm-filter-trigger').on('click',function(e){
+		container.find('.qm-filter-trigger').on('click',function(e){
 			var filter = $(this).data('qm-filter'),
 				value  = $(this).data('qm-value'),
 				target = $(this).data('qm-target');
@@ -238,10 +243,10 @@ if ( window.jQuery ) {
 			e.preventDefault();
 		});
 
-		$('#query-monitor').find('.qm-toggle').on('click',function(e){
-			var el = $(this);
+		container.find('.qm-toggle').on('click',function(e){
+			var el           = $(this);
 			var currentState = el.attr('aria-expanded');
-			var newState = 'true';
+			var newState     = 'true';
 			if (currentState === 'true') {
 				newState = 'false';
 			}
@@ -265,7 +270,7 @@ if ( window.jQuery ) {
 			e.preventDefault();
 		});
 
-		$('#query-monitor').find('.qm-highlighter').on('mouseenter',function(e){
+		container.find('.qm-highlighter').on('mouseenter',function(e){
 
 			var subject = $(this).data('qm-highlight');
 			var table   = $(this).closest('table');
@@ -293,7 +298,7 @@ if ( window.jQuery ) {
 			$(this).closest('tr').removeClass('qm-hovered');
 		});
 
-		$('#query-monitor').find('.qm table').on('sorted.qm',function(){
+		container.find('.qm table').on('sorted.qm',function(){
 			stripes( $(this) );
 		});
 
@@ -323,8 +328,7 @@ if ( window.jQuery ) {
 					if ( ! qm.ajax_errors[error.type] ) {
 						$('#wp-admin-bar-query-monitor')
 							.addClass('qm-' + error.type)
-							.find('a').first().append('<span class="ab-label qm-ajax-' + error.type + '"> &nbsp; Ajax: ' + error.type + '</span>')
-						;
+							.find('a').first().append('<span class="ab-label qm-ajax-' + error.type + '"> &nbsp; Ajax: ' + error.type + '</span>');
 					}
 				}
 
@@ -343,7 +347,7 @@ if ( window.jQuery ) {
 		} );
 
 		$('.qm-auth').on('click',function(e){
-			var state = $('#qm-settings').data('qm-state');
+			var state  = $('#qm-settings').data('qm-state');
 			var action = ( 'off' === state ? 'on' : 'off' );
 
 			$.ajax(qm_l10n.ajaxurl,{
@@ -368,22 +372,28 @@ if ( window.jQuery ) {
 
 		$.qm.tableSort({target: $('.qm-sortable')});
 
-		var startY, resizerHeight, toolbarHeight;
+		var startY, startX, resizerHeight;
 
-		toolbarHeight = $('#wpadminbar').outerHeight();
-
-		$(document).on('mousedown', '#qm-title', function(event) {
+		$(document).on('mousedown', '.qm-resizer', function(event) {
 			resizerHeight = $(this).outerHeight() - 1;
 			startY        = container.outerHeight() + event.clientY;
+			startX        = container.outerWidth() + event.clientX;
 
 			$(document).on('mousemove', qm_do_resizer_drag);
 			$(document).on('mouseup', qm_stop_resizer_drag);
 		});
 
 		function qm_do_resizer_drag(event) {
-			var h = ( startY - event.clientY );
-			if ( h >= resizerHeight && h < ( $(window).height() - toolbarHeight ) ) {
-				container.height( h );
+			if ( ! container.hasClass('qm-show-right') ) {
+				var h = ( startY - event.clientY );
+				if ( h >= resizerHeight && h <= maxheight ) {
+					container.height( h );
+				}
+			} else {
+				var w = ( startX - event.clientX );
+				if ( w >= minwidth && w <= maxwidth ) {
+					container.width( w );
+				}
 			}
 		}
 
@@ -391,23 +401,45 @@ if ( window.jQuery ) {
 			$(document).off('mousemove', qm_do_resizer_drag);
 			$(document).off('mouseup', qm_stop_resizer_drag);
 
-			localStorage.setItem( container_storage_key, container.height() );
+			if ( ! container.hasClass('qm-show-right') ) {
+				localStorage.removeItem( container_position_key );
+				localStorage.setItem( container_height_key, container.height() );
+			} else {
+				localStorage.setItem( container_position_key, 'right' );
+				localStorage.setItem( container_width_key, container.width() );
+			}
 		}
 
-		var h = localStorage.getItem( container_storage_key );
-		if ( h !== null && ! $('#query-monitor').hasClass('qm-peek') ) {
-			if ( h < minheight ) {
-				h = minheight;
+		var p = localStorage.getItem( container_position_key );
+		var h = localStorage.getItem( container_height_key );
+		var w = localStorage.getItem( container_width_key );
+		if ( ! container.hasClass('qm-peek') ) {
+			if ( p === 'right' && w !== null ) {
+				if ( w < minwidth ) {
+					w = minwidth;
+				}
+				if ( w > maxwidth ) {
+					w = maxwidth;
+				}
+				container.width( w );
+				container.addClass('qm-show-right');
+			} else if ( p !== 'right' && h !== null ) {
+				if ( h < minheight ) {
+					h = minheight;
+				}
+				if ( h > maxheight ) {
+					h = maxheight;
+				}
+				container.height( h );
 			}
-			if ( h > maxheight ) {
-				h = maxheight;
-			}
-			container.height( h );
 		}
 
 		$(window).on('resize', function(){
-			var maxheight = ( $(window).height() - toolbarHeight );
-			var h = container.height();
+			var h         = container.height();
+			var w         = container.width();
+
+			maxheight = ( $(window).height() - toolbarHeight );
+			maxwidth  = $(window).width();
 
 			if ( h < minheight ) {
 				container.height( minheight );
@@ -415,35 +447,47 @@ if ( window.jQuery ) {
 			if ( h > maxheight ) {
 				container.height( maxheight );
 			}
-			localStorage.setItem( container_storage_key, container.height() );
+			localStorage.setItem( container_height_key, container.height() );
+
+			if ( w > $(window).width() ) {
+				container.width( minwidth );
+				localStorage.setItem( container_width_key, container.width() );
+			}
+			if ( $(window).width() < 960 ) {
+				container.removeClass('qm-show-right');
+				localStorage.removeItem( container_position_key );
+			}
 		});
 
 		$('.qm-button-container-close').click(function(){
-			$('#query-monitor').removeClass('qm-show').height('');
+			container.removeClass('qm-show').height('').width('');
 			localStorage.removeItem( container_pinned_key );
-			$('.qm-button-container-pin').removeClass( 'qm-button-active' );
 		});
 
-		$('.qm-button-container-pin').click(function(){
-			if ( $(this).hasClass( 'qm-button-active' ) ) {
-				localStorage.removeItem( container_pinned_key );
-			} else {
-				localStorage.setItem( container_pinned_key, '#' + $('.qm-panel-show').first().attr('id') );
-			}
-
-			$(this).toggleClass( 'qm-button-active' );
-		});
-
-		$('.qm-button-container-settings').click(function(){
+		$('.qm-button-container-settings,a[href="#qm-settings"]').click(function(){
 			show_panel( '#qm-settings' );
 			$('#qm-settings').focus();
+		});
+
+		$('.qm-button-container-position').click(function(){
+			container.toggleClass('qm-show-right');
+
+			if ( container.hasClass('qm-show-right') ) {
+				var w = localStorage.getItem( container_width_key );
+
+				if ( w !== null && w < $(window).width() ) {
+					container.width( w );
+				}
+
+				localStorage.setItem( container_position_key, 'right' );
+			} else {
+				localStorage.removeItem( container_position_key );
+			}
 		});
 
 		var pinned = localStorage.getItem( container_pinned_key );
 		if ( pinned && $( pinned ).length ) {
 			show_panel( pinned );
-			// Don't auto-focus the pinned QM panel
-			$('.qm-button-container-pin').addClass( 'qm-button-active' );
 		}
 
 		$('.qm-title-heading select').change(function(){
@@ -465,11 +509,11 @@ if ( window.jQuery ) {
 	 * Author: Gajus Kuizinas <g.kuizinas@anuary.com>
 	 */
 	(function ($) {
-		$.qm = $.qm || {};
+		$.qm           = $.qm || {};
 		$.qm.tableSort = function (settings) {
 			// @param	object	columns	NodeList table colums.
 			// @param	integer	row_width	defines the number of columns per row.
-			var table_to_array	= function (columns, row_width) {
+			var table_to_array = function (columns, row_width) {
 				columns = Array.prototype.slice.call(columns, 0);
 
 				var rows      = [];
@@ -479,7 +523,7 @@ if ( window.jQuery ) {
 					var row	= [];
 
 					for (var k = 0; k < row_width; k++) {
-						var e = columns[i + k];
+						var e    = columns[i + k];
 						var data = e.dataset.qmSortWeight;
 
 						if (data === undefined) {
@@ -507,7 +551,7 @@ if ( window.jQuery ) {
 				var table = $(this);
 
 				table.find('.qm-sortable-column').on('click', function (e) {
-					var desc = ! $(this).hasClass('qm-sorted-desc');
+					var desc  = ! $(this).hasClass('qm-sorted-desc');
 					var index = $(this).index();
 
 					table.find('thead th').removeClass('qm-sorted-asc qm-sorted-desc').attr('aria-sort','none');
@@ -519,8 +563,8 @@ if ( window.jQuery ) {
 					}
 
 					table.find('tbody').each(function () {
-						var tbody = $(this);
-						var rows = this.rows;
+						var tbody   = $(this);
+						var rows    = this.rows;
 						var columns = this.querySelectorAll('th,td');
 
 						if (this.data_matrix === undefined) {
@@ -572,7 +616,7 @@ if ( window.jQuery ) {
 window.addEventListener('load', function() {
 	if ( ( 'undefined' === typeof jQuery ) || ! window.jQuery ) {
 		/* Fallback for running without jQuery (`QM_NO_JQUERY`) */
-		document.getElementById( 'query-monitor' ).className += ' qm-broken';
+		document.getElementById( 'query-monitor-main' ).className += ' qm-broken';
 		console.error( document.getElementById( 'qm-broken' ).textContent );
 
 		if ( 'undefined' === typeof jQuery ) {
@@ -586,7 +630,7 @@ window.addEventListener('load', function() {
 		var menu_item = document.getElementById( 'wp-admin-bar-query-monitor' );
 		if ( menu_item ) {
 			menu_item.addEventListener( 'click', function() {
-				document.getElementById( 'query-monitor' ).className += ' qm-show';
+				document.getElementById( 'query-monitor-main' ).className += ' qm-show';
 			} );
 		}
 	}

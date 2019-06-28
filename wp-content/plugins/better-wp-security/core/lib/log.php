@@ -221,7 +221,7 @@ final class ITSEC_Log {
 
 		$entries = ITSEC_Log_Util::get_entries( array( 'id' => $id ), 0, 1, 'id', 'DESC', 'all' );
 
-		return $entries[0];
+		return isset( $entries[0] ) ? $entries[0] : array();
 	}
 
 	public static function get_number_of_entries( $filters = array() ) {

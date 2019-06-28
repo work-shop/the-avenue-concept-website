@@ -1,2 +1,2 @@
 <?php
-$GLOBALS['wpmdb_meta']['wp-migrate-db-pro-theme-plugin-files']['version'] = '1.0.4';
+$GLOBALS['wpmdb_meta']['wp-migrate-db-pro-theme-plugin-files']['version'] = '1.0.5';

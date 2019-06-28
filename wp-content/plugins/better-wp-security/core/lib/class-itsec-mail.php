@@ -169,6 +169,17 @@ final class ITSEC_Mail {
 		return $module;
 	}
 
+	public function add_small_code( $content ) {
+		$this->add_html( $this->get_small_code( $content ) );
+	}
+
+	public function get_small_code( $content ) {
+		$module = $this->get_template( 'small-code.html' );
+		$module = $this->replace( $module, 'content', $content );
+
+		return $module;
+	}
+
 	public function add_section_heading( $content, $icon_type = false ) {
 		$this->add_html( $this->get_section_heading( $content, $icon_type ) );
 	}
@@ -226,6 +237,23 @@ final class ITSEC_Mail {
 	public function get_button( $link_text, $href, $style = 'default' ) {
 
 		$module = $this->get_template( 'module-button.html' );
+		$module = $this->replace_all( $module, array(
+			'href'      => $href,
+			'link_text' => $link_text,
+			'bk_color'  => 'blue' === $style ? '#0085E0' : '#FFCD08',
+			'txt_color' => 'blue' === $style ? '#FFFFFF' : '#2E280E',
+		) );
+
+		return $module;
+	}
+
+	public function add_large_button( $link_text, $href, $style = 'default' ) {
+		$this->add_html( $this->get_large_button( $link_text, $href, $style ) );
+	}
+
+	public function get_large_button( $link_text, $href, $style = 'default' ) {
+
+		$module = $this->get_template( 'large-button.html' );
 		$module = $this->replace_all( $module, array(
 			'href'      => $href,
 			'link_text' => $link_text,
@@ -439,6 +467,14 @@ final class ITSEC_Mail {
 		$this->deferred      = '';
 
 		$this->add_html( $deferred, $group );
+	}
+
+	public function insert_before( $identifier, $html ) {
+		$this->groups = ITSEC_Lib::array_insert_before( $identifier, $this->groups, count( $this->groups ), $html );
+	}
+
+	public function insert_after( $identifier, $html ) {
+		$this->groups = ITSEC_Lib::array_insert_after( $identifier, $this->groups, count( $this->groups ), $html );
 	}
 
 	/**

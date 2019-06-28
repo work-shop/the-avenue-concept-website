@@ -4,7 +4,6 @@ namespace DeliciousBrains\WPMDBTP;
 
 use DeliciousBrains\WPMDB\Common\Filesystem\Filesystem;
 use DeliciousBrains\WPMDB\Common\Profile\ProfileManager;
-use DeliciousBrains\WPMDB\Common\Properties\DynamicProperties;
 use DeliciousBrains\WPMDB\Common\Properties\Properties;
 use DeliciousBrains\WPMDB\Common\Util\Util;
 use DeliciousBrains\WPMDB\Container;
@@ -63,12 +62,11 @@ class ThemePluginFilesAddon extends AddonAbstract {
 	 */
 	private $theme_plugin_files_finalize;
 
-	const MDB_VERSION_REQUIRED = '1.9b1';
+	const MDB_VERSION_REQUIRED = '1.9.3b1';
 
 	public function __construct(
 		Addon $addon,
 		Properties $properties,
-		DynamicProperties $dynamic_properties,
 		Template $template,
 		Filesystem $filesystem,
 		ProfileManager $profile_manager,
@@ -79,14 +77,12 @@ class ThemePluginFilesAddon extends AddonAbstract {
 	) {
 		parent::__construct(
 			$addon,
-			$properties,
-			$dynamic_properties
+			$properties
 		);
 
 		$this->plugin_slug        = 'wp-migrate-db-pro-theme-plugin-files';
 		$this->plugin_version     = $GLOBALS['wpmdb_meta']['wp-migrate-db-pro-theme-plugin-files']['version'];
 		$plugin_file_path         = dirname( __DIR__ ) . '/wp-migrate-db-pro-theme-plugin-files.php';
-		$this->addon_name         = $this->addon->get_plugin_name( 'wp-migrate-db-pro-theme-plugin-files/wp-migrate-db-pro-theme-plugin-files.php' );
 		$this->plugin_dir_path    = plugin_dir_path( $plugin_file_path );
 		$this->plugin_folder_name = basename( $this->plugin_dir_path );
 		$this->plugins_url        = trailingslashit( plugins_url( $this->plugin_folder_name ) );
@@ -118,6 +114,7 @@ class ThemePluginFilesAddon extends AddonAbstract {
 
 		// Register Queue manager actions
 		Container::getInstance()->get( 'queue_manager' )->register();
+		add_action( 'admin_init', [ $this, 'plugin_name' ] );
 
 		add_action( 'wpmdb_before_finalize_migration', array( $this->theme_plugin_files_finalize, 'maybe_finalize_tp_migration' ) );
 		add_action( 'wpmdb_migration_complete', array( $this->theme_plugin_files_finalize, 'cleanup_transfer_migration' ) );
@@ -132,6 +129,10 @@ class ThemePluginFilesAddon extends AddonAbstract {
 		add_filter( 'wpmdb_nonces', array( $this, 'add_nonces' ) );
 		add_filter( 'wpmdb_data', array( $this, 'js_variables' ) );
 		add_filter( 'wpmdb_site_details', array( $this, 'filter_site_details' ) );
+	}
+
+	public function plugin_name() {
+		$this->addon_name = $this->addon->get_plugin_name( 'wp-migrate-db-pro-theme-plugin-files/wp-migrate-db-pro-theme-plugin-files.php' );
 	}
 
 	/**

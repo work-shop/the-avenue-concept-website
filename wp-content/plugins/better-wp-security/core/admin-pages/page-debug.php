@@ -225,7 +225,9 @@ final class ITSEC_Debug_Page {
 				<th><?php esc_html_e( 'ID', 'better-wp-security' ) ?></th>
 				<th><?php esc_html_e( 'Fire At', 'better-wp-security' ) ?></th>
 				<th><?php esc_html_e( 'Schedule', 'better-wp-security' ) ?></th>
-				<th><button class="button-link" id="itsec-events-data-toggle"><?php esc_html_e( 'Data', 'better-wp-security' ) ?></button></th>
+				<th>
+					<button class="button-link" id="itsec-events-data-toggle"><?php esc_html_e( 'Data', 'better-wp-security' ) ?></button>
+				</th>
 				<th></th>
 			</tr>
 			</thead>
@@ -235,7 +237,9 @@ final class ITSEC_Debug_Page {
 					<td><?php echo esc_html( $event['id'] ); ?></td>
 					<td><?php echo date( 'Y-m-d H:i:s', $event['fire_at'] ); ?> (<?php echo esc_html( human_time_diff( $event['fire_at'] ) ) ?>)</td>
 					<td><?php echo isset( $event['schedule'] ) ? $event['schedule'] : '–'; ?></td>
-					<td><div class="hidden itsec-events-data"><?php $event['data'] ? ITSEC_Lib::print_r( $event['data'] ) : print( '–' ); ?></div></td>
+					<td>
+						<div class="hidden itsec-events-data"><?php $event['data'] ? ITSEC_Lib::print_r( $event['data'] ) : print( '–' ); ?></div>
+					</td>
 					<td>
 						<button class="button" data-id="<?php echo esc_attr( $event['id'] ); ?>"
 								data-data="<?php echo isset( $event['schedule'] ) ? '' : esc_attr( $event['hash'] ); ?>">
@@ -310,6 +314,8 @@ final class ITSEC_Debug_Page {
 			'ITSEC_DISABLE_INACTIVE_USER_CHECK',
 		);
 
+		ITSEC_Lib::load( 'feature-flags' );
+
 		$info['iThemes Security'] = array(
 			'Build'       => ITSEC_Core::get_plugin_build(),
 			'Pro'         => ITSEC_Core::is_pro(),
@@ -317,6 +323,7 @@ final class ITSEC_Debug_Page {
 			'Cron'        => ITSEC_Lib::use_cron(),
 			'Cron Status' => ITSEC_Lib::is_cron_working(),
 			'Scheduler'   => get_class( ITSEC_Core::get_scheduler() ),
+			'Features'    => wp_sprintf( '%l', ITSEC_Lib_Feature_Flags::get_enabled() ),
 		);
 
 		foreach ( $defines as $define ) {

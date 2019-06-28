@@ -81,7 +81,7 @@ final class ITSEC_System_Tweaks_Config_Generators {
 
 				$rewrites .= "\n";
 				$rewrites .= "\t\t# " . __( 'Disable PHP in Uploads - Security > Settings > System Tweaks > PHP in Uploads', 'better-wp-security' ) . "\n";
-				$rewrites .= "\t\tRewriteRule ^$dir/.*\.(?:php[1-7]?|pht|phtml?|phps)$ - [NC,F]\n";
+				$rewrites .= "\t\tRewriteRule ^$dir/.*\.(?:php[1-7]?|pht|phtml?|phps)\\.?$ - [NC,F]\n";
 			}
 		}
 
@@ -93,7 +93,7 @@ final class ITSEC_System_Tweaks_Config_Generators {
 
 				$rewrites .= "\n";
 				$rewrites .= "\t\t# " . __( 'Disable PHP in Plugins - Security > Settings > System Tweaks > PHP in Plugins', 'better-wp-security' ) . "\n";
-				$rewrites .= "\t\tRewriteRule ^$dir/.*\.(?:php[1-7]?|pht|phtml?|phps)$ - [NC,F]\n";
+				$rewrites .= "\t\tRewriteRule ^$dir/.*\.(?:php[1-7]?|pht|phtml?|phps)\\.?$ - [NC,F]\n";
 			}
 		}
 
@@ -105,14 +105,14 @@ final class ITSEC_System_Tweaks_Config_Generators {
 
 				$rewrites .= "\n";
 				$rewrites .= "\t\t# " . __( 'Disable PHP in Themes - Security > Settings > System Tweaks > PHP in Themes', 'better-wp-security' ) . "\n";
-				$rewrites .= "\t\tRewriteRule ^$dir/.*\.(?:php[1-7]?|pht|phtml?|phps)$ - [NC,F]\n";
+				$rewrites .= "\t\tRewriteRule ^$dir/.*\.(?:php[1-7]?|pht|phtml?|phps)\\.?$ - [NC,F]\n";
 			}
 		}
 
 		if ( $input['request_methods'] ) {
 			$rewrites .= "\n";
 			$rewrites .= "\t\t# " . __( 'Filter Request Methods - Security > Settings > System Tweaks > Request Methods', 'better-wp-security' ) . "\n";
-			$rewrites .= "\t\tRewriteCond %{REQUEST_METHOD} ^(TRACE|DELETE|TRACK) [NC]\n";
+			$rewrites .= "\t\tRewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK) [NC]\n";
 			$rewrites .= "\t\tRewriteRule ^.* - [F]\n";
 		}
 
@@ -130,8 +130,8 @@ final class ITSEC_System_Tweaks_Config_Generators {
 			$rewrites .= "\t\tRewriteCond %{QUERY_STRING} base64_decode\( [NC,OR]\n";
 			$rewrites .= "\t\tRewriteCond %{QUERY_STRING} %24&x [NC,OR]\n";
 			$rewrites .= "\t\tRewriteCond %{QUERY_STRING} 127\.0 [NC,OR]\n";
-			$rewrites .= "\t\tRewriteCond %{QUERY_STRING} (globals|encode|localhost|loopback) [NC,OR]\n";
-			$rewrites .= "\t\tRewriteCond %{QUERY_STRING} (concat|insert|union|declare) [NC,OR]\n";
+			$rewrites .= "\t\tRewriteCond %{QUERY_STRING} (^|\\W)(globals|encode|localhost|loopback)($|\\W) [NC,OR]\n";
+			$rewrites .= "\t\tRewriteCond %{QUERY_STRING} (^|\\W)(concat|insert|union|declare)($|\\W) [NC,OR]\n";
 			$rewrites .= "\t\tRewriteCond %{QUERY_STRING} %[01][0-9A-F] [NC]\n";
 			$rewrites .= "\t\tRewriteCond %{QUERY_STRING} !^loggedout=true\n";
 			$rewrites .= "\t\tRewriteCond %{QUERY_STRING} !^action=jetpack-sso\n";
@@ -240,7 +240,7 @@ final class ITSEC_System_Tweaks_Config_Generators {
 		if ( $input['request_methods'] ) {
 			$modification .= "\n";
 			$modification .= "\t# " . __( 'Filter Request Methods - Security > Settings > System Tweaks > Request Methods', 'better-wp-security' ) . "\n";
-			$modification .= "\tif ( \$request_method ~* ^(TRACE|DELETE|TRACK)$ ) { return 403; }\n";
+			$modification .= "\tif ( \$request_method ~* ^(TRACE|TRACK)$ ) { return 403; }\n";
 		}
 
 		// Process suspicious query rules
@@ -259,8 +259,8 @@ final class ITSEC_System_Tweaks_Config_Generators {
 			$modification .= "\tif ( \$args ~* \"base64_decode\(\" ) { set \$susquery 1; }\n";
 			$modification .= "\tif ( \$args ~* \"%24&x\" ) { set \$susquery 1; }\n";
 			$modification .= "\tif ( \$args ~* \"127\.0\" ) { set \$susquery 1; }\n";
-			$modification .= "\tif ( \$args ~* \"(globals|encode|localhost|loopback)\" ) { set \$susquery 1; }\n";
-			$modification .= "\tif ( \$args ~* \"(insert|concat|union|declare)\" ) { set \$susquery 1; }\n";
+			$modification .= "\tif ( \$args ~* \"(^|\\W)(globals|encode|localhost|loopback)($|\\W)\" ) { set \$susquery 1; }\n";
+			$modification .= "\tif ( \$args ~* \"(^|\\W)(insert|concat|union|declare)($|\\W)\" ) { set \$susquery 1; }\n";
 			$modification .= "\tif ( \$args ~* \"%[01][0-9A-F]\" ) { set \$susquery 1; }\n";
 			$modification .= "\tif ( \$args ~ \"^loggedout=true\" ) { set \$susquery 0; }\n";
 			$modification .= "\tif ( \$args ~ \"^action=jetpack-sso\" ) { set \$susquery 0; }\n";

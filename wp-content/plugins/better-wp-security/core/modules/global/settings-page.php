@@ -300,6 +300,7 @@ final class ITSEC_Global_Settings_Page extends ITSEC_Module_Settings_Page {
 			<td>
 				<?php $form->add_checkbox( 'hide_admin_bar' ); ?>
 				<label for="itsec-global-hide_admin_bar"><?php _e( 'Hide security menu in admin bar.', 'better-wp-security' ); ?></label>
+				<p class="description"><?php esc_html_e( 'Remove the Security Messages Menu from the admin bar and receive the messages as traditional WordPress Admin Notices.', 'better-wp-security' ); ?></p>
 			</td>
 		</tr>
 		<tr>

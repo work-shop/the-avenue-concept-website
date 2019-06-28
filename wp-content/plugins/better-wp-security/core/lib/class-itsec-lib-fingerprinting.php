@@ -162,7 +162,14 @@ class ITSEC_Lib_Fingerprinting {
 
 		require_once( ITSEC_Core::get_core_dir() . 'lib/class-itsec-lib-canonical-roles.php' );
 
-		return ITSEC_Lib_Canonical_Roles::is_user_at_least( $role, $user );
+		$had_filter = remove_filter( 'user_has_cap', array( 'ITSEC_Fingerprinting', 'restrict_capabilities' ), 10 );
+		$applies    = ITSEC_Lib_Canonical_Roles::is_user_at_least( $role, $user );
+
+		if ( $had_filter ) {
+			add_filter( 'user_has_cap', array( 'ITSEC_Fingerprinting', 'restrict_capabilities' ), 10, 4 );
+		}
+
+		return $applies;
 	}
 
 	/**

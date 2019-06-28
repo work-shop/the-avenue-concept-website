@@ -587,9 +587,9 @@ final class ITSEC_Lib {
 	 */
 	public static function get_trace_ip_link( $ip = false ) {
 		if ( empty( $ip ) ) {
-			return 'http://www.traceip.net/';
+			return 'https://www.iptrackeronline.com/ithemes.php';
 		} else {
-			return 'http://www.traceip.net/?query=' . urlencode( $ip );
+			return 'http://www.iptrackeronline.com/ithemes.php?ip_address=' . urlencode( $ip );
 		}
 	}
 
@@ -1162,6 +1162,34 @@ final class ITSEC_Lib {
 	}
 
 	/**
+	 * Inserts a new key/value before the key in the array.
+	 *
+	 * @param string $key       The key to insert before.
+	 * @param array  $array     An array to insert in to.
+	 * @param string $new_key   The key to insert.
+	 * @param mixed  $new_value The value to insert.
+	 *
+	 * @return array
+	 */
+	public static function array_insert_before( $key, $array, $new_key, $new_value) {
+		if ( array_key_exists( $key, $array ) ) {
+			$new = array();
+			foreach ( $array as $k => $value ) {
+				if ( $k === $key ) {
+					$new[ $new_key ] = $new_value;
+				}
+				$new[ $k ] = $value;
+			}
+
+			return $new;
+		}
+
+		$array[ $new_key ] = $new_value;
+
+		return $array;
+	}
+
+	/**
 	 * Insert an element after a given key.
 	 *
 	 * @param string|int $key
@@ -1294,15 +1322,15 @@ final class ITSEC_Lib {
 			$suhosin = preg_split( '/\s*,\s*/', (string) ini_get( 'suhosin.executor.func.blacklist' ) );
 		}
 
-		if ( ! \is_callable( $func ) ) {
+		if ( ! is_callable( $func ) ) {
 			return $cache[ $func ] = false;
 		}
 
-		if ( \in_array( $func, $disabled, true ) ) {
+		if ( in_array( $func, $disabled, true ) ) {
 			return $cache[ $func ] = false;
 		}
 
-		if ( \in_array( $func, $suhosin, true ) ) {
+		if ( in_array( $func, $suhosin, true ) ) {
 			return $cache[ $func ] = false;
 		}
 
@@ -1574,5 +1602,140 @@ final class ITSEC_Lib {
 	 */
 	public static function clear_cookie( $name ) {
 		setcookie( $name, ' ', ITSEC_Core::get_current_time_gmt() - YEAR_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN, false, false );
+	}
+
+	/**
+	 * Is the current request a loopback request.
+	 *
+	 * @return bool
+	 */
+	public static function is_loopback_request() {
+		return in_array( self::get_ip(), ITSEC_Modules::get_setting( 'global', 'server_ips' ), true );
+	}
+
+	/**
+	 * Version of {@see wp_slash()} that won't cast numbers to strings.
+	 *
+	 * @param array|string $value
+	 *
+	 * @return array|string
+	 */
+	public static function slash( $value ) {
+		if ( is_array( $value ) ) {
+			foreach ( $value as $k => $v ) {
+				if ( is_array( $v ) ) {
+					$value[ $k ] = self::slash( $v );
+				} elseif ( is_string( $v ) ) {
+					$value[ $k ] = addslashes( $v );
+				}
+			}
+		} elseif ( is_string( $value ) ) {
+			$value = addslashes( $value );
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Format as a ISO 8601 date.
+	 *
+	 * @param int|string $date Epoch or strtotime compatible date.
+	 *
+	 * @return string|false
+	 */
+	public static function to_rest_date( $date = 0 ) {
+		if ( ! $date ) {
+			$date = ITSEC_Core::get_current_time_gmt();
+		} elseif ( ! is_int( $date ) ) {
+			$date = strtotime( $date );
+		}
+
+		return gmdate( 'Y-m-d\TH:i:sP', $date );
+	}
+
+	/**
+	 * Flatten an array.
+	 *
+	 * @param array $array
+	 *
+	 * @return array
+	 */
+	public static function flatten( $array ) {
+		if ( ! is_array( $array ) ) {
+			return array( $array );
+		}
+
+		$merge = array();
+
+		foreach ( $array as $value ) {
+			$merge[] = self::flatten( $value );
+		}
+
+		return $merge ? call_user_func_array( 'array_merge', $merge ) : array();
+	}
+
+	/**
+	 * Preload REST API requests.
+	 *
+	 * @param array $requests
+	 *
+	 * @return array
+	 */
+	public static function preload_rest_requests( $requests ) {
+		$preload = array();
+
+		foreach ( $requests as $key => $config ) {
+			if ( is_string( $config ) ) {
+				$key    = $config;
+				$config = array( 'route' => $config );
+			}
+
+			$request = new WP_REST_Request(
+				isset( $config['method'] ) ? $config['method'] : 'GET',
+				$config['route']
+			);
+
+			if ( ! empty( $config['query'] ) ) {
+				$request->set_query_params( $config['query'] );
+			}
+
+			$response = rest_do_request( $request );
+
+			if ( $response->get_status() >= 200 && $response->get_status() < 300 ) {
+				rest_send_allow_header( $response, rest_get_server(), $request );
+
+				$preload[ $key ] = array(
+					'body'    => rest_get_server()->response_to_data( $response, ! empty( $config['embed'] ) ),
+					'headers' => $response->get_headers()
+				);
+			}
+		}
+
+		return $preload;
+	}
+
+	/**
+	 * Check if the given string starts with the given needle.
+	 *
+	 * @param string $haystack
+	 * @param string $needle
+	 *
+	 * @return bool
+	 */
+	public static function str_starts_with( $haystack, $needle ) {
+		return 0 === strpos( $haystack, $needle );
+	}
+
+	public static function str_ends_with( $haystack, $needle ) {
+		return '' === $needle || substr_compare( $haystack, $needle, - strlen( $needle ) ) === 0;
+	}
+
+	/**
+	 * Load a library class definition.
+	 *
+	 * @param string $name
+	 */
+	public static function load( $name ) {
+		require_once( dirname( __FILE__ ) . "/lib/class-itsec-lib-{$name}.php" );
 	}
 }

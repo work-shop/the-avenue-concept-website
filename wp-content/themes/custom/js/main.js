@@ -24,6 +24,7 @@ import { singlePost } from './single-post.js';
 import { announcements } from './announcements.js';
 import { paypal } from './paypal.js';
 import { livereload } from './livereload-client.js';
+import { membershipLevels } from './membership-levels.js';
 
 /**
  * Artwork related imports
@@ -56,17 +57,13 @@ paypal();
 $( document ).ready( function() {
 
 	if ( isHomePage() ) {
-
 		homePage();
-
 	} else if ( isArtworksArchive() ) {
-
 		artworksArchive();
-
 	} else if ( isArtworksSingle() ) {
-
 		singleArtwork();
-
+	} else if ( $('body').hasClass('page-id-1254') ){
+		membershipLevels();
 	}
 
 });

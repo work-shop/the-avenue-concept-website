@@ -1,9 +1,9 @@
 === iThemes Security (formerly Better WP Security) ===
-Contributors: ithemes, chrisjean, gerroald, mattdanner, timothyblynjacobs
+Contributors: ithemes, chrisjean, mattdanner, timothyblynjacobs
 Tags: security, security plugin, malware, hack, secure, block, SSL, admin, htaccess, lockdown, login, protect, protection, anti virus, attack, injection, login security, maintenance, permissions, prevention, authentication, administration, password, brute force, ban, permissions, bots, user agents, xml rpc, security log
 Requires at least: 4.7
-Tested up to: 4.9.8
-Stable tag: 7.2.0
+Tested up to: 5.2.2
+Stable tag: 7.4.0
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -188,6 +188,43 @@ Free support may be available with the help of the community in the <a href="htt
 5. Free malware scan powered by Sucuri SiteCheck.
 
 == Changelog ==
+
+= 7.4.0 =
+* New: iThemes Security Admin Notices are now conveniently located in the new Security Messages Menu. Check your notices in the Security menu on the WordPress Admin Bar.
+* Enhancement: Add Security Message when a Notification Center email fails to send.
+* Enhancement: Replace Trace IP with IP Tracker Online.
+* Tweak: Remove 'DELETE' method from "System Tweaks -> Filter Request Methods"
+
+= 7.3.3 =
+* Bug Fix: Hide backend bypass.
+
+= 7.3.2 =
+* Tweak: Allow the log description column to word break for URLs or other strings with no spaces.
+* Bug Fix: Hide Backend bypass on certain Apache configurations.
+* Bug Fix: Properly return error that occurs during a backup.
+* Bug Fix: Regex warning on PHP 7.3 in the File Change module.
+* Bug Fix: Resolve warning when a user is set to "No Role".
+
+= 7.3.1 =
+* Enhancement: When ITSEC_DISABLE_MODULES is set, prevent hide backend from running.
+* Bug Fix: Tabnapping: Apply noopener to links instead of using blankshield script when available to prevent new pop-up blocker behavior from killing the links.
+
+= 7.3.0 =
+* Enhancement: Add Per-Content SSL toggle to the upcoming Block Editor interface.
+* Enhancement: Add filter to the recipients list for email notifications: "itsec_notification_{$notification}_email_recipients" and "itsec_notification_email_recipients".
+* Enhancement: Add define "ITSEC_DISABLE_TEMP_WHITELIST" to disable the Temporary IP Whitelisting for logged-in administrators.
+* Enhancement: Improve redirecting after processing a login interstitial from a front-end login form.
+* Enhancement: Add loopback IP detection to Security Check.
+* Enhancement: Detect Server IPs in Security Check.
+* Tweak: Add additional safety checks when writing to system config files. This will log a "Critical Issue" when the writing of an empty or partial config file is detected and prevented.
+* Tweak: Improve File Change locking to help prevent failing scans on sites with inconsistent cron scheduling.
+* Tweak: Improve "System Tweaks – Suspicious Query Strings – SQLI" to reduce false positives.
+* Tweak: Improve "System Tweaks – Disable PHP" to block PHP files in apache configurations that serve files with a trailing dot.
+* Tweak: Remove "Seznam Bot" from HackRepair List as it isn't present in the latest version.
+* Bug Fix: Include Hide Backend token when emailing a password reset URL.
+* Bug Fix: Notification Center - Only send notifications to users with an exact role match of selected roles instead of a fuzzy match based on selected capabilities.
+* Bug Fix: Error when trying to edit reusable blocks with per-post SSL enabled.
+* Bug Fix: Resolve warnings on PHP 5.2.
 
 = 7.2.0 =
 * Enhancement: Allow for selecting the particular Proxy header a server is configured to use. Improve the language to indicate the importance of configuring this setting. H/t Filippo Cavallarin CEO at wearesegment.com
@@ -503,5 +540,5 @@ Free support may be available with the help of the community in the <a href="htt
 
 == Upgrade Notice ==
 
-= 7.2.0 =
-Version 7.2.0 contains important bug fixes and improvements. It is recommended for all users.
+= 7.4.0 =
+Version 7.4.0 contains important improvements. It is recommended for all users.

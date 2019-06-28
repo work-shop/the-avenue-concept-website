@@ -4,7 +4,7 @@ Plugin Name: WP Migrate DB Pro Theme & Plugin Files
 Plugin URI: http://deliciousbrains.com/wp-migrate-db-pro/
 Description: An extension to WP Migrate DB Pro, allows for migrating Theme & Plugin files.
 Author: Delicious Brains
-Version: 1.0.4
+Version: 1.0.5
 Author URI: http://deliciousbrains.com
 Network: True
 */

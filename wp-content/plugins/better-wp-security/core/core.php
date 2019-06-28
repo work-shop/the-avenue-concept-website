@@ -24,7 +24,7 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 		 *
 		 * @access private
 		 */
-		private $plugin_build = 4108;
+		private $plugin_build = 4114;
 
 		/**
 		 * Used to distinguish between a user modifying settings and the API modifying settings (such as from Sync
@@ -50,7 +50,8 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 			$current_time_gmt,
 			$is_iwp_call,
 			$request_type,
-			$wp_upload_dir;
+			$wp_upload_dir,
+			$login_interstitial;
 
 
 		/**
@@ -121,6 +122,7 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 			require( $this->plugin_dir . 'core/lib/class-itsec-lib-password-requirements.php' );
 			require( $this->plugin_dir . 'core/lib/class-itsec-lib-login-interstitial.php' );
 			require( $this->plugin_dir . 'core/lib/class-itsec-lib-distributed-storage.php' );
+			require( $this->plugin_dir . 'core/lib/class-itsec-lib-remote-messages.php' );
 
 			require( $this->plugin_dir . 'core/lib/class-itsec-scheduler.php' );
 			require( $this->plugin_dir . 'core/lib/class-itsec-job.php' );
@@ -157,19 +159,16 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 			$this->setup_scheduler();
 			ITSEC_Modules::run_active_modules();
 
-			//Admin bar links
-			if ( ! ITSEC_Modules::get_setting( 'global', 'hide_admin_bar' ) ) {
-				add_action( 'admin_bar_menu', array( $this, 'modify_admin_bar' ), 99 );
-			}
-
-			$login_interstitial = new ITSEC_Lib_Login_Interstitial();
-			$login_interstitial->run();
+			$this->login_interstitial = new ITSEC_Lib_Login_Interstitial();
+			$this->login_interstitial->run();
 
 			if ( defined( 'ITSEC_USE_CRON' ) && ITSEC_USE_CRON !== ITSEC_Lib::use_cron() ) {
 				ITSEC_Modules::set_setting( 'global', 'use_cron', ITSEC_USE_CRON );
 			}
 
 			do_action( 'itsec_initialized' );
+
+			ITSEC_Lib_Remote_Messages::init();
 		}
 
 		private function setup_scheduler() {
@@ -259,6 +258,15 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 		}
 
 		/**
+		 * Get the login interstitial library instance.
+		 *
+		 * @return ITSEC_Lib_Login_Interstitial
+		 */
+		public static function get_login_interstitial() {
+			return self::get_instance()->login_interstitial;
+		}
+
+		/**
 		 * Retrieve the global instance of the Sync API.
 		 *
 		 * The API is not available until iThemes Sync verbs have been registered ( init#11 ).
@@ -330,10 +338,9 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 			ITSEC_Modules::register_module( 'system-tweaks', "$path/modules/system-tweaks" );
 			ITSEC_Modules::register_module( 'wordpress-salts', "$path/modules/salts", 'always-active' );
 			ITSEC_Modules::register_module( 'wordpress-tweaks', "$path/modules/wordpress-tweaks", 'default-active' );
-
 			ITSEC_Modules::register_module( 'file-writing', "$path/modules/file-writing", 'always-active' );
-
 			ITSEC_Modules::register_module( 'malware', "$path/modules/malware", 'always-active' );
+			ITSEC_Modules::register_module( 'feature-flags', "$path/modules/feature-flags", 'always-active' );
 
 			if ( ! ITSEC_Core::is_pro() ) {
 				ITSEC_Modules::register_module( 'pro-module-upsells', "$path/modules/pro", 'always-active' );
@@ -392,58 +399,6 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 		}
 
 		/**
-		 * Add admin bar items
-		 *
-		 * @since 4.0
-		 *
-		 * @param WP_Admin_Bar $wp_admin_bar
-		 *
-		 * @return void
-		 */
-		public function modify_admin_bar( $wp_admin_bar ) {
-
-			if ( ! ITSEC_Core::current_user_can_manage() ) {
-				return;
-			}
-
-			// Add the Parent link.
-			$wp_admin_bar->add_node(
-				array(
-					'title' => __( 'Security', 'better-wp-security' ),
-					'href'  => self::get_settings_page_url(),
-					'id'    => 'itsec_admin_bar_menu',
-				)
-			);
-
-			$wp_admin_bar->add_node(
-				array(
-					'parent' => 'itsec_admin_bar_menu',
-					'title'  => __( 'Settings', 'better-wp-security' ),
-					'href'   => self::get_settings_page_url(),
-					'id'     => 'itsec_admin_bar_settings',
-				)
-			);
-
-			$wp_admin_bar->add_node(
-				array(
-					'parent' => 'itsec_admin_bar_menu',
-					'title'  => __( 'Security Check', 'better-wp-security' ),
-					'href'   => self::get_security_check_page_url(),
-					'id'     => 'itsec_admin_bar_security_check',
-				)
-			);
-
-			$wp_admin_bar->add_node(
-				array(
-					'parent' => 'itsec_admin_bar_menu',
-					'title'  => __( 'Logs', 'better-wp-security' ),
-					'href'   => self::get_logs_page_url(),
-					'id'     => 'itsec_admin_bar_logs',
-				)
-			);
-		}
-
-		/**
 		 * Dispatch a request to upgrade the data schema to another version.
 		 *
 		 * @param int|bool $build The version of the data storage format. Pass false to default to the current version.
@@ -482,6 +437,8 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 		 * @param bool    $all_pages Display the notice on all pages or only on ITSEC, plugins, and upgrade page.
 		 */
 		public static function add_notice( $callback, $all_pages = false ) {
+			_deprecated_function( __METHOD__, '6.0.0', 'ITSEC_Lib_Admin_Notices::register' );
+
 			global $pagenow, $plugin_page;
 
 			if ( ! $all_pages && ! in_array( $pagenow, array( 'plugins.php', 'update-core.php' ) ) && ( ! isset( $plugin_page ) || ! in_array( $plugin_page, array( 'itsec', 'itsec-logs' ) ) ) ) {
@@ -561,6 +518,36 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 		 */
 		public static function is_pro() {
 			return is_dir( self::get_plugin_dir() . 'pro' );
+		}
+
+		/**
+		 * Is this an actively licensed Pro installation.
+		 *
+		 * @return bool
+		 */
+		public static function is_licensed() {
+			if ( ! self::is_pro() ) {
+				return false;
+			}
+
+			if ( ! isset( $GLOBALS['ithemes_updater_path'] ) ) {
+				return false;
+			}
+
+			include_once( $GLOBALS['ithemes_updater_path'] . '/keys.php' );
+			include_once( $GLOBALS['ithemes_updater_path'] . '/packages.php' );
+
+			if ( ! class_exists( 'Ithemes_Updater_Packages' ) ) {
+				return false;
+			}
+
+			$package_details = Ithemes_Updater_Packages::get_full_details();
+
+			if ( empty( $package_details['packages']['ithemes-security-pro/ithemes-security-pro.php']['status'] ) ) {
+				return false;
+			}
+
+			return 'active' === $package_details['packages']['ithemes-security-pro/ithemes-security-pro.php']['status'];
 		}
 
 		/**
