@@ -408,3 +408,17 @@ $delay: 1.5s;
 	animation: thank-you $speed ease $delay alternate 1 forwards running;	
 }
 
+
+
+/* memberships */
+
+.input-membership-level{
+	input{
+		width: 30px;
+		display: inline-block;
+	}
+	label{
+		display: inline-block;
+	}
+}
+
