@@ -28,8 +28,8 @@ endif;
 		<div class="row">
 			<div class="col-lg-6 col-xl-5 donation-appeal mb2">
 				<?php if (is_page(1254)){ ?>
-					<div class="wysiwyg membership-intro">
-						<?php the_field('membership_intro'); ?>
+					<div class="wysiwyg membership-description">
+						<?php the_field('membership_description'); ?>
 					</div>
 				<?php } else{ ?>
 					<p class="donation-appeal-intro mb2">
