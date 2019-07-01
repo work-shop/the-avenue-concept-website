@@ -27,9 +27,15 @@ endif;
 		</div>
 		<div class="row">
 			<div class="col-lg-6 col-xl-5 donation-appeal mb2">
-				<p class="donation-appeal-intro mb2">
-					<?php the_field('donate_section_intro_text'); ?>
-				</p>
+				<?php if (is_page(1254)){ ?>
+					<div class="wysiwyg membership-intro">
+						<?php the_field('membership_intro'); ?>
+					</div>
+				<?php } else{ ?>
+					<p class="donation-appeal-intro mb2">
+						<?php the_field('donate_section_intro_text'); ?>
+					</p>
+				<?php } ?>
 				<h3 class="donation-appeal-quote">
 					<span class="quotation-mark quotation-mark-open">“</span><?php the_field('donate_quote'); ?><span class="quotation-mark quotation-mark-close">”</span>
 				</h3>
