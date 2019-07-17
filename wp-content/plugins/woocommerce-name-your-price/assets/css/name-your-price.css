@@ -1,0 +1,13 @@
+.product .nyp { margin-bottom: 1.625em; }
+
+.product .nyp label { padding-right: .25em; font-weight: bold; }
+
+.product .nyp .nyp-input { display: inline-block; margin-bottom: 1.625em; text-align: center; font-weight: bold; }
+
+.product .nyp .currency { vertical-align: middle; }
+
+.product .nyp .subscription-terms { display: inline-block; vertical-align: middle; }
+
+.product .nyp .minimum-price { color: inherit; font-size: .85em; }
+
+.product .nyp:after { content: ""; display: table; clear: both; }

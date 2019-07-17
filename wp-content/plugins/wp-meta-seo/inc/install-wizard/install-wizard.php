@@ -68,7 +68,7 @@ class WpmsInstallWizard
      */
     public function runWizard()
     {
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- View request, no action
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- View request, no action
         wp_enqueue_style(
             'wpms-material-icons',
             'https://fonts.googleapis.com/icon?family=Material+Icons'
@@ -93,6 +93,7 @@ class WpmsInstallWizard
         $this->current_step  = isset($_GET['step']) ? sanitize_key($_GET['step']) : current(array_keys($this->steps));
 
         // Save action
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- View request, no action
         if (!empty($_POST['wpms_save_step']) && isset($this->steps[$this->current_step]['action'])) {
             call_user_func(array('WpmsHandlerWizard', $this->steps[$this->current_step]['action']), $this->current_step);
         }
@@ -203,6 +204,7 @@ class WpmsInstallWizard
      */
     public function setHeader()
     {
+        set_current_screen();
         ?>
         <!DOCTYPE html>
         <html <?php language_attributes(); ?>>

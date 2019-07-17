@@ -18,7 +18,7 @@ defined('ABSPATH') || die('No direct script access allowed!');
                     <span class="slider round"></span>
                 </label>
             </div>
-            <p class="description text_left p-tb-20 border-top-e4e8ed">
+            <p class="ju-description text_left p-tb-20 border-top-e4e8ed">
                 <?php esc_html_e('Customize social networks apparence  when sharing a content', 'wp-meta-seo') ?>
             </p>
         </div>

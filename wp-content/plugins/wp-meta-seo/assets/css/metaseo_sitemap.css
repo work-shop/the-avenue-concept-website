@@ -1,6 +1,6 @@
 .wp-meta-seo_page_metaseo_google_sitemap .description {
     margin-top: 10px;
-    float: left;
+    display: inline-block;
     width: 100%;
     font-size: 15px !important;
     font-weight: normal;

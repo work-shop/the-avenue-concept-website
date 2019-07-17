@@ -39,6 +39,8 @@ if( defined( 'ABSPATH') && defined('WP_UNINSTALL_PLUGIN') ) {
 
 	//Remove license data (if any).
 	if ( file_exists(dirname(__FILE__) . '/extras.php') ) {
+		require_once dirname(__FILE__) . '/includes/basic-dependencies.php';
+
 		require_once dirname(__FILE__) . '/extras.php';
 		if ( isset($ameProLicenseManager) ) {
 			$ameProLicenseManager->unlicenseThisSite();

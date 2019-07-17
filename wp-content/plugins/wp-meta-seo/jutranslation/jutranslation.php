@@ -248,7 +248,7 @@ class Jutranslation
 
                 //Check if a translation exists for each entry
                 foreach ($mo->entries as $entry) {
-                    if (is_countable($entry->translations)) { // phpcs:ignore -- We created it in line 198
+                    if (is_array($entry->translations) || $entry->translations instanceof Countable) {
                         if (count($entry->translations)) {
                             $language->overrided ++;
                         }

@@ -212,6 +212,19 @@ $titleActionWidth: 40px;
 	}
 }
 
+.ame-widget-access-checkbox:indeterminate::before,
+input[type="checkbox"].ame-widget-access-checkbox:indeterminate::before {
+	content: '\25a0';
+	color: #1e8cbe;
+	margin: -3px 0 0 -1px;
+	font: 400 14px/1 dashicons;
+	float: left;
+	display: inline-block;
+	vertical-align: middle;
+	width: 16px;
+	-webkit-font-smoothing: antialiased;
+}
+
 /*
  * Import dialog
  */

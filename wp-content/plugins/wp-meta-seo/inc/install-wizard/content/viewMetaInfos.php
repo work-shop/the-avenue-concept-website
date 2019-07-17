@@ -2,7 +2,7 @@
 /* Prohibit direct script loading */
 defined('ABSPATH') || die('No direct script access allowed!');
 $wizard = new WpmsInstallWizard();
-// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- View request, no action
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- View request, no action
 $step      = isset($_GET['step']) ? sanitize_key($_GET['step']) : '';
 $next_link = $wizard->getNextLink($step);
 ?>
@@ -66,7 +66,7 @@ $next_link = $wizard->getNextLink($step);
 
                 <div class="ju-settings-option wpms-no-shadow wpms_width_100 p-d-20">
                     <label class="wpms_width_100 p-b-20 wpms_left text label_text">
-                        <?php esc_html_e('Search engine descriptions', 'wp-meta-seo'); ?>
+                        <?php esc_html_e('Search engine description', 'wp-meta-seo'); ?>
                     </label>
 
                     <label>

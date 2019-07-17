@@ -76,7 +76,9 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                                max="999" min="1" step="1">
                     </label>
 
-                    <button type="submit" name="btn_perpage" class="button_perpage ju-button orange-button waves-effect waves-light" id="button_perpage"><?php esc_html_e('Apply', 'wp-meta-seo') ?></button>
+                    <button type="submit" name="btn_perpage"
+                            class="button_perpage ju-button orange-button waves-effect waves-light"
+                            id="button_perpage"><?php esc_html_e('Apply', 'wp-meta-seo') ?></button>
                 </div>
             <?php endif ?>
 
@@ -130,9 +132,9 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         $total_pages_after  = '</span></span>';
 
         $disable_first = false;
-        $disable_last = false;
-        $disable_prev = false;
-        $disable_next = false;
+        $disable_last  = false;
+        $disable_prev  = false;
+        $disable_next  = false;
 
         if ($current === 1) {
             $disable_first = true;
@@ -288,7 +290,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $current_url = remove_query_arg('paged', $current_url);
 
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         if (isset($_GET['orderby'])) {
             $current_orderby = $_GET['orderby'];
         } else {
@@ -367,8 +369,8 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
     {
         global $wpdb;
         $where = array('1=1');
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
-        $where[] = "type IN ('url', 'comment', '404_automaticaly')";
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
+        $where[]  = "type IN ('url', 'comment', '404_automaticaly', 'add_custom')";
         $where_or = array();
         if (!empty($_REQUEST['sl_broken'])) {
             if (in_array('custom_redirect_url', $_REQUEST['sl_broken'])) {
@@ -398,7 +400,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         }
 
         $where_or_string = implode(' OR ', $where_or);
-        $where[] = '(' . $where_or_string . ')';
+        $where[]         = '(' . $where_or_string . ')';
 
         $keyword = !empty($_GET['txtkeyword']) ? $_GET['txtkeyword'] : '';
         if (isset($keyword) && $keyword !== '') {
@@ -489,7 +491,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
             require_once(WPMETASEO_ADDON_PLUGIN_DIR . 'inc/page/custom_redirect_form.php');
         }
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         $txtkeyword = (!empty($_REQUEST['txtkeyword'])) ? urldecode(stripslashes($_REQUEST['txtkeyword'])) : '';
         if (!empty($_REQUEST['orderby'])) {
             echo '<input type="hidden" name="orderby" value="' . esc_attr($_REQUEST['orderby']) . '" />';
@@ -510,8 +512,10 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         ?>
         <p class="search-box">
             <label>
-                <input type="search" id="image-search-input" class="wpms-search-input" name="txtkeyword" class="form-control"
-                       value="<?php echo esc_attr(stripslashes($txtkeyword)); ?>" placeholder="<?php esc_html_e('Search URL', 'wp-meta-seo') ?>"/>
+                <input type="search" id="image-search-input" class="wpms-search-input" name="txtkeyword"
+                       class="form-control"
+                       value="<?php echo esc_attr(stripslashes($txtkeyword)); ?>"
+                       placeholder="<?php esc_html_e('Search URL', 'wp-meta-seo') ?>"/>
             </label>
 
             <button type="submit" id="search-submit"><span class="dashicons dashicons-search"></span></button>
@@ -535,9 +539,9 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
             $brokens['custom_redirect_url'] = esc_html__('Custom redirect URL', 'wp-meta-seo');
         }
-        $brokens['valid_links'] = esc_html__('Valid links', 'wp-meta-seo');
+        $brokens['valid_links']      = esc_html__('Valid links', 'wp-meta-seo');
         $brokens['not_yet_redirect'] = esc_html__('Not yet redirected', 'wp-meta-seo');
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         if (empty($_REQUEST['sl_broken'])) {
             $selected = array('automaticaly_indexed', 'internal_broken_links', 'not_yet_redirect');
         } else {
@@ -548,7 +552,8 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         <label for="filter-by-broken"
                class="screen-reader-text"><?php esc_html_e('Filter by broken', 'wp-meta-seo'); ?></label>
         <div class="form-group form-group-broken">
-            <select multiple name="<?php echo esc_attr($name) ?>" id="filter-by-broken" class="broken_filter form-control">
+            <select multiple name="<?php echo esc_attr($name) ?>" id="filter-by-broken"
+                    class="broken_filter form-control">
                 <?php
                 foreach ($brokens as $k => $broken) {
                     if (in_array($k, $selected)) {
@@ -560,7 +565,8 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                 ?>
             </select>
             <input type="submit" name="filter_type_action" id="broken-submit"
-                   class="ju-button orange-button wpms-small-btn wpms_right" style="height: 45px" value="<?php esc_attr_e('Filter', 'wp-meta-seo') ?>">
+                   class="ju-button orange-button wpms-small-btn wpms_right" style="height: 45px"
+                   value="<?php esc_attr_e('Filter', 'wp-meta-seo') ?>">
         </div>
         <?php
     }
@@ -605,7 +611,8 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                 }
                 ?>
             </select>
-            <input type="button" class="ju-button orange-button wpms_flush_link" value="<?php esc_html_e('Flush', 'wp-meta-seo') ?>">
+            <input type="button" class="ju-button orange-button wpms_flush_link"
+                   value="<?php esc_html_e('Flush', 'wp-meta-seo') ?>">
             <span class="spinner wpms-spinner wpms-spinner-flush"></span>
             <span class="wpms-msg-success flush-msg-success"><?php esc_html_e('URLs removed!', 'wp-meta-seo') ?></span>
             <span class="wpms-msg-error flush-msg-error"><?php esc_html_e('Please select a remove URL option to flush', 'wp-meta-seo') ?></span>
@@ -766,9 +773,9 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                                     } else {
                                         ?>
                                         <div class="form-group">
-                                        <label class="title">
-                                            <?php esc_html_e('Status', 'wp-meta-seo') ?>
-                                        </label>
+                                            <label class="title">
+                                                <?php esc_html_e('Status', 'wp-meta-seo') ?>
+                                            </label>
                                             <label>
                                                 <select name="custom_redirect_status" class="custom_redirect_status">
                                                     <option value="301" <?php selected($rec->meta_title, 301) ?>>301
@@ -797,7 +804,8 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                                 </div>
                                 <div class="form-group">
                                     <label class="title"><?php esc_html_e('Redirect', 'wp-meta-seo'); ?></label>
-                                    <input type="text" name="link_url_redirect" class="wpms-link-redirect-field form-control" style="margin-right: 0"
+                                    <input type="text" name="link_url_redirect"
+                                           class="wpms-link-redirect-field form-control" style="margin-right: 0"
                                            value="<?php echo esc_attr($rec->link_url_redirect); ?>"/>
                                     <span class="wlink-btn">
                                         <i class="mce-ico mce-i-link link-btn" id="link-btn"></i>
@@ -984,7 +992,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
     {
         $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $redirect    = false;
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- No action, nonce is not required
         if (isset($_POST['txtkeyword'])) {
             $current_url = add_query_arg(
                 array(
@@ -999,7 +1007,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         if (isset($_POST['filter_type_action'])) {
             $current_url = add_query_arg(
                 array(
-                    'sl_broken'   => $_POST['sl_broken']
+                    'sl_broken' => $_POST['sl_broken']
                 ),
                 $current_url
             );
@@ -1125,7 +1133,9 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         if ($type === 'update_post') {
             return 'HTTP/1.1 200 OK';
         }
-        $status = get_headers($url, 0);
+
+        // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- fix warning
+        $status = @get_headers($url, 0);
         if (isset($status[0])) {
             return $status[0];
         } else {
@@ -1411,27 +1421,39 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         }
 
         global $wpdb;
-        $post = $post_after;
-        $dom  = new DOMDocument;
-        libxml_use_internal_errors(true);
+        $post         = $post_after;
         $linkscontent = array();
+
+        if (isset($post->post_content)) {
+            $seoClass = new MetaSeoAdmin();
+            $post->post_content = $seoClass->injectAcfField($post->post_content, $post->ID);
+        }
 
         if ($post->post_excerpt !== 'metaseo_404_page') {
             if ($post->post_status === 'publish') {
                 if (isset($post->post_content) && $post->post_content !== '') {
-                    // find <a> tag in current post content
-                    preg_match_all('#<a[^>]*>.*?</a>#si', $post->post_content, $matches, PREG_PATTERN_ORDER);
-                    foreach (array_unique($matches[0]) as $i => $content) {
-                        $dom->loadHTML($content);
-                        $tags       = $dom->getElementsByTagName('a');
-                        $meta_title = $tags->item(0)->getAttribute('title');
-                        $rel        = $tags->item(0)->getAttribute('rel');
+                    $a_tags = wpmsExtractTags($post->post_content, 'a', false, true);
+                    foreach ($a_tags as $a_tag) {
+                        $meta_title = '';
+                        $rel        = '';
+                        $href       = '';
+                        if (isset($a_tag['attributes']['title'])) {
+                            $meta_title = $a_tag['attributes']['title'];
+                        }
 
-                        preg_match('/< *a[^>]*href *= *["\']?([^"\']*)/i', $content, $matches);
-                        $href               = $matches[1];
-                        $status             = self::getUrlStatus($href, 'update_post');
-                        $status_type        = self::getUrlStatusType($status);
-                        $link_text          = preg_replace('/<a\s(.+?)>(.+?)<\/a>/is', '$2', $content);
+                        if (isset($a_tag['attributes']['rel'])) {
+                            $rel = $a_tag['attributes']['rel'];
+                        }
+
+                        if (isset($a_tag['attributes']['href'])) {
+                            $href = $a_tag['attributes']['href'];
+                        }
+
+                        $link_text = $a_tag['contents'];
+
+                        $status      = self::getUrlStatus($href, 'update_post');
+                        $status_type = self::getUrlStatusType($status);
+
                         $source_link        = '<a href="' . get_edit_post_link($post->ID) . '">';
                         $source_link        .= '<b>' . $post->post_title . '</b>';
                         $source_link        .= '</a>';
@@ -1450,18 +1472,18 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                     }
 
                     // find <img> tag in current post content
-                    preg_match_all(
-                        '/(<img[\s]+[^>]*src\s*=\s*)([\"\'])([^>]+?)\2([^<>]*>)/i',
-                        $post->post_content,
-                        $matches,
-                        PREG_PATTERN_ORDER
-                    );
-                    foreach (array_unique($matches[0]) as $content) {
+                    $img_tags = wpmsExtractTags($post->post_content, 'img', true, true);
+                    foreach ($img_tags as $tag) {
                         $source_link = '<a href="' . get_edit_post_link($post->ID) . '">';
                         $source_link .= '<b>' . $post->post_title . '</b>';
                         $source_link .= '</a>';
-                        preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $content, $matches);
-                        $src                                    = $matches[1];
+
+                        if (empty($tag['attributes']['src'])) {
+                            $src = '';
+                        } else {
+                            $src = $tag['attributes']['src'];
+                        }
+
                         $status                                 = self::getUrlStatus($src, 'update_post');
                         $status_type                            = self::getUrlStatusType($status);
                         $link_text                              = '';
@@ -1501,7 +1523,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
                 $wpdb->query(
                     $wpdb->prepare(
                         'DELETE FROM ' . $wpdb->prefix . 'wpms_links
-                                 WHERE source_id = %d AND (type = %s || type = %s)',
+                             WHERE source_id = %d AND (type = %s || type = %s)',
                         array(
                             $post->ID,
                             'image',
@@ -1868,20 +1890,15 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
      */
     public static function checkInternalLink($link, $siteUrl, $value)
     {
-        $info_link = parse_url($link);
-        if (empty($info_link['path'])) {
-            $value['internal'] = 0;
-            return $value;
-        }
-
-        if (empty($info_link['host'])) {
-            $value['internal'] = 0;
-            return $value;
-        }
-
+        $info_link     = parse_url($link);
         $info_site_url = parse_url($siteUrl);
-        $domain_link   = $info_link['host'] . $info_link['path'] . '/';
-        $domain_site   = $info_site_url['host'] . $info_site_url['path'] . '/';
+        if (empty($info_link['path']) || $info_site_url['path'] || empty($info_link['host'])) {
+            $value['internal'] = 0;
+            return $value;
+        }
+
+        $domain_link = $info_link['host'] . $info_link['path'] . '/';
+        $domain_site = $info_site_url['host'] . $info_site_url['path'] . '/';
         if (strpos($domain_link, $domain_site) !== false) {
             $value['internal'] = 1;
         } else {
@@ -2634,132 +2651,6 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
     }
 
     /**
-     * Extract specific HTML tags and their attributes from a string.
-     *
-     * You can either specify one tag, an array of tag names, or a regular expression that matches the tag name(s).
-     * If multiple tags are specified you must also set the $selfclosing parameter and it must be the same for
-     * all specified tags (so you can't extract both normal and self-closing tags in one go).
-     *
-     * The function returns a numerically indexed array of extracted tags. Each entry is an associative array
-     * with these keys :
-     *    tag_name    - the name of the extracted tag, e.g. "a" or "img".
-     *    offset        - the numberic offset of the first character of the tag within the HTML source.
-     *    contents    - the inner HTML of the tag. This is always empty for self-closing tags.
-     *    attributes    - a name -> value array of the tag's attributes, or an empty array if the tag has none.
-     *    full_tag    - the entire matched tag, e.g. '<a href="http://example.com">example.com</a>'. This key
-     *                  will only be present if you set $return_the_entire_tag to true.
-     *
-     * @param string       $html                  The HTML code to search for tags.
-     * @param string|array $tag                   The tag(s) to extract.
-     * @param boolean      $selfclosing           Whether the tag is self-closing or not.
-     *                                            Setting it to null will force the script to try and make an educated guess.
-     * @param boolean      $return_the_entire_tag Return the entire matched tag in 'full_tag' key of the results array.
-     * @param string       $charset               The character set of the HTML code. Defaults to ISO-8859-1.
-     *
-     * @return array An array of extracted tags, or an empty array if no matching tags were found.
-     */
-    public static function extractTags(
-        $html,
-        $tag,
-        $selfclosing = null,
-        $return_the_entire_tag = false,
-        $charset = 'ISO-8859-1'
-    ) {
-
-        if (is_array($tag)) {
-            $tag = implode('|', $tag);
-        }
-
-        $selfclosing_tags = array(
-            'area',
-            'base',
-            'basefont',
-            'br',
-            'hr',
-            'input',
-            'img',
-            'link',
-            'meta',
-            'col',
-            'param'
-        );
-        if (is_null($selfclosing)) {
-            $selfclosing = in_array($tag, $selfclosing_tags);
-        }
-
-        if ($selfclosing) {
-            $tag_pattern = '@<(?P<tag>' . $tag . ')			# <tag
-				(?P<attributes>\s[^>]+)?		# attributes, if any
-				\s*/?>							# /> or just >, being lenient here 
-				@xsi';
-        } else {
-            $tag_pattern = '@<(?P<tag>' . $tag . ')			# <tag
-				(?P<attributes>\s[^>]+)?		# attributes, if any
-				\s*>							# >
-				(?P<contents>.*?)				# tag contents
-				</(?P=tag)>						# the closing </tag>
-				@xsi';
-        }
-
-        $attribute_pattern = '@
-			(?P<name>\w+)											# attribute name
-			\s*=\s*
-			(
-				(?P<quote>[\"\'])(?P<value_quoted>.*?)(?P=quote)	# a quoted value
-				|							# or
-				(?P<value_unquoted>[^\s"\']+?)(?:\s+|$)	 # an unquoted value (terminated by whitespace or EOF) 
-			)
-			@xsi';
-
-        //Find all tags
-        if (!preg_match_all($tag_pattern, $html, $matches, PREG_SET_ORDER | PREG_OFFSET_CAPTURE)) {
-            //Return an empty array if we didn't find anything
-            return array();
-        }
-
-        $tags = array();
-        foreach ($matches as $match) {
-            //Parse tag attributes, if any
-            $attributes = array();
-            if (!empty($match['attributes'][0])) {
-                if (preg_match_all($attribute_pattern, $match['attributes'][0], $attribute_data, PREG_SET_ORDER)) {
-                    //Turn the attribute data into a name->value array
-                    foreach ($attribute_data as $attr) {
-                        if (!empty($attr['value_quoted'])) {
-                            $value = $attr['value_quoted'];
-                        } elseif (!empty($attr['value_unquoted'])) {
-                            $value = $attr['value_unquoted'];
-                        } else {
-                            $value = '';
-                        }
-
-                        //Passing the value through html_entity_decode is handy when you want
-                        //to extract link URLs or something like that. You might want to remove
-                        //or modify this call if it doesn't fit your situation.
-                        $value = html_entity_decode($value, ENT_QUOTES, $charset);
-
-                        $attributes[$attr['name']] = $value;
-                    }
-                }
-            }
-
-            $tag = array(
-                'tag_name'   => $match['tag'][0],
-                'offset'     => $match[0][1],
-                'contents'   => !empty($match['contents']) ? $match['contents'][0] : '', //empty for self-closing tags
-                'attributes' => $attributes,
-            );
-            if ($return_the_entire_tag) {
-                $tag['full_tag'] = $match[0][0];
-            }
-
-            $tags[] = $tag;
-        }
-
-        return $tags;
-    }
-
-    /**
      * Apply a callback function to all HTML links found in a string and return the results.
      *
      * The link data array will contain at least these keys :
@@ -2783,7 +2674,7 @@ class MetaSeoBrokenLinkTable extends WP_List_Table
         $results = array();
 
         //Find all links
-        $links = self::extractTags($content, 'a', false, true);
+        $links = wpmsExtractTags($content, 'a', false, true);
 
         //Iterate over the links and apply $callback to each
         foreach ($links as $link) {

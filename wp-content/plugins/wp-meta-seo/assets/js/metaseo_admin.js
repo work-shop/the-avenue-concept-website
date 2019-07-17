@@ -3,8 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-var title_max_len = 69;
-var desc_max_len = 320;
+var title_max_len = 60;
+var desc_max_len = 158;
 var keywords_max_len = 256;
 var metaseoValueHolder = {};
 
@@ -59,7 +59,7 @@ function metaseo_titlelength(metatitle_id, updateSnippet) {
     jQuery('#' + counter_id).text(title_max_len - title.length);
     if (title.length >= title_max_len) {
         jQuery('#' + counter_id).removeClass('word-74B6FC').addClass('word-exceed');//#FEFB04
-    } else if (title.length <= 46) {
+    } else if (title.length <= 50) {
         jQuery('#' + counter_id).removeClass('word-exceed').addClass('word-74B6FC');//#74B6FC
     } else {
         jQuery('#' + counter_id).removeClass('word-exceed word-74B6FC');
@@ -563,6 +563,9 @@ function saveChanges(element_id, post_id, meta_type, meta_value) {
                     );
                 }
 
+                if (typeof response.type_change !== "undefined" && response.type_change === 'edit_meta_alt') {
+                    jQuery('#img-alt-' + element.data('img-post-id')).val(element.val());
+                }
             } else {
                 element.val(response.iname);
                 savedInfo.removeClass('metaseo-msg-success').addClass('metaseo-msg-warning')
@@ -798,7 +801,7 @@ function optimize_imgs(element) {
 
                     var checked = jQuery('.checkin-' + post_id);
                     if (checked.length === 0) {
-                        $this.addClass('disabled');
+                        $this.addClass('disabled replaced').removeClass('ju-button waves-effect waves-light').html(wpms_localize.replaced);
                     }
 
                     $this.parent().find('span.spinner').fadeOut(300);
@@ -812,6 +815,9 @@ function optimize_imgs(element) {
                     var img = jQuery('[data-img-post-id="' + img_post_id + '"]');
                     _metaSeoScanImages({'name': img.data('name'), 'img_post_id': img_post_id});
 
+                   setTimeout(function(){
+                        window.location.reload(true);
+                    }, 1000);
                 } else {
                     $this.parent().find('span.spinner').hide();
                     $this.parent().find('p.metaseo-msg').removeClass('msg-success').addClass('msg-error');
@@ -1326,4 +1332,7 @@ jQuery(document).ready(function ($) {
     $('a.show-popup').bind('click', function () {
         $(this).showPopup($(this));
     });
+
+
+    $(".wpms-blocks-active").attr('disabled','disabled');
 });

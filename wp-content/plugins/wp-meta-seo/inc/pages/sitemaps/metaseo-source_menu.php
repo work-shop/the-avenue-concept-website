@@ -47,8 +47,8 @@ defined('ABSPATH') || die('No direct script access allowed!');
         </div>
 
         <?php
-        foreach ($terms as $term) {
-            $sitemap->viewMenus($term);
+        foreach ($terms as $value) {
+            $sitemap->viewMenus($value);
         }
         echo '<input name="_metaseo_settings_sitemap[wpms_check_firstsave]" type="hidden" value="1">';
     }

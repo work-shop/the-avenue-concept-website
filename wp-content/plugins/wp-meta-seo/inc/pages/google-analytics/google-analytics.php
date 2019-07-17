@@ -3,7 +3,7 @@
     require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/google-analytics/menu.php');
     ?>
     <h2 class="wpms_uppercase"><?php esc_html_e('Google Analytics tracking & report', 'wp-meta-seo') ?></h2>
-    <p class="description"><?php esc_html_e('Enable Google Analytics tracking and reports using a Google Analytics
+    <p class="ju-description"><?php esc_html_e('Enable Google Analytics tracking and reports using a Google Analytics
      direct connection. Require a Google Analytics login', 'wp-meta-seo') ?></p>
     <p>
         <a class="ju-button" href="<?php echo esc_url($authUrl) ?>"
@@ -28,8 +28,8 @@
                 <td colspan="2">
                     <div class="pure-checkbox">
                         <input id="wpmsga_dash_userapi" type="checkbox" name="wpmsga_dash_userapi"
-                               value="1" <?php checked($this->google_alanytics['wpmsga_dash_userapi'], 1) ?>>
-                        <label class="metaseo_tool description" for="wpmsga_dash_userapi"
+                               value="1">
+                        <label class="metaseo_tool ju-description" for="wpmsga_dash_userapi"
                                data-alt="<?php esc_attr_e('You have the option to create your own Google developer
                                 project and use your own API key for tracking (optional)', 'wp-meta-seo') ?>">
                             <?php esc_html_e(' Use your own API Project credentials', 'wp-meta-seo') ?></label>
@@ -41,9 +41,9 @@
             <hr class="wpms_hr">
         </div>
         <h2 class="wpms_uppercase"><?php esc_html_e('Google analytics tracking only', 'wp-meta-seo') ?></h2>
-        <p class="description"><?php esc_html_e('Enable Google Analytics tracking only. You won\'t be
+        <p class="ju-description"><?php esc_html_e('Enable Google Analytics tracking only. You won\'t be
          able to display statistics in your', 'wp-meta-seo') ?></p>
-        <p class="description"><?php esc_html_e('Wordpress admin, only on Google Analytics website', 'wp-meta-seo') ?></p>
+        <p class="ju-description"><?php esc_html_e('Wordpress admin, only on Google Analytics website', 'wp-meta-seo') ?></p>
 
         <table class="wpms-settings-options">
             <tr>
@@ -78,15 +78,15 @@
                 </td>
             </tr>
         </table>
-        <p class="description">
+        <p class="ju-description">
             <?php esc_html_e('If you are using Universal Analytics make sure
              you have changed your account to a Universal Analytics', 'wp-meta-seo') ?>
         </p>
-        <p class="description">
+        <p class="ju-description">
             <?php esc_html_e('property in Google Analytics Read more about Universal Analytics ', 'wp-meta-seo') ?>
             <a target="_blank" href="https://developers.google.com/analytics/devguides/collection/upgrade/">here</a>
         </p>
-        <p class="description"><?php esc_html_e('OR use Analytics JS code', 'wp-meta-seo') ?></p>
+        <p class="ju-description"><?php esc_html_e('OR use Analytics JS code', 'wp-meta-seo') ?></p>
         <label>
             <textarea name="_metaseo_ga_disconnect[wpmsga_code_tracking]"
                       class="wpmsga_code_tracking">

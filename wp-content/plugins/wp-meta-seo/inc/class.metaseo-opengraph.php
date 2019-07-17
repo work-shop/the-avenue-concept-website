@@ -29,23 +29,124 @@ class MetaSeoOpenGraph
                 $meta_title = $shop->post_title;
             }
 
-            return esc_html($meta_title);
+            return esc_html($this->replaceSnippet($meta_title, $shop));
         }
 
+        $post       = get_post($id);
         $meta_title = get_post_meta($id, '_metaseo_metatitle', true);
         if ($meta_title !== maybe_unserialize($meta_title)) {
             $meta_title = '';
         }
 
         if ($meta_title === '') {
-            $post = get_post($id);
             if (empty($post)) {
                 return '';
             }
-            $meta_title = $post->post_title;
+            $meta_title = '%title% - %sitename%';
         }
 
-        return esc_html($meta_title);
+        return esc_html($this->replaceSnippet($meta_title, $post));
+    }
+
+    /**
+     * Retrieve the current page number with context (i.e. 'page 2 of 4') for use as replacement string.
+     *
+     * @return string
+     */
+    public function retrievePage()
+    {
+        $replacement = null;
+
+        $max = $this->determinePagenumbering('max');
+        $nr  = $this->determinePagenumbering('nr');
+        $sep = '-';
+
+        if ($max > 1 && $nr > 1) {
+            $replacement = sprintf($sep . ' ' . __('Page %1$d of %2$d', 'wp-meta-seo'), $nr, $max);
+        }
+
+        return $replacement;
+    }
+
+    /**
+     * Determine the page numbering of the current post/page/cpt
+     *
+     * @param string $request Whether to return the page number or the max number of pages ('nr'|'max')
+     *
+     * @return integer|null
+     */
+    public function determinePagenumbering($request = 'nr')
+    {
+        global $wp_query, $post;
+        $max_num_pages = null;
+        $page_number   = null;
+
+        $max_num_pages = 1;
+
+        if (!is_singular()) {
+            $page_number = get_query_var('paged');
+            if ($page_number === 0 || $page_number === '') {
+                $page_number = 1;
+            }
+
+            if (isset($wp_query->max_num_pages) && ($wp_query->max_num_pages !== '' && (int) $wp_query->max_num_pages !== 0)) {
+                $max_num_pages = $wp_query->max_num_pages;
+            }
+        } else {
+            $page_number = get_query_var('page');
+            if ($page_number === 0 || $page_number === '') {
+                $page_number = 1;
+            }
+
+            if (isset($post->post_content)) {
+                $max_num_pages = (substr_count($post->post_content, '<!--nextpage-->') + 1);
+            }
+        }
+
+        $return = null;
+
+        switch ($request) {
+            case 'nr':
+                $return = $page_number;
+                break;
+            case 'max':
+                $return = $max_num_pages;
+                break;
+        }
+
+        return $return;
+    }
+
+    /**
+     * Replace Snippet
+     *
+     * @param string $string String
+     * @param object $post   Current post
+     *
+     * @return mixed
+     */
+    public function replaceSnippet($string, $post)
+    {
+        $vars_to_cache = array(
+            'title'        => !(empty($post->post_title)) ? $post->post_title : null,
+            'date'         => wpmsRetrieveDate($post),
+            'id'           => !(empty($post->ID)) ? $post->ID : null,
+            'sitename'     => trim(strip_tags(get_bloginfo('name'))),
+            'sitedesc'     => trim(strip_tags(get_bloginfo('description'))),
+            'sep'          => '-',
+            'page'         => $this->retrievePage(),
+            'currenttime'  => date_i18n(get_option('time_format')),
+            'currentdate'  => date_i18n(get_option('date_format')),
+            'currentday'   => date_i18n('j'),
+            'currentmonth' => date_i18n('F'),
+            'currentyear'  => date_i18n('Y'),
+        );
+
+        foreach ($vars_to_cache as $var => $value) {
+            $string = str_replace('%' . $var . '%', $value, $string);
+        }
+
+        return $string;
     }
 
     /**
@@ -58,6 +159,7 @@ class MetaSeoOpenGraph
      */
     public function getMetaTitle($settings, $meta_title)
     {
+        global $post;
         $meta_title_esc = esc_attr($meta_title);
         // check homepage is a page
         if ($meta_title === '' && is_front_page()) {
@@ -67,7 +169,7 @@ class MetaSeoOpenGraph
             }
         }
 
-        return esc_attr($meta_title_esc);
+        return esc_attr($this->replaceSnippet($meta_title_esc, $post));
     }
 
     /**
@@ -99,6 +201,7 @@ class MetaSeoOpenGraph
      */
     public function getDesc($settings, $id, $content)
     {
+        global $post;
         $meta_desc_esc = get_post_meta($id, '_metaseo_metadesc', true);
         if ($meta_desc_esc !== maybe_unserialize($meta_desc_esc)) {
             $meta_desc_esc = '';
@@ -120,7 +223,7 @@ class MetaSeoOpenGraph
                 $meta_desc_esc = '';
             }
         }
-        return esc_attr($meta_desc_esc);
+        return esc_attr($this->replaceSnippet($meta_desc_esc, $post));
     }
 
     /**
@@ -180,6 +283,7 @@ class MetaSeoOpenGraph
         $meta_fbimage = get_post_meta($id, '_metaseo_metaopengraph-image', true);
 
         $default_image = wp_get_attachment_image_src(get_post_thumbnail_id($id), 'single-post-thumbnail');
+
         if (empty($meta_twimage) && isset($default_image[0])) {
             $meta_twimage = $default_image[0];
         }

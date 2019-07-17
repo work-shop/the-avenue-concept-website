@@ -10,7 +10,7 @@ $metaseo_list_table = new MetaSeoContentListTable();
 $metaseo_list_table->processAction();
 $metaseo_list_table->prepare_items();
 
-// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
 if (!empty($_REQUEST['_wp_http_referer'])) {
     wp_redirect(remove_query_arg(array('_wp_http_referer', '_wpnonce'), stripslashes($_SERVER['REQUEST_URI'])));
     exit;

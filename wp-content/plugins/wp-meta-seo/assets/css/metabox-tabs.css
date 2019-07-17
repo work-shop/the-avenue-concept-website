@@ -42,7 +42,7 @@
 .optimization-row-box .length-box-meta {
     position: absolute;
     right: 0;
-    bottom: 21px;
+    bottom: 1px;
     width: 57.9px;
     height: 50px;
     background: #42d4a3;
@@ -59,9 +59,9 @@
 }
 
 .wpmseo-metabox-tabs-div {
-    float: left;
     width: 100%;
     background: #f3f6fa;
+    display: inline-block;
 }
 
 .wpmseo-metabox-tabs-div * {
@@ -79,11 +79,6 @@
 
 #wpmseo_meta .postbox .inside .wpmseotab {
     font-size: 13px !important;
-}
-
-.postbox {
-    width: 100%;
-    float: left;
 }
 
 .inside .wpmseotab .form-table th {
@@ -118,7 +113,7 @@
     color: #fff !important;
 }
 
-.optimization-row-box .length-box-meta.length-warn {
+.optimization-row-box .length-box-meta.word-74B6FC {
     background: #74B6FC;
 }
 
@@ -129,7 +124,6 @@
 
 #wpmseosnippet {
     width: auto;
-    max-width: 520px;
     margin: 0 0 10px;
     font-family: Arial, Helvetica, sans-serif;
     font-style: normal;
@@ -152,7 +146,6 @@
 #wpmseosnippet .title {
     display: block;
     overflow: hidden;
-    width: 512px;
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 24px;
@@ -373,7 +366,7 @@ table.wpmseoanalysis td.score {
 i.metaseo_help {
     cursor: pointer;
     font-size: 20px;
-    margin: 10px;
+    line-height: 45px;
 }
 
 .metaseo-qtip {
@@ -501,8 +494,9 @@ div.wpmseo-tab-content {
 }
 
 .wpmseotab .optimization-row-box {
-    padding: 20px;
+    padding: 20px 20px 10px 20px;
     box-sizing: border-box;
+    margin: 0;
 }
 
 .wpmseotab.general.active .form-table th {
@@ -608,4 +602,72 @@ div.wpmseo-tab-content {
     float: left;
     margin-bottom: 20px;
     background: #fff;
+}
+
+
+#wpmseo_meta .tabs {
+    display: flex;
+    position: relative;
+    overflow: hidden;
+    margin: 0 auto;
+    white-space: nowrap;
+    width: 100%;
+    background-color: #fff;
+}
+
+#wpmseo_meta .tabs .tab {
+    flex-grow: 1;
+    display: block;
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    float: left;
+    text-transform: uppercase;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    letter-spacing: 0.8px;
+    min-width: 80px;
+    background-color: #2196f3;
+}
+
+#wpmseo_meta .tabs .tab a {
+    text-decoration: none;
+    color: #fff;
+    background-color: #2196f3;
+    display: block;
+    width: 100%;
+    height: 100%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -webkit-transition: color 0.3s ease;
+    -moz-transition: color 0.3s ease;
+    -ms-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
+    transition: color 0.3s ease;
+}
+
+#wpmseo_meta .tabs .tab.disabled a {
+    cursor: default;
+    opacity: 0.6;
+}
+
+#wpmseo_meta .tabs .indicator {
+    position: absolute;
+    bottom: 0;
+    height: 3px;
+    will-change: left, right;
+    background-color: #ff8726;
+}
+
+#wpmseo_meta .description {
+    margin-top: 10px;
+    display: inline-block;
+    width: 100%;
+    font-size: 15px !important;
+    font-weight: normal;
+    font-style: normal !important;
+    font-stretch: normal;
+    line-height: 1.88;
+    letter-spacing: 0.8px;
+    color: #5f879b !important;
 }

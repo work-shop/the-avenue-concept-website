@@ -2,8 +2,8 @@
 Contributors: whiteshadow
 Tags: admin, dashboard, menu, security, wpmu
 Requires at least: 4.1
-Tested up to: 4.9.8
-Stable tag: 2.7
+Tested up to: 5.2
+Stable tag: 2.9
 
 Lets you directly edit the WordPress admin menu. You can re-order, hide or rename existing menus, add custom menus and more.
 
@@ -82,6 +82,45 @@ Here are some usage tips and other things that can be good to know when using th
 == Changelog ==
 
 [Get the latest version here.](http://adminmenueditor.com/updates/)
+
+= 2.9 (2019-05-09) =
+##### Added
+* Added a "Hide the frame scollbar" option to menu items that open in an iframe.
+
+##### Changed
+* Improved the automatic frame height calculation algorithm. When the framed page is on the same site (that is, same origin), the frame height will match the content height. This means you no longer need to manually set the frame height for pages like that.
+* Tested with WP 5.2.
+
+= 2.8.2 (2019-04-05) =
+##### Added
+* Added an option to automatically hide new plugins from the "Plugins" page. It was already possible to hide newly installed plugins, but previously this feature was tied to the "show all plugins" checkbox in the "Plugins" tab. Now there's a separate setting just for new plugins, which lets you hide new plugins without also hiding existing plugins.
+
+##### Fixed
+* Fixed a bug that stopped the icon dropdown from working in certain menu items and made it impossible to change the icon of the Jetpack menu.
+* Fixed a PHP warning: "non-string needles will be interpreted as strings". This was originally patched in 2.8, but the patch was incomplete and did not fully resolve the issue. This version should fix the warning in all cases.
+* Fixed missing dependencies that prevented users from hiding meta boxes in Gutenberg. Partial Gutenberg support was added in 2.8, but most users couldn't take advantage of it due to missing files.
+
+= 2.8.1 (2019-02-15) =
+##### Fixed
+* Fixed a bug where clicking the "Add User" button in the "Users" tab opened an empty "Select Users" dialog, which made it impossible to select any users. Now the dialog should actually display existing users.
+
+= 2.8 (2019-02-07) =
+
+##### Added
+* Added partial Gutenberg support. When you hide a meta box, the corresponding Gutenberg document panel will also be removed. This works for most boxes/panels.
+* Added three new shortcodes: `[wp-user-first-name]`, `[wp-user-last-name]`, `[wp-user-login]`. They display the current user's first name, last name, and username/login, respectively.
+* Added a new WP-CLI command: "reset-plugin-access". It changes the "who can access this plugin" setting to the default value. The default is either "Super Admin" (in Multisite) on "Anyone with the "manage_options" capability" (on regular sites). This is useful in situations where someone accidentally locks themselves out by deleting the only user who could access the plugin.
+
+##### Fixed
+* Fixed a PHP warning being thrown when the WPMU_PLUGIN_DIR constant is not a valid path or the full path cannot be determined.
+* Fixed a potential PHP warning about an undefined constant when uninstalling the plugin.
+* Fixed a rare PHP warning "invalid argument supplied for foreach() in menu-editor-core.php on line 4258" that was most likely caused by an unidentified plugin conflict.
+* Fixed a few minor HTML validation errors.
+* Fixed an inefficiency in the "select an icon from the media library" process that could make the browser use more memory than necessary.
+
+##### Changed
+* When a dashboard widget is only enabled for one or a few roles, it will no longer appear enabled in the "All" section. Instead, it will be shown in an "indeterminate" state (like menus that have some visible and some hidden items).
+* The "Load default menu" and "Undo changes" buttons will now appear disabled when you select a role or a user. They will be enabled only when you select the "All" option. This is to indicate that these buttons affect all roles and users, not just the current selection.
 
 = 2.7 (2018-10-01) =
 ##### Added

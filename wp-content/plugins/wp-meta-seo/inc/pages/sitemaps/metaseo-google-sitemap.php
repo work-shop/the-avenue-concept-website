@@ -68,6 +68,7 @@ defined('ABSPATH') || die('No direct script access allowed!');
         require_once(WPMETASEO_PLUGIN_DIR . 'inc/pages/sitemaps/metaseo-source_pages.php');
         if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
             if (!empty($custom_post_types)) {
+                //phpcs:ignore WordPress.WP.GlobalVariablesOverride.Prohibited -- No impact on assignment
                 foreach ($custom_post_types as $post_type => $label) {
                     ob_start();
                     require(WPMETASEO_ADDON_PLUGIN_DIR . 'inc/page/sitemaps/posts_custom.php');

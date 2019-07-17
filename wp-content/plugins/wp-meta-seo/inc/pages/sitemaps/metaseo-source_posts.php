@@ -99,16 +99,16 @@ defined('ABSPATH') || die('No direct script access allowed!');
 
     <div id="wrap_sitemap_option_posts" class="wrap_sitemap_option">
         <?php
-        $posts                    = $sitemap->getPosts();
+        $listposts                    = $sitemap->getPosts();
         $check                    = array();
         $desclink_category_add    = esc_html__('Add link to category name', 'wp-meta-seo');
         $desclink_category_remove = esc_html__('Remove link to category name', 'wp-meta-seo');
-        foreach ($posts as $post) {
-            if (!in_array($post->taxo, $check)) {
-                $check[] = $post->taxo;
+        foreach ($listposts as $value) {
+            if (!in_array($value->taxo, $check)) {
+                $check[] = $value->taxo;
             }
 
-            if (in_array($post->cat_ID, $sitemap->settings_sitemap['wpms_category_link'])) {
+            if (in_array($value->cat_ID, $sitemap->settings_sitemap['wpms_category_link'])) {
                 $checked = 'checked';
             } else {
                 $checked = '';
@@ -118,14 +118,14 @@ defined('ABSPATH') || die('No direct script access allowed!');
                 <div class="ju-settings-option wpms_row">
                     <div class="wpms_row_full">
                         <label class="ju-setting-label text wpms-uppercase">
-                            <?php echo esc_html($post->cat_name) ?>
+                            <?php echo esc_html($value->cat_name) ?>
                         </label>
                         <div class="ju-switch-button">
                             <label class="switch">
                                 <input class="sitemap_addlink_categories"
-                                       id="<?php echo esc_attr('sitemap_addlink_categories_' . $post->cat_ID) ?>"
+                                       id="<?php echo esc_attr('sitemap_addlink_categories_' . $value->cat_ID) ?>"
                                        type="checkbox"
-                                       value="<?php echo esc_attr($post->cat_ID) ?>" <?php echo esc_html($checked) ?>>
+                                       value="<?php echo esc_attr($value->cat_ID) ?>" <?php echo esc_html($checked) ?>>
                                 <span class="slider round"></span>
                             </label>
                         </div>
@@ -139,8 +139,8 @@ defined('ABSPATH') || die('No direct script access allowed!');
                         </label>
                         <div class="ju-switch-button">
                             <label class="switch">
-                                <input data-category="<?php echo esc_attr($post->taxo . $post->slug) ?>"
-                                       class="xm_cb_all" id="<?php echo esc_attr($post->taxo . $post->slug) ?>"
+                                <input data-category="<?php echo esc_attr($value->taxo . $value->slug) ?>"
+                                       class="xm_cb_all" id="<?php echo esc_attr($value->taxo . $value->slug) ?>"
                                        type="checkbox">
                                 <span class="slider round"></span>
                             </label>
@@ -150,9 +150,9 @@ defined('ABSPATH') || die('No direct script access allowed!');
             </div>
             <?php
 
-            foreach ($post->results as $p) {
-                $category = get_the_terms($p, $post->taxo);
-                if ((int) $category[0]->term_id === (int) $post->cat_ID) {
+            foreach ($value->results as $p) {
+                $category = get_the_terms($p, $value->taxo);
+                if ((int) $category[0]->term_id === (int) $value->cat_ID) {
                     if (empty($sitemap->settings_sitemap['wpms_sitemap_posts'][$p->ID]['frequency'])) {
                         $postfrequency = 'monthly';
                     } else {
@@ -177,28 +177,28 @@ defined('ABSPATH') || die('No direct script access allowed!');
                     echo '<div class="wpms_row wpms_row_record">';
                     echo '<div style="float:left;line-height:30px;min-width: 300px;">';
                     if (strlen($p->post_title) > 30) {
-                        $title = substr($p->post_title, 0, 30);
+                        $ptitle = substr($p->post_title, 0, 30);
                     } else {
-                        $title = $p->post_title;
+                        $ptitle = $p->post_title;
                     }
                     if (isset($sitemap->settings_sitemap['wpms_sitemap_posts'][$p->ID]['post_id'])
                         && (int) $sitemap->settings_sitemap['wpms_sitemap_posts'][$p->ID]['post_id'] === (int) $p->ID) {
                         echo '<input class="wpms_sitemap_input_link checked"
                          type="hidden" data-type="post" value="' . esc_attr($permalink) . '">';
                         echo '<div class="pure-checkbox">';
-                        echo '<input class="' . esc_attr('cb_sitemaps_posts wpms_xmap_posts ' . $post->taxo . $post->slug) . '"
+                        echo '<input class="' . esc_attr('cb_sitemaps_posts wpms_xmap_posts ' . $value->taxo . $value->slug) . '"
                          id="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" type="checkbox"
                           name="_metaseo_settings_sitemap[wpms_sitemap_posts]" value="' . esc_attr($p->ID) . '" checked>';
-                        echo '<label for="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" class="wpms-text">' . esc_html($title) . '</label>';
+                        echo '<label for="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" class="wpms-text">' . esc_html($ptitle) . '</label>';
                         echo '</div>';
                     } else {
                         echo '<input class="wpms_sitemap_input_link" type="hidden"
                          data-type="post" value="' . esc_attr($permalink) . '">';
                         echo '<div class="pure-checkbox">';
-                        echo '<input class="' . esc_attr('cb_sitemaps_posts wpms_xmap_posts ' . $post->taxo . $post->slug) . '"
+                        echo '<input class="' . esc_attr('cb_sitemaps_posts wpms_xmap_posts ' . $value->taxo . $value->slug) . '"
                          id="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" type="checkbox"
                           name="_metaseo_settings_sitemap[wpms_sitemap_posts]" value="' . esc_attr($p->ID) . '">';
-                        echo '<label for="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" class="wpms-text">' . esc_html($title) . '</label>';
+                        echo '<label for="' . esc_attr('wpms_sitemap_posts_' . $p->ID) . '" class="wpms-text">' . esc_html($ptitle) . '</label>';
                         echo '</div>';
                     }
 
@@ -209,8 +209,8 @@ defined('ABSPATH') || die('No direct script access allowed!');
                 }
             }
 
-            if ($post->count_posts > 10) {
-                echo '<a href="#open-popup-posts-list" class="open-popup-posts-list ju-button wpms-small-btn wpms_left m-t-10 see-more-posts" data-slug="' . esc_attr($post->slug) . '" data-category="' . esc_attr($post->cat_ID) . '"><i class="material-icons wpms-middle">arrow_right_alt</i><label>' . esc_html__('See more posts in this category', 'wp-meta-seo') . '</label></a>';
+            if ($value->count_posts > 10) {
+                echo '<a href="#open-popup-posts-list" class="open-popup-posts-list ju-button wpms-small-btn wpms_left m-t-10 see-more-posts" data-slug="' . esc_attr($value->slug) . '" data-category="' . esc_attr($value->cat_ID) . '"><i class="material-icons wpms-middle">arrow_right_alt</i><label>' . esc_html__('See more posts in this category', 'wp-meta-seo') . '</label></a>';
             }
         }
         ?>

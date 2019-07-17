@@ -24,15 +24,37 @@
     padding: 0 6%;
 }
 
+.ju-button {
+    background-color: transparent;
+    color: #000;
+    padding: 10px 15px;
+    min-width: 180px;
+    border: 1px solid #9fabba;
+    text-transform: uppercase;
+    display: inline-block;
+    text-decoration: none;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 2px;
+    transition: all ease 0.5s;
+    -webkit-border-radius: 40px;
+    -moz-border-radius: 40px;
+    border-radius: 40px;
+}
+
+.ju-button:focus {
+    outline: none;
+}
+
 .ju-button.orange-button {
     background-color: #ff8726;
     color: #fff;
     border-color: #ff8726;
 }
 
-.description {
+.ju-description {
     margin-top: 10px;
-    float: left;
+    display: inline-block;
     width: 100%;
     font-size: 15px !important;
     font-weight: normal;
@@ -190,6 +212,10 @@
 .p-tb-20 {
     padding-top: 20px;
     padding-bottom: 20px;
+}
+
+.p-t-20 {
+    padding-top: 20px;
 }
 
 .m-b-20 {
@@ -362,7 +388,8 @@
 .wpms-form-table input[type="text"],
 .wpms-form-table input[type="password"],
 .wpms-form-table input[type="search"],
-.wpms-form-table #search-submit {
+.wpms-form-table #search-submit,
+.wpms_content_wrapper input[type="text"] {
     height: 45px;
     border-radius: 4px;
     margin: 0;
@@ -707,8 +734,26 @@
     background-color: #ff8726 !important;
 }
 
+.wpms-msg-success {
+    color: #24831d;
+    display: none;
+    line-height: 30px;
+    margin-left: 10px;
+}
+
+.wpms-msg-error {
+    color: #f00;
+    display: none;
+    line-height: 30px;
+    margin-left: 10px;
+}
+
 @media only screen and (max-width: 1024px) {
     .wp-meta-seo_page_metaseo_settings .ju-settings-option {
         width: 100%;
     }
+}
+
+.tablenav .tablenav-pages .material-icons{
+    vertical-align: middle;
 }

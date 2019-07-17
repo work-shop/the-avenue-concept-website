@@ -74,9 +74,24 @@ defined('ABSPATH') || die('No direct script access allowed!');
                 </p>
             <?php endif; ?>
 
-            <?php if (!function_exists('gd_info')) : ?>
+            <div class="ju-settings-option wpms_width_100">
+                <div class="wpms_row_full">
+                    <label class="ju-setting-label"><?php esc_html_e('Libxml', 'wp-meta-seo'); ?></label>
+                    <div class="right-checkbox">
+                        <?php if (!extension_loaded('libxml')) : ?>
+                            <img src="<?php echo esc_url(WPMETASEO_PLUGIN_URL . '/assets/images/icon-information/icon-information.png') ?>"
+                                 srcset="<?php echo esc_url(WPMETASEO_PLUGIN_URL . '/assets/images/icon-information/icon-information@2x.png') ?> 2x, <?php echo esc_url(WPMETASEO_PLUGIN_URL . '/assets/images/icon-information/icon-information@3x.png') ?> 3x"
+                                 class="img_warning">
+                        <?php else : ?>
+                            <input type="checkbox" id="libxml" name="libxml" checked
+                                   value="libxml" disabled class="filled-in media_checkbox"/>
+                        <?php endif; ?>
+                    </div>
+                </div>
+            </div>
+            <?php if (!extension_loaded('libxml')) : ?>
                 <p class="description text_left">
-                    <?php esc_html_e('GD library is not detected. GD is an open source library related to image creation. The Watermark feature won’t work.', 'wp-meta-seo'); ?>
+                    <?php esc_html_e('PHP libxml extension has not been detected. You need to activate in order to load site screenshot homepage image in dashboard', 'wp-meta-seo'); ?>
                 </p>
             <?php endif; ?>
         </div>

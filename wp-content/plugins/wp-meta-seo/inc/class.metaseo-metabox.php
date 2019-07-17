@@ -140,7 +140,7 @@ class WPMSEOMetabox extends WPMSEOMeta
         );
         self::$meta_fields['general']['title']['help']        = esc_attr__('This is the title of your content that may be displayed
          in search engine results (meta title). By default it’s the content title (page title, post title…).
-          69 characters max allowed.', 'wp-meta-seo');
+          60 characters max allowed.', 'wp-meta-seo');
 
         $settings = get_option('_metaseo_settings');
         if (isset($settings['metaseo_showkeywords']) && (int) $settings['metaseo_showkeywords'] === 1) {
@@ -162,7 +162,7 @@ class WPMSEOMetabox extends WPMSEOMeta
         self::$meta_fields['general']['desc']['help']        = esc_attr__('The description of your content that may be displayed
          in search engine results aka meta description.
           By default search engine take an excerpt from your content (depending on the search query).
-          320 characters max allowed.', 'wp-meta-seo');
+          158 characters max allowed.', 'wp-meta-seo');
 
         self::$meta_fields['social']['facebook']['opengraph-title']['title']       = esc_html__('Facebook Title', 'wp-meta-seo');
         self::$meta_fields['social']['facebook']['opengraph-title']['description'] = esc_html__('Custom title to display when
@@ -218,14 +218,6 @@ class WPMSEOMetabox extends WPMSEOMeta
                     )
                 );
             }
-
-            // Register CSS
-            wp_enqueue_style(
-                'wpms_ju_framework_styles',
-                plugins_url('assets/wordpress-css-framework/css/style.css', dirname(__FILE__)),
-                array(),
-                WPMSEO_VERSION
-            );
 
             wp_enqueue_script(
                 'wpms_ju_velocity_js',
@@ -365,7 +357,7 @@ class WPMSEOMetabox extends WPMSEOMeta
 
         self::$meta_length_reason = apply_filters('wpmseo_desc_length_reason', self::$meta_length_reason, $post);
         self::$meta_length        = apply_filters('wpmseo_desc_length', self::$meta_length, $post);
-        $title_template           = '%%title%% - %%sitename%%';
+        $title_template           = '%title% - %sitename%';
 
         $desc_template    = '';
         $sample_permalink = get_sample_permalink($post->ID);
@@ -374,13 +366,21 @@ class WPMSEOMetabox extends WPMSEOMeta
         $cached_replacement_vars = array();
 
         $vars_to_cache = array(
-            'sitedesc',
-            'sep',
-            'page',
+            'date'         => wpmsRetrieveDate($post),
+            'id'           => !(empty($post->ID)) ? $post->ID : null,
+            'sitename'     => trim(strip_tags(get_bloginfo('name'))),
+            'sitedesc'     => trim(strip_tags(get_bloginfo('description'))),
+            'sep'          => '-',
+            'page'         => '',
+            'currenttime'  => date_i18n(get_option('time_format')),
+            'currentdate'  => date_i18n(get_option('date_format')),
+            'currentday'   => date_i18n('j'),
+            'currentmonth' => date_i18n('F'),
+            'currentyear'  => date_i18n('Y'),
         );
 
-        foreach ($vars_to_cache as $var) {
-            $cached_replacement_vars[$var] = $var;
+        foreach ($vars_to_cache as $var => $value) {
+            $cached_replacement_vars[$var] = $value;
         }
 
         $cached_replacement_vars['sitename'] = get_option('blogname');
@@ -452,7 +452,7 @@ class WPMSEOMetabox extends WPMSEOMeta
         $service         = false;
         ?>
         <div class="wpmseo-metabox-tabs-div">
-        <ul class="wpmseo-metabox-tabs tabs wpmstabs" id="wpmseo-metabox-tabs">
+        <ul class="wpmseo-metabox-tabs tabs ju-tabs wpmstabs" id="wpmseo-metabox-tabs">
             <li class="tab wpmstab col">
                 <a class="wpmseo_tablink"
                    href="#wpmseo_general"><?php esc_html_e('SEO Page optimization', 'wp-meta-seo'); ?></a>
@@ -491,6 +491,9 @@ class WPMSEOMetabox extends WPMSEOMeta
         if (is_object($post) && isset($post->post_type)) {
             foreach ($this->getMetaFieldDefs('general', $post->post_type) as $key => $meta_field) {
                 $content .= $this->doMetaBox($meta_field, $key);
+                if ($key === 'title') {
+                    $content .= '<p class="description p-lr-20">'.esc_html__('Snippet variable: ', 'wp-meta-seo').'%title%, %date%, %id%, %sitename%, %sitedesc%, %page%, %currenttime%, %currentdate%, %currentday%, %currentmonth%, %currentyear%</p>';
+                }
             }
             unset($key, $meta_field);
         }
@@ -719,9 +722,9 @@ class WPMSEOMetabox extends WPMSEOMeta
                 }
             }
 
-            $html = '<div class="'. esc_html($meta_field_def['classrow'] . ' wpms_left optimization-row-box m-tb-10') .'">';
+            $html = '<div class="'. esc_html($meta_field_def['classrow'] . ' wpms_left optimization-row-box') .'">';
             $html .= '<label class="ju-setting-label wpms_width_100 wpms_left p-l-0">'. $label . $help .'</label>';
-            $html .= '<label class="wpms_width_100 label-input wpms_left p-tb-20">'. $content .'</label>';
+            $html .= '<label class="wpms_width_100 label-input wpms_left p-t-20">'. $content .'</label>';
             if (isset($meta_field_def['description'])) {
                 if (!strpos($meta_field_def['class'], 'has-length') !== false) {
                     $html .= '<p class="description">' . $meta_field_def['description'] . '</p>';
@@ -739,7 +742,7 @@ class WPMSEOMetabox extends WPMSEOMeta
      */
     private function getMetaboxPost()
     {
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         if (isset($_GET['post'])) {
             $post_id = (int) $_GET['post'];
             $post    = get_post($post_id);
@@ -818,8 +821,8 @@ class WPMSEOMetabox extends WPMSEOMeta
                         $slf .= '<option value="nofollow">' . esc_html__('Nofollow', 'wp-meta-seo') . '</option>';
                     }
                     $slf .= '</select>';
-                    echo '<p class="wpms_width_100 wpms_left optimization-row-box m-tb-10 p_index_folder"><span class="wpmslabel">' . esc_html__('Follow', 'wp-meta-seo') . '
-                    <i class="material-icons alignright metaseo_help" id="deschelp"
+                    echo '<p class="wpms_width_100 wpms_left optimization-row-box p_index_folder"><span class="wpmslabel"><label>' . esc_html__('Follow', 'wp-meta-seo') . '
+                    </label><i class="material-icons alignright metaseo_help" id="deschelp"
                      data-alt="' . esc_attr__('Nofollow provides a way for webmasters to tell search engines:
                       don\'t follow this link. So it may influence the link target’s ranking', 'wp-meta-seo') . '"
                       style="color:#32373C" data-hasqtip="2">chat_bubble</i></span>' . $slf . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
@@ -837,8 +840,8 @@ class WPMSEOMetabox extends WPMSEOMeta
                     }
 
                     $sli .= '</select>';
-                    echo '<p class="wpms_width_100 wpms_left optimization-row-box m-tb-10 p_index_folder"><span class="wpmslabel">' . esc_html__('Index', 'wp-meta-seo') . '
-                    <i class="material-icons alignright metaseo_help" id="deschelp"
+                    echo '<p class="wpms_width_100 wpms_left optimization-row-box p_index_folder"><span class="wpmslabel"><label>' . esc_html__('Index', 'wp-meta-seo') . '
+                    </label><i class="material-icons alignright metaseo_help" id="deschelp"
                      data-alt="' . esc_attr__('Allow search engines robots to index this content,
                       as default your content is indexed', 'wp-meta-seo') . '"
                       style="color:#32373C" data-hasqtip="2">chat_bubble</i></span>' . $sli . '</p>'; // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)

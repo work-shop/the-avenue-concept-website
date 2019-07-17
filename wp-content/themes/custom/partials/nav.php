@@ -133,6 +133,11 @@
 				</a>
 				<ul class="sub-menu" id="sub-menu-donate">
 					<li>
+						<a href="/memberships" class="">
+							Memberships
+						</a>
+					</li>
+					<li>
 						<a href="/donate#donation" class="">
 							Donate Now
 						</a>

@@ -2,7 +2,7 @@
 /* Prohibit direct script loading */
 defined('ABSPATH') || die('No direct script access allowed!');
 $wizard = new WpmsInstallWizard();
-// phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- View request, no action
+// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- View request, no action
 $step      = isset($_GET['step']) ? sanitize_key($_GET['step']) : '';
 $next_link = $wizard->getNextLink($step);
 ?>
@@ -12,7 +12,7 @@ $next_link = $wizard->getNextLink($step);
     <input type="hidden" name="wpms_save_step" value="1"/>
     <div class="wizard-header">
         <div class="title font-size-35"><?php esc_html_e('Social', 'wp-meta-seo'); ?></div>
-        <p class="description"><?php esc_html_e('Enable google analytics track lorem ispum dolore sit amet consecture m ispum dolore sit amet consecture m ispum dolore sit amet consecture m ispum dolore sit amet consecture ', 'wp-meta-seo') ?></p>
+        <p class="description"><?php esc_html_e('If your website got user social engagement, you can customize the Twitter and facebook preview of your content here.', 'wp-meta-seo') ?></p>
     </div>
     <div class="wizard-content">
         <div class="ju-settings-option wpms_width_100 p-d-20">

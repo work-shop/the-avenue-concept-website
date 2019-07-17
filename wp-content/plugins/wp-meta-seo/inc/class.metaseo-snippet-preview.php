@@ -148,6 +148,12 @@ class WPMSEOSnippetPreview
                 $this->url .= esc_html($this->slug);
             }
         }
+
+        if (isset($this->post->post_status) && ($this->post->post_status !== 'auto-draft' && $this->post->post_status !== 'draft')) {
+            if (!empty($this->post->ID)) {
+                $this->url = get_permalink((int)$this->post->ID);
+            }
+        }
     }
 
     /**
@@ -157,11 +163,15 @@ class WPMSEOSnippetPreview
      */
     protected function setContent()
     {
+        $url = esc_url($this->url);
+        $url = str_replace('http://', '', $url);
+        // phpcs:disable WordPress.Security.EscapeOutput -- Content escaped before line 167
         $content = '<div id="wpmseosnippet">
 <a class="title" id="wpmseosnippet_title" href="#">' . esc_html($this->title) . '</a>
-<a class="url m-t-20">' . esc_url($this->url) . '</a><br />
+<a class="url m-t-20">' . $url . '</a><br />
 <p class="desc m-t-20">' . esc_html($this->date) . '<span class="autogen"></span><span class="content">' . esc_html($this->description) . '</span></p>
 </div>';
+        //phpcs:enable
         $this->setContentThroughFilter($content);
     }
 

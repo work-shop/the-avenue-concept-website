@@ -99,6 +99,12 @@ if (isset($server_check['host']) && $server_check['host'] === 'localhost') {
         $web_screenshot = $upload_dir['baseurl'] . '/wpms-web-screenshot.jpg';
     }
 }
+
+if (class_exists('MetaSeoAddonAdmin')) {
+    $badge = __('Pro addon installed', 'wp-meta-seo');
+} else {
+    $badge = __('Pro addon feature', 'wp-meta-seo');
+}
 ?>
 <div class="dashboard">
     <h1 class="top_h1"><?php esc_html_e('SEO DASHBOARD', 'wp-meta-seo') ?></h1>
@@ -333,7 +339,7 @@ if (isset($server_check['host']) && $server_check['host'] === 'localhost') {
             <div class="wpms_row_full">
                 <label class="ju-setting-label label-dash-widgets"><?php esc_html_e('Google search console', 'wp-meta-seo'); ?></label>
                 <div class="right-checkbox">
-                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php esc_html_e('Pro addon feature', 'wp-meta-seo'); ?></a></div>
+                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php echo esc_html($badge); ?></a></div>
                 </div>
             </div>
             <p class="description p-d-20"><?php esc_html_e('Connect WP Meta SEO and the Google Search Console to get Google keywords recommendation while writing your content!', 'wp-meta-seo'); ?></p>
@@ -348,7 +354,7 @@ if (isset($server_check['host']) && $server_check['host'] === 'localhost') {
             <div class="wpms_row_full">
                 <label class="ju-setting-label label-dash-widgets"><?php esc_html_e('404 Automatic Index', 'wp-meta-seo'); ?></label>
                 <div class="right-checkbox">
-                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php esc_html_e('Pro addon feature', 'wp-meta-seo'); ?></a></div>
+                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php echo esc_html($badge); ?></a></div>
                 </div>
             </div>
             <p class="description p-d-20"><?php esc_html_e('Activate the 404 error automatic index to record all internal and external 404 errors along with hits, source, text...', 'wp-meta-seo'); ?></p>
@@ -363,7 +369,7 @@ if (isset($server_check['host']) && $server_check['host'] === 'localhost') {
             <div class="wpms_row_full">
                 <label class="ju-setting-label label-dash-widgets"><?php esc_html_e('Google local business', 'wp-meta-seo'); ?></label>
                 <div class="right-checkbox">
-                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php esc_html_e('Pro addon feature', 'wp-meta-seo'); ?></a></div>
+                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php echo esc_html($badge); ?></a></div>
                 </div>
             </div>
             <p class="description p-d-20"><?php esc_html_e('Google My Business is a free and easy-to-use tool for businesses and organizations to manage their online presence across Google, including Search and Maps.', 'wp-meta-seo'); ?></p>
@@ -378,7 +384,7 @@ if (isset($server_check['host']) && $server_check['host'] === 'localhost') {
             <div class="wpms_row_full">
                 <label class="ju-setting-label label-dash-widgets"><?php esc_html_e('WOOCOMERCE', 'wp-meta-seo'); ?></label>
                 <div class="right-checkbox">
-                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php esc_html_e('Pro addon feature', 'wp-meta-seo'); ?></a></div>
+                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php echo esc_html($badge); ?></a></div>
                 </div>
             </div>
             <p class="description p-d-20"><?php esc_html_e('Edit the meta information for the WooCommerce products category listing', 'wp-meta-seo'); ?></p>
@@ -393,7 +399,7 @@ if (isset($server_check['host']) && $server_check['host'] === 'localhost') {
             <div class="wpms_row_full">
                 <label class="ju-setting-label label-dash-widgets"><?php esc_html_e('POLYLANG', 'wp-meta-seo'); ?></label>
                 <div class="right-checkbox">
-                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php esc_html_e('Pro addon feature', 'wp-meta-seo'); ?></a></div>
+                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php echo esc_html($badge); ?></a></div>
                 </div>
             </div>
             <p class="description p-d-20"><?php esc_html_e('Polylang multilingual plugin optimized. Filter your content by language in the meta and image bulk edition. Generate sitemap by Polylang languages', 'wp-meta-seo'); ?></p>
@@ -408,7 +414,7 @@ if (isset($server_check['host']) && $server_check['host'] === 'localhost') {
             <div class="wpms_row_full">
                 <label class="ju-setting-label label-dash-widgets"><?php esc_html_e('WPML', 'wp-meta-seo'); ?></label>
                 <div class="right-checkbox">
-                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php esc_html_e('Pro addon feature', 'wp-meta-seo'); ?></a></div>
+                    <div class="panel-addon"><a href="https://www.joomunited.com/wordpress-products/wp-meta-seo" target="_blank"><?php echo esc_html($badge); ?></a></div>
                 </div>
             </div>
             <p class="description p-d-20"><?php esc_html_e('WPML multilingual plugin optimized. Filter your content by language in the meta and image bulk edition. Generate sitemap by WPML languages', 'wp-meta-seo'); ?></p>

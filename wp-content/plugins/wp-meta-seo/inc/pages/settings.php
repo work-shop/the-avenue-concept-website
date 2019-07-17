@@ -120,18 +120,18 @@ $setting_switch_fields = array(
                    placeholder="<?php esc_html_e('Search settings', 'wp-meta-seo') ?>"
             >
         </div>
-        <ul class="tabs ju-menu-tabs">
-            <?php foreach ($tabs_data as $tab) : ?>
-                <li class="tab" data-tab-title="<?php echo esc_attr($tab['title']) ?>">
-                    <a href="#<?php echo esc_attr($tab['id']) ?>"
-                       class="link-tab white-text waves-effect waves-light <?php echo (empty($tab['sub_tabs'])) ? 'no-submenus' : 'with-submenus' ?>"
+        <ul class="ju-tabs tabs ju-menu-tabs">
+            <?php foreach ($tabs_data as $value) : ?>
+                <li class="tab" data-tab-title="<?php echo esc_attr($value['title']) ?>">
+                    <a href="#<?php echo esc_attr($value['id']) ?>"
+                       class="link-tab white-text waves-effect waves-light <?php echo (empty($value['sub_tabs'])) ? 'no-submenus' : 'with-submenus' ?>"
                     >
-                        <i class="material-icons menu-tab-icon"><?php echo esc_html($tab['icon']) ?></i>
+                        <i class="material-icons menu-tab-icon"><?php echo esc_html($value['icon']) ?></i>
                         <span class="tab-title"
-                              title="<?php echo esc_attr($tab['title']) ?>"><?php echo esc_html($tab['title']) ?></span>
+                              title="<?php echo esc_attr($value['title']) ?>"><?php echo esc_html($value['title']) ?></span>
                         <?php
-                        if ($tab['id'] === 'system_check') {
-                            if (version_compare(PHP_VERSION, '7.2.0', '<') || !in_array('curl', get_loaded_extensions()) || !function_exists('gd_info')) {
+                        if ($value['id'] === 'system_check') {
+                            if (version_compare(PHP_VERSION, '7.2.0', '<') || !in_array('curl', get_loaded_extensions()) || !extension_loaded('libxml')) {
                                 echo '<i class="material-icons system-checkbox material-icons-menu-alert" style="float: right;vertical-align: text-bottom;">info</i>';
                             }
                         }
@@ -145,15 +145,15 @@ $setting_switch_fields = array(
         <div class="ju-right-panel">
             <div class="ju-content-wrapper">
                 <div id="profiles-container">
-                    <?php foreach ($tabs_data as $tab) : ?>
-                        <div class="ju-content-wrapper" id="<?php echo esc_attr($tab['id']) ?>" style="display: none">
+                    <?php foreach ($tabs_data as $value) : ?>
+                        <div class="ju-content-wrapper" id="<?php echo esc_attr($value['id']) ?>" style="display: none">
                             <?php
-                            if (!empty($tab['sub_tabs'])) :
+                            if (!empty($value['sub_tabs'])) :
                                 ?>
                                 <div class="ju-top-tabs-wrapper">
                                     <ul class="tabs ju-top-tabs">
                                         <?php
-                                        foreach ($tab['sub_tabs'] as $tab_id => $tab_label) :
+                                        foreach ($value['sub_tabs'] as $tab_id => $tab_label) :
                                             ?>
 
                                             <li class="tab">
@@ -171,15 +171,15 @@ $setting_switch_fields = array(
                                 <?php
                             endif;
                             ?>
-                            <?php if ($tab['id'] !== 'image_compression' && $tab['id'] !== 'cloud') : ?>
+                            <?php if ($value['id'] !== 'image_compression' && $value['id'] !== 'cloud') : ?>
                                 <div class="wpms_width_100 top_bar">
-                                    <h1><?php echo esc_html($tab['title']) . ' ' . esc_html__('Settings', 'wp-meta-seo') ?></h1>
+                                    <h1><?php echo esc_html($value['title']) . ' ' . esc_html__('Settings', 'wp-meta-seo') ?></h1>
                                 </div>
                             <?php endif; ?>
 
                             <?php
-                            // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- View request, no action
-                            if (isset($_POST['btn_wpms_save']) && $tab['id'] !== 'cloud') {
+                            // phpcs:ignore WordPress.Security.NonceVerification.Missing -- View request, no action
+                            if (isset($_POST['btn_wpms_save']) && $value['id'] !== 'cloud') {
                                 ?>
                                 <div class="wpms_width_100 top_bar saved_infos">
                                     <?php
@@ -189,7 +189,7 @@ $setting_switch_fields = array(
                                 <?php
                             }
                             ?>
-                            <?php include_once(WPMETASEO_PLUGIN_DIR . '/inc/pages/settings/' . $tab['id'] . '.php'); ?>
+                            <?php include_once(WPMETASEO_PLUGIN_DIR . '/inc/pages/settings/' . $value['id'] . '.php'); ?>
                         </div>
                     <?php endforeach; ?>
 
@@ -202,7 +202,7 @@ $setting_switch_fields = array(
 <script type="text/javascript">
     jQuery(document).ready(function ($) {
         <?php
-        // phpcs:disable Generic.WhiteSpace.ScopeIndent.Incorrect, Generic.WhiteSpace.ScopeIndent.IncorrectExact, WordPress.Security.NonceVerification.NoNonceVerification -- View request, no action
+        // phpcs:disable Generic.WhiteSpace.ScopeIndent.Incorrect, Generic.WhiteSpace.ScopeIndent.IncorrectExact, WordPress.Security.NonceVerification.Missing -- View request, no action
         if (!empty($_POST['wpmf_hash'])) :
         ?>
         $('.ju-top-tabs .link-tab[href="#<?php echo esc_html($_POST['wpmf_hash']) ?>"]').click();

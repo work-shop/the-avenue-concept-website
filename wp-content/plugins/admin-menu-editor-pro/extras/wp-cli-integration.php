@@ -298,6 +298,21 @@ class ameWpCliCommand extends WP_CLI_Command {
 	}
 
 	/**
+	 * Reset the "who can access this plugin" setting to the default value.
+	 *
+	 * @subcommand reset-plugin-access
+	 */
+	public function resetPluginAccess() {
+		$menuEditor = $this->getMenuEditor();
+
+		$oldSetting = $menuEditor->get_plugin_option('plugin_access');
+		$newSetting = $menuEditor->is_super_plugin() ? 'super_admin' : 'manage_options';
+		$menuEditor->set_plugin_option('plugin_access', $newSetting);
+
+		WP_CLI::success('Access permissions changed from "' . $oldSetting . '" to "' . $newSetting . '".');
+	}
+
+	/**
 	 * @return WPMenuEditor
 	 */
 	private function getMenuEditor() {

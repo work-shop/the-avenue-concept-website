@@ -77,6 +77,9 @@ class wsMenuEditorExtras {
 			'wp-name',     //Weblog title
 			'wp-version',  //Current WP version
 			'wp-user-display-name', //Current user's display name,
+			'wp-user-first-name',   // first name,
+			'wp-user-last-name',    // last name,
+			'wp-user-login',        // and username/login.
 			'wp-logout-url', //A URL that lets the current user log out.
 		);
 		foreach($info_shortcodes as $tag){
@@ -127,6 +130,9 @@ class wsMenuEditorExtras {
 			$this->wp_menu_editor->get_magic_hook_priority()
 		);
 
+		//Add extra scripts to the menu editor.
+		add_action('admin_menu_editor-register_scripts', array($this, 'register_extra_scripts'));
+		add_filter('admin_menu_editor-editor_script_dependencies', array($this, 'add_extra_editor_dependencies'));
 
 		/**
 		 * Access management extensions.
@@ -221,7 +227,7 @@ class wsMenuEditorExtras {
 		if ( empty($code) ){
 			$code = isset($atts[0]) ? $atts[0] : '';
 		}
-		
+
 		$info = '['.$code.']'; //Default value
 		switch($code){
 			case 'wp-wpurl':
@@ -245,8 +251,19 @@ class wsMenuEditorExtras {
 				break;
 
 			case 'wp-user-display-name':
-				$user = wp_get_current_user();
-				$info = is_object($user) ? strval($user->get('display_name')) : '';
+				$info = $this->get_current_user_property('display_name');
+				break;
+
+			case 'wp-user-first-name':
+				$info = $this->get_current_user_property('first_name');
+				break;
+
+			case 'wp-user-last-name':
+				$info = $this->get_current_user_property('last_name');
+				break;
+
+			case 'wp-user-login':
+				$info = $this->get_current_user_property('user_login');
 				break;
 
 			case 'wp-logout-url':
@@ -255,6 +272,14 @@ class wsMenuEditorExtras {
 		}
 		
 		return $info;
+	}
+
+	private function get_current_user_property($property) {
+		$user = wp_get_current_user();
+		if (is_object($user)) {
+			return strval($user->get($property));
+		}
+		return '';
 	}
 
 	/**
@@ -277,8 +302,10 @@ class wsMenuEditorExtras {
 			//but it still seems wrong to go this far just to extract a <span> tag.
 			$title = $this->current_shortcode_item['defaults']['menu_title'];
 			if ( stripos($title, '<span') !== false ) {
+				/** @noinspection PhpComposerExtensionStubsInspection */
 				$dom = new domDocument;
 				if ( @$dom->loadHTML($title) ) {
+					/** @noinspection PhpComposerExtensionStubsInspection */
 					$xpath = new DOMXpath($dom);
 					$result = $xpath->query('//span[contains(@class,"update-plugins") or contains(@class,"awaiting-mod")]');
 					if ( $result->length > 0 ) {
@@ -457,7 +484,7 @@ class wsMenuEditorExtras {
 		}
 
 		$styles = array(
-			'border' => 'none',
+			'border' => '0 none',
 			'width'  => '100%',
 			'min-height' => '300px',
 		);
@@ -469,6 +496,8 @@ class wsMenuEditorExtras {
 			$styles['height'] = $height . 'px';
 			unset($styles['min-height']);
 		}
+
+		$is_scrolling_disabled = !empty($item['is_iframe_scroll_disabled']);
 
 		$style_attr = '';
 		foreach($styles as $property => $value) {
@@ -485,7 +514,12 @@ class wsMenuEditorExtras {
 			src="<?php echo esc_attr($item['file']); ?>" 
 			style="<?php echo esc_attr($style_attr); ?>>"
 			id="ws-framed-page"
-			frameborder="0" 
+			frameborder="0"
+			<?php
+			if ( $is_scrolling_disabled ) {
+				echo ' scrolling="no" ';
+			}
+			?>
 		></iframe>
 		</div>
 		<?php
@@ -506,21 +540,43 @@ class wsMenuEditorExtras {
 				var empiricalFudgeFactor = 29; //Based on the default admin theme in WP 4.1 (without the test helper output).
 				var initialHeight = maxHeight - empiricalFudgeFactor;
 
+				//Match the height of the frame to its contents. This only works if the frame
+				//is in the same origin and it has already finished loading.
+				var contentHeight = null;
+				var isContentHeightUsed = false;
+				try {
+					contentHeight = frame.contents().height();
+					if ((contentHeight > initialHeight) && (contentHeight > 100)) {
+						initialHeight = contentHeight;
+						isContentHeightUsed = true;
+					}
+				} catch (error) {
+					//The frame is probably on a different origin and we can't access its contents.
+					contentHeight = null;
+				}
+
 				frame.height(initialHeight);
 
-				setTimeout(function() {
-					//Check if there's a scroll bar and reduce the height just enough to get rid of it.
-					//Sometimes it's not possible to avoid scrolling because another part of the page is too tall,
-					//so we have a minimum height limit.
-					var scrollDelta = $(document).height() - $(window).height();
-					if (scrollDelta > 0) {
-						frame.height(Math.max(initialHeight - scrollDelta, minHeight));
-					}
-				}, 1)
+				if (!isContentHeightUsed) {
+					setTimeout(function () {
+						//Check if there's a scroll bar and reduce the height just enough to get rid of it.
+						//Sometimes it's not possible to avoid scrolling because another part of the page is too tall,
+						//so we have a minimum height limit.
+						var scrollDelta = $(document).height() - $(window).height();
+						if (scrollDelta > 0) {
+							frame.height(Math.max(initialHeight - scrollDelta, minHeight));
+						}
+					}, 1)
+				}
 			}
 
-			jQuery(function(){
+			jQuery(function($){
 				wsResizeFrame();
+
+				$('#ws-framed-page').on('load', function () {
+					//For same-origin frames, we can auto-resize the frame once it finishes loading.
+					wsResizeFrame();
+				});
 			});
 			</script>
 		<?php
@@ -1047,6 +1103,24 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 		<input type="button" id='ws_import_menu' value="Import" class="button ws_main_button" />
 		<?php
 	}
+
+	public function register_extra_scripts() {
+		wp_register_auto_versioned_script(
+			'ame-menu-editor-extras',
+			plugins_url('extras/menu-editor-extras.js', $this->wp_menu_editor->plugin_file),
+			array('jquery')
+		);
+	}
+
+	/**
+	 * @param array $dependencies
+	 * @return array
+	 */
+	public function add_extra_editor_dependencies($dependencies) {
+		$dependencies[] = 'ame-menu-editor-extras';
+		return $dependencies;
+	}
+
 
 	function hook_user_has_cap($allcaps, /** @noinspection PhpUnusedParameterInspection */ $caps, $args){
 		//Add "user:user_login" to the user's capabilities. This makes it possible to restrict
@@ -2226,6 +2300,13 @@ wsEditorData.importMenuNonce = "<?php echo esc_js(wp_create_nonce('import_custom
 				'title' => 'Plugins',
 			)
 		);
+		/*$modules['role-editor'] = array(
+			'path' => AME_ROOT_DIR . '/extras/modules/role-editor/load.php',
+			'className' => 'ameRoleEditor',
+			'requiredPhpVersion' => '5.3.6',
+			'title' => 'Role Editor',
+		);*/
+
 		return $modules;
 	}
 }

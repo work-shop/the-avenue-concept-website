@@ -90,6 +90,7 @@ class ameWidgetEditor extends ameModule implements ameExportableModule {
 	}
 
 	public function enqueueTabScripts() {
+		//TODO: Remove this later, it's already registered in register_base_dependencies.
 		wp_register_auto_versioned_script(
 			'knockout',
 			plugins_url('js/knockout.js', $this->menuEditor->plugin_file)

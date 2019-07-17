@@ -55,7 +55,7 @@ class MetaSeoImageListTable extends WP_List_Table
                     if (is_plugin_active(WPMSEO_ADDON_FILENAME)
                         && (is_plugin_active('sitepress-multilingual-cms/sitepress.php')
                             || is_plugin_active('polylang/polylang.php'))) {
-                        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+                        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
                         $lang    = !empty($_REQUEST['wpms_lang_list']) ? $_REQUEST['wpms_lang_list'] : '0';
                         $sl_lang = apply_filters('wpms_get_languagesList', '', $lang);
                         // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method MetaSeoAddonAdmin::listLanguageSelect
@@ -63,7 +63,7 @@ class MetaSeoImageListTable extends WP_List_Table
                     }
 
                     echo '<button type="submit" class="ju-button orange-button wpms-middle m-r-3 wpms_left"
-                >'.esc_html__('Filter', 'wp-meta-seo').'</button>';
+                >' . esc_html__('Filter', 'wp-meta-seo') . '</button>';
                     echo '<a href="#TB_inline?width=600&height=550&inlineId=meta-bulk-actions" title="' . esc_html__('Bulk Actions', 'wp-meta-seo') . '" 
          class="ju-button orange-button thickbox wpms-middle wpms_left m-r-3" style="height: 17px">' . esc_html__('Meta Bulk Actions', 'wp-meta-seo') . '</a>';
                     ?>
@@ -71,9 +71,9 @@ class MetaSeoImageListTable extends WP_List_Table
                     <?php
                     if ($which === 'top') {
                         echo '<div class="wpms_left">';
-                        echo '<div data-comment_paged="1" data-paged="1" alt="'.esc_attr__('Index images is required to use the Images filtering system above.
+                        echo '<div data-comment_paged="1" data-paged="1" alt="' . esc_attr__('Index images is required to use the Images filtering system above.
                      Beware it may take a while depending of the quantity of images you got.
-                      Check the progress bar and be patient :)', 'wp-meta-seo').'" class="ju-button orange-button image_scan_meta wpms_scan">';
+                      Check the progress bar and be patient :)', 'wp-meta-seo') . '" class="ju-button orange-button image_scan_meta wpms_scan">';
                         esc_html_e('Index images', 'wp-meta-seo');
                         echo '<div class="wpms_process ju-button" data-w="0"></div>';
                         echo '</div></div>';
@@ -87,13 +87,15 @@ class MetaSeoImageListTable extends WP_List_Table
                                value="<?php echo esc_attr($this->_pagination_args['per_page']) ?>"
                                maxlength="3" name="metaseo_imgs_per_page" class="metaseo_imgs_per_page screen-per-page"
                                max="999" min="1" step="1">
-                        <button type="submit" name="btn_perpage" class="button_perpage ju-button orange-button waves-effect waves-light" id="button_perpage" value="Apply"><?php esc_html_e('Apply', 'wp-meta-seo'); ?></button>
+                        <button type="submit" name="btn_perpage"
+                                class="button_perpage ju-button orange-button waves-effect waves-light"
+                                id="button_perpage" value="Apply"><?php esc_html_e('Apply', 'wp-meta-seo'); ?></button>
                     </label>
                 </div>
             <?php endif ?>
 
             <input type="hidden" name="page" value="metaseo_image_meta"/>
-            <?php // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+            <?php // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
             ?>
             <?php if (!empty($_REQUEST['post_status'])) : ?>
                 <input type="hidden" name="post_status" value="<?php echo esc_attr($_REQUEST['post_status']); ?>"/>
@@ -148,9 +150,9 @@ class MetaSeoImageListTable extends WP_List_Table
         $total_pages_after  = '</span></span>';
 
         $disable_first = false;
-        $disable_last = false;
-        $disable_prev = false;
-        $disable_next = false;
+        $disable_last  = false;
+        $disable_prev  = false;
+        $disable_next  = false;
 
         if ($current === 1) {
             $disable_first = true;
@@ -308,7 +310,7 @@ class MetaSeoImageListTable extends WP_List_Table
         list($columns, $hidden, $sortable) = $this->get_column_info();
         $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $current_url = remove_query_arg('paged', $current_url);
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         if (isset($_GET['orderby'])) {
             $current_orderby = $_GET['orderby'];
         } else {
@@ -414,7 +416,7 @@ class MetaSeoImageListTable extends WP_List_Table
         global $wpdb;
         $this->months = $this->getMonths();
         $where        = array();
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         $where[] = ' post_type="attachment" AND ((post_mime_type="image/jpeg") OR (post_mime_type="image/jpg")
          OR (post_mime_type="image/png") OR (post_mime_type="image/gif")) ';
         if (!empty($_REQUEST['search'])) {
@@ -505,7 +507,7 @@ class MetaSeoImageListTable extends WP_List_Table
             add_user_meta(get_current_user_id(), 'metaseo_imgs_per_page', $per_page);
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         $paged = !empty($_GET['paged']) ? ($_GET['paged']) : '';
 
         if (empty($paged) || !is_numeric($paged) || $paged <= 0) {
@@ -531,7 +533,7 @@ class MetaSeoImageListTable extends WP_List_Table
         $this->_column_headers = array($columns, $hidden, $sortable);
         // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared -- Variable has been prepare
         $this->items = $wpdb->get_results($query);
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         if (isset($_GET['slmeta']) && ($_GET['slmeta'] === 'missing_information' || $_GET['slmeta'] === 'resizeimages')) {
             foreach ($this->items as $item) {
                 $item->alt = get_post_meta($item->ID, '_wp_attachment_image_alt', true);
@@ -546,7 +548,7 @@ class MetaSeoImageListTable extends WP_List_Table
      */
     public function searchBox1()
     {
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         if (empty($_REQUEST['txtkeyword']) && !$this->has_items()) {
             return;
         }
@@ -570,8 +572,9 @@ class MetaSeoImageListTable extends WP_List_Table
         // phpcs:enable
         ?>
         <p class="search-box">
-                <input type="text" id="image-search-input" class="wpms-search-input" name="txtkeyword"
-                       value="<?php echo esc_attr(stripslashes($txtkeyword)); ?>" placeholder="<?php esc_html_e('Search image', 'wp-meta-seo') ?>"/>
+            <input type="text" id="image-search-input" class="wpms-search-input" name="txtkeyword"
+                   value="<?php echo esc_attr(stripslashes($txtkeyword)); ?>"
+                   placeholder="<?php esc_html_e('Search image', 'wp-meta-seo') ?>"/>
             <button type="submit" id="search-submit"><span class="dashicons dashicons-search"></span></button>
         </p>
         <?php
@@ -592,7 +595,7 @@ class MetaSeoImageListTable extends WP_List_Table
             return;
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         $m = isset($_REQUEST['sldate']) ? $_REQUEST['sldate'] : 0;
         ?>
         <label for="filter-by-date"
@@ -633,7 +636,7 @@ class MetaSeoImageListTable extends WP_List_Table
      */
     public function metaFilter($name)
     {
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         $m = isset($_REQUEST['slmeta']) ? $_REQUEST['slmeta'] : 0;
         ?>
         <label>
@@ -659,16 +662,16 @@ class MetaSeoImageListTable extends WP_List_Table
      */
     public function display_rows() // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps -- extends from WP_List_Table class
     {
-        $records   = $this->items;
-        $i         = 0;
+        $records = $this->items;
+        $i = 0;
         $alternate = '';
 
         list($columns, $hidden) = $this->get_column_info();
         if (!empty($records)) {
             foreach ($records as $rec) {
                 $alternate = 'alternate' === $alternate ? '' : 'alternate';
-                $i ++;
-                $classes  = $alternate;
+                $i++;
+                $classes = $alternate;
                 $img_meta = get_post_meta($rec->ID, '_wp_attachment_metadata', true);
                 if (empty($img_meta['file'])) {
                     continue;
@@ -685,147 +688,163 @@ class MetaSeoImageListTable extends WP_List_Table
                 } else {
                     $img_name = $img_meta['file'];
                 }
-                $type     = substr($img_meta['file'], strrpos($img_meta['file'], '.'));
+
+                $type = substr($img_meta['file'], strrpos($img_meta['file'], '.'));
                 $img_name = str_replace($type, '', $img_name);
 
                 $upload_dir = wp_upload_dir();
-                $img_path   = $upload_dir['basedir'] . '/' . $img_meta['file'];
+                $img_path = $upload_dir['basedir'] . '/' . $img_meta['file'];
+
+                $size_optional = get_post_meta($rec->ID, '_metaseo_sizes_optional', true);
+                if (!empty($size_optional)) {
+                    $last = end($size_optional);
+                    if (isset($last['url'])) {
+                        $img_path = str_replace($upload_dir['baseurl'], $upload_dir['basedir'], $last['url']);
+                    }
+                }
+
                 //Get the date that image was uploaded
                 $img_date = get_the_date('', $rec->ID);
-                if (file_exists($img_path)) {
-                    if (is_readable($img_path)) {
-                        //Get image attributes including width and height
-                        list($img_width, $img_height, $img_type) = getimagesize($img_path);
-                        //Get image size
-                        $size = filesize($img_path) / 1024;
-                        if ($size > 1024) {
-                            $img_size  = ($size / 1024);
-                            $img_sizes = ' MB';
-                        } else {
-                            $img_size  = ($size);
-                            $img_sizes = ' KB';
-                        }
-                        $img_size = round($img_size, 1);
+                //Get image size
+                if (isset($img_meta['filesize'])) {
+                    $size = $img_meta['filesize'] / 1024;
+                    $img_width = (isset($img_meta['width'])) ? $img_meta['width'] : 0;
+                    $img_height = (isset($img_meta['height'])) ? $img_meta['height'] : 0;
+                } elseif (file_exists($img_path)) {
+                    //Get image attributes including width and height
+                    list($img_width, $img_height) = getimagesize($img_path);
+                    $size = filesize($img_path);
+                } else {
+                    $size = '';
+                }
+
+                if ($size === '') {
+                    $img_size = 0;
+                    $img_sizes = ' MB';
+                    $img_width = 0;
+                    $img_height = 0;
+                } else {
+                    $size = $size / 1024;
+                    if ($size > 1024) {
+                        $img_size = ($size / 1024);
+                        $img_sizes = ' MB';
                     } else {
-                        $img_size   = 0;
-                        $img_sizes  = ' MB';
-                        $img_width  = 0;
-                        $img_height = 0;
+                        $img_size = ($size);
+                        $img_sizes = ' KB';
+                    }
+                    $img_size = round($img_size, 1);
+                }
+
+                echo '<tr id="' . esc_attr('record_' . $rec->ID) . '" class="' . esc_attr($classes) . '" >';
+                foreach ($columns as $column_name => $column_display_name) {
+                    $class = sprintf('class="%1$s column-%1$s"', esc_attr($column_name));
+                    $style = '';
+
+                    if (in_array($column_name, $hidden)) {
+                        $style = ' style="display:none;"';
                     }
 
-                    echo '<tr id="' . esc_attr('record_' . $rec->ID) . '" class="' . esc_attr($classes) . '" >';
-                    foreach ($columns as $column_name => $column_display_name) {
-                        $class = sprintf('class="%1$s column-%1$s"', esc_attr($column_name));
-                        $style = '';
+                    $attributes = $class . $style;
 
-                        if (in_array($column_name, $hidden)) {
-                            $style = ' style="display:none;"';
-                        }
-
-                        $attributes = $class . $style;
-
-                        switch ($column_name) {
-                            case 'cb':
-                                echo '<td scope="row" class="check-column">';
-                                echo '<input id="cb-select-1" class="metaseo_post" type="checkbox"
+                    switch ($column_name) {
+                        case 'cb':
+                            echo '<td scope="row" class="check-column">';
+                            echo '<input id="cb-select-1" class="metaseo_post" type="checkbox"
                                  name="post[]" value="' . esc_attr($rec->ID) . '">';
-                                echo '</td>';
-                                break;
+                            echo '</td>';
+                            break;
 
-                            case 'col_id':
-                                echo '<td class="col_id" colspan="1">';
-                                echo esc_html($i);
-                                echo '</td>';
-                                break;
+                        case 'col_id':
+                            echo '<td class="col_id" colspan="1">';
+                            echo esc_html($i);
+                            echo '</td>';
+                            break;
 
-                            case 'col_image':
-                                $img = sprintf(
-                                    '<img src="' . esc_url($thumb_url) . '" width="70px" height="70px" class="metaseo-image"
-  data-name="' . esc_attr($img_name . $type) . '" data-img-post-id="' . esc_attr($rec->ID) . '" />'
-                                );
-                                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                                echo sprintf('<td %2$s colspan="3">%1$s</td>', $img, $attributes);
-                                break;
+                        case 'col_image':
+                            $img = '<img src="' . esc_url($thumb_url) . '" width="70px" height="70px" class="metaseo-image"
+  data-name="' . esc_attr($img_name . $type) . '" data-img-post-id="' . esc_attr($rec->ID) . '" />';
+                            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
+                            echo sprintf('<td %2$s colspan="3">%1$s</td>', $img, $attributes);
+                            break;
 
-                            case 'col_image_name':
-                                $ext = strtoupper(str_replace('.', '', $type));
-                                $info = '<div class="img-name-wrapper">';
-                                $info .= '<input type="text" name="' . esc_attr('name_image[' . $rec->ID . ']') . '"
+                        case 'col_image_name':
+                            $ext = strtoupper(str_replace('.', '', $type));
+                            $info = '<div class="img-name-wrapper">';
+                            $info .= '<input type="text" name="' . esc_attr('name_image[' . $rec->ID . ']') . '"
                                  class="metaseo-img-meta metaseo-img-name" data-meta-type="change_image_name"
                                   id="' . esc_attr('img-name-' . $rec->ID) . '" data-post-id="' . esc_attr($rec->ID) . '" rows="2"
                                     data-extension="' . esc_attr($type) . '" value="' . esc_attr($img_name) . '">';
-                                $info .= '<p>' . esc_html($ext) .esc_html__(' Size: ', 'wp-meta-seo') . esc_html($img_size . $img_sizes) . '</p>';
-                                $info .= '<p>' . esc_html($img_width) . 'x' . esc_html($img_height) . '</p>';
-                                $info .= '<p>' . esc_html($img_date) . '</p>';
-                                $info .= '<span class="saved-info" style="position:relative">
+                            $info .= '<p>' . esc_html($ext) . esc_html__(' Size: ', 'wp-meta-seo') . esc_html($img_size . $img_sizes) . '</p>';
+                            $info .= '<p>' . esc_html($img_width) . 'x' . esc_html($img_height) . '</p>';
+                            $info .= '<p>' . esc_html($img_date) . '</p>';
+                            $info .= '<span class="saved-info" style="position:relative">
                                                         <span class="spinner"></span>
                                                         </span>';
-                                $info .= '</div>';
-                                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                                echo sprintf('<td %2$s colspan="4">%1$s</td>', $info, $attributes);
-                                break;
+                            $info .= '</div>';
+                            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
+                            echo sprintf('<td %2$s colspan="4">%1$s</td>', $info, $attributes);
+                            break;
 
-                            case 'col_image_info':
-                                $info = '<div class="opt-info" id="' . esc_attr('opt-info-' . $rec->ID) . '"></div>';
-                                $info .= '<span class="metaseo-loading"></span>';
-                                $info .= '
+                        case 'col_image_info':
+                            $info = '<div class="opt-info" id="' . esc_attr('opt-info-' . $rec->ID) . '"></div>';
+                            $info .= '<span class="metaseo-loading"></span>';
+                            $info .= '
                                                         <div class="popup-bg"></div>
                                                         <div class="popup post-list">
                                                                         <span class="popup-close" title="Close">x</span>
                                     <div class="popup-content"></div>
                              </div>';
-                                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                                echo sprintf('<td %2$s colspan="5" style="position:relative">%1$s</td>', $info, $attributes);
-                                break;
+                            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
+                            echo sprintf('<td %2$s colspan="5" style="position:relative">%1$s</td>', $info, $attributes);
+                            break;
 
-                            case 'col_image_alternative':
-                                $input = '<textarea name="' . esc_attr('img_alternative[' . $rec->ID . ']') . '" class="metaseo-img-meta"
+                        case 'col_image_alternative':
+                            $input = '<textarea name="' . esc_attr('img_alternative[' . $rec->ID . ']') . '" class="metaseo-img-meta"
  data-meta-type="alt_text" id="' . esc_attr('img-alt-' . $rec->ID) . '" data-post-id="' . esc_attr($rec->ID) . '"
   rows="2">' . esc_textarea($rec->alt) . '</textarea>';
-                                $input .= ('<span class="saved-info" style="position:relative">
+                            $input .= ('<span class="saved-info" style="position:relative">
                                                         <span class="spinner"></span>
                                                         </span>');
-                                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                                echo sprintf('<td %2$s colspan="3">%1$s</td>', $input, $attributes);
-                                break;
+                            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
+                            echo sprintf('<td %2$s colspan="3">%1$s</td>', $input, $attributes);
+                            break;
 
-                            case 'col_image_title':
-                                $input = '<textarea name="' . esc_attr('img_title[' . $rec->ID . ']') . '" class="metaseo-img-meta"
+                        case 'col_image_title':
+                            $input = '<textarea name="' . esc_attr('img_title[' . $rec->ID . ']') . '" class="metaseo-img-meta"
  data-meta-type="image_title" id="' . esc_attr('img-title-' . $rec->ID) . '" data-post-id="' . esc_attr($rec->ID) . '"
   rows="2">' . esc_textarea($rec->title) . '</textarea>';
-                                $input .= ('<span class="saved-info" style="position:relative">
+                            $input .= ('<span class="saved-info" style="position:relative">
                                                         <span class="spinner"></span>
                                                         </span>');
-                                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                                echo sprintf('<td %2$s colspan="3">%1$s</td>', $input, $attributes);
-                                break;
+                            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
+                            echo sprintf('<td %2$s colspan="3">%1$s</td>', $input, $attributes);
+                            break;
 
-                            case 'col_image_legend':
-                                $input = '<textarea name="' . esc_attr('img_legend[' . $rec->ID . ']') . '" class="metaseo-img-meta"
+                        case 'col_image_legend':
+                            $input = '<textarea name="' . esc_attr('img_legend[' . $rec->ID . ']') . '" class="metaseo-img-meta"
  data-meta-type="image_caption" id="' . esc_attr('img-legend-' . $rec->ID) . '" data-post-id="' . esc_attr($rec->ID) . '"
   rows="2">' . esc_textarea($rec->legend) . '</textarea>';
-                                $input .= '<span class="saved-info" style="position:relative">
+                            $input .= '<span class="saved-info" style="position:relative">
                                                         <span class="spinner"></span>
                                                         </span>';
-                                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                                echo sprintf('<td %2$s colspan="3">%1$s</td>', $input, $attributes);
-                                break;
+                            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
+                            echo sprintf('<td %2$s colspan="3">%1$s</td>', $input, $attributes);
+                            break;
 
-                            case 'col_image_desc':
-                                $input = '<textarea name="' . esc_attr('img_desc[' . $rec->ID . ']') . '" class="metaseo-img-meta"
+                        case 'col_image_desc':
+                            $input = '<textarea name="' . esc_attr('img_desc[' . $rec->ID . ']') . '" class="metaseo-img-meta"
  data-meta-type="image_description" id="' . esc_attr('img-desc-' . $rec->ID) . '" data-post-id="' . esc_attr($rec->ID) . '"
   rows="2">' . esc_textarea($rec->des) . '</textarea>';
-                                $input .= ('<span class="saved-info" style="position:relative">
+                            $input .= ('<span class="saved-info" style="position:relative">
                                                         <span class="spinner"></span>
                                                         </span>');
-                                // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
-                                echo sprintf('<td %2$s colspan="3">%1$s</td>', $input, $attributes);
-                                break;
-                        }
+                            // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in previous line (same function)
+                            echo sprintf('<td %2$s colspan="3">%1$s</td>', $input, $attributes);
+                            break;
                     }
-
-                    echo '</tr>';
                 }
+
+                echo '</tr>';
             }
         }
     }
@@ -896,6 +915,76 @@ class MetaSeoImageListTable extends WP_List_Table
     }
 
     /**
+     * Check post has blocks.
+     *
+     * @param integer $postId  Id of post
+     * @param string  $linkUrl Link value
+     * @param string  $value   Value of alt
+     *
+     * @return boolean
+     */
+    private static function checkBlocks($postId, $linkUrl, $value)
+    {
+        global $wp_version;
+        $allowed_blocks = array(
+            // Classic blocks have their blockName set to null.
+            null,
+            'core/media-text',
+            'core/image',
+            'core/gallery',
+            'core/html',
+            'core/heading',
+            'core/list',
+            'core/quote',
+            'core/verse',
+            'core/preformatted',
+            'core/pullquote',
+            'core/columns',
+            'core/column',
+        );
+        $output = true;
+        if (version_compare($wp_version, '5.0', '>=')) {
+            if (function_exists('has_blocks')) {
+                if (has_blocks((int)$postId)) {
+                    $post = get_post((int)$postId);
+                    $blocks = parse_blocks($post->post_content);
+
+                    foreach ($blocks as $block) {
+                        if (in_array($block['blockName'], $allowed_blocks, true)) {
+                            if (!empty($block['innerBlocks'])) {
+                                // Skip the block if it has disallowed or nested inner blocks.
+                                foreach ($block['innerBlocks'] as $inner_block) {
+                                    if (!in_array($inner_block['blockName'], $allowed_blocks, true) ||
+                                        !empty($inner_block['innerBlocks'])
+                                    ) {
+                                        continue;
+                                    }
+                                }
+                            }
+
+                            if (empty($value)) {
+                                $output = false;
+                                break;
+                            }
+
+                            if (strpos($block['innerHTML'], $linkUrl) !== false && strpos($block['innerHTML'], $value) !== false) {
+                                $output = false;
+                            }
+                        }
+                    }
+                } else {
+                    $output = false;
+                }
+            }
+        } else {
+            $output = false;
+        }
+
+        return $output;
+    }
+
+
+    /**
      * Display page fix meta list
      *
      * @param integer $img_post_id  Image id
@@ -920,16 +1009,39 @@ class MetaSeoImageListTable extends WP_List_Table
         //Get default meta information of the image
         $alt = get_post_meta($img_post_id, '_wp_attachment_image_alt', true);
         ?>
+        <script>
+            jQuery(".wpms-blocks-active").attr('disabled','disabled');
+            jQuery('.wpms-material-icons-gutenberg').qtip({
+                content: {
+                    attr: 'data-alt'
+                },
+                position: {
+                    my: 'bottom left',
+                    at: 'top center'
+                },
+                style: {
+                    tip: {
+                        corner: true
+                    },
+                    classes: 'wpms-widgets-qtip'
+                },
+                show: 'hover',
+                hide: {
+                    fixed: true,
+                    delay: 10
+                }
+            });
+        </script>
         <h3 class="content-header"><?php echo esc_html($header) ?></h3>
         <div class="content-box">
             <table class="wp-list-table widefat fixed posts">
                 <thead>
-                    <tr class="metaseo-border-bottom">
-                        <td colspan="1"><?php esc_html_e('ID', 'wp-meta-seo') ?></td>
-                        <td colspan="2"><?php esc_html_e('Post title', 'wp-meta-seo') ?></td>
-                        <td colspan="2"><?php esc_html_e('Image', 'wp-meta-seo') ?></td>
-                        <td colspan="5"><?php esc_html_e('Image information', 'wp-meta-seo') ?></td>
-                    </tr>
+                <tr class="metaseo-border-bottom">
+                    <td colspan="1"><?php esc_html_e('ID', 'wp-meta-seo') ?></td>
+                    <td colspan="2"><?php esc_html_e('Post title', 'wp-meta-seo') ?></td>
+                    <td colspan="2"><?php esc_html_e('Image', 'wp-meta-seo') ?></td>
+                    <td colspan="5"><?php esc_html_e('Image information', 'wp-meta-seo') ?></td>
+                </tr>
                 </thead>
                 <tbody>
                 <?php $alternate = ''; ?>
@@ -974,13 +1086,19 @@ class MetaSeoImageListTable extends WP_List_Table
                                             } else {
                                                 $placeholder = '';
                                             }
+                                            $has_block = self::checkBlocks($post['ID'], $meta['img_src'], $value);
+
+                                            $blocks_class = '';
+                                            if ($has_block) {
+                                                $blocks_class = 'wpms-blocks-active';
+                                            }
 
                                             ?>
                                             <div>
                                                 <label class="metaseo-img-lb m-r-10 wpms-text"><?php echo esc_html($lb); ?></label>
                                                 <input type="text" value="<?php echo esc_attr($value) ?>"
                                                        id="<?php echo esc_attr('metaseo-img-' . $type . '-' . $post['ID']) ?>"
-                                                       class="<?php echo esc_attr('metaseo-fix-meta metaseo-img-' . $type) ?>"
+                                                       class="<?php echo esc_attr('metaseo-fix-meta metaseo-img-' . $type.' '.$blocks_class) ?>"
                                                        data-meta-key="_metaseo_fix_metas"
                                                        data-post-id="<?php echo esc_attr($post['ID']) ?>"
                                                        data-img-post-id="<?php echo esc_attr($img_post_id) ?>"
@@ -990,10 +1108,17 @@ class MetaSeoImageListTable extends WP_List_Table
                                                        placeholder="<?php echo esc_attr($placeholder) ?>"
                                                        onfocus="metaseo_fix_meta(this);" onblur="updateInputBlur(this)"
                                                        onkeydown="return checkeyCode(event)"/>
+                                                <?php
+                                                if ($has_block) {
+                                                    echo '<i class="material-icons wpms-material-icons-gutenberg label-dash-widgets"
+                             data-alt="'.esc_attr__('We can\'t update this link title because it\'s in a Gutenberg block and it has no alt/title attribute', 'wp-meta-seo').'">info</i>';
+                                                }
+                                                ?>
                                             </div>
 
                                             <?php if (trim($value) === '' && trim($alt) !== '') : ?>
-                                                <a class="meta-default ju-button orange-button waves-effect waves-light" href="#"
+                                                <a class="meta-default ju-button orange-button waves-effect waves-light"
+                                                   href="#"
                                                    data-default-value="<?php echo esc_attr($alt) ?>"
                                                    title="Add to input box"
                                                    onclick="add_meta_default(this)"><?php esc_html_e('Copy ', 'wp-meta-seo'); ?></a>
@@ -1034,13 +1159,13 @@ class MetaSeoImageListTable extends WP_List_Table
         <div class="content-box">
             <table class="wp-list-table widefat fixed posts">
                 <thead>
-                    <tr class="metaseo-border-bottom">
-                        <td colspan="1"><?php esc_html_e('ID', 'wp-meta-seo') ?></td>
-                        <td colspan="3"><?php esc_html_e('Title', 'wp-meta-seo') ?></td>
-                        <td colspan="4"><?php esc_html_e('Current Images', 'wp-meta-seo') ?></td>
-                        <td colspan="2" class="metaseo-action"><?php esc_html_e('Action', 'wp-meta-seo') ?></td>
-                        <td colspan="4"><?php esc_html_e('After Replacing', 'wp-meta-seo') ?></td>
-                    </tr>
+                <tr class="metaseo-border-bottom">
+                    <td colspan="1"><?php esc_html_e('ID', 'wp-meta-seo') ?></td>
+                    <td colspan="3"><?php esc_html_e('Title', 'wp-meta-seo') ?></td>
+                    <td colspan="4"><?php esc_html_e('Current Images', 'wp-meta-seo') ?></td>
+                    <td colspan="2" class="metaseo-action"><?php esc_html_e('Action', 'wp-meta-seo') ?></td>
+                    <td colspan="4"><?php esc_html_e('After Replacing', 'wp-meta-seo') ?></td>
+                </tr>
                 </thead>
                 <tbody>
                 <?php
@@ -1054,7 +1179,7 @@ class MetaSeoImageListTable extends WP_List_Table
                             <p class="wpms-text"><?php echo esc_html($post['title']) ?></p>
                         </td>
                         <td colspan="4">
-                            <?php foreach ($post['img_before_optm'] as $key => $src) :?>
+                            <?php foreach ($post['img_before_optm'] as $key => $src) : ?>
                                 <div class="metaseo-img-wrapper checked">
                                     <div class="metaseo-img">
                                         <img width="<?php echo esc_attr($src['width']); ?>"
@@ -1115,7 +1240,8 @@ class MetaSeoImageListTable extends WP_List_Table
             </table>
         </div>
         <div class="wpms_width_100 wpms_left m-tb-30">
-            <a href="javascript:void(0);" id="metaseo-replace-all" class="ju-button orange-button waves-effect waves-light"
+            <a href="javascript:void(0);" id="metaseo-replace-all"
+               class="ju-button orange-button waves-effect waves-light"
                onclick="optimize_imgs_group(this)">
                 <?php esc_html_e('Replace All', 'wp-meta-seo') ?>
             </a>
@@ -1166,7 +1292,7 @@ class MetaSeoImageListTable extends WP_List_Table
     {
         $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $redirect    = false;
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- No action, nonce is not required
         if (isset($_POST['txtkeyword'])) {
             $current_url = add_query_arg(
                 array(
@@ -1475,7 +1601,7 @@ class MetaSeoImageListTable extends WP_List_Table
                  *
                  * @ignore Hook already documented
                  */
-                $meta_value = apply_filters('wpms_update_image_meta', $meta_value, $post_id, $aliases[$meta_type], array('source'=>'ajax_update'));
+                $meta_value = apply_filters('wpms_update_image_meta', $meta_value, $post_id, $aliases[$meta_type], array('source' => 'ajax_update'));
 
                 $data = array('ID' => $post_id, $aliases[$meta_type] => $meta_value);
                 if (wp_update_post($data)) {
@@ -1495,7 +1621,7 @@ class MetaSeoImageListTable extends WP_List_Table
                  *
                  * @ignore Hook already documented
                  */
-                $meta_value = apply_filters('wpms_update_image_meta', $meta_value, $post_id, $aliases[$meta_type], array('source'=>'ajax_update'));
+                $meta_value = apply_filters('wpms_update_image_meta', $meta_value, $post_id, $aliases[$meta_type], array('source' => 'ajax_update'));
 
                 update_post_meta($post_id, $aliases[$meta_type], $meta_value);
                 $settings = get_option('_metaseo_settings');
@@ -1505,7 +1631,7 @@ class MetaSeoImageListTable extends WP_List_Table
                     self::autoUpdatePostContent($post_id, $meta_type, $meta_value);
                     $response->type    = 'auto_override';
                     $response->pid     = $post_id;
-                    $response->imgname = $_POST['img_name'];
+                    $response->imgname = (isset($_POST['img_name']) ? $_POST['img_name'] : '');
                 }
 
                 $response->updated = true;
@@ -1536,7 +1662,10 @@ class MetaSeoImageListTable extends WP_List_Table
         }
 
         $_POST = stripslashes_deep($_POST);
-        $img   = trim($_POST['img_name']);
+        if (isset($_POST['img_name'])) {
+            $img   = trim($_POST['img_name']);
+        }
+
         if ($post_id && !empty($img)) {
             $fn = 'display_fix_metas_list';
             if (method_exists('MetaSeoImageListTable', $fn)) {
@@ -1550,11 +1679,11 @@ class MetaSeoImageListTable extends WP_List_Table
                     foreach ($posts as $ID => &$post) {
                         $img_counter += count($post['meta']);
                         foreach ($post['meta'] as $order => $meta) {
-                            if ($meta['type']['alt'] === '' || $meta['type']['title'] === '') {
+                            if ((isset($meta['type']['alt']) && $meta['type']['alt'] === '') || (isset($meta['type']['title']) && $meta['type']['title'] === '')) {
                                 $toEdit = true;
                             }
 
-                            if ($meta['type']['alt'] !== '' && $meta['type']['title'] !== '') {
+                            if ((isset($meta['type']['alt']) && $meta['type']['alt'] !== '') && (isset($meta['type']['title']) && $meta['type']['title'] !== '')) {
                                 $pIDs[$ID][] = $order;
                             }
                         }
@@ -1760,6 +1889,10 @@ class MetaSeoImageListTable extends WP_List_Table
                             $response->updated = true;
                             $response->msg     = esc_html__('Image name was changed', 'wp-meta-seo');
                         } else {
+                            //Revert image if false
+                            if (!file_exists($upload_dir . '/' . $linkold)) {
+                                rename($upload_dir . '/' . $newFileName, $upload_dir . '/' . $linkold);
+                            }
                             $response->iname = $old_name;
                             $response->msg   = esc_html__('There is a problem when update image name', 'wp-meta-seo');
                         }
@@ -1790,6 +1923,7 @@ class MetaSeoImageListTable extends WP_List_Table
      */
     public static function updateImgMetaCallback($wpmspost, $return = true)
     {
+        global $wp_version;
         $response          = new stdClass();
         $response->updated = false;
 
@@ -1812,64 +1946,54 @@ class MetaSeoImageListTable extends WP_List_Table
         //Update new value for meta info of this image in wp_postmeta
         $meta[$post_id]['meta'][$meta_order]['type'][$meta_type] = wpmsUtf8($meta_value);
         update_post_meta($img_post_id, $meta_key, $meta);
-
+        //Update alt in light box
+        update_post_meta($img_post_id, '_wp_attachment_image_alt', wpmsUtf8($meta_value));
         //Then we must update this meta info in the appropriate post content
         $post = get_post($post_id);
         if (!$post) {
             $response->msg = esc_html__('The post has been deleted before, please check again!', 'wp-meta-seo');
         } else {
             if ($post->post_content !== '') {
-                //Split content part that do not contain img tag
-                $post_content_split = preg_split(
-                    '/(<img[\s]+[^>]*src\s*=\s*)([\"\'])([^>]+?)\2([^<>]*>)/i',
-                    $post->post_content
-                );
-                //Get all img tag from the content
-                preg_match_all(
-                    '/(<img[\s]+[^>]*src\s*=\s*)([\"\'])([^>]+?)\2([^<>]*>)/i',
-                    $post->post_content,
-                    $matches
-                );
-                $img_tags = $matches[0];
-                if (isset($img_tags[$meta_order])) {
-                    // remove attr
-                    preg_match_all('/(alt)=("[^"]*")/i', $img_tags[$meta_order], $atts);
-                    if (isset($atts[0][0])) {
-                        $img_tags[$meta_order] = str_replace($atts[0][0], '', $img_tags[$meta_order]);
-                    }
-                    $img_tags[$meta_order] = preg_replace('/alt\s*=\s*(\'|").+(\'|")/i', '', $img_tags[$meta_order]);
-                    // update attr
-                    $img_tags[$meta_order] = preg_replace(
-                        '/(<img\b[^><]*)>/i',
-                        '$1 ' . $meta_type . '="' . $meta_value . '">',
-                        $img_tags[$meta_order]
-                    );
-                    // create new post content
-                    $post_content = '';
-                    foreach ($post_content_split as $key => $split) {
-                        if (isset($img_tags[$key])) {
-                            $img_tag = $img_tags[$key];
+                $post_content = $post->post_content;
+                $img_link = '';
+                if (isset($meta[$post_id]['meta'][$meta_order]['img_src'])) {
+                    $img_link = $meta[$post_id]['meta'][$meta_order]['img_src'];
+                }
+                if (version_compare($wp_version, '5.0', '>=')) {
+                    if (function_exists('has_blocks')) {
+                        if (has_blocks($post_content)) {
+                            // Gutenberg
+                            $post_content = self::gutenbergImgUpdateContent($post_content, $meta_order, $meta_type, $meta_value, $img_link);
                         } else {
-                            $img_tag = '';
+                            // Classic editor
+                            $post_content = self::classicImgUpdateContent($post_content, $meta_order, $meta_type, $meta_value);
                         }
-                        $post_content .= $split . $img_tag;
-                    }
-
-                    remove_action('post_updated', array('MetaSeoBrokenLinkTable', 'updatePost'));
-
-                    //Update content of this post.
-                    if (!wp_update_post(array('ID' => $post->ID, 'post_content' => $post_content))) {
-                        $response->msg = esc_html__('The post haven\'t been updated, please check again!', 'wp-meta-seo');
-                    } else {
-                        // compatible with elementor plugin (alt tag not display on frontend)
-                        delete_post_meta($post->ID, '_elementor_edit_mode');
-                        update_option('wpms_last_update_post', time());
-                        $response->updated = true;
-                        $response->msg     = ucfirst($meta_type) . esc_html__(' was saved', 'wp-meta-seo');
                     }
                 } else {
-                    $response->msg = esc_html__('This image has been removed from
-                     the post, please check again!', 'wp-meta-seo');
+                    // Classic editor
+                    $post_content = self::classicImgUpdateContent($post_content, $meta_order, $meta_type, $meta_value);
+                }
+
+
+
+                remove_action('post_updated', array('MetaSeoBrokenLinkTable', 'updatePost'));
+
+                $is_elementor_edit = (! !get_post_meta($post->ID, '_elementor_edit_mode', true));
+
+                //Update content of this post.
+                if (!wp_update_post(array('ID' => $post->ID, 'post_content' => $post_content))) {
+                    $response->msg = esc_html__('The post haven\'t been updated, please check again!', 'wp-meta-seo');
+                } else {
+                    // compatible with elementor plugin (alt tag not display on frontend)
+                    delete_post_meta($post->ID, '_elementor_edit_mode');
+                    // Fix elementor change when edit alt image
+                    if ($is_elementor_edit) {
+                        update_post_meta($post->ID, '_elementor_edit_mode', 'builder');
+                    }
+                    update_option('wpms_last_update_post', time());
+                    $response->updated = true;
+                    $response->type_change = 'edit_meta_alt';
+                    $response->msg     = ucfirst($meta_type) . esc_html__(' was saved', 'wp-meta-seo');
                 }
             } else {
                 $response->msg = esc_html__('Content of the post is empty, please check again', 'wp-meta-seo');
@@ -1880,6 +2004,113 @@ class MetaSeoImageListTable extends WP_List_Table
             echo json_encode($response);
             wp_die();
         }
+    }
+
+    /**
+     * Update image in blocks content
+     *
+     * @param array  $post_content Content of post
+     * @param string $meta_order   Meta order
+     * @param string $meta_type    Meta type
+     * @param string $meta_value   Meta value
+     * @param string $img_link     Link image
+     *
+     * @return string
+     */
+    public static function gutenbergImgUpdateContent($post_content, $meta_order, $meta_type, $meta_value, $img_link)
+    {
+        $blocks = parse_blocks($post_content);
+        $allowed_blocks = array(
+            // Classic blocks have their blockName set to null.
+            null,
+            'core/media-text',
+            'core/image',
+            'core/gallery',
+            'core/html',
+            'core/heading',
+            'core/list',
+            'core/quote',
+            'core/verse',
+            'core/preformatted',
+            'core/pullquote',
+            'core/columns',
+            'core/column',
+        );
+
+        foreach ($blocks as $block) {
+            // Gutenberg block
+            if (in_array($block['blockName'], $allowed_blocks, true)) {
+                if (!empty($block['innerBlocks'])) {
+                    // Skip the block if it has disallowed or nested inner blocks.
+                    foreach ($block['innerBlocks'] as $inner_block) {
+                        if (!in_array($inner_block['blockName'], $allowed_blocks, true) ||
+                            !empty($inner_block['innerBlocks'])
+                        ) {
+                            continue;
+                        }
+                    }
+                }
+
+                if (strpos($block['innerHTML'], $img_link) !== false) {
+                    $new_blocks = self::classicImgUpdateContent($block['innerHTML'], $meta_order, $meta_type, $meta_value);
+                    $post_content = str_replace($block['innerHTML'], $new_blocks, $post_content);
+                }
+            }
+        }
+
+        return $post_content;
+    }
+
+    /**
+     * Update image in classic content
+     *
+     * @param array  $post_content Content of post
+     * @param string $meta_order   Meta order
+     * @param string $meta_type    Meta type
+     * @param string $meta_value   Meta value
+     *
+     * @return string
+     */
+    public static function classicImgUpdateContent($post_content, $meta_order, $meta_type, $meta_value)
+    {
+        //Split content part that do not contain img tag
+        $post_content_split = preg_split(
+            '/(<img[\s]+[^>]*src\s*=\s*)([\"\'])([^>]+?)\2([^<>]*>)/i',
+            $post_content
+        );
+        //Get all img tag from the content
+        preg_match_all(
+            '/(<img[\s]+[^>]*src\s*=\s*)([\"\'])([^>]+?)\2([^<>]*>)/i',
+            $post_content,
+            $matches
+        );
+        $img_tags = $matches[0];
+        if (isset($img_tags[$meta_order])) {
+            // remove attr
+            preg_match_all('/(alt)=("[^"]*")/i', $img_tags[$meta_order], $atts);
+            if (isset($atts[0][0])) {
+                $img_tags[$meta_order] = str_replace($atts[0][0], '', $img_tags[$meta_order]);
+            }
+            $img_tags[$meta_order] = preg_replace('/alt\s*=\s*(\'|").+(\'|")/i', '', $img_tags[$meta_order]);
+            // update attr
+            $img_tags[$meta_order] = preg_replace(
+                '/(<img\b[^><]*)>/i',
+                '$1 ' . $meta_type . '="' . $meta_value . '">',
+                $img_tags[$meta_order]
+            );
+            // create new post content
+            $post_content = '';
+            foreach ($post_content_split as $key => $split) {
+                if (isset($img_tags[$key])) {
+                    $img_tag = $img_tags[$key];
+                } else {
+                    $img_tag = '';
+                }
+                $post_content .= $split . $img_tag;
+            }
+        }
+
+        return $post_content;
     }
 
     /**
@@ -1986,7 +2217,7 @@ class MetaSeoImageListTable extends WP_List_Table
      *
      * @return void
      */
-    public static function deleteAttachment($pid)
+    public static function deletePost($pid)
     {
         $post = get_post($pid);
         if (!empty($post)) {
@@ -1997,14 +2228,15 @@ class MetaSeoImageListTable extends WP_List_Table
             }
 
             if (in_array($post_type, $post_types)) {
-                $dom = new DOMDocument();
-                libxml_use_internal_errors(true);
-                $dom->loadHtml($post->post_content);
-                $tags = $dom->getElementsByTagName('img');
-                if (!empty($tags)) {
-                    foreach ($tags as $tag) {
-                        $url      = $tag->getAttribute('src');
-                        $postid   = self::getAttachmentId($url);
+                $img_tags = wpmsExtractTags($post->post_content, 'img', true, true);
+                if (!empty($img_tags)) {
+                    foreach ($img_tags as $tag) {
+                        if (empty($tag['attributes']['src'])) {
+                            continue;
+                        }
+
+                        $src      = $tag['attributes']['src'];
+                        $postid   = self::getAttachmentId($src);
                         $path     = get_attached_file($postid);
                         $infos    = pathinfo($path);
                         $img_name = $infos['basename'];
@@ -2051,42 +2283,41 @@ class MetaSeoImageListTable extends WP_List_Table
 
         $old_imgs = self::getImagesInContent($post_before); // return list img in post before
         $new_imgs = array(); // return list img in post after
-        $dom      = new DOMDocument();
-        libxml_use_internal_errors(true);
         if ($post_after->post_content !== '') {
-            $dom->loadHtml($post_after->post_content);
-            $tags = $dom->getElementsByTagName('img');
+            // find <img> tag in current post content
+            $img_tags = wpmsExtractTags($post_after->post_content, 'img', true, true);
+            foreach ($img_tags as $tag) {
+                if (empty($tag['attributes']['src'])) {
+                    continue;
+                }
 
-            if (!empty($tags)) {
-                foreach ($tags as $tag) {
-                    $url        = $tag->getAttribute('src');
-                    $postid     = self::getAttachmentId($url);
-                    $new_imgs[] = $postid;
-                    $post       = get_post($postid);
-                    if (!empty($post)) {
-                        $path     = get_attached_file($postid);
-                        $infos    = pathinfo($path);
-                        $img_name = $infos['basename'];
-                        $imgs     = array('name' => $img_name, 'img_post_id' => $postid);
-                        $results  = self::scanPostsMeta($imgs, false, 0);
+                $src = $tag['attributes']['src'];
+                $postid     = self::getAttachmentId($src);
+                $new_imgs[] = $postid;
+                $post       = get_post($postid);
+                if (!empty($post)) {
+                    $path     = get_attached_file($postid);
+                    $infos    = pathinfo($path);
+                    $img_name = $infos['basename'];
+                    $imgs     = array('name' => $img_name, 'img_post_id' => $postid);
+                    $results  = self::scanPostsMeta($imgs, false, 0);
 
-                        // update or delete meta
-                        if ($results['msg'][$postid]['imNotGood']['warning']) {
-                            update_post_meta($postid, 'wpms_missing_information', 1);
-                        } else {
-                            delete_post_meta($postid, 'wpms_missing_information');
-                        }
-                        if ($results['msg'][$postid]['iNotGood']['warning']) {
-                            update_post_meta($postid, 'wpms_resizeimages', 1);
-                        } else {
-                            delete_post_meta($postid, 'wpms_resizeimages');
-                        }
+                    // update or delete meta
+                    if ($results['msg'][$postid]['imNotGood']['warning']) {
+                        update_post_meta($postid, 'wpms_missing_information', 1);
+                    } else {
+                        delete_post_meta($postid, 'wpms_missing_information');
+                    }
+                    if ($results['msg'][$postid]['iNotGood']['warning']) {
+                        update_post_meta($postid, 'wpms_resizeimages', 1);
+                    } else {
+                        delete_post_meta($postid, 'wpms_resizeimages');
                     }
                 }
             }
         }
 
-        // remove post meta
+        // update post meta for old image
         $imgs_diff = array_diff($old_imgs, $new_imgs);
         if (!empty($imgs_diff)) {
             foreach ($imgs_diff as $id) {
@@ -2120,22 +2351,31 @@ class MetaSeoImageListTable extends WP_List_Table
      */
     public static function getImagesInContent($post_before)
     {
-        $dom = new DOMDocument();
-        libxml_use_internal_errors(true);
         if ($post_before->post_content === '') {
             return array();
         }
-        $dom->loadHtml($post_before->post_content);
-        $tags = $dom->getElementsByTagName('img');
+
+        preg_match_all(
+            '/(<img[\s]+[^>]*src\s*=\s*)([\"\'])([^>]+?)\2([^<>]*>)/i',
+            $post_before->post_content,
+            $matches,
+            PREG_PATTERN_ORDER
+        );
+
         $ids  = array();
-        if (empty($tags)) {
-            return $ids;
+        if (!empty($matches[0])) {
+            if (empty($matches[0])) {
+                return array();
+            }
+
+            foreach (array_unique($matches[0]) as $tag) {
+                preg_match('/< *img[^>]*src *= *["\']?([^"\']*)/i', $tag, $matches);
+                $src = $matches[1];
+                $postid = self::getAttachmentId($src);
+                $ids[]  = $postid;
+            }
         }
-        foreach ($tags as $tag) {
-            $url    = $tag->getAttribute('src');
-            $postid = self::getAttachmentId($url);
-            $ids[]  = $postid;
-        }
+
         return $ids;
     }
 

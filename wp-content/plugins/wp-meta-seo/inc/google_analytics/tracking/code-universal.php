@@ -99,8 +99,8 @@ $profile = WpmsGaTools::getSelectedProfile($google_alanytics['profile_list'], $g
     $post_tags_list = '';
     $post_tags_array = get_the_tags($post->ID);
     if ($post_tags_array) {
-        foreach ($post_tags_array as $tag) {
-            $post_tags_list .= $tag->name . ', ';
+        foreach ($post_tags_array as $posttag) {
+            $post_tags_list .= $posttag->name . ', ';
         }
     }
     $post_tags_list = rtrim($post_tags_list, ', ');

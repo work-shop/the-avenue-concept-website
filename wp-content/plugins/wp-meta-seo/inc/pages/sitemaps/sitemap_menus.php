@@ -4,7 +4,7 @@ defined('ABSPATH') || die('No direct script access allowed!');
 ?>
 <div class="wpmsrow sitemap-menu-bar">
     <div class="col s12">
-        <ul class="tabs wpmstabs">
+        <ul class="wpmstabs ju-tabs">
             <li class="tab wpmstab col active">
                 <a href="#menu_sitemaps"><?php esc_html_e('Sitemaps', 'wp-meta-seo') ?></a>
             </li>
@@ -24,9 +24,9 @@ defined('ABSPATH') || die('No direct script access allowed!');
             <?php
             if (is_plugin_active(WPMSEO_ADDON_FILENAME)) {
                 if (!empty($custom_post_types)) {
-                    foreach ($custom_post_types as $post_type => $label) {
+                    foreach ($custom_post_types as $key => $label) {
                         echo '<li class="tab wpmstab col">';
-                        echo '<a href="' . esc_attr('#menu_source_' . $post_type) . '">' . esc_html(ucfirst($label)) . '</a>';
+                        echo '<a href="' . esc_attr('#menu_source_' . $key) . '">' . esc_html(ucfirst($label)) . '</a>';
                         echo '</li>';
                     }
                 }

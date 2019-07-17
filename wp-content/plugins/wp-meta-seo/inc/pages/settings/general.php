@@ -19,7 +19,7 @@ defined('ABSPATH') || die('No direct script access allowed!');
                         <span class="slider round"></span>
                     </label>
                 </div>
-                <p class="description text_left p-tb-20 border-top-e4e8ed">
+                <p class="ju-description text_left p-tb-20 border-top-e4e8ed">
                     <?php esc_html_e('Force Home page meta title and description here', 'wp-meta-seo'); ?>
                 </p>
             </div>
@@ -75,7 +75,7 @@ defined('ABSPATH') || die('No direct script access allowed!');
                             <span class="slider round"></span>
                         </label>
                     </div>
-                    <p class="description text_left p-tb-20 border-top-e4e8ed">
+                    <p class="ju-description text_left p-tb-20 border-top-e4e8ed">
                         <?php echo esc_html($setting_switch_details['help']); ?>
                     </p>
                 </div>

@@ -436,7 +436,7 @@ strong {
 }
 
 .metaseo_link_title {
-    width: 200px;
+    width: 180px;
     height: 28px;
     float: left;
 }
@@ -444,22 +444,7 @@ strong {
 .wpms_update_link {
     display: none;
     float: left;
-    background: #00a0d2;
-    box-shadow: inset 0 1px 0 rgba(120, 200, 230, 0.5), 0 1px 0 rgba(0, 0, 0, 0.15);
-    color: #fff;
-    text-decoration: none;
-    vertical-align: top;
-    font-size: 13px;
-    line-height: 26px;
-    height: 28px;
-    margin: 0;
-    padding: 0 10px 1px;
-    cursor: pointer;
-    border: 1px solid #0073aa;
-    -webkit-appearance: none;
-    border-radius: 3px;
-    white-space: nowrap;
-    box-sizing: border-box;
+    height: 45px;
 }
 
 .wpms_mesage_link {
@@ -638,7 +623,10 @@ strong {
     line-height: 1.3;
     font-weight: 600;
     font-size: 13px;
-    margin-top: 5px;
+}
+
+.wpmslabel label {
+    line-height: 45px;
 }
 
 .metaseo_metabox_follow, .metaseo_metabox_index {
@@ -908,6 +896,10 @@ span.wpms-seoImgRemove {
     display: none;
     line-height: 30px;
     margin-left: 10px;
+}
+
+#col_link_title {
+    width: 25%;
 }
 
 

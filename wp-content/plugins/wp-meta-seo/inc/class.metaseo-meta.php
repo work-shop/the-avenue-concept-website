@@ -26,13 +26,13 @@ class WPMSEOMeta
      *
      * @var integer
      */
-    public static $meta_length = 320;
+    public static $meta_length = 158;
     /**
      * Meta title max length
      *
      * @var integer
      */
-    public static $meta_title_length = 69;
+    public static $meta_title_length = 60;
     /**
      * Meta keywords max length
      *

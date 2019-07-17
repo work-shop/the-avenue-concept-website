@@ -1119,6 +1119,7 @@ $colorFieldRightMargin: 5px;
     width: $colorFieldWidth;
 
     margin-right: $colorFieldRightMargin;
+	margin-left: 1px;
     padding: 2px 4px;
 
 	font-size: 12px;
@@ -1160,6 +1161,8 @@ $colorFieldRightMargin: 5px;
 	position: fixed;
 	left: 0;
 	top: 0;
+	right: 0;
+	bottom: 0;
 	opacity: 0.70;
 	-moz-opacity: 0.70;
 	filter: alpha(opacity=70);

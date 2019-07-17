@@ -111,10 +111,11 @@
     position: absolute;
     bottom: 5px;
     left: 5px;
+    line-height: 1.4em;
 }
 
 .wpms_dashboard_widgets_left .percent_1{
-    margin: 12px 0 10px 0 !important;
+    margin: 13px 0 3px 0 !important;
     float: left;
 }
 

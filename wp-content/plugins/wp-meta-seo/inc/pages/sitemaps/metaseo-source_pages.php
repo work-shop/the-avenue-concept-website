@@ -96,51 +96,51 @@ defined('ABSPATH') || die('No direct script access allowed!');
 
     <div id="wrap_sitemap_option_pages" class="wrap_sitemap_option">
         <?php
-        $pages = $sitemap->getPages();
-        foreach ($pages as $page) {
-            if (empty($sitemap->settings_sitemap['wpms_sitemap_pages'][$page->ID]['frequency'])) {
+        $listpages = $sitemap->getPages();
+        foreach ($listpages as $value) {
+            if (empty($sitemap->settings_sitemap['wpms_sitemap_pages'][$value->ID]['frequency'])) {
                 $pagefrequency = 'monthly';
             } else {
-                $pagefrequency = $sitemap->settings_sitemap['wpms_sitemap_pages'][$page->ID]['frequency'];
+                $pagefrequency = $sitemap->settings_sitemap['wpms_sitemap_pages'][$value->ID]['frequency'];
             }
-            if (empty($sitemap->settings_sitemap['wpms_sitemap_pages'][$page->ID]['priority'])) {
+            if (empty($sitemap->settings_sitemap['wpms_sitemap_pages'][$value->ID]['priority'])) {
                 $pagepriority = '1.0';
             } else {
-                $pagepriority = $sitemap->settings_sitemap['wpms_sitemap_pages'][$page->ID]['priority'];
+                $pagepriority = $sitemap->settings_sitemap['wpms_sitemap_pages'][$value->ID]['priority'];
             }
             $slpr      = $sitemap->viewPriority(
-                'priority_pages_' . $page->ID,
-                '_metaseo_settings_sitemap[wpms_sitemap_pages][' . $page->ID . '][priority]',
+                'priority_pages_' . $value->ID,
+                '_metaseo_settings_sitemap[wpms_sitemap_pages][' . $value->ID . '][priority]',
                 $pagepriority
             );
             $slfr      = $sitemap->viewFrequency(
-                'frequency_pages_' . $page->ID,
-                '_metaseo_settings_sitemap[wpms_sitemap_pages][' . $page->ID . '][frequency]',
+                'frequency_pages_' . $value->ID,
+                '_metaseo_settings_sitemap[wpms_sitemap_pages][' . $value->ID . '][frequency]',
                 $pagefrequency
             );
-            $permalink = get_permalink($page->ID);
+            $permalink = get_permalink($value->ID);
             echo '<div class="wpms_row wpms_row_record">';
             echo '<div style="line-height:30px">';
-            if (isset($sitemap->settings_sitemap['wpms_sitemap_pages'][$page->ID]['post_id'])
-                && (int) $sitemap->settings_sitemap['wpms_sitemap_pages'][$page->ID]['post_id'] === (int) $page->ID) {
+            if (isset($sitemap->settings_sitemap['wpms_sitemap_pages'][$value->ID]['post_id'])
+                && (int) $sitemap->settings_sitemap['wpms_sitemap_pages'][$value->ID]['post_id'] === (int) $value->ID) {
                 echo '<input class="wpms_sitemap_input_link checked"
                  type="hidden" data-type="page" value="' . esc_attr($permalink) . '">';
                 echo '<div class="pure-checkbox">';
                 echo '<input class="cb_sitemaps_pages wpms_xmap_pages"
-                 id="' . esc_attr('wpms_sitemap_pages_' . $page->ID) . '" type="checkbox"
-                  name="' . esc_attr('_metaseo_settings_sitemap[wpms_sitemap_pages][' . $page->ID . '][post_id]') . '"
-                   value="' . esc_attr($page->ID) . '" checked>';
-                echo '<label for="' . esc_attr('wpms_sitemap_pages_' . $page->ID) . '" class="wpms-text ju-setting-label">' . esc_html($page->post_title) . '</label>';
+                 id="' . esc_attr('wpms_sitemap_pages_' . $value->ID) . '" type="checkbox"
+                  name="' . esc_attr('_metaseo_settings_sitemap[wpms_sitemap_pages][' . $value->ID . '][post_id]') . '"
+                   value="' . esc_attr($value->ID) . '" checked>';
+                echo '<label for="' . esc_attr('wpms_sitemap_pages_' . $value->ID) . '" class="wpms-text ju-setting-label">' . esc_html($value->post_title) . '</label>';
                 echo '</div>';
             } else {
                 echo '<input class="wpms_sitemap_input_link" type="hidden"
                  data-type="page" value="' . esc_attr($permalink) . '">';
                 echo '<div class="pure-checkbox">';
                 echo '<input class="cb_sitemaps_pages wpms_xmap_pages"
-                 id="' . esc_attr('wpms_sitemap_pages_' . $page->ID) . '" type="checkbox"
-                  name="' . esc_attr('_metaseo_settings_sitemap[wpms_sitemap_pages][' . $page->ID . '][post_id]') . '"
-                   value="' . esc_attr($page->ID) . '">';
-                echo '<label for="' . esc_attr('wpms_sitemap_pages_' . $page->ID) . '" class="wpms-text ju-setting-label">' . esc_html($page->post_title) . '</label>';
+                 id="' . esc_attr('wpms_sitemap_pages_' . $value->ID) . '" type="checkbox"
+                  name="' . esc_attr('_metaseo_settings_sitemap[wpms_sitemap_pages][' . $value->ID . '][post_id]') . '"
+                   value="' . esc_attr($value->ID) . '">';
+                echo '<label for="' . esc_attr('wpms_sitemap_pages_' . $value->ID) . '" class="wpms-text ju-setting-label">' . esc_html($value->post_title) . '</label>';
                 echo '</div>';
             }
             // phpcs:ignore WordPress.Security.EscapeOutput -- Content escaped in the method MetaSeoSitemap::viewPriority and MetaSeoSitemap::viewFrequency

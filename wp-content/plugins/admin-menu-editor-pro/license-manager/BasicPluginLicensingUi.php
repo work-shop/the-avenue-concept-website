@@ -194,9 +194,6 @@ class Wslm_BasicPluginLicensingUI {
 		$result = $this->licenseManager->licenseThisSite($this->triedLicenseKey);
 		if ( is_wp_error($result) ) {
 			$this->printError($result);
-			//If the license key exists but the site can't be licensed for some reason,
-			//the API response may include the license details.
-			$this->triedLicense = $result->get_error_data('license');
 		} else {
 			$this->printNotice('Success! This site is now licensed.');
 
@@ -204,8 +201,6 @@ class Wslm_BasicPluginLicensingUI {
 			if ( isset($result['notice']) ) {
 				$this->printNotice($result['notice']['message'], $result['notice']['class']);
 			}
-
-			$this->triedLicense = $result;
 		}
 	}
 

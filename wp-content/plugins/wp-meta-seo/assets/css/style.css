@@ -135,6 +135,7 @@ td.metaseo-action {
 .metaseo-img-wrapper {
     clear: left;
     padding: 5px 0;
+    width: 90%;
 }
 
 .metaseo-img-wrapper .img-choosen {
@@ -188,6 +189,8 @@ div.img-name-wrapper {
 div.img-name-wrapper p {
     margin: 3px;
     padding-left: 2px;
+    color: #0f2c3b;
+    opacity: 0.6;
 }
 
 table.metaseo_images td input {
@@ -271,7 +274,13 @@ span.saved-info {
     font-stretch: normal;
     line-height: normal;
     letter-spacing: 0.6px;
-    color: #038f4e !important;
+    color: #42d4a3 !important;
+}
+
+.metaseo-optimize.replaced {
+    color: #42d4a3 !important;
+    border: 0 !important;
+    float: left;
 }
 
 .metaseo-msg-warning {
@@ -279,7 +288,7 @@ span.saved-info {
 }
 
 .opt-info > p, .opt-info-warning > p {
-    font-size: 15px !important;
+    font-size: 13px !important;
     color: #ff8726;
     margin-bottom: 1px !important;
 }
@@ -351,4 +360,18 @@ span.hz-loading {
 .wrap_sendemail {
     width: 100%;
     float: left;
+}
+
+.wpms-material-icons-gutenberg {
+    color: #ff8726;
+    opacity: 1;
+    margin: 0 5px;
+    font-size: 26px;
+    cursor: pointer;
+    height: 45px;
+    line-height: 45px;
+}
+
+.wpms-blocks-active {
+    background-color: #EEEEEE !important;
 }

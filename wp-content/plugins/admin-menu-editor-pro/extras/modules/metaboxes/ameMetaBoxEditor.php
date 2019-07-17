@@ -25,6 +25,8 @@ class ameMetaBoxEditor extends ameModule implements ameExportableModule {
 
 		add_action('add_meta_boxes', array($this, 'addDelayedMetaBoxHook'), 10, 1);
 		add_filter('default_hidden_meta_boxes', array($this, 'filterDefaultHiddenBoxes'), 10, 2);
+		//Gutenberg support.
+		add_action('enqueue_block_editor_assets', array($this, 'enqueueGutenbergScripts'), 200);
 
 		add_action('admin_menu_editor-header', array($this, 'handleFormSubmission'), 10, 2);
 
@@ -340,4 +342,60 @@ class ameMetaBoxEditor extends ameModule implements ameExportableModule {
 		$this->settings = null;
 	}
 
+	/**
+	 * Add a script that will remove Gutenberg document panels that correspond to hidden meta boxes.
+	 */
+	public function enqueueGutenbergScripts() {
+		$currentScreen = get_current_screen();
+		if ( empty($currentScreen) ) {
+			return;
+		}
+		$currentUser = wp_get_current_user();
+
+		$boxesToPanels = array(
+			'slugdiv'          => 'post-link',
+			'postexcerpt'      => 'post-excerpt',
+			'postimagediv'     => 'featured-image',
+			'commentstatusdiv' => 'discussion-panel',
+			'categorydiv'      => 'taxonomy-panel-category',
+			'pageparentdiv'    => 'page-attributes',
+		);
+
+		$panelsToRemove = array();
+		$metaBoxes = $this->getScreenSettings($currentScreen->id);
+		$presentBoxes = $metaBoxes->getPresentBoxes();
+		foreach ($presentBoxes as $box) {
+			if ( $box->isAvailableTo($currentUser, $this->menuEditor) ) {
+				continue;
+			}
+
+			//What's the panel name for this box?
+			$boxId = $box->getId();
+			if ( isset($boxesToPanels[$boxId]) ) {
+				$panelsToRemove[] = $boxesToPanels[$boxId];
+			} else if ( preg_match('/^tagsdiv-(?P<taxonomy>.++)$/', $boxId, $matches) ) {
+				$panelsToRemove[] = 'taxonomy-panel-' . $matches['taxonomy'];
+			}
+			//We deliberately skip non-core boxes. For now, the remove_meta_box() call
+			//in processMetaBoxes() seems to remove them effectively.
+		}
+
+		if ( empty($panelsToRemove) ) {
+			return;
+		}
+
+		wp_enqueue_auto_versioned_script(
+			'ame-hide-gutenberg-panels',
+			plugins_url('hide-gutenberg-panels.js', __FILE__),
+			array('wp-data', 'wp-blocks', 'wp-edit-post')
+		);
+
+		wp_localize_script(
+			'ame-hide-gutenberg-panels',
+			'wsAmeGutenbergPanelData',
+			array(
+				'panelsToRemove' => $panelsToRemove
+			)
+		);
+	}
 }

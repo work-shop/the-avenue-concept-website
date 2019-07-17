@@ -111,6 +111,7 @@ abstract class ameMenuItem {
 	        //Internal fields that may not map directly to WP menu structures.
 			'open_in' => 'same_window', //'new_window', 'iframe' or 'same_window' (the default)
             'iframe_height' => 0,
+            'is_iframe_scroll_disabled' => false,
 			'template_id' => '', //The default menu item that this item is based on.
 			'is_plugin_page' => false,
 			'custom' => false,
@@ -163,6 +164,7 @@ abstract class ameMenuItem {
 			'icon_url' => 'dashicons-admin-generic',
 			'open_in' => 'same_window',
 			'iframe_height' => 0,
+			'is_iframe_scroll_disabled' => false,
 			'is_plugin_page' => false,
 			'page_heading' => '',
 			'colors' => false,

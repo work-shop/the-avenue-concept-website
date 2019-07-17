@@ -68,7 +68,7 @@ class MetaSeoLinkListTable extends WP_List_Table
             <?php endif ?>
 
             <input type="hidden" name="page" value="metaseo_image_meta"/>
-            <?php // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+            <?php // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
             ?>
             <?php if (!empty($_REQUEST['post_status'])) : ?>
                 <input type="hidden" name="post_status" value="<?php echo esc_attr($_REQUEST['post_status']); ?>"/>
@@ -263,9 +263,9 @@ class MetaSeoLinkListTable extends WP_List_Table
     protected function get_sortable_columns() // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps -- extends from WP_List_Table class
     {
         $sortable = array(
-            'post_id'        => array('post_title', true),
             'col_link_url'   => array('link_url', true),
             'col_link_title' => array('meta_title', true),
+            'col_link_label' => array('link_text', true),
             'col_follow'     => array('follow', true),
         );
 
@@ -286,15 +286,15 @@ class MetaSeoLinkListTable extends WP_List_Table
         $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $current_url = remove_query_arg('paged', $current_url);
 
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         if (isset($_GET['orderby'])) {
-            // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+            // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
             $current_orderby = $_GET['orderby'];
         } else {
             $current_orderby = '';
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         if (isset($_GET['order']) && 'desc' === $_GET['order']) {
             $current_order = 'desc';
         } else {
@@ -394,7 +394,7 @@ class MetaSeoLinkListTable extends WP_List_Table
         $this->months = $this->getMonths();
 
         $where = array('1=1');
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         $keyword = !empty($_GET['txtkeyword']) ? $_GET['txtkeyword'] : '';
         if (isset($keyword) && $keyword !== '') {
             $where[] .= $wpdb->prepare('(link_text LIKE %s OR link_url LIKE %s)', array(
@@ -437,7 +437,7 @@ class MetaSeoLinkListTable extends WP_List_Table
             add_user_meta(get_current_user_id(), 'metaseo_broken_link_per_page', $per_page);
         }
 
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         $paged = !empty($_GET['paged']) ? $_GET['paged'] : '';
         if (empty($paged) || !is_numeric($paged) || $paged <= 0) {
             $paged = 1;
@@ -493,7 +493,7 @@ class MetaSeoLinkListTable extends WP_List_Table
      */
     public function searchBox1()
     {
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         if (empty($_REQUEST['txtkeyword']) && !$this->has_items()) {
             return;
         }
@@ -547,7 +547,7 @@ class MetaSeoLinkListTable extends WP_List_Table
      */
     public function sourceFilter()
     {
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         $link_source = isset($_GET['metaseo_link_source']) ? $_GET['metaseo_link_source'] : 0;
         ?>
         <label>
@@ -581,7 +581,7 @@ class MetaSeoLinkListTable extends WP_List_Table
         if (!$month_count || (1 === (int) $month_count && 0 === (int) $this->months[0]->month)) {
             return;
         }
-        // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:ignore WordPress.Security.NonceVerification.Recommended -- No action, nonce is not required
         $m = isset($_REQUEST['sldate']) ? $_REQUEST['sldate'] : 0;
         ?>
         <label for="filter-by-date"
@@ -613,6 +613,69 @@ class MetaSeoLinkListTable extends WP_List_Table
     }
 
     /**
+     * Check post has blocks.
+     *
+     * @param integer $postId  Id of post
+     * @param string  $linkUrl Link value
+     *
+     * @return boolean
+     */
+    public function checkBlocks($postId, $linkUrl)
+    {
+        global $wp_version;
+        $allowed_blocks = array(
+            // Classic blocks have their blockName set to null.
+            null,
+            'core/button',
+            'core/paragraph',
+            'core/heading',
+            'core/list',
+            'core/quote',
+            'core/cover',
+            'core/html',
+            'core/verse',
+            'core/preformatted',
+            'core/pullquote',
+            'core/table',
+            'core/media-text'
+        );
+        $output = true;
+        if (version_compare($wp_version, '5.0', '>=')) {
+            if (function_exists('has_blocks')) {
+                if (has_blocks((int)$postId)) {
+                    $post = get_post((int)$postId);
+                    $blocks = parse_blocks($post->post_content);
+
+                    foreach ($blocks as $block) {
+                        if (in_array($block['blockName'], $allowed_blocks, true)) {
+                            if (!empty($block['innerBlocks'])) {
+                                // Skip the block if it has disallowed or nested inner blocks.
+                                foreach ($block['innerBlocks'] as $inner_block) {
+                                    if (!in_array($inner_block['blockName'], $allowed_blocks, true) ||
+                                        !empty($inner_block['innerBlocks'])
+                                    ) {
+                                        continue;
+                                    }
+                                }
+                            }
+
+                            if (strpos($block['innerHTML'], $linkUrl) !== false) {
+                                $output = false;
+                            }
+                        }
+                    }
+                } else {
+                    $output = false;
+                }
+            }
+        } else {
+            $output = false;
+        }
+
+        return $output;
+    }
+
+    /**
      * Generate the table rows
      *
      * @return void
@@ -623,6 +686,12 @@ class MetaSeoLinkListTable extends WP_List_Table
         list($columns) = $this->get_column_info();
         if (!empty($records)) {
             foreach ($records as $rec) {
+                $has_block = $this->checkBlocks($rec->source_id, $rec->link_url);
+                $blocks_class = '';
+                if ($has_block) {
+                    $blocks_class = 'wpms-blocks-active';
+                }
+
                 echo '<tr id="' . esc_attr('record_' . $rec->id) . '" data-link="' . esc_attr($rec->id) . '"
                  data-post_id="' . esc_attr($rec->source_id) . '">';
                 foreach ($columns as $column_name => $column_display_name) {
@@ -670,9 +739,13 @@ class MetaSeoLinkListTable extends WP_List_Table
                         case 'col_link_title':
                             echo '<td colspan="3">';
                             echo '<input type="text" data-post_id="' . esc_attr($rec->source_id) . '" name="metaseo_link_title"
-                             id="metaseo_link_title" class="metaseo_link_title" value="' . esc_attr($rec->meta_title) . '">';
-                            echo '<div data-post_id="' . esc_attr($rec->source_id) . '"
-                             class="wpms_update_link">' . esc_html__('Update', 'wp-meta-seo') . '</div>';
+                             id="metaseo_link_title" class="metaseo_link_title '.esc_attr($blocks_class).'" value="' . esc_attr($rec->meta_title) . '">';
+                            if ($has_block) {
+                                echo '<i class="material-icons wpms-material-icons-gutenberg label-dash-widgets"
+                             data-alt="'.esc_attr__('We can\'t update this link title because it\'s in a Gutenberg block and it has no alt/title attribute', 'wp-meta-seo').'">info</i>';
+                            }
+                            echo '<button type="button" data-post_id="' . esc_attr($rec->source_id) . '"
+                             class="wpms_update_link ju-button orange-button wpms-small-btn">' . esc_html__('Update', 'wp-meta-seo') . '</button>';
                             echo '<strong class="wpms_mesage_link">' . esc_html__('Saved.', 'wp-meta-seo') . '</strong>';
                             echo '<strong class="wpms_error_mesage_link">' . esc_html__('Error.', 'wp-meta-seo') . '</strong>';
                             echo '</td>';
@@ -709,7 +782,7 @@ class MetaSeoLinkListTable extends WP_List_Table
         $current_url = set_url_scheme('http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
         $redirect    = false;
 
-        // phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification -- No action, nonce is not required
+        // phpcs:disable WordPress.Security.NonceVerification.Missing -- No action, nonce is not required
         if (isset($_POST['txtkeyword'])) {
             $current_url = add_query_arg(
                 array(

@@ -9,7 +9,7 @@ jQuery(document).ready(function ($) {
         var meta_title = $('#metaseo_wpmseo_title').val();
         var meta_desc = $('#metaseo_wpmseo_desc').val();
 
-        if (wpmseoMetaboxL10n.plugin_active.indexOf('gutenberg.php') !== -1 && typeof wp.blocks !== "undefined") {
+        if (typeof wp.blocks !== "undefined") {
             mpageurl = $('#wp-admin-bar-view').find('a').attr('href');
             current_editor = 'gutenberg';
             if (parseInt(first_load) === 1) {

@@ -346,14 +346,24 @@ class MetaSeoSitemap
                 '_',
                 str_replace('http://', '', str_replace('https://', '', ABSPATH))
             );
-            $value    = trim(ABSPATH, '/') . '/wpms-sitemap_' . $home_url . '.xml';
-            $link     = get_option('siteurl') . '/wpms-sitemap_' . $home_url . '.xml';
+            if ((int)$this->settings_sitemap['wpms_sitemap_root'] === 1) {
+                $value    = trim(ABSPATH, '/') . '/sitemap_' . $home_url . '.xml';
+                $link     = get_option('siteurl') . '/sitemap_' . $home_url . '.xml';
+            } else {
+                $value    = trim(ABSPATH, '/') . '/wpms-sitemap_' . $home_url . '.xml';
+                $link     = get_option('siteurl') . '/wpms-sitemap_' . $home_url . '.xml';
+            }
         } else {
-            $value = trim(ABSPATH, '/') . '/' . $this->wpms_sitemap_name;
-            $link  = get_option('siteurl') . '/' . $this->wpms_sitemap_name;
+            if ((int)$this->settings_sitemap['wpms_sitemap_root'] === 1) {
+                $value = trim(ABSPATH, '/') . '/' . $this->wpms_sitemap_default_name;
+                $link  = get_option('siteurl') . '/' . $this->wpms_sitemap_default_name;
+            } else {
+                $value = trim(ABSPATH, '/') . '/' . $this->wpms_sitemap_name;
+                $link  = get_option('siteurl') . '/' . $this->wpms_sitemap_name;
+            }
         }
         echo '<input readonly id="wpms_sitemap_link" name="_metaseo_settings_sitemap[wpms_sitemap_link]"
-         type="text" value="' . esc_attr($value) . '" size="50" class="wpms-large-input wpms-no-margin wpms_width_90" />';
+         type="text" value="' . esc_attr($link) . '" size="50" class="wpms-large-input wpms-no-margin wpms_width_90" />';
         echo '<a class="wpms-open-xml-sitemap ju-button orange-button waves-effect waves-light wpms-small-btn" href="' . esc_url($link) . '" target="_blank">' . esc_html__('Open', 'wp-meta-seo') . '</a>';
     }
 
@@ -592,7 +602,7 @@ class MetaSeoSitemap
                 'urlset'
             )
         );
-
+        $gglstmp_urlset->setAttribute('xmlns:xhtml', 'http://www.w3.org/1999/xhtml');
         /* add home page */
         $list_links[] = home_url('/');
         $url          = $gglstmp_urlset->appendChild($xml->createElement('url'));
@@ -621,6 +631,10 @@ class MetaSeoSitemap
                         $check_type = get_post_meta($id, '_menu_item_object', true);
                         $permalink  = $this->getPermalinkSitemap($check_type, $val->ID);
                         if ($permalink !== '#') {
+                            if (strpos($permalink, '#') !== false) {
+                                // Check anchor links
+                                $permalink = strstr($permalink, '#', true);
+                            }
                             if (!in_array($permalink, $list_links)) {
                                 $list_links[] = $permalink;
                                 if ($type !== 'taxonomy') {
@@ -693,7 +707,10 @@ class MetaSeoSitemap
                         if (empty($permalink)) {
                             $permalink = get_permalink($id);
                         }
-
+                        if (strpos($permalink, '#') !== false) {
+                            // Check anchor links
+                            $permalink = strstr($permalink, '#', true);
+                        }
                         if (!in_array($permalink, $list_links)) {
                             $list_links[] = $permalink;
                             if ($type === 'taxonomy') {
@@ -746,6 +763,10 @@ class MetaSeoSitemap
             foreach ($res as $val) {
                 /* get translation post id */
                 $permalink = get_permalink($val->ID);
+                if (strpos($permalink, '#') !== false) {
+                    // Check anchor links
+                    $permalink = strstr($permalink, '#', true);
+                }
                 if (!in_array($permalink, $list_links)) {
                     $list_links[] = $permalink;
                     $gglstmp_url  = $gglstmp_urlset->appendChild($xml->createElement('url'));
@@ -813,6 +834,10 @@ class MetaSeoSitemap
                     if (!empty($posts)) {
                         foreach ($posts as $val) {
                             $permalink = get_permalink($val->ID);
+                            if (strpos($permalink, '#') !== false) {
+                                // Check anchor links
+                                $permalink = strstr($permalink, '#', true);
+                            }
                             if (!in_array($permalink, $list_links)) {
                                 $list_links[] = $permalink;
                                 $gglstmp_url  = $gglstmp_urlset->appendChild($xml->createElement('url'));
@@ -864,6 +889,10 @@ class MetaSeoSitemap
             if (!empty($settings['wpms_sitemap_customUrl']) && $settings['wpms_sitemap_customUrl'] !== '{}') {
                 foreach ($settings['wpms_sitemap_customUrl'] as $key => $customUrl) {
                     if (!empty($listUrls[$key])) {
+                        if (strpos($listUrls[$key]['link'], '#') !== false) {
+                            // Check anchor links
+                            $listUrls[$key]['link'] = strstr($listUrls[$key]['link'], '#', true);
+                        }
                         if (!in_array($listUrls[$key]['link'], $list_links)) {
                             $list_links[] = $listUrls[$key]['link'];
                             $gglstmp_url  = $gglstmp_urlset->appendChild($xml->createElement('url'));
@@ -902,6 +931,10 @@ class MetaSeoSitemap
             foreach ($res as $val) {
                 /* get translation post id */
                 $permalink = get_permalink($val->ID);
+                if (strpos($permalink, '#') !== false) {
+                    // Check anchor links
+                    $permalink = strstr($permalink, '#', true);
+                }
                 if (!in_array($permalink, $list_links)) {
                     $list_links[] = $permalink;
                     $gglstmp_url  = $gglstmp_urlset->appendChild($xml->createElement('url'));
@@ -947,6 +980,10 @@ class MetaSeoSitemap
                 if (!empty($terms) && !is_wp_error($terms)) {
                     foreach ($terms as $term_value) {
                         $permalink = get_term_link((int) $term_value->term_id, $value);
+                        if (strpos($permalink, '#') !== false) {
+                            // Check anchor links
+                            $permalink = strstr($permalink, '#', true);
+                        }
                         if (!in_array($permalink, $list_links)) {
                             $list_links[] = $permalink;
                             $gglstmp_url  = $gglstmp_urlset->appendChild($xml->createElement('url'));
@@ -956,9 +993,7 @@ class MetaSeoSitemap
                             $lastmod = $gglstmp_url->appendChild($xml->createElement('lastmod'));
 
                             $now  = $wpdb->get_var(
-                                $wpdb->prepare('SELECT post_modified FROM ' . $wpdb->posts . ', ' . $wpdb->term_relationships . '
- WHERE post_status = %s AND term_taxonomy_id = %d
-  AND $wpdb->posts.ID = $wpdb->term_relationships.object_id ORDER BY post_modified DESC', array(
+                                $wpdb->prepare('SELECT post_modified FROM ' . $wpdb->posts . ', ' . $wpdb->term_relationships . ' WHERE post_status = %s AND term_taxonomy_id = %d AND $wpdb->posts.ID = $wpdb->term_relationships.object_id ORDER BY post_modified DESC', array(
                                     'publish',
                                     $term_value->term_taxonomy_id
                                 ))
@@ -1520,6 +1555,13 @@ ORDER BY p.post_date DESC', array('publish', $post_type, $taxo, $cat->slug)));
                 WPMSEO_VERSION,
                 true
             );
+            wp_enqueue_script(
+                'wpms_tabs_js',
+                plugins_url('assets/js/wpms-tabs.js', dirname(__FILE__)),
+                array('jquery'),
+                WPMSEO_VERSION,
+                true
+            );
             wp_enqueue_style(
                 'wpms_materialize_style',
                 plugins_url('assets/css/materialize/materialize_frontend_tab_theme.css', dirname(__FILE__)),
@@ -1530,8 +1572,9 @@ ORDER BY p.post_date DESC', array('publish', $post_type, $taxo, $cat->slug)));
             require_once(WPMETASEO_ADDON_PLUGIN_DIR . 'inc/page/sitemaps/theme/tab/menu_bar.php');
             require_once(WPMETASEO_ADDON_PLUGIN_DIR . 'inc/page/sitemaps/theme/tab/source_posts.php');
             require_once(WPMETASEO_ADDON_PLUGIN_DIR . 'inc/page/sitemaps/theme/tab/source_pages.php');
-            require_once(WPMETASEO_ADDON_PLUGIN_DIR . 'inc/page/sitemaps/theme/tab/source_urlcustom.php');
-
+            if (!empty($this->settings_sitemap['wpms_sitemap_customUrl'])) {
+                require_once(WPMETASEO_ADDON_PLUGIN_DIR . 'inc/page/sitemaps/theme/tab/source_urlcustom.php');
+            }
             // source menu
             $ids_menu   = array(0);
             $check_menu = array();
@@ -1856,51 +1899,19 @@ ORDER BY p.post_date DESC LIMIT 10', array('publish', 'post', $taxo, $cat->slug)
     {
         global $wpdb;
         $posts = array();
-        if ($post_type === 'product') {
-            $taxonomy_objects = array('product_cat');
-        } else {
-            $taxonomy_objects = get_object_taxonomies($post_type, 'names');
-        }
 
-        if (!empty($taxonomy_objects)) {
-            foreach ($taxonomy_objects as $taxo) {
-                $categorys = get_categories(array('hide_empty' => true, 'taxonomy' => $taxo));
-                foreach ($categorys as $cat) {
-                    $results = $wpdb->get_results($wpdb->prepare('SELECT p.ID as ID,p.post_title as post_title   
-FROM ' . $wpdb->posts . ' AS p
-INNER JOIN ' . $wpdb->term_relationships . ' AS tr ON (p.ID = tr.object_id)
-INNER JOIN ' . $wpdb->term_taxonomy . ' AS tt ON (tr.term_taxonomy_id = tt.term_taxonomy_id)
-INNER JOIN ' . $wpdb->terms . ' AS t ON (t.term_id = tt.term_id)
-WHERE   p.post_status = %s 
-    AND p.post_type = %s
-    AND tt.taxonomy = %s AND t.slug=%s  
-ORDER BY p.post_date DESC', array('publish', $post_type, $taxo, $cat->slug)));
-
-                    if (!empty($results)) {
-                        $obj           = new StdClass();
-                        $obj->cat_name = $cat->cat_name;
-                        $obj->cat_ID   = $cat->cat_ID;
-                        $obj->taxo     = $taxo;
-                        $obj->slug     = $cat->slug;
-                        $obj->results  = $results;
-                        $posts[]       = $obj;
-                    }
-                }
-            }
-        } else {
-            $results = $wpdb->get_results($wpdb->prepare('SELECT p.ID as ID,p.post_title as post_title   
+        $results = $wpdb->get_results($wpdb->prepare('SELECT p.ID as ID,p.post_title as post_title   
 FROM ' . $wpdb->posts . ' AS p
 WHERE   p.post_status = "publish" AND p.post_type = %s   
 ORDER BY p.post_date DESC', array($post_type)));
-            if (!empty($results)) {
-                $obj           = new StdClass();
-                $obj->cat_name = '';
-                $obj->cat_ID   = '';
-                $obj->taxo     = '';
-                $obj->slug     = '';
-                $obj->results  = $results;
-                $posts[]       = $obj;
-            }
+        if (!empty($results)) {
+            $obj = new StdClass();
+            $obj->cat_name = '';
+            $obj->cat_ID = '';
+            $obj->taxo = '';
+            $obj->slug = '';
+            $obj->results = $results;
+            $posts[] = $obj;
         }
 
         return $posts;
@@ -1960,6 +1971,9 @@ ORDER BY p.post_date DESC', array($post_type)));
                     $title        = $post_submenu->post_title;
                     if (empty($title)) {
                         $term  = get_term($id_menu, $type_menu);
+                        if (empty($term->name)) {
+                            continue;
+                        }
                         $title = $term->name;
                     }
                 } else {
@@ -2345,10 +2359,18 @@ ORDER BY p.post_date DESC', array($post_type)));
             }
         }
 
+        if ((int)$this->settings_sitemap['wpms_sitemap_root'] === 1) {
+            $sitemapUrl = site_url($this->wpms_sitemap_default_name);
+        } else {
+            $sitemapUrl = site_url($this->wpms_sitemap_name);
+        }
+
         /**
          * Submit sitemaps, don't ping if blog is not public.
+         *
+         * @param string Sitemap URL
          */
-        do_action('wpms_submit_sitemap');
+        do_action('wpms_submit_sitemap', $sitemapUrl);
         if ($type === 'ajax') {
             wp_send_json(array('status' => true, 'message' => 'success'));
         }

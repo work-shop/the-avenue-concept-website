@@ -29,8 +29,8 @@ if (isset($_GET['action'])) {
     include_once(ABSPATH . 'wp-admin/includes/class-wp-upgrader.php');
 
     $plugin = isset($_REQUEST['plugin']) ? trim($_REQUEST['plugin']) : '';
-    $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-    if ('install-plugin' === $action) {
+    $request_action = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+    if ('install-plugin' === $request_action) {
         /**
          * Filter check capability of current user to install plugin
          *
@@ -71,19 +71,19 @@ if (isset($_GET['action'])) {
             wp_die($api);
         }
 
-        $title        = __('Plugin Install', 'wp-meta-seo');
-        $parent_file  = 'plugins.php';
-        $submenu_file = 'plugin-install.php';
-        $title        = sprintf(__('Installing Plugin: %s', 'wp-meta-seo'), $api->name . ' ' . $api->version);
+        $plugin_title        = __('Plugin Install', 'wp-meta-seo');
+        $plugin_parent_file  = 'plugins.php';
+        $plugin_submenu_file = 'plugin-install.php';
+        $plugin_title        = sprintf(__('Installing Plugin: %s', 'wp-meta-seo'), $api->name . ' ' . $api->version);
         $nonce        = 'install-plugin_' . $plugin;
         $url          = 'update.php?action=install-plugin&plugin=' . urlencode($plugin);
         if (isset($_GET['from'])) {
             $url .= '&from=' . urlencode(stripslashes($_GET['from']));
         }
 
-        $upgrader = new Plugin_Upgrader(new Plugin_Installer_Skin(compact('title', 'url', 'nonce', 'plugin', 'api')));
+        $upgrader = new Plugin_Upgrader(new Plugin_Installer_Skin(compact('plugin_title', 'url', 'nonce', 'plugin', 'api')));
         $upgrader->install($api->download_link);
-    } elseif ('activate' === $action) {
+    } elseif ('activate' === $request_action) {
         /**
          * Filter check capability of current user to active plugin
          *
