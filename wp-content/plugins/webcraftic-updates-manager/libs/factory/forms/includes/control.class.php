@@ -14,14 +14,14 @@
 		exit;
 	}
 
-	if( !class_exists('Wbcr_FactoryForms400_Control') ) {
+	if( !class_exists('Wbcr_FactoryForms418_Control') ) {
 
 		/**
 		 * The base class for all controls.
 		 *
 		 * @since 1.0.0
 		 */
-		abstract class Wbcr_FactoryForms400_Control extends Wbcr_FactoryForms400_FormElement {
+		abstract class Wbcr_FactoryForms418_Control extends Wbcr_FactoryForms418_FormElement {
 
 			/**
 			 * Is this element a control?
@@ -43,7 +43,7 @@
 			 * A provider that is used to get values.
 			 *
 			 * @since 1.0.0
-			 * @var Wbcr_IFactoryForms400_ValueProvider
+			 * @var Wbcr_IFactoryForms418_ValueProvider
 			 */
 			protected $provider = null;
 
@@ -51,7 +51,7 @@
 			 * Create a new instance of the control.
 			 *
 			 * @param mixed[] $options
-			 * @param FactoryForms400_Form $form
+			 * @param FactoryForms418_Form $form
 			 * @param null $provider
 			 * @since 1.0.0
 			 * @return void
@@ -66,7 +66,7 @@
 			 * Sets a provider for the control.
 			 *
 			 * @since 1.0.0
-			 * @param IFactoryForms400_ValueProvider $provider
+			 * @param IFactoryForms418_ValueProvider $provider
 			 * @return void
 			 */
 			public function setProvider($provider)
@@ -189,18 +189,41 @@
 			 */
 			public function getSubmitValue($name, $sub_name)
 			{
-				$nameOnForm = $this->getNameOnForm($name);
+				$name_on_form = $this->getNameOnForm($name);
 
-				$value = isset($_POST[$nameOnForm])
-					? $_POST[$nameOnForm]
+				$raw_value = isset($_POST[$name_on_form])
+					? $_POST[$name_on_form]
 					: null;
 
+				$value = $raw_value;
+
 				if( is_array($value) ) {
+					$value = array_map('sanitize_text_field', $value);
 					$value = implode(',', $value);
+				} else {
+					$value = sanitize_text_field($value);
 				}
 
-				return sanitize_text_field($value);
+				return $this->filterValue($value, $raw_value);
 			}
+
+			/**
+			 * @param $value
+			 * @param $raw_value
+			 * @return mixed
+			 */
+			protected function filterValue($value, $raw_value)
+			{
+				$sanitize_func = $this->getOption('filter_value');
+
+				// if the data options is a valid callback for an object method
+				if( !empty($sanitize_func) && ((is_array($sanitize_func) && count($sanitize_func) == 2 && gettype($sanitize_func[0]) == 'object') || function_exists($sanitize_func)) ) {
+					return call_user_func_array($sanitize_func, array($value, $raw_value));
+				}
+
+				return $value;
+			}
+
 
 			/**
 			 * Returns an array of value to save received after submission of a form.

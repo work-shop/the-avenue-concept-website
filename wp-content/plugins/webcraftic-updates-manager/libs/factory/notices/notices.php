@@ -19,12 +19,12 @@
 	 *
 	 * @since 1.0.0
 	 */
-	if( !class_exists('Wbcr_FactoryNotices400') ) {
+	if( !class_exists('Wbcr_FactoryNotices407') ) {
 
-		class Wbcr_FactoryNotices400 {
+		class Wbcr_FactoryNotices407 {
 
 			/**
-			 * @var Wbcr_Factory400_Plugin
+			 * @var Wbcr_Factory420_Plugin
 			 */
 			protected $plugin;
 			/**
@@ -35,7 +35,17 @@
 			/**
 			 * @var array
 			 */
-			protected $default_where = array('plugins', 'dashboard', 'edit');
+			protected $default_where = array(
+				'plugins',
+				'themes',
+				'dashboard',
+				'edit',
+				'settings',
+				'dashboard-network',
+				'plugins-network',
+				'themes-network',
+				'settings-network',
+			);
 
 			/**
 			 * @var array
@@ -47,19 +57,19 @@
 			 */
 			public function __construct()
 			{
-				add_action('wbcr_factory_notices_400_plugin_created', array($this, 'init'));
+				add_action('wbcr_factory_notices_407_plugin_created', array($this, 'init'));
 			}
 
 			/**
-			 * @param Wbcr_Factory400_Plugin $plugin
+			 * @param Wbcr_Factory420_Plugin $plugin
 			 */
-			public function init(Wbcr_Factory400_Plugin $plugin)
+			public function init(Wbcr_Factory420_Plugin $plugin)
 			{
 				//default notices
 				//---
 
 				$this->plugin = $plugin;
-				$this->dissmised_notices = $this->plugin->getOption('factory_dismissed_notices', array());
+				$this->dissmised_notices = $this->plugin->getPopulateOption('factory_dismissed_notices', array());
 
 				add_action('current_screen', array($this, 'currentScreenAction'));
 
@@ -78,7 +88,12 @@
 			 */
 			public function currentScreenAction()
 			{
-				$this->notices = apply_filters('wbcr_factory_admin_notices', $this->notices, $this->plugin->getPluginName());
+				$this->notices = apply_filters('wbcr_factory_notices_407_list', $this->notices, $this->plugin->getPluginName());
+
+				$this->notices = wbcr_factory_420_apply_filters_deprecated('wbcr_factory_admin_notices', array(
+					$this->notices,
+					$this->plugin->getPluginName()
+				), '4.0.5', 'wbcr_factory_notices_407_list');
 
 				if( count($this->notices) == 0 ) {
 					return;
@@ -93,9 +108,7 @@
 						continue;
 					}
 
-					$where = !isset($notice['where']) || empty($notice['where'])
-						? $this->default_where
-						: $notice['where'];
+					$where = !isset($notice['where']) || empty($notice['where']) ? $this->default_where : $notice['where'];
 
 					if( in_array($screen->base, $where) && !$this->isDissmissed($notice['id']) ) {
 						$has_notices = true;
@@ -105,7 +118,15 @@
 
 				if( $has_notices ) {
 					add_action('admin_footer', array($this, 'printNoticesScripts'));
-					add_action('admin_notices', array($this, 'showNotices'));
+
+					if( $this->plugin->isNetworkActive() ) {
+						if( current_user_can('manage_network') ) {
+							add_action('network_admin_notices', array($this, 'showNotices'));
+							add_action('admin_notices', array($this, 'showNotices'));
+						}
+					} else {
+						add_action('admin_notices', array($this, 'showNotices'));
+					}
 				}
 			}
 
@@ -132,9 +153,7 @@
 						continue;
 					}
 
-					$where = !isset($notice['where']) || empty($notice['where'])
-						? $this->default_where
-						: $notice['where'];
+					$where = !isset($notice['where']) || empty($notice['where']) ? $this->default_where : $notice['where'];
 
 					if( in_array($screen->base, $where) && !$this->isDissmissed($notice['id']) ) {
 						$this->showNotice($notice);
@@ -164,21 +183,13 @@
 					return;
 				}
 
-				$type = !isset($data['type']) || empty($data['type'])
-					? 'error'
-					: $data['type'];
+				$type = !isset($data['type']) || empty($data['type']) ? 'error' : $data['type'];
 
-				$dismissible = !isset($data['dismissible']) || empty($data['dismissible'])
-					? false
-					: $data['dismissible'];
+				$dismissible = !isset($data['dismissible']) || empty($data['dismissible']) ? false : $data['dismissible'];
 
-				$dismiss_expires = !isset($data['dismiss_expires']) || empty($data['dismiss_expires'])
-					? 0
-					: $data['dismiss_expires'];
+				$dismiss_expires = !isset($data['dismiss_expires']) || empty($data['dismiss_expires']) ? 0 : $data['dismiss_expires'];
 
-				$classes = !isset($data['classes']) || empty($data['classes'])
-					? array()
-					: $data['classes'];
+				$classes = !isset($data['classes']) || empty($data['classes']) ? array() : $data['classes'];
 
 				$plugin_name = str_replace('_', '-', $this->plugin->getPluginName());
 
@@ -208,22 +219,18 @@
 				check_admin_referer($this->plugin->getPluginName() . '_factory_dismiss_notice', 'nonce');
 
 				// Имя уведомления (идентификатор)
-				$name = empty($_POST['name'])
-					? null
-					: sanitize_text_field($_POST['name']);
+				$name = empty($_POST['name']) ? null : sanitize_text_field($_POST['name']);
 
 				// Время в Unix timestamp, по истечению, которого уведомление снова будет показано
 				// Если передан 0, то уведомление будет скрыто навсегда
-				$expires = !isset($_POST['expires']) || empty($_POST['expires'])
-					? 0
-					: (int)$_POST['expires'];
+				$expires = !isset($_POST['expires']) || empty($_POST['expires']) ? 0 : (int)$_POST['expires'];
 
 				if( empty($name) ) {
 					echo json_encode(array('error' => 'Attribute name is empty!'));
 					exit;
 				}
 
-				$notices = $this->plugin->getOption("factory_dismissed_notices", array());
+				$notices = $this->plugin->getPopulateOption("factory_dismissed_notices", array());
 
 				if( !empty($notices) ) {
 					foreach((array)$notices as $notice_id => $notice_expires) {
@@ -235,7 +242,7 @@
 
 				$notices[$name] = $expires;
 
-				$this->plugin->updateOption('factory_dismissed_notices', $notices);
+				$this->plugin->updatePopulateOption('factory_dismissed_notices', $notices);
 
 				echo json_encode(array('success' => 'ok'));
 				exit;
@@ -287,5 +294,5 @@
 			}
 		}
 
-		new Wbcr_FactoryNotices400();
+		new Wbcr_FactoryNotices407();
 	}

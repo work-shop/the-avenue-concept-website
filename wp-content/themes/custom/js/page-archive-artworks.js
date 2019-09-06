@@ -167,16 +167,34 @@ ArtworksArchiveManager.prototype.doInitialStateTransition = function( diff ) {
 
 ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject ) {
 
-    //console.log('doStateTransitionByDiff: ');
-    //console.log( diffObject );
+    console.log('doStateTransitionByDiff: ');
+    console.log( diffObject );
 
     //const fade_duration = 500;
+    //console.log(diffObject.remove.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', '));
+    //console.log(diffObject);
 
-    var artworksToRemove = $( diffObject.remove.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
-    var artworksToAdd = $( diffObject.add.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
+    
+    //add artworks
+    for (var i = 0; i < diffObject.add.length; i++) {
+        var artworkClass = escapeSelector(diffObject.add[i].slug);
+        artworkClass = '.artwork-' + artworkClass;
+        $(artworkClass).removeClass( artworksHiddenClass ).addClass( artworksActiveClass );
+    }
 
-    artworksToAdd.removeClass( artworksHiddenClass ).addClass( artworksActiveClass );
-    artworksToRemove.removeClass( artworksActiveClass ).addClass( artworksHiddenClass );
+    //remove artworks
+    for (var i = 0; i < diffObject.remove.length; i++) {
+        var artworkClass = escapeSelector(diffObject.remove[i].slug);
+        artworkClass = '.artwork-' + artworkClass;
+        $(artworkClass).removeClass( artworksActiveClass ).addClass( artworksHiddenClass );
+    }
+
+
+    //var artworksToRemove = $( diffObject.remove.map( function( artwork ) { return ".artwork-" + artwork.slug; }).join(", ") );
+    //var artworksToAdd = $( diffObject.add.map( function( artwork ) { return '.artwork-' + artwork.slug; }).join(', ') );
+
+    //artworksToAdd.removeClass( artworksHiddenClass ).addClass( artworksActiveClass );
+    //artworksToRemove.removeClass( artworksActiveClass ).addClass( artworksHiddenClass );
 
     $('.artwork-item').removeClass('artwork-even');
     $('.artwork-active:even').addClass('artwork-even');
@@ -184,6 +202,10 @@ ArtworksArchiveManager.prototype.doStateTransitionByDiff = function( diffObject 
     this.map.update( this.renderer.renderMapObjects( this.filterer.getCurrentState() ) );
 
 };
+
+function escapeSelector(s){
+    return s.replace( /(:|\.|\[|\])/g, "\\$1" );
+}
 
 
 
@@ -581,7 +603,7 @@ ArtworksArchiveManager.prototype.showError = function( errorText ) {
  * This method clears any errors that are currently rendered to the page.
  */
  ArtworksArchiveManager.prototype.clearErrors = function() {
-    console.log( 'clearing pre-existing errors.' );
+    //console.log( 'clearing pre-existing errors.' );
 
     if( $('body').hasClass('artworks-error-on') ){
         $('body').removeClass('artworks-error-on').addClass('artworks-error-off');

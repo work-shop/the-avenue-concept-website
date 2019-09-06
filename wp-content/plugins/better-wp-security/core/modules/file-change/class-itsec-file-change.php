@@ -120,8 +120,7 @@ class ITSEC_File_Change {
 	 * @param Ithemes_Sync_API $api Sync API object.
 	 */
 	public function register_sync_verbs( $api ) {
-		$api->register( 'itsec-perform-file-scan', 'Ithemes_Sync_Verb_ITSEC_Perform_File_Scan', dirname( __FILE__ ) . '/sync-verbs/itsec-perform-file-scan.php' );
-		$api->register( 'itsec-ping-file-scan', 'Ithemes_Sync_Verb_ITSEC_Ping_File_Scan', dirname( __FILE__ ) . '/sync-verbs/itsec-ping-file-scan.php' );
+		$api->register( 'itsec-latest-file-scan', 'Ithemes_Sync_Verb_ITSEC_Latest_File_Scan', dirname( __FILE__ ) . '/sync-verbs/itsec-latest-file-scan.php' );
 	}
 
 	/**

@@ -49,9 +49,9 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 			$current_time,
 			$current_time_gmt,
 			$is_iwp_call,
-			$request_type,
 			$wp_upload_dir,
-			$login_interstitial;
+			$login_interstitial,
+			$version;
 
 
 		/**
@@ -899,6 +899,27 @@ if ( ! class_exists( 'ITSEC_Core' ) ) {
 			}
 
 			return false;
+		}
+
+		/**
+		 * Get the actual version string of the plugin.
+		 *
+		 * This should be used rarely. Any decision flows based off a "version" should be made using the Plugin Build.
+		 *
+		 * @return string
+		 */
+		public static function get_plugin_version() {
+			$self = self::get_instance();
+
+			if ( ! isset( $self->version ) ) {
+				$data = get_file_data( $self->plugin_file, array(
+					'Version' => 'Version'
+				) );
+
+				$self->version = $data['Version'];
+			}
+
+			return $self->version;
 		}
 	}
 }

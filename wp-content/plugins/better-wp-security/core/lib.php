@@ -1065,8 +1065,26 @@ final class ITSEC_Lib {
 		ITSEC_Modules::set_setting( 'global', 'cron_test_time', $time );
 	}
 
+	/**
+	 * Remove the forward slash.
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public static function unfwdslash( $string ) {
+		return ltrim( $string, '/' );
+	}
+
+	/**
+	 * Add a forward slash.
+	 *
+	 * @param string $string
+	 *
+	 * @return string
+	 */
 	public static function fwdslash( $string ) {
-		return '/' . ltrim( $string, '/' );
+		return '/' . self::unfwdslash( $string );
 	}
 
 	/**

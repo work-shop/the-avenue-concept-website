@@ -804,3 +804,10 @@
 5.2.1 - 2019-06-06 - Chris Jean & Timothy Jacobs
 	Enhancement: Add Security Message when a Notification Center email fails to send.
 	Enhancement: Replace Trace IP with IP Tracker Online.
+5.2.2 - 2019-06-28 - Chris Jean & Timothy Jacobs
+	Enhancement: New iThemes Sync Verb support for File Change.
+	Tweak: Add additional information about the login attempt when calling the Network Brute Force API.
+5.2.3 - 2019-08-12 - Chris Jean & Timothy Jacobs
+	Bug Fix: Hide Backend Bypass.
+	Bug Fix: Strict Standards error during Sync request.
+	Bug Fix: wp_die() if a login interstitial session fails to be created instead of throwing a fatal error.

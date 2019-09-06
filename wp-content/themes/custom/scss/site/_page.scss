@@ -98,7 +98,7 @@ $delay: 1.9s;
 
 
 .page-nav{
-	padding: 20px 0 10px 0;
+	padding: 13px 0 10px 0;
 	z-index: 5;
 	min-height: 70px;
 	width: 100%;
@@ -124,12 +124,13 @@ $delay: 1.9s;
 
 		a{
 			display: block;
-			font-size: 16px;
-			color: lighten( $dark, 10% );
-			@extend .tracked-less;
-			@extend .uppercase;
-			padding: 12px 10px 8px 10px;
-			font-weight: 700;
+			font-size: 15px;
+			//color: lighten( $dark, 10% );
+			//@extend .tracked-less;
+			//@extend .uppercase;
+			color: $dark;
+			padding: 12px 6px 8px 6px;
+			font-family: $font-bold;
 
 			@media screen and (min-width: $sm) {
 				transition: transform .05s;
@@ -148,12 +149,17 @@ $delay: 1.9s;
 			&:hover{
 				transform: scale(1.1);
 			}
+
+			&.active{
+				//border-bottom: 2px solid;
+				color: $medium;
+			}
 		}
 	}
 
 	&.after{
 		position: fixed;
-		top: $nav-height - 10px;
+		top: $nav-height;
 		background: rgb(247,247,247);
 		border-bottom: 1px solid rgb(245,245,245);
 
@@ -162,3 +168,5 @@ $delay: 1.9s;
 		}
 	}
 }
+
+

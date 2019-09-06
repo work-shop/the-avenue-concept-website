@@ -38,7 +38,7 @@ class Options extends OptionsAbstract {
 					),
 					'<a href="https://sendgrid.com" target="_blank" rel="noopener noreferrer">',
 					'</a>',
-					'<a href="https://wpforms.com/fix-wordpress-email-notifications-with-sendgrid/" target="_blank" rel="noopener noreferrer">',
+					'<a href="https://wpmailsmtp.com/docs/how-to-set-up-the-sendgrid-mailer-in-wp-mail-smtp/" target="_blank" rel="noopener noreferrer">',
 					'</a>'
 				),
 			)
@@ -63,7 +63,7 @@ class Options extends OptionsAbstract {
 					/>
 					<?php $this->display_const_set_message( 'WPMS_SENDGRID_API_KEY' ); ?>
 				<?php else : ?>
-					<input type="text" spellcheck="false"
+					<input type="password" spellcheck="false"
 						name="wp-mail-smtp[<?php echo esc_attr( $this->get_slug() ); ?>][api_key]"
 						value="<?php echo esc_attr( $this->options->get( $this->get_slug(), 'api_key' ) ); ?>"
 						id="wp-mail-smtp-setting-<?php echo esc_attr( $this->get_slug() ); ?>-api_key"

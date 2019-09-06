@@ -17,6 +17,7 @@ require_once( __ROOT__ . '/functions/class-ws-site-init.php' );
 
 require_once( __ROOT__ . '/functions/library/class-ws-flexible-content.php' );
 require_once( __ROOT__ . '/functions/library/class-helpers.php' );
+require_once( __ROOT__ . '/functions/ecommerce-helpers.php' );
 
 new WS_Site();
 new WS_Site_Admin();
@@ -186,35 +187,133 @@ function ts_hide_pages_in_wp_admin($query) {
   }
 }
 
-  /**
- * Use * for origin
+/**
+* Use * for origin
+*/
+add_action( 'rest_api_init', function() {
+
+  remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
+  add_filter( 'rest_pre_serve_request', function( $value ) {
+    header( 'Access-Control-Allow-Origin: *' );
+    return $value;
+
+  });
+}, 1 );
+
+function grant_gforms_editor_access() {
+
+  $role = get_role( 'editor' );
+  $role->add_cap( 'gform_full_access' );
+}
+// Tie into the 'after_switch_theme' hook
+add_action( 'init', 'grant_gforms_editor_access' );
+
+add_filter( 'gform_confirmation_anchor', '__return_false' );
+
+add_filter( 'gform_confirmation_3', 'custom_confirmation_message', 10, 4 );
+function custom_confirmation_message( $confirmation, $form, $entry, $ajax ) {
+  //$confirmation = $entry['id'];
+  $entryId =  $entry['id'];
+  $confirmation = '<script>var entryId = ' . $entryId . '</script>';
+  return $confirmation;
+}
+
+
+
+
+
+function add_donation_purpose_to_cart_item( $cart_item_data, $product_id, $variation_id ) {
+  $donation_purpose_value = filter_input( INPUT_POST, 'donation-purpose' );
+
+  if ( empty( $donation_purpose_value ) ) {
+    return $cart_item_data;
+  }
+
+  $cart_item_data['donation-purpose'] = $donation_purpose_value;
+
+  return $cart_item_data;
+}
+
+add_filter( 'woocommerce_add_cart_item_data', 'add_donation_purpose_to_cart_item', 10, 3 );
+
+
+
+function display_donation_purpose_in_cart( $item_data, $cart_item ) {
+  if ( empty( $cart_item['donation-purpose'] ) ) {
+    //die;
+    return $item_data;
+  } 
+
+  $item_data[] = array(
+    'key'     => __( 'Donation Purpose', 'tac' ),
+    'value'   => wc_clean( $cart_item['donation-purpose'] ),
+    'display' => '',
+  );
+
+  return $item_data;
+}
+
+add_filter( 'woocommerce_get_item_data', 'display_donation_purpose_in_cart', 10, 2 );
+
+
+function add_donation_purpose_to_order_items( $item, $cart_item_key, $values, $order ) {
+  if ( empty( $values['donation-purpose'] ) ) {
+    return;
+  }
+
+  $item->add_meta_data( __( 'Donation Purpose', 'tac' ), $values['donation-purpose'] );
+}
+
+add_action( 'woocommerce_checkout_create_order_line_item', 'add_donation_purpose_to_order_items', 10, 4 );
+
+
+//rename order status
+add_filter( 'wc_order_statuses', 'rename_order_statuses', 20, 1 );
+function rename_order_statuses( $order_statuses ) {
+  $order_statuses['wc-processing'] = _x( 'Paid', 'Order status', 'woocommerce' );
+  return $order_statuses;
+}
+
+add_filter( 'bulk_actions-edit-shop_order', 'custom_dropdown_bulk_actions_shop_order', 20, 1 );
+function custom_dropdown_bulk_actions_shop_order( $actions ) {
+  $actions['mark_processing'] = __( 'Mark Paid', 'woocommerce' );
+  return $actions;
+}
+
+foreach( array( 'post', 'shop_order' ) as $hook )
+  add_filter( "views_edit-$hook", 'shop_order_modified_views' );
+
+function shop_order_modified_views( $views ){
+
+  if( isset( $views['wc-processing'] ) )
+    $views['wc-processing'] = str_replace( 'Processing', __( 'Paid', 'woocommerce'), $views['wc-processing'] );
+
+  return $views;
+}
+
+
+/**
+ * Function adds a BCC header to emails that match our array
+ *
+ * @param string $headers The default headers being used
+ * @param string $object  The email type/object that is being processed
  */
-  add_action( 'rest_api_init', function() {
-
-    remove_filter( 'rest_pre_serve_request', 'rest_send_cors_headers' );
-    add_filter( 'rest_pre_serve_request', function( $value ) {
-      header( 'Access-Control-Allow-Origin: *' );
-      return $value;
-
-    });
-  }, 1 );
-
-  function grant_gforms_editor_access() {
-
-    $role = get_role( 'editor' );
-    $role->add_cap( 'gform_full_access' );
+function add_bcc_to_certain_emails( $headers, $object ) {
+  // email types/objects to add bcc to
+  $add_bcc_to = array(
+    'customer_renewal_invoice'    // Renewal invoice from WooCommerce Subscriptions
+  );
+  // if our email object is in our array
+  if ( in_array( $object, $add_bcc_to ) ) {
+    // change our headers
+    $headers = array(
+      $headers,
+      'Bcc: info+tac-orders@workshop.co' ."\r\n",
+    );
   }
-  // Tie into the 'after_switch_theme' hook
-  add_action( 'init', 'grant_gforms_editor_access' );
+  return $headers;
+}
+add_filter( 'woocommerce_email_headers', 'add_bcc_to_certain_emails', 10, 2 );
 
-  add_filter( 'gform_confirmation_anchor', '__return_false' );
 
-  add_filter( 'gform_confirmation_3', 'custom_confirmation_message', 10, 4 );
-  function custom_confirmation_message( $confirmation, $form, $entry, $ajax ) {
-    //$confirmation = $entry['id'];
-    $entryId =  $entry['id'];
-    $confirmation = '<script>var entryId = ' . $entryId . '</script>';
-    return $confirmation;
-  }
 
-  ?>

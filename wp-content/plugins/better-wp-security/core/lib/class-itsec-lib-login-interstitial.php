@@ -160,7 +160,7 @@ class ITSEC_Lib_Login_Interstitial {
 		$session->add_completed_interstitial( $current );
 
 		$session->set_current_interstitial( $this->get_next_interstitial( $session ) );
-		$session->save();
+		return $session->save();
 	}
 
 	/**
@@ -239,6 +239,10 @@ class ITSEC_Lib_Login_Interstitial {
 		foreach ( $this->get_applicable_interstitials( $user ) as $action => $opts ) {
 			$session = ITSEC_Login_Interstitial_Session::create( $user, $action );
 
+			if ( is_wp_error( $session ) ) {
+				wp_die( $session );
+			}
+
 			$this->build_session_from_global_state( $session );
 
 			if ( isset( $_REQUEST[ self::SHOW_AFTER_LOGIN ], $this->registered[ $_REQUEST[ self::SHOW_AFTER_LOGIN ] ] ) ) {
@@ -252,6 +256,11 @@ class ITSEC_Lib_Login_Interstitial {
 
 		if ( isset( $_REQUEST[ self::SHOW_AFTER_LOGIN ], $this->registered[ $_REQUEST[ self::SHOW_AFTER_LOGIN ] ] ) ) {
 			$session = ITSEC_Login_Interstitial_Session::create( $user, $_REQUEST[ self::SHOW_AFTER_LOGIN ] );
+
+			if ( is_wp_error( $session ) ) {
+				wp_die( $session );
+			}
+
 			$this->build_session_from_global_state( $session );
 			$session->save();
 			$this->show_interstitial( $session );

@@ -11,7 +11,7 @@
 			<?php $count = 1; ?>
 			<div class="row section-content-row mb2">
 				<?php while ( have_rows('other_donation_options','189') ) : the_row(); ?>
-					<div class="col-6 col-md-4">
+					<div class="col-6 col-md-4 col-xl-3">
 						<div class="donation-option">
 							<h4 class="font-main bold">
 								<?php the_sub_field('donation_option_label'); ?>

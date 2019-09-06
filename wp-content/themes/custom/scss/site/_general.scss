@@ -222,8 +222,12 @@ $text-button: (
 	background-size: 100% 100%;
 
 	&.button-small{
-		padding: 5px 8px 2px 8px;
+		padding: 4px 8px 3px 8px;
 		font-size: 13px;
+
+		@media screen and (max-width: $sm) {
+			font-size: 10px;
+		}
 	}
 
 	&.button-centered{
@@ -235,6 +239,27 @@ $text-button: (
 		width: 100%;
 		padding: 20px 0;
 		border-radius: 0;
+	}
+
+	&.button-simple{
+		background-image: none;
+		background: $aqua;
+		padding: 15px 20px;
+		border-radius: 5px;
+		transition: background-color .2s;
+
+		&:hover{
+			background-image: none;
+			background-color: darken($aqua,10%);
+		}
+
+		@media screen and (max-width: $sm) {
+			padding: 10px 15px;
+
+			&.small{
+				padding: 3px 5px;
+			}
+		}
 	}
 
 	&:hover{
@@ -255,6 +280,8 @@ $text-button: (
 
 
 }
+
+
 
 
 /* LOADER */
@@ -416,6 +443,14 @@ $text-button: (
 			cursor: pointer;
 		}	
 
+	}
+}
+
+.shadowed{
+	box-shadow: 0px 2px 6px transparentize($slate, .3);
+
+	@media screen and (max-width: $sm) {
+		box-shadow: 0px 1px 4px transparentize($slate, .3);
 	}
 }
 

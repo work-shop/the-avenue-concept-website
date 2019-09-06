@@ -1,9 +1,9 @@
 === WooCommerce Admin ===
 Contributors: automattic
 Tags: ecommerce, e-commerce, store, sales, reports, analytics, dashboard, activity, notices, insights, stats, woo commerce, woocommerce
-Requires at least: 5.0.0
+Requires at least: 5.2.0
 Tested up to: 5.2.1
-Requires PHP: 5.4.0
+Requires PHP: 5.6.20
 Stable tag: 1.0.0
 License: GPLv3
 License URI: https://github.com/woocommerce/woocommerce-admin/blob/master/license.txt
@@ -34,7 +34,7 @@ WooCommerce Admin also allows store owners to customize a new dashboard screen w
 
 = Minimum Requirements =
 
-* WordPress 5.0
+* WordPress 5.2
 * WooCommerce 3.6.0 or greater
 * PHP version 5.4 or greater. PHP 7.2 or greater is recommended
 * MySQL version 5.0 or greater. MySQL 5.6 or greater is recommended
@@ -70,6 +70,63 @@ Release and roadmap notes are available on the [WooCommerce Developers Blog](htt
 3. Analytics
 
 == Changelog ==
+
+= 0.18.0 2019-08-28 =
+
+- Fix: Product in dropdown clickable in FF/Safari #2839 (Components, Packages) 👏 @cojennin
+- Fix: gross order total calculation. #2817 (Analytics)
+- Fix: Date calculation on notes being double adjusted to UTC. #2818 (Inbox)
+- Bug: Orders report now shows coupons in Coupon(s) column #2812 (Analytics) 👏 @cojennin
+- Fix: Bug navigating from DevDoc component pages to WP dashboard pages. #2827 (Documentation)
+- Enhancement: add Facebook extension inbox note. #2798 (Activity Panel, Inbox)
+- Enhancement: handle simple to variable product changes in reports. #2814 (Analytics)
+- Dev: Release Scripts: Update to reflect refactor #2796 (Build)
+- Fix: Import all used Gutenberg component styles. #2679
+- Fix: report column visibility preference bug. #2806 (Analytics, Components, Packages, Settings)
+- Dev: Components: prepare changelogs for release #2802 (Build, Components, Packages)
+- Fix: remove date picker from Customers Report. #2805 (Analytics)
+- Tweak: add empty dataset treatment for report tables. #2801 (Analytics, Components, Packages)
+- Dev: Search List Control: fix long count values cut-off in IE11 #2783 (Components, Packages)
+- Dev: Update List actionable items to be wrapped with Link #2779 (Components, Packages)
+
+= 0.17.0 2019-08-15 =
+
+- Fix: chart data fetch/render over long time periods #2785 (Analytics)
+- Task: update the class filename exclusion to /src/ for PSR-4 #2794
+- Tweak: Increase zIndex on popover elements. #2777
+- Fix: chart display when comparing categories. #2710 (Analytics)
+- Fix: Allow WooCommerce Admin to be deleted through the plugin screen when WooCommerce is not active. #2762
+- Fix: Charts being partially rendered on long time periods. #2776 (Analytics)
+- Task: update WC tested to version to 3.7.0 #2782
+- Fix: Customer last active date showing `Invalid date`. #2764 (Analytics)
+- Task: Update report endpoints to be PSR-4 autoloaded  #2755 (Build)
+- Bug: Fix daily cron event (PSR-4) #2754 (Build)
+- Fix: issue where product category update button was not always clickable #2753
+- Fix: Add version parameter to `_doing_it_wrong` on `current_screen`. #2733
+- Task: Update feature classes to be PSR-4 autoloaded. #2736 (Build)
+- Fix: Short circuit admin title filter when applied by third parties too early. #2744
+- Fix: chart display when comparing categories. #2708 (Analytics)
+- Bug: Only apply current submenu CSS reset on non-embed pages. #2687
+- Dev: Add `wc_admin_get_feature_config` filter to feature config array. #2689
+
+= 0.16.0 2019-07-24 =
+
+- Tweak: Change verbiage of feedback notification. #2677
+- Dev: Update unit tests to work with PHPUnit 7+. #2678
+- Fix: Bug that was preventing confirmation dialog from showing after saving settings. #2660
+- Fix: completed orders lingering in activity panel. #2659 (Activity Panel, REST API)
+- Dev: Webpack: Use wp.url instead of bundling package #2663 (Build)
+- Fix: Location of unread indicators in activity panel. #2662
+- Bug: Fix missing nav on connected admin pages. #2676
+- Task: Add priority 2 Tracks events #2633 (Components, Packages)
+- Dev: Replace 'stringifyQuery' with 'addQueryArgs' #2655 (Build, Components, Packages)
+- Task: Add priority 3 Tracks events #2638 (Components, Packages)
+- Fix: Z-index issue in empty message on chart #2646 (Components, Packages)
+- Dev: Tests setup: bring in Woo Core dependencies #2640 (Build)
+- Fix: Disable placeholder animation when prefers-reduced-motion is set #2645 (Accessibility)
+- Task: Add instructions for translating to contributing docs. #2618 (Documentation)
+- Dev: show example extension list as list in readme #2619 (Documentation)
+- Fix: react-spring breaking IE11 #2698 (Build)
 
 = 0.15.0 2019-07-11 =
 

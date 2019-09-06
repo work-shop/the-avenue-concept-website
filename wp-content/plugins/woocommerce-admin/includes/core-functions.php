@@ -9,6 +9,8 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use \Automattic\WooCommerce\Admin\Loader;
+
 /**
  * Format a number using the decimal and thousands separator settings in WooCommerce.
  *
@@ -16,7 +18,7 @@ defined( 'ABSPATH' ) || exit;
  * @return string
  */
 function wc_admin_number_format( $number ) {
-	$currency_settings = WC_Admin_Loader::get_currency_settings();
+	$currency_settings = Loader::get_currency_settings();
 	return number_format(
 		$number,
 		0,
@@ -34,13 +36,13 @@ function wc_admin_number_format( $number ) {
  *
  * @return string       Fully qualified URL pointing to the desired path.
  */
-function wc_admin_url( $path, $query = array() ) {
+function wc_admin_url( $path = null, $query = array() ) {
 	if ( ! empty( $query ) ) {
 		$query_string = http_build_query( $query );
-		$path         = $path . '&' . $query_string;
+		$path         = $path ? '&path=' . $path . '&' . $query_string : '';
 	}
 
-	return admin_url( 'admin.php?page=wc-admin&path=' . $path, dirname( __FILE__ ) );
+	return admin_url( 'admin.php?page=wc-admin' . $path, dirname( __FILE__ ) );
 }
 
 /**

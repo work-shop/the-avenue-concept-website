@@ -23,6 +23,7 @@
     "build-production": "grunt dist",
     "deploy": "./.deploy.sh",
     "deploy-production": "./.deploy-production.sh",
+    "deploy-staging": "./.deploy-staging.sh",
     "pull-database": "./.pull-database.sh"
   },
   "devDependencies": {

@@ -21,7 +21,6 @@ class ITSEC_Hide_Backend {
 			return;
 		}
 
-
 		add_action( 'itsec_initialized', array( $this, 'handle_specific_page_requests' ), 1000 );
 		add_action( 'signup_hidden_fields', array( $this, 'add_token_to_registration_form' ) );
 		add_action( 'login_enqueue_scripts', array( $this, 'login_enqueue' ) );
@@ -86,11 +85,28 @@ class ITSEC_Hide_Backend {
 			list( $request_path ) = explode( '/', $request_path );
 		}
 
+		$check = array_unique( array(
+			$request_path,
+			urldecode( $request_path ),
+			ITSEC_Lib::unfwdslash( substr( $_SERVER['SCRIPT_FILENAME'], strlen( ABSPATH ) ) ),
+		) );
+
+		foreach ( $check as $path ) {
+			$this->handle_request_path( $path );
+		}
+	}
+
+	/**
+	 * Handle determining if we need to block access to the request path.
+	 *
+	 * @param string $request_path
+	 */
+	private function handle_request_path( $request_path ) {
 		if ( $request_path === $this->settings['slug'] ) {
 			$this->handle_login_alias();
 		} elseif ( in_array( $request_path, array( 'wp-login', 'wp-login.php' ) ) ) {
 			$this->handle_canonical_login_page();
-		} elseif ( 'wp-admin' === $request_path || 'wp-admin/' === substr( $request_path, 0, 9 ) ) {
+		} elseif ( 'wp-admin' === $request_path || ITSEC_Lib::str_starts_with( $request_path, 'wp-admin/' ) ) {
 			$this->handle_wp_admin_page();
 		} elseif ( $request_path === $this->settings['register'] && $this->allow_access_to_wp_signup() ) {
 			$this->handle_registration_alias();

@@ -3,7 +3,7 @@ Contributors: ithemes, chrisjean, mattdanner, timothyblynjacobs
 Tags: security, security plugin, malware, hack, secure, block, SSL, admin, htaccess, lockdown, login, protect, protection, anti virus, attack, injection, login security, maintenance, permissions, prevention, authentication, administration, password, brute force, ban, permissions, bots, user agents, xml rpc, security log
 Requires at least: 4.7
 Tested up to: 5.2.2
-Stable tag: 7.4.0
+Stable tag: 7.4.1
 Requires PHP: 5.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -188,6 +188,13 @@ Free support may be available with the help of the community in the <a href="htt
 5. Free malware scan powered by Sucuri SiteCheck.
 
 == Changelog ==
+
+= 7.4.1 =
+* Enhancement: New iThemes Sync Verb support for File Change.
+* Tweak: Add additional information about the login attempt when calling the Network Brute Force API.
+* Bug Fix: Hide Backend Bypass.
+* Bug Fix: Strict Standards error during Sync request.
+* Bug Fix: wp_die() if a login interstitial session fails to be created instead of throwing a fatal error.
 
 = 7.4.0 =
 * New: iThemes Security Admin Notices are now conveniently located in the new Security Messages Menu. Check your notices in the Security menu on the WordPress Admin Bar.
@@ -540,5 +547,5 @@ Free support may be available with the help of the community in the <a href="htt
 
 == Upgrade Notice ==
 
-= 7.4.0 =
-Version 7.4.0 contains important improvements. It is recommended for all users.
+= 7.4.1 =
+Version 7.4.1 contains important improvements. It is recommended for all users.

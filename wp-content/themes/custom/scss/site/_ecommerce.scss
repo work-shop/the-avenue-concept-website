@@ -1,8 +1,363 @@
 
+// many of the ecommerce styles are in the file _ecommerce-newport.scss, as the ecommerce for this site is heavily based on the structure and style of code from the newport art museum theme
 
-#tacwc{
+
+.tacwc{
 	margin-top: $nav-height;
 	padding-top: $nav-height;
-	height: 70vh;
-	border: 1px solid blue;
+	padding-bottom: $nav-height*1.7;
+	min-height: 70vh;
+	//border: 1px solid blue;
+
+	@media screen and (max-width: $sm) {
+		padding-top: $nav-height-mobile*1.6;
+		padding-bottom: $nav-height-mobile*1.6;
+	}
+
+	.button{
+		@extend .button-simple;
+	}
+
+	.button-full{
+		
+	}
 }
+
+
+.bg-error{
+	background: lighten($error, 30%);
+}
+
+.error{
+	color: darken($error, 20%);
+	*{
+		color: darken($error, 20%);
+	}
+}
+
+input{
+	&[type="text"]{
+		border: 1px solid $aqua;
+
+	}
+}
+
+
+
+
+
+/* JOIN */
+
+.join-heading{
+	@media screen and (max-width: $sm) {
+		font-size: 18px;
+	}
+}
+
+.membership-levels-heading{
+	display: none;
+	@media screen and (max-width: $sm) {
+		display: block;
+	}
+}
+
+.membership-level{
+	.wysiwyg h4{
+		margin-top: 0;
+	}
+}
+
+
+
+/* CART */
+.coupon-button{
+	color: white !important;
+	margin-left: 3em !important;
+}
+
+#wc-stripe-payment-request-wrapper{
+	padding-top: 0 !important;
+}
+
+
+.woocommerce-cart{
+	#shipping_method{
+		margin-bottom: 1em;
+	}
+
+	.shipping-calculator-button{
+		font-size: 14px;
+	}
+
+	.woocommerce-shipping-destination{
+		strong{
+			@extend .font-main;
+		}
+	}
+}
+
+
+
+/* CHECKOUT */
+
+p.lost_password{
+	font-size: 14px;
+	@media screen and (max-width: $sm) {
+		font-size: 12px;
+	}
+}
+
+.woocommerce-checkout{
+	dt.variation-DonationPurpose{
+		margin-bottom: .25em;
+		margin-top: 1em;
+		font-size: 13px;
+		line-height: 1;
+		font-weight: normal;
+
+		@media screen and (max-width: $sm) {
+			font-size: 9px;
+		}
+	}
+
+	dd.variation-DonationPurpose{
+		margin-bottom: .25em;
+
+		p{
+			font-size: 13px;
+			line-height: 1;
+
+			@media screen and (max-width: $sm) {
+				font-size: 9px;
+			}		
+		}
+
+	}
+
+	#ship-to-different-address-checkbox{
+		display: inline-block;
+		width: 30px;
+		position: relative;
+		top: -2px;
+	}
+
+	.woocommerce-checkout-payment{
+
+		label{
+			@extend .font-main;
+			font-weight: normal;
+		}
+	}
+
+	label[for="wc-stripe-new-payment-method"]{
+		font-size: 14px;
+		display: inline-block;
+	}
+
+	#payment input[type="checkbox"]{
+		display: inline !important;
+	}
+
+
+
+}
+
+
+/* MY ACCOUNT */
+
+.woocommerce-account {
+
+	&.logged-in .tacwc{
+		padding-top: 0;
+	}
+
+	.page-nav{
+		padding-bottom: 20px;
+		position: static !important;
+		padding-top: $nav-height;
+
+		ul{
+			padding-top: 10px;
+			text-align: left;
+		}
+
+		li{
+			margin-left: 0;
+			margin-right: 20px;
+
+			a{
+				padding: 5px 0 3px 0;
+			}
+		}
+
+		.page-nav-title{
+			margin-top: 30px;
+			//font-family: $font-main;
+		}
+
+	}
+
+}
+
+
+.woocommerce-customer-details{
+
+	.woocommerce-columns,.woocommerce-columns--addresses{
+		@extend .row;
+	}
+
+
+	.col-1{
+		@extend .col-md-6;
+	}
+
+	.col-2{
+		@extend .col-md-6;
+	}
+}
+
+
+/* DONATE */
+
+#donation{
+
+	.notice.row{
+		margin-left: 0;
+		margin-right: 0;
+		margin-bottom: 4em;
+	}
+
+
+}
+
+.button.button-simple.button-donation-level{
+	border: 1px solid $aqua;
+	background: white;
+	color: $aqua;
+	margin-right: 20px;
+	padding-top: 9px;
+	padding-bottom: 9px;
+
+	&:hover{
+		background: lighten($aqua,10%);
+		color: white;
+	}
+
+	&.active{
+		background: $aqua;
+		color: white;
+	}
+
+}
+
+.donate-button{
+	width: 270px;
+	//margin: 0 auto;
+	//display: block;
+}
+
+
+.woocommerce-cart{
+
+	dt.variation-DonationPurpose{
+		margin-bottom: .25em;
+		margin-top: .5em;
+		font-size: 13px;
+		line-height: 1;
+
+		@media screen and (max-width: $sm) {
+			font-size: 9px;
+		}
+	}
+
+	dd.variation-DonationPurpose{
+		margin-bottom: .25em;
+
+		p{
+			font-size: 13px;
+			line-height: 1;
+
+			@media screen and (max-width: $sm) {
+				font-size: 9px;
+			}		
+		}
+
+	}
+}
+
+
+
+
+
+/* THANK YOU */
+
+.thankyou-order-details{
+	.wc-item-meta{
+		margin-top: .75em;
+
+		*{
+			font-size: 14px;
+
+			@media screen and (max-width: $sm) {
+				font-size: 11px;
+			}
+		}
+	}
+}
+
+
+/* SHOP */ 
+
+#shop{
+
+}
+
+#shop-products{
+	columns: 3;
+	column-gap: 20px;
+
+	.card{
+		display: inline-block;
+		margin-bottom: 20px;
+		width: 100%;
+
+		*{
+			color: $dark;
+		}
+
+		&:hover{
+
+			.card-text{
+				background: $aqua;
+			}
+
+			*{
+				color: white;
+			}
+		}
+
+		.card-text{
+			background: lighten($light,5%);
+			transition: background .1s;
+			padding: 1.2em 1em;
+		}
+
+		.card-product-title{
+			font-weight: bold;
+			margin-bottom: .25em;
+			font-size: 24px;
+		}
+
+	}
+}
+
+.product-description{
+	h4{
+		margin-top: 0;
+	}
+}
+
+
+
+
+

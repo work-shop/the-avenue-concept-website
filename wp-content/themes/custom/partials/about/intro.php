@@ -1,7 +1,7 @@
 <div class="page-nav before">
 	<div class="container-fluid container-fluid-stretch">
 		<div class="row">
-			<div class="col col-lg-10 offset-lg-2">
+			<div class="col">
 				<ul class="page-nav-list">
 					<li>
 						<a href="#about-mission" class="jump">

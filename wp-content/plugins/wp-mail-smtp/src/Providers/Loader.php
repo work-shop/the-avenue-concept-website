@@ -17,16 +17,18 @@ class Loader {
 	 * Key is the mailer option, value is the path to its classes.
 	 *
 	 * @since 1.0.0
+	 * @since 1.6.0 Added Sendinblue.
 	 *
 	 * @var array
 	 */
 	protected $providers = array(
-		'mail'     => 'WPMailSMTP\Providers\Mail\\',
-		'gmail'    => 'WPMailSMTP\Providers\Gmail\\',
-		'mailgun'  => 'WPMailSMTP\Providers\Mailgun\\',
-		'sendgrid' => 'WPMailSMTP\Providers\Sendgrid\\',
-		'pepipost' => 'WPMailSMTP\Providers\Pepipost\\',
-		'smtp'     => 'WPMailSMTP\Providers\SMTP\\',
+		'mail'       => 'WPMailSMTP\Providers\Mail\\',
+		'sendinblue' => 'WPMailSMTP\Providers\Sendinblue\\',
+		'mailgun'    => 'WPMailSMTP\Providers\Mailgun\\',
+		'sendgrid'   => 'WPMailSMTP\Providers\Sendgrid\\',
+		'gmail'      => 'WPMailSMTP\Providers\Gmail\\',
+		'smtp'       => 'WPMailSMTP\Providers\SMTP\\',
+		'pepipost'   => 'WPMailSMTP\Providers\Pepipost\\',
 	);
 
 	/**
@@ -59,7 +61,7 @@ class Loader {
 	 *
 	 * @param string $provider
 	 *
-	 * @return array
+	 * @return string|null
 	 */
 	public function get_provider_path( $provider ) {
 

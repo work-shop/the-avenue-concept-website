@@ -841,3 +841,9 @@
 	Enhancement: Add Security Message when a Notification Center email fails to send.
 	Enhancement: Replace Trace IP with IP Tracker Online.
 	Tweak: Remove 'DELETE' method from "System Tweaks -> Filter Request Methods"
+7.4.1 - 2019-08-15 - Chris Jean & Timothy Jacobs
+	Enhancement: New iThemes Sync Verb support for File Change.
+	Tweak: Add additional information about the login attempt when calling the Network Brute Force API.
+	Bug Fix: Hide Backend Bypass.
+	Bug Fix: Strict Standards error during Sync request.
+	Bug Fix: wp_die() if a login interstitial session fails to be created instead of throwing a fatal error.

@@ -1,6 +1,12 @@
 === WooCommerce Name Your Price ===
 
-2019.04.12 - version 2.9.6
+2019.08.06 - version 2.10.0
+* IMPORTANT: WooCommerce 3.1.0 is minimum required version. If you are running a WooCommerce version older than 3.1, you will not see any prompts to update Conditional Shipping and Payments from now on, and will need to install extension updates manually!
+* IMPORTANT: PHP 5.6.20+ is now required.
+* Update: Tested against WC 3.7
+* Tweak: Improve variable product performance by passing $variation object to woocommerce_variation_is_visible callback. 
+
+2019.06.19 - version 2.9.6
 * Fix: Admin Quick-edit save routine.
 * Fix: Updated price-input.php template to always match label "for" to input "id" when using a $prefix for accessibility.
 

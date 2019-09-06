@@ -3,14 +3,14 @@
  * Plugin Name: WooCommerce Name Your Price
  * Plugin URI: http://www.woocommerce.com/products/name-your-price/
  * Description: WooCommerce Name Your Price allows customers to set their own price for products or donations.
- * Version: 2.9.6
+ * Version: 2.10.0
  * Author: Kathy Darling
  * Author URI: http://kathyisawesome.com
  * Woo: 18738:31b4e11696cd99a3c0572975a84f1c08
  * Requires at least: 4.4.0
- * Tested up to: 5.1.1
  * WC requires at least: 3.0.0    
- * WC tested up to: 3.6.0   
+ * Tested up to: 5.2.2
+ * WC tested up to: 3.7.0   
  *
  * Text Domain: wc_name_your_price
  * Domain Path: /languages/
@@ -20,18 +20,6 @@
  * License URI: http://www.gnu.org/licenses/gpl-3.0.html
  *
  */
-
-/**
- * Required functions.
- */
-if ( ! function_exists( 'woothemes_queue_update' ) ){
-	require_once( 'woo-includes/woo-functions.php' );
-}
-
-/**
- * Plugin updates.
- */
-woothemes_queue_update( plugin_basename( __FILE__ ), '31b4e11696cd99a3c0572975a84f1c08', '18738' );
 
 /**
  * The Main WC_Name_Your_Price class.
@@ -50,13 +38,13 @@ class WC_Name_Your_Price {
 	 * @var plugin version
 	 * @since 2.0
 	 */
-	public $version = '2.9.6';   
+	public $version = '2.10.0';   
 
 	/**
 	 * @var required WooCommerce version
 	 * @since 2.1
 	 */
-	public $required_woo = '3.0.0';
+	public $required_woo = '3.1.0';
 
 	/**
 	 * Main WC_Name_Your_Price Instance.
@@ -105,8 +93,13 @@ class WC_Name_Your_Price {
 
 	public function __construct() { 
 
-		// Load translation files
+		// Always load translation files
 		add_action( 'init', array( $this, 'load_plugin_textdomain' ) );
+
+		// Sanity checks.
+		if( ! $this->has_min_environment() ) {
+			return false;
+		}
 
 		// Include required files
 		$this->includes();
@@ -144,6 +137,34 @@ class WC_Name_Your_Price {
 	/* Required Files */
 	/*-----------------------------------------------------------------------------------*/
 
+
+	/**
+	 * Test environement meets min requirements.
+	 *
+	 * @since  2.10.0
+	 */
+	public function has_min_environment() {
+
+		// WC version sanity check.
+		if ( ! defined( 'WC_VERSION' ) || version_compare( WC_VERSION, $this->required_woo, '<' ) ) {
+			$notice = sprintf( __( '<strong>WooCommerce Name Your Price is inactive.</strong> The %sWooCommerce plugin%s must be active and at least version %s for Name Your Price to function. Please upgrade or activate WooCommerce.', 'wc_name_your_price' ), '<a href="http://wordpress.org/extend/plugins/woocommerce/">', '</a>', $this->required_woo );
+			require_once( 'includes/admin/class-wc-nyp-admin-notices.php' );
+			WC_NYP_Admin_Notices::add_notice( $notice, 'error' );
+			return false;
+		}
+
+		// PHP version check.
+		if ( ! function_exists( 'phpversion' ) || version_compare( phpversion(), '5.6.20', '<' ) ) {
+			$notice = sprintf( __( 'WooCommerce Name Your Price requires at least PHP <strong>%1$s</strong>. Learn <a href="%2$s">how to update PHP</a>.', 'wc_name_your_price' ), '5.6.20', 'https://docs.woocommerce.com/document/how-to-update-your-php-version/' );
+			require_once( 'includes/admin/class-wc-nyp-admin-notices.php' );
+			WC_NYP_Admin_Notices::add_notice( $notice, 'error' );
+			return false;
+		}
+
+		return true;
+
+	}
+
 	/**
 	 * Include required core files used in admin and on the frontend.
 	 *
@@ -154,12 +175,6 @@ class WC_Name_Your_Price {
 
 		// Include WC compatibility functions
 		include_once( 'includes/compatibility/core/class-wc-name-your-price-core-compatibility.php' );
-
-		// check we're running the required version of WC
-		if ( ! WC_Name_Your_Price_Core_Compatibility::is_wc_version_gte( $this->required_woo ) ) {
-			add_action( 'admin_notices', array( $this, 'admin_notice' ) );
-			return false;
-		}
 
 		// include all helper functions
 		include_once( 'includes/class-wc-name-your-price-helpers.php' );
@@ -199,6 +214,7 @@ class WC_Name_Your_Price {
 	 * @since  2.1
 	 */
 	public function admin_notice() {
+		wc_deprecated_function( 'WC_Mix_and_Match::admin_notice()', '1.6.0', 'Function is no longer used.' );
 		if( current_user_can( 'activate_plugins' ) ) {
 	    	echo '<div class="error"><p>' . sprintf( __( 'WooCommerce Name Your Price requires at least WooCommerce %s in order to function. Please activate or upgrade WooCommerce.', 'wc_name_your_price' ), $this->required_woo ) . '</p></div>';
 	    }
@@ -211,9 +227,9 @@ class WC_Name_Your_Price {
 	 * @since  2.2
 	 */
 	public function admin_includes() {
+		include_once( 'includes/admin/class-wc-nyp-admin-notices.php' );
 	    include_once( 'includes/admin/class-name-your-price-admin.php' );
 	}
-
 
 	/*-----------------------------------------------------------------------------------*/
 	/* Localization */

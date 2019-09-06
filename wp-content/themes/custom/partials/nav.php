@@ -13,6 +13,31 @@
 		</a>
 	</div>
 	<div id="nav-menus">
+		<ul id="nav-menu-upper">
+			<li id="nav-link-shop">
+				<a href="/shop">Shop</a>
+			</li>
+			<li id="nav-link-login">
+				<a href="/my-account">
+					<?php
+					if( is_user_logged_in() ) {
+						//$user = wp_get_current_user();
+						//$user_name = $user->display_name;
+						//echo $user_name;
+						echo 'My Account';
+					} else{
+						echo 'Login';
+					}
+					?>
+				</a>
+			</li>
+			<li id="nav-link-cart">
+				<a class="cart-customlocation" title="View Your Shopping Cart" href="<?php echo wc_get_cart_url(); ?>">
+					<span class="icon" data-icon="i"></span>
+					<span id="cart-number"><?php echo WC()->cart->get_cart_contents_count(); ?></span>
+				</a>
+			</li>	
+		</ul>
 		<ul class="nav-menus-list">
 			<li class="has-sub-menu closed nav-menu-primary-item">
 				<a href="/programs" class="dropdown-link closed mobile-closed <?php if( Helpers::is_tree(161) ): echo ' nav-current '; endif; ?>" id="nav-link-about" data-dropdown-target="programs">
@@ -104,7 +129,7 @@
 				</ul>
 			</li>
 			<li class="has-sub-menu closed nav-menu-primary-item">
-				<a href="/blog" class="dropdown-link closed mobile-closed <?php if( is_single() || is_category() || is_page(193) ): echo ' nav-current '; endif; ?>" id="nav-link-blog" data-dropdown-target="blog">
+				<a href="/blog" class="dropdown-link closed mobile-closed <?php if( is_single('post') || is_category('post') || is_page(193) ): echo ' nav-current '; endif; ?>" id="nav-link-blog" data-dropdown-target="blog">
 					Blog
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
@@ -127,16 +152,24 @@
 				</ul>
 			</li>
 			<li class="has-sub-menu closed nav-menu-primary-item">
+				<a href="/ave-magazine" class="dropdown-link closed mobile-closed <?php if( is_page(1289) ): echo ' nav-current '; endif; ?>" id="nav-link-magazine" data-dropdown-target="magazine">
+					Magazine
+					<span class="icon" data-icon="ﬁ"></span>
+				</a>
+				<ul class="sub-menu" id="sub-menu-magazine">
+					<li>
+						<a href="/ave-magazine" class="">
+							Ave. Magazine
+						</a>
+					</li>
+				</ul>
+			</li>
+			<li class="has-sub-menu closed nav-menu-primary-item">
 				<a href="/donate" class="dropdown-link closed mobile-closed <?php if( is_page(189) ): echo ' nav-current '; endif; ?>" id="nav-link-donate" data-dropdown-target="donate">
 					Donate
 					<span class="icon" data-icon="ﬁ"></span>
 				</a>
 				<ul class="sub-menu" id="sub-menu-donate">
-					<li>
-						<a href="/memberships" class="">
-							Memberships
-						</a>
-					</li>
 					<li>
 						<a href="/donate#donation" class="">
 							Donate Now
@@ -154,15 +187,24 @@
 					</li>
 				</ul>
 			</li>
-<!-- 			<li class="nav-menu-primary-item" id="nav-menu-donate-item">
-				<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank" class="paypal-button-form">
-					<input type="hidden" name="cmd" value="_s-xclick">
-					<input type="hidden" name="hosted_button_id" value="T3NSG4UVFRPMQ">
-					<span class="extra-text">Donate</span>
-					<input type="image" src="<?php bloginfo('template_directory'); ?>/images/donate-button-new.png" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!" class="paypal-button-image">
-					<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1" class="paypal-button-hidden-image">
-				</form>
-			</li> --> 
+			<li class="has-sub-menu closed nav-menu-primary-item">
+				<a href="/join" class="dropdown-link closed mobile-closed <?php if( is_page(1522) ): echo ' nav-current '; endif; ?>" id="nav-link-join" data-dropdown-target="join">
+					Join
+					<span class="icon" data-icon="ﬁ"></span>
+				</a>
+				<ul class="sub-menu" id="sub-menu-join">
+					<li>
+						<a href="/join" class="">
+							Memberships
+						</a>
+					</li>
+					<li>
+						<a href="/my-account/subscriptions" class="">
+							Manage Your<br>Membership
+						</a>
+					</li>
+				</ul>
+			</li>
 		</ul>
 	</div>
 </nav>

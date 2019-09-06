@@ -7,7 +7,7 @@ $text-nav: (
 	xl: (19px, 53px)
 	);
 
-$curve-height: 390px;
+$curve-height: 450px;
 
 #nav{
 	top: 0;
@@ -21,7 +21,7 @@ $curve-height: 390px;
 	&:hover{
 		@extend .after;
 
-		@media screen and (min-width: $sm+1) {
+		@media screen and (min-width: $md+1) {
 			.nav-menu-primary-item .nav-current{
 				border-bottom-color: rgba(255,255,255,.5);
 
@@ -42,7 +42,7 @@ $curve-height: 390px;
 		height: $nav-height-md;
 	}
 
-	@media screen and (max-width: $sm) {
+	@media screen and (max-width: $md) {
 		height: $nav-height-mobile;
 		padding-left: 10px;
 		padding-right: 10px;
@@ -68,20 +68,24 @@ $curve-height: 390px;
 	}
 
 	#nav-menus{
-		float: left;
+		float: right;
 		margin-left: 30px;
 		position: relative;
 		z-index: 1;
 		@extend .clearfix;
+		//border: 1px solid red;
+		//margin-top: 35px;
+		padding-right: 20px;
 
 		@media screen and (max-width: $lg) {
+			margin-left: 10px;
 		}
 
 		@media screen and (max-width: $md) {
 			margin-left: 10px;
 		}
 
-		@media screen and (max-width: $sm) {
+		@media screen and (max-width: $md) {
 			clear: left;
 			width: 100%;
 			margin-left: 0;
@@ -89,43 +93,72 @@ $curve-height: 390px;
 		}
 	}
 
+	#nav-menu-upper{
+		height: 35px;
+		text-align: right;
+		padding-top: 3px;
+
+
+		li{
+			display: inline-block;
+			margin-left: 30px;
+		}
+
+		a{
+			color: white;
+			font-size: 14px;
+		}
+
+		#nav-link-login{
+			a{
+				
+			}
+		}
+	}
+
 
 	//dropdown default state
 	.sub-menu{
-		
-		@media screen and (min-width: $sm+1) {
-			padding: 30px 0 0 0;
+
+		@media screen and (min-width: $md+1) {
+			background: $brand;
+			//background: $ultra-light;
+			padding: 30px 15px 15px 15px;
+			border-radius: 0 0 10px 10px;
 			width: 200px;
 			z-index: 1;
 			opacity: 0;
 			transition: all .2s .1s;//out
 			position: absolute;
-			top: $nav-height;
-			left: 0;
+			top: $nav-height - 35px;
+			left: -0px;
 			visibility: hidden;
+			box-shadow: 0px 2px 5px transparentize($dark,.75);
 		}
 
-		&#sub-menu-programs{
-			@media screen and (min-width: $sm+1) {
-				width: 330px;
-				column-count: 2;
-				column-gap: 20px;
+		&#sub-menu-join{
+			@media screen and (min-width: $md+1) {
+				//width: 330px;
+				//column-count: 2;
+				//column-gap: 20px;
 			}
 
 		}
 
-		&#sub-menu-donate{
-			@media screen and (min-width: $sm+1) {
-				left: -110px;
+		&#sub-menu-donate,&#sub-menu-join{
+			@media screen and (min-width: $md+1) {
+				//left: -110px;
+				left: auto;
+				right: 0px;
 				text-align: right;
 			}
 
 			@media screen and (min-width: $lg+1) {
-				left: -85px;
+				//left: -85px;
 			}
 		}
 
-		@media screen and (max-width: $sm) {
+		@media screen and (max-width: $md) {
 			position: static;
 			transform: none;
 			margin-left: 0;
@@ -150,13 +183,16 @@ $curve-height: 390px;
 				height: auto;
 				@extend .font-secondary;
 				border: none;
+				color: $brand;
+				color: $dark;
+				color: white;
 				
 				&:hover{
 					text-decoration: underline;
 				}
 			}
 
-			@media screen and (max-width: $sm) {
+			@media screen and (max-width: $md) {
 				padding: 0 !important;
 				width: 100% !important;
 				float: none;
@@ -183,13 +219,13 @@ $curve-height: 390px;
 		float: left;
 		position: relative;
 		z-index: 3;
-		margin: 0 60px 0 0;
-		height: 100%;
+		margin: 0 0px 0 60px;
+		//height: 70%;
 
 		&:hover{
 			&>a{
 
-				@media screen and (min-width: $sm+1) {
+				@media screen and (min-width: $md+1) {
 					border-bottom: 2px solid white;
 				}
 				.icon:before{
@@ -199,15 +235,19 @@ $curve-height: 390px;
 			}
 		}
 
+		@media screen and (max-width: 1440px) {
+			margin: 0 0px 0 50px;
+		}
+
 		@media screen and (max-width: $lg) {
-			margin-right: 40px;
+			margin-left: 30px;
 		}
 
 		@media screen and (max-width: $md) {
-			margin-right: 20px;
+			margin-left: 15px;
 		}
 
-		@media screen and (max-width: $sm) {
+		@media screen and (max-width: $md) {
 			display: block;
 			width: 100%;
 			height: auto;
@@ -221,32 +261,36 @@ $curve-height: 390px;
 
 		a{
 			display: inline-block;
-			height: $nav-height - 0px;
+			height: $nav-height - 35px;
 			transition: all .2s;
 			border-bottom: 2px solid transparent;
+			font-size: 20px;
+			//padding-top: 33px;
+			padding-top: 15px;
+			letter-spacing: .03em;
 
 			@media screen and (max-width: $lg) {
-				font-size: 17px;
+				font-size: 16px;
 			}
 
 			@media screen and (max-width: $md) {
 				font-size: 16px;
 			}
 
-			@media screen and (max-width: $sm) {
+			@media screen and (max-width: $md) {
 				font-size: 16px;
 				padding: 10px;
 				height: auto;
 			}
 
 			&.nav-current{
-				@media screen and (min-width: $sm+1) {
+				@media screen and (min-width: $md+1) {
 					border-bottom: 2px solid white;
 				}
 			}
 
-			@media screen and (min-width: $sm+1) {
-				text-shadow: 1px 1px 1px black;
+			@media screen and (min-width: $md+1) {
+				text-shadow: 1px 1px 1px transparentize(black, .5);
 			}
 
 			.icon:before{
@@ -255,6 +299,8 @@ $curve-height: 390px;
 				color: white;
 				transition: transform .5s;
 				transform: rotate(0deg);
+
+				display: none;
 			}
 
 			&:hover{
@@ -271,7 +317,7 @@ $curve-height: 390px;
 
 			&.open{
 
-				@media screen and (min-width: $sm+1) {
+				@media screen and (min-width: $md+1) {
 
 					.sub-menu{
 						visibility: visible;
@@ -293,7 +339,7 @@ $curve-height: 390px;
 				}
 
 
-				@media screen and (max-width: $sm) {
+				@media screen and (max-width: $md) {
 					.icon:before{
 						transform: rotate(-180deg);
 						top: -2px;
@@ -303,6 +349,19 @@ $curve-height: 390px;
 					}
 				}
 
+			}
+
+			//dropdown link styling
+			li a{
+				font-family: $font-bold;
+				text-transform: none;
+				letter-spacing: .02em;
+				line-height: 1;
+				padding: 12px 0;	
+
+				@media screen and (max-width: $md) {
+					padding: 5px 0;
+				}
 			}
 		}
 
@@ -317,7 +376,7 @@ $curve-height: 390px;
 			transition: all .2s;
 		}
 
-		@media screen and (max-width: $sm) {
+		@media screen and (max-width: $md) {
 			height: $nav-height-mobile;
 			background: $brand;
 
@@ -330,14 +389,14 @@ $curve-height: 390px;
 			width: 150px;
 			-webkit-filter: none;
 
-			@media screen and (max-width: $md) {
+			@media screen and (max-width: $lg) {
 				width: 140px;
 				a{
-					padding-top: 16px;
+					padding-top: 20px;
 				}
 			}
 
-			@media screen and (max-width: $sm) {
+			@media screen and (max-width: $md) {
 				width: 110px;
 
 				a{
@@ -377,7 +436,7 @@ $curve-height: 390px;
 
 		#nav-background{
 			display: block;
-			@media screen and (max-width: $sm) {
+			@media screen and (max-width: $md) {
 				display: none;
 			}
 		}
@@ -404,23 +463,24 @@ $curve-height: 390px;
 		filter: drop-shadow(0px 1px 1px transparentize(black, .2));
 	}
 
-	@media screen and (max-width: $md) {
+
+	@media screen and (max-width: $lg) {
 		width: 140px;
 		a{
-			padding-top: 16px;
+			padding-top: 20px;
 		}
 	}
 
-	@media screen and (max-width: $sm) {
+	@media screen and (max-width: $md) {
 		width: 110px;
 	}
 
 	a{
-		padding: 13px;
+		padding: 18px;
 		padding-bottom: 5px;
 		padding-left: 0px;
 
-		@media screen and (max-width: $sm) {
+		@media screen and (max-width: $md) {
 			padding: 12px 20px 10px 0px;
 		}
 	}
@@ -457,7 +517,7 @@ $curve-height: 390px;
 		transition: transform .25s;
 	}
 
-	@media screen and (max-width: $sm) {
+	@media screen and (max-width: $md) {
 		display: block;
 	}
 }
@@ -468,7 +528,7 @@ $curve-height: 390px;
 	overflow: hidden;
 
 	#nav{
-		@media screen and (max-width: $sm) {
+		@media screen and (max-width: $md) {
 			height: 100vh;
 			overflow-y: scroll;
 			-webkit-overflow-scrolling: touch;
@@ -499,6 +559,8 @@ $curve-height: 390px;
 	position: fixed;
 	width: 107vw;
 	height: $curve-height;
+	height: 0;
+	//background: $brand;
 	top: 0;
 	left: 0;
 	z-index: 6;
@@ -519,7 +581,7 @@ $curve-height: 390px;
 		width: 140vw;
 	}
 
-	@media screen and (max-width: $sm) {
+	@media screen and (max-width: $md) {
 		display: none;
 	}
 
@@ -538,7 +600,7 @@ $curve-height: 390px;
 		@extend .after;
 	}
 
-	@media screen and (min-width: $sm+1) {
+	@media screen and (min-width: $md+1) {
 		#nav-curve-outer{
 			transition: all .3s; //in
 			transform: translate(0);
@@ -565,11 +627,10 @@ $curve-height: 390px;
 
 	@media screen and (max-width: $md) {
 		padding-top: 35px;
-
 		font-size: 16px;
 	}
 
-	@media screen and (max-width: $sm) {
+	@media screen and (max-width: $md) {
 		font-size: 16px;
 	}
 
@@ -585,7 +646,7 @@ $curve-height: 390px;
 		width: 80px;
 	}
 
-	@media screen and (max-width: $sm) {
+	@media screen and (max-width: $md) {
 		width: 100%;
 		height: 100%;
 	}
@@ -596,7 +657,7 @@ $curve-height: 390px;
 		height: $nav-height;
 		z-index: 3;
 
-		@media screen and (max-width: $sm) {
+		@media screen and (max-width: $md) {
 			width: 100%;
 		}
 	}
@@ -614,7 +675,7 @@ $curve-height: 390px;
 			width: 80px;
 		}
 
-		@media screen and (max-width: $sm) {
+		@media screen and (max-width: $md) {
 			width: 100%;
 		}
 	}
@@ -628,12 +689,12 @@ $curve-height: 390px;
 
 
 
-		@media screen and (min-width: $sm+1) {
+		@media screen and (min-width: $md+1) {
 			text-shadow: 1px 1px 1px black;
 		}
 		z-index: -2;
 
-		@media screen and (max-width: $sm) {
+		@media screen and (max-width: $md) {
 			width: 100%;
 			text-align: center;
 			padding-top: 15px;

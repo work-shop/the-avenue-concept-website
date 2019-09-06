@@ -25,6 +25,8 @@ import { announcements } from './announcements.js';
 import { paypal } from './paypal.js';
 import { livereload } from './livereload-client.js';
 import { membershipLevels } from './membership-levels.js';
+import { navHighlight } from './nav-highlight.js';
+import { donate } from './donate.js';
 
 /**
  * Artwork related imports
@@ -53,6 +55,8 @@ filterBlog();
 singlePost();
 announcements();
 paypal();
+navHighlight();
+donate();
 
 $( document ).ready( function() {
 
@@ -64,6 +68,6 @@ $( document ).ready( function() {
 		singleArtwork();
 	} else if ( $('body').hasClass('page-id-1254') ){
 		membershipLevels();
-	}
+	} 
 
 });

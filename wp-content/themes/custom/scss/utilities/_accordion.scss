@@ -1,13 +1,12 @@
 
 .accordion{
-
-	margin-bottom: 20px;		
+	margin-bottom: 1.5em;		
 
 	[data-control]{
-		background: $light;
+		background: lighten(desaturate($light,5%),3%);
 		border: 1px solid darken($light, 7%);
-		border-radius: 2px;
-		padding: 20px 6px 5px 20px;	
+		border-radius: 4px;
+		padding: 20px 6px 9px 20px;	
 		position: relative;
 
 		h4{
@@ -44,8 +43,7 @@
 		position: relative;
 		top: -2px;
 		padding: 0;//for closed style
-		padding: 3vh 3vw 3vh 20px;
-
+		padding: 5vh 3vw 5vh 20px;
 	}
 
 	.wysiwyg{

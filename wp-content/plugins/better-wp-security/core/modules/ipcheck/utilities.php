@@ -71,6 +71,10 @@ final class ITSEC_Network_Brute_Force_Utilities {
 			'ip'        => $ip,
 			'site'      => home_url( '', 'http' ),
 			'timestamp' => ITSEC_Core::get_current_time_gmt(),
+			'login'     => array(
+				'details' => ITSEC_Lib::get_login_details(),
+				'agent'   => isset( $_SERVER['HTTP_USER_AGENT'] ) ? $_SERVER['HTTP_USER_AGENT'] : '',
+			),
 		) );
 
 		$response = self::call_api( $action, array(), array(
@@ -283,6 +287,16 @@ final class ITSEC_Network_Brute_Force_Utilities {
 
 		if ( $query ) {
 			$url = add_query_arg( $query, $url );
+		}
+
+		if ( ! isset( $args['user-agent'] ) ) {
+			if ( ITSEC_Core::is_pro() ) {
+				$args['user-agent'] = 'iThemes Security Pro/';
+			} else {
+				$args['user-agent'] = 'iThemes Security/';
+			}
+
+			$args['user-agent'] .= ITSEC_Core::get_plugin_version() . '-' . ITSEC_Core::get_plugin_build() . '; WordPress/' . get_bloginfo( 'version' );
 		}
 
 		$url  = apply_filters( 'itsec_ipcheck_api_request_url', $url, $action, $query, $args );

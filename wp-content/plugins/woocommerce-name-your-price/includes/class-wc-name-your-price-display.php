@@ -39,7 +39,7 @@ class WC_Name_Your_Price_Display {
 
 		// Variable products.
 		add_action( 'woocommerce_before_variations_form', array( $this, 'move_display_for_variable_product' ) );
-		add_filter( 'woocommerce_variation_is_visible', array( $this, 'variation_is_visible' ), 10, 3 );
+		add_filter( 'woocommerce_variation_is_visible', array( $this, 'variation_is_visible' ), 10, 4 );
 		add_filter( 'woocommerce_available_variation', array( $this, 'available_variation' ), 10, 3 );
 		add_filter( 'woocommerce_get_variation_price', array( $this, 'get_variation_price' ), 10, 4 );
 		add_filter( 'woocommerce_get_variation_regular_price', array( $this, 'get_variation_price' ), 10, 4 );
@@ -371,12 +371,13 @@ class WC_Name_Your_Price_Display {
 	 * @param  boolean $visible - whether to display this variation or not
 	 * @param  int $variation_id
 	 * @param  int $product_id
+	 * @param  obj WC_Product_Variation
 	 * @return boolean
 	 * @since 2.0
 	 */
-	public function variation_is_visible( $visible, $variation_id, $product_id ){
+	public function variation_is_visible( $visible, $variation_id, $product_id, $variation ){
 
-		if( WC_Name_Your_Price_Helpers::is_nyp( $variation_id ) ) {
+		if( WC_Name_Your_Price_Helpers::is_nyp( $variation ) ) {
 			$visible = TRUE;
 		}
 

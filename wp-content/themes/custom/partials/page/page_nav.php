@@ -2,7 +2,7 @@
 		<div class="page-nav present before">
 			<div class="container-fluid container-fluid-stretch">
 				<div class="row">
-					<div class="col col-lg-10 offset-lg-2">
+					<div class="col">
 						<?php if( have_rows('sub_navigation_menu') ): ?>
 							<ul class="page-nav-list">
 								<?php  while ( have_rows('sub_navigation_menu') ) : the_row(); ?>

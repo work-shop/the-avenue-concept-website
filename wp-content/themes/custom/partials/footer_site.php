@@ -14,7 +14,7 @@
 				</address>
 				<p class="footer-contact-us">
 					Contact Us:<br>
-					<a href="mailto:hello@theavenueconcept.com" class="white" target="_blank">hello@theavenueconcept.com</a><br>
+					<a href="mailto:hello@theavenueconcept.com" class="white" target="_blank">hello@theavenueconcept.org</a><br>
 					(401) 490-0929
 				</p>
 				<div class="footer-social">
