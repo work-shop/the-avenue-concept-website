@@ -14,7 +14,7 @@
 	</div>
 	<div id="nav-menus">
 		<ul id="nav-menu-upper">
-			<li id="nav-link-shop">
+			<li id="nav-link-shop" class="">
 				<a href="/shop">Shop</a>
 			</li>
 			<li id="nav-link-login">

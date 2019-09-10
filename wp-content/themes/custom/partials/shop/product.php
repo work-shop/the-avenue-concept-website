@@ -6,6 +6,7 @@ $add_to_cart_url = $product->add_to_cart_url();
 ?>
 <section id="product" class="tacwc">
 	<div class="container-fluid">
+		<?php wc_print_notices(); ?>
 		<div class="row mb3">
 			<div class="col-md-6 col-lg-5">
 				<h2 class="product-heading mb2">
@@ -29,7 +30,13 @@ $add_to_cart_url = $product->add_to_cart_url();
 			</div>
 			<div class="col-md-6">
 				<div class="product-image">
-					<?php the_post_thumbnail( 'blog' ); ?>
+					<?php $thumb_id = get_post_thumbnail_id();
+					$thumb_url_array = wp_get_attachment_image_src($thumb_id, 'home_gallery', true);
+					$thumb_url = $thumb_url_array[0];
+					?>
+					<?php if($thumb_id){ ?>
+						<img src="<?php echo $thumb_url; ?>" />
+					<?php } else{ } ?>
 				</div>
 			</div>
 		</div>

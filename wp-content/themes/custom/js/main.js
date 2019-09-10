@@ -27,6 +27,7 @@ import { livereload } from './livereload-client.js';
 import { membershipLevels } from './membership-levels.js';
 import { navHighlight } from './nav-highlight.js';
 import { donate } from './donate.js';
+import { filter } from './filter.js';
 
 /**
  * Artwork related imports
@@ -57,6 +58,7 @@ announcements();
 paypal();
 navHighlight();
 donate();
+filter();
 
 $( document ).ready( function() {
 

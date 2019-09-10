@@ -111,7 +111,7 @@ else:
 endif; 
 ?>
 <?php //temporarily hiding recurring notes ?>
-<?php if ( $has_recurring_products ): ?>
+<?php if ( $has_recurring_products && false ): ?>
 	<div class="row order-recurring-totals">
 		<div class="col">
 			<?php do_action( 'woocommerce_cart_totals_after_order_total' ); ?>

@@ -8,44 +8,52 @@ function filter() {
 
 	$(document).ready( function() {
 
-		//if( $('.filters').length ){
+		if( $('.shop-filters').length ){
 
 			var filterClassStart = 'all';
 			var urlVars = getUrlVars();
 			var urlCategory = urlVars.category;
 			if( !isEmpty(urlCategory) ){
 				console.log('urlCategory: ' + urlCategory);
-				var categoryButtonSelector = '.filter-button[data-target=filter-' + urlCategory + ']';
+				var categoryButtonSelector = '.filter-button[data-target=' + urlCategory + ']';
 				var categoryButtonCheck = $(categoryButtonSelector);
 				if( !isEmpty(categoryButtonCheck) ){
 					$(categoryButtonSelector).addClass('filter-active');
-					filterClassStart = 'filter-' + urlVars.category;
+					filterClassStart = '' + urlVars.category;
 				}
 			}
 			filterCategories(filterClassStart);
 
+			if( filterClassStart !== 'all'){
+				updateUrl(filterClassStart);
+			}
+
 			$('.filter-button-category').click(function(e) {
+				var category;
 				e.preventDefault();
 				if( $(this).hasClass('filter-active') ){
 					categoryFiltered = false;
 					categoryFilteredCurrent = 'all';
+					category = 'all';
 					filterCategories('all');
 					$(this).removeClass('filter-active');
 				} else{
 					scrollToFilter();
 					var filterClass = $(this).data('target');
+					category = filterClass;
 					filterCategories(filterClass);
 					filterButtonActivate( $(this), 'categories' );
 				}
+				updateUrl(category);
 			});	
 
-		//}
+		}
 
 	});// end document.ready
 
 
 	function filterCategories(filterClass) {
-		//console.log('filterCategories: ' + filterClass);
+		console.log('filterCategories: ' + filterClass);
 		clearFilterMessages();
 
 		if( filterClass !== 'all'){
@@ -69,7 +77,7 @@ function filter() {
 		$.each(elements, function(index, val) {
 			var element = $(val);
 			if( element.hasClass(filterClass) || filterClass === 'all' ){
-				////console.log(element);
+				//console.log(element);
 				newElements.push(element);
 			}
 		});
@@ -83,6 +91,9 @@ function filter() {
 		var elementsFound = false;
 		hideElements();
 
+		//console.log('newElements:');
+		//console.log(newElements);
+
 		$.each(newElements, function(index, val) {
 			var element = $(val);
 			element.addClass('filter-show');
@@ -90,7 +101,7 @@ function filter() {
 		});
 
 		if( !elementsFound ){
-			//console.log('no elements found');
+			console.log('no elements found');
 			$('#filter-messages').addClass('filter-show');
 		}
 	}
@@ -137,6 +148,19 @@ function filter() {
 			vars[hash[0]] = hash[1];
 		}
 		return vars;
+	}
+
+
+	function updateUrl(category){
+		var stateObj = {
+			category: category
+		};
+		if( category === 'all' ){
+			history.pushState(stateObj, category, '/shop/' );
+		} else{
+			history.pushState(stateObj, category, '/shop/?category=' + category );
+		}
+		
 	}
 
 

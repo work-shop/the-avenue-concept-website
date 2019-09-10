@@ -16,6 +16,7 @@
 
 	.button{
 		@extend .button-simple;
+		color: white;
 	}
 
 	.button-full{
@@ -165,7 +166,7 @@ p.lost_password{
 
 /* MY ACCOUNT */
 
-.woocommerce-account {
+.woocommerce-account,.woocommerce-checkout {
 
 	&.logged-in .tacwc{
 		padding-top: 0;
@@ -313,13 +314,37 @@ p.lost_password{
 }
 
 #shop-products{
-	columns: 3;
-	column-gap: 20px;
+	order: 0;
 
-	.card{
+	@media screen and (max-width: $md) {
+		order: 1;
+	}
+}
+
+#shop-sidebar{
+	@media screen and (max-width: $md) {
+		order: 0;
+	}
+}
+
+#shop-products{
+	column-count: 2;
+	column-gap: 20px;
+	overflow: visible;
+
+	@media screen and (max-width: $sm) {
+		column-count: 1;
+	}
+
+	.card.product{
 		display: inline-block;
 		margin-bottom: 20px;
 		width: 100%;
+		display: none;
+
+		&.filter-show{
+			display: inline-block !important;
+		}
 
 		*{
 			color: $dark;

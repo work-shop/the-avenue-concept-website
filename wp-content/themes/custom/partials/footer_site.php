@@ -130,18 +130,23 @@
 					<div class="col-xl col-lg col-md-12 col-sm-12 col-xs-12 footer-nav-col footer-donate-col">
 						<h4 class="mb2">
 							<a href="/donate" class="font-secondary uppercase footer-nav-heading">
-								Donate
+								Support
 							</a>
 						</h4>
 						<ul>
 							<li>
-								<a href="/donate#donation">
-									Donate Now
+								<a href="/donate">
+									Donate
 								</a>
 							</li>
 							<li>
 								<a href="/donate#ways-to-donate">
 									Ways To Donate
+								</a>
+							</li>
+							<li>
+								<a href="/join">
+									Membership
 								</a>
 							</li>
 						</ul>
