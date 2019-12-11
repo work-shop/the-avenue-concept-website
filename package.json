@@ -49,7 +49,7 @@
   "dependencies": {
     "@work-shop/map-module": "^1.1.1",
     "async": "^2.6.1",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "bootstrap-sass": "^3.3.7",
     "cheerio": "^1.0.0-rc.2",
     "d3": "^4.11.0",
