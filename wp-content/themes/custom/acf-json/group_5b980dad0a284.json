@@ -1,0 +1,141 @@
+{
+    "key": "group_5b980dad0a284",
+    "title": "Page Hero",
+    "fields": [
+        {
+            "key": "field_5b9924c456bb7",
+            "label": "Show Page Hero?",
+            "name": "show_hero",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 1,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5b980e23309f3",
+            "label": "Hero Image",
+            "name": "hero_image",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "acf_preview",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "page"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "187"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "193"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "181"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "185"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "6"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "891"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "895"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "4"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "897"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "4"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "821"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "1522"
+            },
+            {
+                "param": "page",
+                "operator": "!=",
+                "value": "1501"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "post"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content"
+    ],
+    "active": 1,
+    "description": "",
+    "modified": 1567688431
+}

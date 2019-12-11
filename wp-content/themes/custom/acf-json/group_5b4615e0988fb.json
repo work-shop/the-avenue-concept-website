@@ -1,0 +1,128 @@
+{
+    "key": "group_5b4615e0988fb",
+    "title": "Social Media Settings",
+    "fields": [
+        {
+            "key": "field_5b4616188dfbd",
+            "label": "Social Media Title",
+            "name": "social_media_title",
+            "type": "text",
+            "instructions": "Title of this page without any branding, such as your site's name. Keep under 60 characters.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5b4616208dfbe",
+            "label": "Social Media Description",
+            "name": "social_media_description",
+            "type": "text",
+            "instructions": "Brief description of the content, between 2 and 4 sentences. Displayed below 'social media title' on Facebook. Keep this between 160-300 characters.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5be71dd8cfee7",
+            "label": "Social Media URL",
+            "name": "social_media_url",
+            "type": "url",
+            "instructions": "The URL that users will be directed to when clicking on the share link for this page. To use the URL of this page, leave this blank.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": ""
+        },
+        {
+            "key": "field_5b4616a18dfc0",
+            "label": "Social Media Image",
+            "name": "social_media_image",
+            "type": "image",
+            "instructions": "Social Media preview image for this page. Minimum size 1200px x 630px, images will be cropped to 1200px x 630px.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "preview_size": "acf_preview",
+            "library": "all",
+            "min_width": 1200,
+            "min_height": 630,
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": ""
+        },
+        {
+            "key": "field_5b9262eb82d94",
+            "label": "Tips",
+            "name": "",
+            "type": "message",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "Use Facebook's Sharing Debugger to preview how shared content will appear on facebook, and to make sure that Facebook has 'scraped' the page when you first go to post it. <a href=\"https:\/\/developers.facebook.com\/tools\/debug\/\" target=\"_blank\">https:\/\/developers.facebook.com\/tools\/debug\/<\/a>",
+            "new_lines": "wpautop",
+            "esc_html": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "page"
+            }
+        ],
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "post"
+            }
+        ]
+    ],
+    "menu_order": 10,
+    "position": "side",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": [
+        "the_content"
+    ],
+    "active": 1,
+    "description": "",
+    "modified": 1541873636
+}

@@ -42,7 +42,36 @@ class ameMetaBoxEditor extends ameModule implements ameExportableModule {
 	}
 
 	public function addDelayedMetaBoxHook($postType) {
-		add_action('add_meta_boxes_' . $postType, array($this, 'processMetaBoxes'), 2000, 0);
+		/*
+		 * Some plugins add their meta boxes using the "admin_head" action (example: WPML) or other non-standard hooks.
+		 * Unfortunately, this means we can't reliably catch all boxes by using "add_meta_boxes" or "do_meta_boxes".
+		 * We use the "in_admin_header" action instead because it runs after the meta box related actions and after most
+		 * other header hooks.
+		 *
+		 * However, this workaround is not fully reliable because there are parts of WP admin that output meta boxes
+		 * immediately after registering them. Examples:
+		 *   /wp-admin/edit-form-comment.php
+		 *   /wp-admin/edit-link-form.php
+		 *
+		 * Partial solution: Let's use the "in_admin_header" hook only on "Edit $CPT" pages.
+		 */
+		$latePriority = 2000;
+
+		//Is the current page a post editing screen?
+		$currentScreen = get_current_screen();
+		if ( !empty($currentScreen) ) {
+			if (
+				isset($currentScreen->base)
+				&& ($currentScreen->base === 'post')
+				&& !empty($postType)
+				&& !did_action('in_admin_header')
+			) {
+				add_action('in_admin_header', array($this, 'processMetaBoxes'), $latePriority, 0);
+				return;
+			}
+		}
+
+		add_action('add_meta_boxes_' . $postType, array($this, 'processMetaBoxes'), $latePriority, 0);
 	}
 
 	public function processMetaBoxes() {
@@ -224,6 +253,7 @@ class ameMetaBoxEditor extends ameModule implements ameExportableModule {
 		$this->loadSettings();
 
 		//Automatically refresh the list of available meta boxes.
+		//TODO: Also run the automatic refresh if it has never been done before.
 		$query = $this->menuEditor->get_query_params();
 		$this->shouldRefreshMetaBoxes = empty($query['ame-meta-box-refresh-done'])
 			&& (

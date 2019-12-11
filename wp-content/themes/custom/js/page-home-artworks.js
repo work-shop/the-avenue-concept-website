@@ -26,8 +26,6 @@ import { ArtworksMap } from './module-map.js';
  function HomePageArtworksManager() {
     //console.log('HomePageArtworksManager loaded');
     if ( !(this instanceof HomePageArtworksManager)) { return new HomePageArtworksManager(); }
-
-
 }
 
 /**
@@ -48,7 +46,7 @@ import { ArtworksMap } from './module-map.js';
 
         var featuredArtworkSlides = renderer.renderThumbnails( filter({ featured: true }) );
 
-        map.update( renderer.renderMapObjects( filter() ) );
+        map.update( renderer.renderMapObjects( filter({ ['on-view']: true }) ) );
 
         //console.log('all artworks returned from Zoho:');
         //console.log( filter() );

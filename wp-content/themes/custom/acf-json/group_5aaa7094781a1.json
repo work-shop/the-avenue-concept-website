@@ -1,0 +1,93 @@
+{
+    "key": "group_5aaa7094781a1",
+    "title": "Sitewide Alert",
+    "fields": [
+        {
+            "key": "field_5aaa7102e89b5",
+            "label": "Show Sitewide Alert?",
+            "name": "show_sitewide_alert",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 0,
+            "ui_on_text": "",
+            "ui_off_text": ""
+        },
+        {
+            "key": "field_5aaa707e597a3",
+            "label": "Sitewide Alert Message",
+            "name": "sitewide_alert_message",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5aaa7102e89b5",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5aaa708e597a4",
+            "label": "Sitewide Alert Link",
+            "name": "sitewide_alert_link",
+            "type": "link",
+            "instructions": "Leave blank for no link on the sitewide alert.\r\nNote: 'Title' and 'Link Text' will not be displayed for this field, only the URL will be used.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_5aaa7102e89b5",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "acf-options-site-options-menus"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "left",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "(Site Options & Menus)",
+    "modified": 1540258390
+}

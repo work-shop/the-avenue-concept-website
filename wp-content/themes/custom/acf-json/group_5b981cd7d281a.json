@@ -1,0 +1,207 @@
+{
+    "key": "group_5b981cd7d281a",
+    "title": "Donate Section",
+    "fields": [
+        {
+            "key": "field_5b981cd7d7c96",
+            "label": "Donate Section Heading",
+            "name": "donate_section_heading",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5ba4fba420f7b",
+            "label": "Donate Section Intro Text",
+            "name": "donate_section_intro_text",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": 3,
+            "new_lines": "br"
+        },
+        {
+            "key": "field_5b981cd7d7e0c",
+            "label": "Donate Quote",
+            "name": "donate_quote",
+            "type": "textarea",
+            "instructions": "Do *not* include quotation marks.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "maxlength": "",
+            "rows": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_5b981cd7d7f72",
+            "label": "Donate Quote Person",
+            "name": "donate_quote_person",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5b981cd7d80d4",
+            "label": "Donate Quote Person Title",
+            "name": "donate_quote_person_title",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_5b981cd7d81ff",
+            "label": "Donate Page Form",
+            "name": "donate_page_form",
+            "type": "forms",
+            "instructions": "Select a form to display on this donation page. Forms can be created and edited under 'Forms'.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "allow_null": 0,
+            "multiple": 0
+        },
+        {
+            "key": "field_5d4b31075442e",
+            "label": "Donation Levels",
+            "name": "donation_levels",
+            "type": "post_object",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "post_type": [
+                "product"
+            ],
+            "taxonomy": [
+                "product_cat:donations"
+            ],
+            "allow_null": 0,
+            "multiple": 1,
+            "return_format": "object",
+            "ui": 1
+        },
+        {
+            "key": "field_5d7267c931e3e",
+            "label": "Donation Purposes",
+            "name": "donation_purposes",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "collapsed": "field_5d7267d431e3f",
+            "min": 0,
+            "max": 0,
+            "layout": "table",
+            "button_label": "Add Donation Purpose",
+            "sub_fields": [
+                {
+                    "key": "field_5d7267d431e3f",
+                    "label": "Donation Purpose",
+                    "name": "donation_purpose",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "default_value": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": "",
+                    "maxlength": ""
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "page",
+                "operator": "==",
+                "value": "189"
+            }
+        ],
+        [
+            {
+                "param": "page_parent",
+                "operator": "==",
+                "value": "189"
+            }
+        ]
+    ],
+    "menu_order": 2,
+    "position": "acf_after_title",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": 1,
+    "description": "",
+    "modified": 1567778788
+}

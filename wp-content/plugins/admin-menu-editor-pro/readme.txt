@@ -3,7 +3,7 @@ Contributors: whiteshadow
 Tags: admin, dashboard, menu, security, wpmu
 Requires at least: 4.1
 Tested up to: 5.2
-Stable tag: 2.9
+Stable tag: 2.9.1
 
 Lets you directly edit the WordPress admin menu. You can re-order, hide or rename existing menus, add custom menus and more.
 
@@ -82,6 +82,20 @@ Here are some usage tips and other things that can be good to know when using th
 == Changelog ==
 
 [Get the latest version here.](http://adminmenueditor.com/updates/)
+
+= 2.9.1 (2019-08-23) =
+##### Fixed
+* Fixed a minor conflict with Toolset Types.
+* Fixed a conflict with the MailPoet plugin where it was not possible to change the plugin's menu icon. 
+* Fixed a bug where the plugin could misidentify certain core menus that have different URLs for different roles.
+* Fixed a bug where the plugin could generate incorrect URLs for submenu items where the parent menu URL contained HTML entities like "&amp;".
+* Fixed an issue where certain vulnerability scanners showed a warning about one of the plugin files because it used the eval() function. This particular instance of eval() was not a security flaw, but it has been now been removed to prevent further false positives.
+* Fixed a bug where the plugin could show an incorrect error message when a menu item was hidden due to there being another hidden menu item with the same URL.
+* Fixed a minor issue with field alignment in menu properties.
+* The "Site Health" menu will no longer be highlighted as a new menu.
+
+##### Changed
+* Improved compatibility with plugins that use non-standard hooks to add their meta boxes (example: WPML).
 
 = 2.9 (2019-05-09) =
 ##### Added

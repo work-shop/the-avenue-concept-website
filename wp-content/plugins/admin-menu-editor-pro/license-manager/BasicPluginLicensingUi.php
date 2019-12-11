@@ -3,7 +3,7 @@
 class Wslm_BasicPluginLicensingUI {
 	private $licenseManager;
 	/**
-	 * @var Puc_v4p2_Plugin_UpdateChecker
+	 * @var Puc_v4p6_Plugin_UpdateChecker
 	 */
 	private $updateChecker;
 	private $pluginFile;
@@ -647,9 +647,13 @@ class Wslm_BasicPluginLicensingUI {
 	}
 
 	public function autoActivateLicense() {
-		$license = $this->licenseManager->getLicense();
 		$failureFlag = 'wslm_auto_activation_failed-' . $this->slug;
-		if ( !$this->currentUserCanManageLicense() || $license->isValid() || get_site_option($failureFlag) ) {
+		if ( !$this->currentUserCanManageLicense() || get_site_option($failureFlag) ) {
+			return;
+		}
+
+		$license = $this->licenseManager->getLicense();
+		if ( $license->isValid() ) {
 			return;
 		}
 

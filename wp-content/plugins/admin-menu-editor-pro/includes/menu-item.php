@@ -31,6 +31,8 @@ abstract class ameMenuItem {
 		'upload.php' => true, 'user-new.php' => true, 'users.php' => true, 'widgets.php' => true,
 	);
 
+	private static $mappable_parent_whitelist = '@^(?:profile|import|post-new|edit-tags)\.php@';
+
 	/**
 	 * Convert a WP menu structure to an associative array.
 	 *
@@ -240,8 +242,15 @@ abstract class ameMenuItem {
 			}
 		}
 
-		if ($parent_file === 'profile.php') {
-			$parent_file = 'users.php';
+		//Map known alternative parents to admin parent menus. This is necessary to ensure that
+		//certain menu items have the same template ID both for admins and for regular users.
+		static $inverse_parent_map = null;
+		global $_wp_real_parent_file;
+		if ( ($inverse_parent_map === null) && !empty($_wp_real_parent_file) && is_array($_wp_real_parent_file) ) {
+			$inverse_parent_map = array_flip($_wp_real_parent_file);
+		}
+		if ( isset($inverse_parent_map[$parent_file]) && (preg_match(self::$mappable_parent_whitelist, $parent_file) === 1) ) {
+			$parent_file = $inverse_parent_map[$parent_file];
 		}
 
 		//Special case: In WP 4.0+ the URL of the "Appearance -> Customize" item is different on every admin page.
@@ -512,7 +521,7 @@ abstract class ameMenuItem {
 
 		if ( self::is_hook_or_plugin_page($menu_url, $parent_url, $has_hook) ) {
 			$parent_file = self::remove_query_from($parent_url);
-			$base_file = self::is_wp_admin_file($parent_file) ? $parent_url : 'admin.php';
+			$base_file = self::is_wp_admin_file($parent_file) ? html_entity_decode($parent_url) : 'admin.php';
 			//add_query_arg() might be more robust, but it's significantly slower.
 			$url = $base_file
 				. ((strpos($base_file, '?') === false) ? '?' : '&')
